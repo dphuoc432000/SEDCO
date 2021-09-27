@@ -1,6 +1,7 @@
 const ReceiverStatus = require('../models/Receiver_Status');
 const {multiplemongooseToObject, mongooseToObject} = require("../util/mongoose.js");
 const statusService = require('../service/StatusService');
+const Status = require('../models/Status');
 const Account = require('../models/Account');
 const accountService = require('../service/AccountService');
 const fs = require('fs');
@@ -9,7 +10,7 @@ const { stat } = require('fs/promises');
 
 class ReceiverStatusService {
 
-    addReceiverStatus = async (account_id, object) => {
+    /*addReceiverStatus = async (account_id, object) => {
         
         return await statusService.addStatus(account_id,"RECEIVER", false) //false vì khi tạo status xong trạng thái chưa hoanaf thành thì bằng false
             .then(status=>{
@@ -33,6 +34,14 @@ class ReceiverStatusService {
             })
             .catch(err => err)
 
+    }*/
+
+    addReceiverStatus = async (status_id, object) => {
+        object.status_id = status_id;
+        const receiver_status = new ReceiverStatus(object);
+        return await receiver_status.save()
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
     }
 
     
@@ -45,15 +54,21 @@ class ReceiverStatusService {
         return await ReceiverStatus.findOne({_id: receive_status_id_param})
             .then(data => mongooseToObject(data));
     }
+    
+    getReceiverStatusDetail_status_id = async(status_id) =>{
+        return await ReceiverStatus.findOne({status_id: status_id})
+            .then(data => mongooseToObject(data));
+    }
 
     deleteReceiverStatus = async (receive_status_id_param) => {
         //xóa receiver status
+        console.log(receive_status_id_param);
         const receiver_status = await ReceiverStatus.findByIdAndRemove({_id: receive_status_id_param})
             .then(data => mongooseToObject(data))
             .catch(err=>err);
 
         //xóa status đi. Đồng thời trả về account id
-        const account_id = await statusService.deleteStatus(receiver_status.status_id)
+        const account_id = await Status.findByIdAndRemove({_id: receiver_status.status_id})
             .then(data => data.account_id)
             .catch(err=>err);
         //update lại role account -> user 

@@ -14,6 +14,7 @@ class RecriverStatusController{
         receiverStatusService.addReceiverStatus(account_id, form_data)
             .then(data => res.json(data))
             .catch(err => res.status(400).json(handleOther.errorHandling('Lỗi nhập', err)))
+        // res.json(req.body);
     }
 
     //[POST] /api/receiver/delete_receiver_status/:receiver_status_id_pr
@@ -35,9 +36,7 @@ class RecriverStatusController{
             .then(data => res.json(data))
             .catch(err => res.status(400).json(handleOther.errorHandling('Lỗi nhập receive_status_id_pr', err)));
     }
-
     
-
 }
 
 module.exports = new RecriverStatusController;

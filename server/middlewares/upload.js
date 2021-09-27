@@ -25,7 +25,6 @@ const uploadFile = (directory) =>{
         },
         fileFilter 
     });
-
     return upload;
 }
 

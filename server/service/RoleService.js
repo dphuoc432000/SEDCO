@@ -8,6 +8,7 @@ class RoleService{
             .then(roles =>{
                 return multiplemongooseToObject(roles);  //return về data promise
             })
+            .catch(err => err);
     }
 
     getRoleByID = async (id) =>{
@@ -15,6 +16,7 @@ class RoleService{
             .then(role =>{
                 return mongooseToObject(role);
             })
+            .catch(err => err);
     }
     
     getRoleByName= async (role_name_param) =>{
@@ -22,6 +24,7 @@ class RoleService{
             .then(role =>{
                 return mongooseToObject(role);
             })
+            .catch(err => err);
     }
 
     addRole = async(object) =>{
@@ -30,6 +33,7 @@ class RoleService{
             .then(role =>{
                 return mongooseToObject(role);
             })
+            .catch(err => err);
     }
 
     updateRole = async(id, object) =>{
@@ -37,6 +41,7 @@ class RoleService{
             .then(role =>{
                 return mongooseToObject(role);
             })
+            .catch(err => err);
     }
 
     deleteRole = async(id) =>{
@@ -44,6 +49,7 @@ class RoleService{
             .then(role =>{
                 return mongooseToObject(role);
             })
+            .catch(err => err);
     }
     
 }

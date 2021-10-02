@@ -1,8 +1,9 @@
 const {multiplemongooseToObject, mongooseToObject} = require('../util/mongoose.js');
 const Status = require('../models/Status');
 const accountService = require('./AccountService.js');
-const receiverStatusService = require('./ReceiverStatusService')
-
+const receiverStatusService = require('./ReceiverStatusService');
+const senderStatusService = require("./SenderStatusService");
+const { getSenderStatusDetail } = require('./SenderStatusService');
 
 //update số lượng essential. Cho form nhập số lượng rồi bấm update sẽ chuyển body lên qua URL có các param status ID, loại STATUS. Lấy ra status với status_id. Từ status so sánh status_type với loại STATUS. Nếu đúng thì sửa đổi sai thì trả về null hoặc báo lỗi không đúng
 //update status_completed
@@ -47,13 +48,12 @@ class StatusService {
                     //update role account
                     accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver');
                     break;
-                // case "SENDER":
-                //     console.log(status._id);
-                //     //tạo receiver status
-                //     receiverStatusService.addReceiverStatus(status._id.toString(), object)
-                //     //update role account
-                //     accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver');
-                //     break;
+                case "SENDER":
+                    //tạo receiver status
+                    status.detail = await senderStatusService.addSenderStatus(status._id.toString(), object);
+                    //update role account
+                    accountService.accountUpdate_roleId_byRoleName(account_id_param, 'sender');
+                    break;
                 // case "CAR TRIP":
                 //     console.log(status._id);
                 //     //tạo receiver status
@@ -84,7 +84,12 @@ class StatusService {
                             obj.detail = data;
                         })
                     break;
-                // case "RECEIVER":
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
                 
                 //     break;
                 // case "CAR TRIP":
@@ -111,9 +116,13 @@ class StatusService {
                             obj.detail = data;
                         })
                     break;
-                // case "RECEIVER":
-                
-                //     break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+
                 // case "CAR TRIP":
                 
                 //     break;
@@ -126,62 +135,78 @@ class StatusService {
         return status_list_map;   
     }
 
-    //OK
+    // ok
     //lấy ra tất cả thông tin một thông tin(receiver/ sender/car trip) essential cuả status
     getEssentialOfStatus = async(status_id_param) =>{
         const status =  await Status.findById({_id:status_id_param})
-            .then(status => mongooseToObject(status));
-        let status_details;
-        switch (status.status_type) {
-            case "RECEIVER":
-                status_details = await receiverStatusService.getReceiverStatusDetail_status_id(status_id_param);
-                break;
-            // case "RECEIVER":
-            
-            //     break;
-            // case "CAR TRIP":
-            
-            //     break;
-            default:
-                break;
-        }
-        return status_details;
+            .then(status => mongooseToObject(status))
+            .catch(err => err);
+        let status_detail;
+        if(status)
+            switch (status.status_type) {
+                case "RECEIVER":
+                    status_detail = await receiverStatusService.getReceiverStatusDetail_status_id(status_id_param);
+                    break;
+                case "SENDER":
+                    status_detail = await senderStatusService.getSenderStatusDetail_status_id(status_id_param);
+                    break;
+                // case "CAR TRIP":
+                
+                //     break;
+                default:
+                    break;
+            }
+        return status_detail;
     }
 
-    //OK
-    getStatusDetails = async(status_id_param)=>{
+    // ok
+    getStatusDetail = async(status_id_param)=>{
         const status = await Status.findById({_id:status_id_param})
-            .then(status => mongooseToObject(status));
-        const status_details = await this.getEssentialOfStatus(status_id_param);
-        const object = {...status, detail: {... status_details}};
+            .then(status => mongooseToObject(status))
+            .catch(err=>err);
+        let status_detail;
+        let object;
+        if(status){
+            status_detail = await this.getEssentialOfStatus(status_id_param);
+            object = {...status, detail: {...status_detail}};
+        }
+        else
+            object = null; 
         return object;
     }
 
     updateStatus = async(status_id_param,object) =>{
         return await Status.findByIdAndUpdate({_id: status_id_param}, object)
-            .then(status => mongooseToObject(status));
+            .then(status => mongooseToObject(status))
+            .catch(err => err);
     }
 
     
     //OK
     deleteStatus = async (status_id_param) =>{
-        const status = await this.getStatusDetails(status_id_param);
-        switch (status.status_type) {
-            case "RECEIVER":
-                // hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
-                // status.detail._id.toString() chuyển new ObjectID(".....") về ......
-                // console.log("receiver_status: ", status.detail._id.toString());
-                await receiverStatusService.deleteReceiverStatus(status.detail._id.toString());
-                break;
-            // case "RECEIVER":
-            
-            //     break;
-            // case "CAR TRIP":
-            
-            //     break;
-            default:
-                break;
-        } 
+        const status = await this.getStatusDetail(status_id_param);
+        if(status){
+            const status_type = status.status_type;
+            // console.log("status", status)
+            switch (status_type) {
+                case "SENDER":
+                    await senderStatusService.deleteSenderStatus(status.detail._id);// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
+                    break;
+                case "RECEIVER":
+                    // status.detail._id.toString() chuyển new ObjectID(".....") về ......
+                    // console.log("receiver_status: ", status.detail._id.toString());
+                    // await receiverStatusService.deleteReceiverStatus(status.detail._id.toString());// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
+                    await receiverStatusService.deleteReceiverStatus(status.detail._id);
+                    break;
+                
+                // case "CAR TRIP":
+                
+                //     break;
+                default:
+                    break;
+            }
+        }
+            // console.log(status);
         return status;
     }
 

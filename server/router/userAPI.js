@@ -3,13 +3,13 @@ const router = express.Router();
 
 const userController = require('../controllers/UserController.js');
 
-router.post('/store', userController.addUser);
-router.get('/user_list', userController.getAllUser);
-router.get('/details/:id', userController.getUserByID);
+// router.post('/store', userController.addUser); //OK // Đã có hàm regis
+router.get('/list', userController.getAllUser); //OK
+router.get('/:id/detail', userController.getUserByID); //OK
 //dùng phương thức POST để update
 //có thể dùng phương thức PUT để đúng chuẩn RESTful
-router.post('/update/:id', userController.updateUser); // trả về dữ liệu cũ
+router.post('/:id/update', userController.updateUser); // trả về dữ liệu cũ //OK
 //dùng phương thức POST để delete
 //có thể dùng phương thức DELETE để đúng chuẩn RESTful
-router.post('/delete/:id', userController.deleteUser);
+router.post('/:id/delete', userController.deleteUser); //OK
 module.exports = router;

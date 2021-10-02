@@ -1,8 +1,10 @@
 const errorHandling = (description, errorObject)=>{
     return {
-        object_return: null,
-        description,
-        errorObject
+        errors:{
+            object_return: null,
+            description,
+            errorObject
+        }
     }
 }
 

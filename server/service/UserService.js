@@ -8,6 +8,7 @@ class UserService{
             .then(users =>{
                 return multiplemongooseToObject(users);  //return về data promise
             })
+            .catch(err => err);
     }
 
     getUserByID = async (id) =>{
@@ -15,6 +16,7 @@ class UserService{
             .then(user =>{
                 return mongooseToObject(user);
             })
+            .catch(err => err);
     }
 
     addUser = async(object) =>{
@@ -23,6 +25,7 @@ class UserService{
             .then(user =>{
                 return mongooseToObject(user);
             })
+            .catch(err => err);
     }
 
     updateUser = async(id, object) =>{
@@ -30,6 +33,7 @@ class UserService{
             .then(user =>{
                 return mongooseToObject(user);
             })
+            .catch(err => err);
     }
 
     deleteUser = async(id) =>{
@@ -37,6 +41,7 @@ class UserService{
             .then(user =>{
                 return mongooseToObject(user);
             })
+            .catch(err => err);
     }
 }
 

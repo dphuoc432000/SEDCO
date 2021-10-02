@@ -8,6 +8,10 @@ const fs = require('fs');
 const path = require('path');
 const { stat } = require('fs/promises');
 
+function isEmpty(path) {
+    return fs.readdirSync(path).length === 0;
+}
+
 class ReceiverStatusService {
 
     /*addReceiverStatus = async (account_id, object) => {
@@ -47,22 +51,43 @@ class ReceiverStatusService {
     
     getAllReceiverStatus = async() => {
         return ReceiverStatus.find({})
-            .then(datas => multiplemongooseToObject(datas));
+            .then(datas => multiplemongooseToObject(datas))
+            .catch(err => err);
     }
 
     getReceiverStatusDetail = async(receive_status_id_param) =>{
         return await ReceiverStatus.findOne({_id: receive_status_id_param})
-            .then(data => mongooseToObject(data));
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
     }
     
     getReceiverStatusDetail_status_id = async(status_id) =>{
         return await ReceiverStatus.findOne({status_id: status_id})
-            .then(data => mongooseToObject(data));
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
     }
+
+
+    updateReceiverStatus = async(receiver_status_id, object)=>{
+        return await ReceiverStatus.findByIdAndUpdate({_id: receiver_status_id}, object)
+            .then(data =>{
+                if(data){
+                    fs.unlink(path.join('..\\server', data.picture), (err) => {
+                        if (err) {
+                            console.log(err);
+                            return ;
+                        }
+                    });
+                }
+                return mongooseToObject(data);
+            })
+            .catch(err => err);
+    }
+
 
     deleteReceiverStatus = async (receive_status_id_param) => {
         //xóa receiver status
-        console.log(receive_status_id_param);
+        // console.log(receive_status_id_param);
         const receiver_status = await ReceiverStatus.findByIdAndRemove({_id: receive_status_id_param})
             .then(data => mongooseToObject(data))
             .catch(err=>err);
@@ -80,7 +105,20 @@ class ReceiverStatusService {
                 console.log(err);
                 return ;
             }
-        })
+        });
+
+        //xoa folder nếu trống
+        const path_folder = path.join('..\\server', "\\uploads\\status\\RECEIVER", account_id.toString());
+        if(isEmpty(path.join(path_folder)))
+        {   
+            try {
+                fs.rmdirSync(path_folder, { recursive: true });
+            
+                console.log(`${path_folder} is deleted!`);
+            } catch (err) {
+                console.error(`Error while deleting ${dir}.`);
+            }
+        }
 
         return receiver_status;
     }

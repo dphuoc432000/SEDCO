@@ -6,42 +6,66 @@ class AccountController{
         const {user_id_pr, role_id_pr} = req.params;
         const formData = req.body;
         await accountService.addAccount(user_id_pr, role_id_pr, formData)
-            .then(account => res.json(account))
-            .catch(err => res.status(400).json(handleOther.errorHandling("Lỗi trùng username hoặc user_id", err)));  
+            .then(account => {
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi trùng username hoặc user_id", null))
+            })
+            .catch(err => next(err));  
     }
 
     //[GET] /api/account/account_list
     getAllAccount = async (req, res, next) => {
         await accountService.getAccountList()
-            .then(accounts => res.json(accounts))
-            .catch(err => res.status(400).json(handleOther.errorHandling("Lỗi", err)));  
+            .then(accounts => {
+                if(accounts)
+                    return res.json(accounts);
+                return res.status(400).json(handleOther.errorHandling("Lỗi", null))
+            })
+            .catch(err => next(err));  
     }
 
     //[GET] /accounts/details/:id
     getAccountByID = async(req, res, next) => {
         await accountService.getAccountDetails(req.params.id)
-            .then(account => res.json(account))
-            .catch(error => res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", error)));
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", null))
+            })
+            .catch(err => next(err));  
     }
 
     //[POST] /accounts/update/:id
     updateAccount = async(req, res, next) => {
         await accountService.accountUpdate(req.params.id, req.body)
-            .then(account => res.json(account))
-            .catch(error => res.status(400).json(handleOther.errorHandling('Lỗi nhập account_id', error)));
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", null))
+            })
+            .catch(err => next(err));  
     }
 
-    //[POST] /accounts/delete/:id
+    //[POST] /accounts/:id/delete
     deleteAccount = async(req, res, next) =>{
         await accountService.deleteAccount(req.params.id)
-            .then(account => res.json(account))
-            .catch(error => res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", error)));
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", null))
+            })
+            .catch(err => next(err));  
     }
 
     getAccountByUsernameAndPassword = async(req, res, next) =>{
         await accountService.getAccountByUsernameAndBPassword(req.body.username, req.body.password)
-            .then(account => res.json(account))
-            .catch(error => res.status(400).json(handleOther.errorHandling("Lỗi nhập account và password ", error)));
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập username và password", null))
+            })
+            .catch(err => next(err));  
     }
 }
 

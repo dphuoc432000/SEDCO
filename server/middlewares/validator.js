@@ -21,7 +21,16 @@ const validate_register = () =>{
         check('full_name')
             .custom(value => /[A-Za-z ]/.test(value))
             .withMessage('Vui lòng không nhập ký tự đặc biệt và số!'),
-        check('age', 'Vui lòng nhập không nhập ký tự đặc biệt và chữ!').isNumeric(),
+        check('age')
+            .custom(value =>{
+                if(value === "")
+                    return true;
+                if(typeof value === 'number')
+                    if(value >= 6)
+                        return true;
+                return false;
+            })
+            .withMessage('Vui lòng nhập không nhập ký tự đặc biệt và chữ!\n-Độ tuổi lớn hơn 6'),
         check('phone_number', 'Vui lòng nhập số điện thoại!').not().isEmpty(),
         check('phone_number', 'Vui lòng không nhập ký tự đặc biệt!').isMobilePhone(),
         check('email', 'Vui lòng nhập đúng email').isEmail(),
@@ -36,6 +45,7 @@ const validate_register = () =>{
             .withMessage('Vui lòng nhập địa chỉ đang lưu trú cụ thể!'),
     ]
 }
+
 
 const validation_result = (req, res, next) =>{
     const errors = validationResult(req);

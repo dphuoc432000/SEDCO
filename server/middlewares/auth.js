@@ -1,6 +1,43 @@
 const jwt = require("jsonwebtoken");
 const accountService = require("../service/AccountService");
 const roleService = require("../service/RoleService");
+const config_auth = require('../config/auth.config');
+
+const {TokenExpiredError} = jwt;
+
+const catchError = (err, res) => {
+    if (err instanceof TokenExpiredError) {
+        return res
+        .status(401)
+        .json({ message: "Unauthorized! Access Token was expired!" });
+    }
+
+    return res.sendStatus(401).json({ message: "Unauthorized!" });
+};
+
+const verifyToken = async (req, res, next) => {
+    const token = req.cookies.account_cookie;
+
+    if (!token) {
+        return res.status(403).send({ message: "No token provided!" });
+    }
+
+    const account_id = jwt.verify(token, config_auth.secret);
+        // console.log(account_id); ==> { _id: '614c8b99f18a19a3af1ed670', iat: 1632411630 }
+    await accountService.getAccountDetails(account_id._id)
+        .then(data => {
+            if(data){
+                req.data = data; //data: account
+                console.log(data);
+                next();
+            }
+            else
+                res.json("NOT PERMISSION");
+        })
+        .catch(err =>{
+            catchError(err, res);
+        })
+};
 
 
 //[GET]
@@ -80,4 +117,4 @@ const checkRole = (roles = []) =>{
 
 const getAccIDByReqData = (req, res, next) => req.data._id; //account._id
 
-module.exports = {check_login, check_sender, check_user_create_status, check_receiver, getAccIDByReqData, checkRole};
+module.exports = {check_login, check_sender, check_user_create_status, check_receiver, getAccIDByReqData, checkRole, verifyToken};

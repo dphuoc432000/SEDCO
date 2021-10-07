@@ -1,0 +1,163 @@
+#header{
+  width: 100%;
+  height: 10%;
+  background-color: #C0DDF9;
+  position: fixed;
+}
+
+#header> .header-navbar{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+#header> .header-navbar > .header-navbar-left{
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+#header> .header-navbar > .header-navbar-left > .navbar-logo{
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#header> .header-navbar > .header-navbar-left > .navbar-logo > .img-logo{
+  width: 100px;
+}
+
+#header> .header-navbar > .header-navbar-left > .header-navbar__list{
+  width: 60%;
+  height: 100%;
+  margin: 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#header> .header-navbar > .header-navbar-left > .header-navbar__list > .header-navbar__item{
+  width: 40%;
+  height: 100%;
+  margin-left: 5%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+#header> .header-navbar > .header-navbar-left > .header-navbar__list > .header-navbar__item > .header-navbar__item--link{
+  width: 100%;
+  list-style: none;
+  font-size: 13px;
+  text-decoration: none;
+  color: black;
+}
+
+#header> .header-navbar > .header-navbar-right{
+  width: 70%;
+  height: 100%;
+  display: flex;
+  justify-content: right;
+  padding-right: 20px;
+}
+#header> .header-navbar > .header-navbar-right > .header-navbar__btn_login{
+  width: 15%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+#header> .header-navbar > .header-navbar-right > .header-navbar__btn_login > a{
+  width: 100%;
+  height: 40px;
+  font-size: 13px;
+  text-decoration: none;
+}
+#header> .header-navbar > .header-navbar-right > .header-navbar__btn_login > a > .btn-dangnhap {
+  width: 100%;
+  height: 100%;
+  color: white;
+  background-color: #5352ED;
+  border: none;
+  border-radius: 5px;
+}
+/* 
+#header{
+  border-bottom: 2.1px solid #4591e0a6;
+  box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+  background-color: aliceblue;
+
+  position: fixed;
+  width: 100%;
+  height: 10%;
+}
+
+#header > .header-navbar{
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: 7px;
+}
+
+#header > .header-navbar > .navbar-logo >.img-logo{
+  width: 105px;
+  border-style: none;
+  height: 58px;
+  transform: translateY(-3px),
+}
+
+.navbar-logo{
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-left: 26px;
+}
+
+.navbar-logo-title{
+  font-family: helvetica, arial, sans-serif;
+  font-size:1.4rem;
+  padding-left:0.3rem;
+  color: rgb(69,145,224);
+}
+
+.header-navbar__list{
+  list-style: none;
+  display: flex;
+}
+
+.header-navbar__item{
+  font-size: 1.5rem;
+  line-height: 1.6rem;
+  font-weight: 700; 
+  font-family: "PT Sans", sans-serif;
+  padding-right: 2.9rem;
+    
+}
+
+.header-navbar__item--link{
+  color: #1c6d9b;
+  text-decoration: none;
+}
+
+/* Nav Login */
+/* .btn-dangnhap{
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color:#4591e0;
+  color: white;
+  margin-top: 8px;
+  margin-right: 3rem;
+  height: 36px;
+  width: 106px;
+  font-weight: 600;
+  line-height: 1.2rem;
+  font-size: 1.2rem;
+}
+
+.btn-dangnhap:hover{
+  opacity: 0.8;
+} */
+
+/** Close Header **/

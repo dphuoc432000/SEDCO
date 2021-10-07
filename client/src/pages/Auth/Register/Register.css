@@ -1,0 +1,107 @@
+.register_container{
+    width: 30%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* background-color: #5352ED; */
+    padding: 1%;
+    overflow: hidden;
+}
+
+.register_container:hover, 
+.register_container:active, 
+.register_container:focus {
+    overflow-y: auto;
+}
+
+.register_container::-webkit-scrollbar { width: 0 !important }
+
+.register_container > .title{
+    width: 100%;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.register_container > form{
+    width: 100%;
+    /* height: 85%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+.register_container > form > .account_infor{
+    width: 100%;
+    /* height: 30%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+}
+.register_container > form span{
+    width: 90%;
+    height: 25px;
+    display: flex;
+}
+.register_container > form > .account_infor> .input_username,
+.register_container > form > .account_infor> .input_password,
+.register_container > form > .account_infor> .input_password_again{
+    width: 90%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+.register_container > form > .account_infor input[type=text],
+.register_container > form > .account_infor input[type=password]{
+    width: 100%;
+    height: 90%;
+}
+.register_container> form > .input_user_infor{
+    width: 100%;
+    /* height: 30%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.register_container> form > .input_user_infor > .full_name,
+.register_container> form > .input_user_infor > .input_age,
+.register_container> form > .input_user_infor > .input_email,
+.register_container> form > .input_user_infor > .input_phone_number,
+.register_container> form > .input_user_infor > .input_address,
+.register_container> form > .input_user_infor > .input_specific_address{
+    width: 90%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+.register_container> form > .input_user_infor input[type=text],
+.register_container> form > .input_user_infor input[type=number],
+.register_container> form > .input_user_infor input[type=email]{
+    width: 100%;
+    height: 90%;
+}
+
+.register_container> form > .input_user_infor input[type=text]{
+
+}
+
+.register_container > .btn_login{
+    width: 100%;
+    /* height: 7%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}

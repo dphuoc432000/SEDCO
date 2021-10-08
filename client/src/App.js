@@ -1,9 +1,6 @@
 import Home from "./pages/Home/Home";
-import Auth from "./pages/Auth/Auth";
-import Header from './components/Header/Header';
 import Login from "./pages/Auth/Login/Login";
 import Register from "./pages/Auth/Register/Register";
-import Main from './components/Main/Main'
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -11,29 +8,28 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import React from "react";
 
-function App() {
-  return (
-    <Router>
-      <Switch>
-          <>
-            <Header/>
-            <Route path="/" exact>
-              <Home/>
-            </Route>
-            <main>
-              
-                  <Route path="/login">
-                  <Login/>
-                </Route>
-                <Route path="/register">
+class App extends React.Component {
+  render(){
+    return (
+      <Router>
+        <Switch>
+            <>
+              <Route path="/" exact>
+                <Home/>
+              </Route>
+              <Route path="/login">
+                <Login/>
+              </Route>
+              <Route path="/register">
                 <Register/>
               </Route>
-            </main>
-          </>
-      </Switch>
-    </Router>  
-  );
+            </>
+        </Switch>
+      </Router>  
+    );
+  }
 }
 
 export default App;

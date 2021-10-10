@@ -1,10 +1,16 @@
 import { combineReducers } from 'redux'
-import rootReducer from './rootReducer.js'
-import reducer2 from './reducer2';
-
-
+import loginReducer from './loginReducer.js'
+import roleReducer from './roleReducer';
+import verifyTokenReducer from './verifyTokenReducer.js';
+import citiesReducer from './citiesReducer.js';
+import districtsReducer from './districtsReducer.js';
+import registerReducer from './registerReducer.js';
 
 export default combineReducers({
-    reducer2,
-    rootReducer
+    roleReducer,
+    loginReducer,
+    verifyTokenReducer,
+    citiesReducer,
+    districtsReducer,
+    registerReducer,
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import {BrowserRouter as Router, Switch, Route, Link}from "react-router-dom";
+import {Link}from "react-router-dom";
 import "./Login.css";
 import {connect} from 'react-redux';
 import {login as loginAction} from '../../../stores/actions/auth.action';
@@ -15,9 +15,14 @@ class Login extends React.Component{
     }
 
     handleLogin = async() =>{
-        console.log(await this.props.signin({...this.state}));
-        this.props.history.push('/');
-        console.log('Da ridirec');
+        await this.props.login({...this.state})
+        console.log("123", this.props.dataRedux);
+        this.props.history.push({
+            pathname: '/',
+            state2: {
+                name:"phuoc",
+            }    
+        });
     }
 
     onChangeLoginForm = event =>{
@@ -82,16 +87,17 @@ class Login extends React.Component{
 
 
 
-// test
+//state này của redux không phải react
 const mapStateToProps = (state) =>{
     return {
         dataRedux: state
     }
 }
 
+//dispatch này của redux không phải react
 const mapDispatchToProps =(dispatch)=>{
     return {
-        signin: async ({username, password}) => {
+        login: async ({username, password}) => {
             const action = await loginAction({username, password})
 
             // console.log(action)

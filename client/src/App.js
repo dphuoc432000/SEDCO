@@ -6,7 +6,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 import React from "react";
 
@@ -19,8 +20,9 @@ class App extends React.Component {
               <Route path="/" exact>
                 <Home/>
               </Route>
-              <Route path="/login">
-                <Login/>
+              <Route path="/login" render={() =>{
+                return localStorage.getItem('accessToken') ?  <Redirect to="/"/>:<Login/>
+              }}>
               </Route>
               <Route path="/register">
                 <Register/>

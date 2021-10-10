@@ -13,11 +13,12 @@ import "./styles/global.css";
 const reduxStore  =createStore(reducer);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={reduxStore}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={reduxStore}>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+  
+  </Provider>,
   document.getElementById('root')
 );
 

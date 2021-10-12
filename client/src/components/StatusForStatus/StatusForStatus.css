@@ -1,0 +1,49 @@
+.Status-header {
+  height: 68px;
+  padding: 0px 11px 8px 11px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-bottom: 3px solid darkturquoise;
+  background-color: #ddf0fe;
+}
+.Status-header__left {
+  display: flex;
+  margin-top: 8px;
+}
+
+.Status-headerID {
+  padding-left: 8px;
+  margin-top: -4px;
+}
+.Status-headerID--name {
+  font-size: 1.28rem;
+  font-weight: 600;
+}
+.Status-headerID--item {
+  margin-bottom: -4px;
+}
+.Status-headerID--status {
+  /* người cho */
+  color: var(--nguoinhan);
+  margin-top: 14px;
+  font-size: 1.16rem;
+  font-weight: 500;
+}
+.Status-header__DateUpPost {
+  padding-right: 24px;
+  text-align: center;
+}
+.Status-header__Date--title {
+  /* nguoi cho */
+  color: var(--nguoinhan);
+  margin-bottom: -7px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.Status-header__date {
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-top: 5px;
+}

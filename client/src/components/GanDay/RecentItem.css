@@ -1,0 +1,38 @@
+.data-container-ListRecent--ITEMS {
+  text-decoration: none;
+  padding: 5px 0px;
+}
+.data-container-ListRecent--ITEMS:hover {
+  cursor: pointer;
+  /* opacity: 0.8; */
+  background-color: rgb(255 210 194 / 40%);
+}
+
+.data-ListRecent__item{
+  text-decoration: none;
+  border: 1px solid #afafaf;
+  background-color: rgb(255 210 194 / 24%);
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+}
+.ListRecent__item-Left {
+  margin: -2px 0;
+}
+.ListRecent__item-Left-Address {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #8A8A8A;
+}
+.ListRecent__item-Right {
+  margin: -2px 0;
+}
+.ListRecent__item-Right-STT {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--nguoinhan);
+}
+.ListRecent__item {
+  margin: 12px 0;
+}

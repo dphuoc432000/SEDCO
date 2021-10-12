@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Header from '../../components/Header/Header'
 import "../../styles/main.css";
 import { withRouter } from 'react-router';
+import Main from '../../components/Main/Main.js'
 
 export default withRouter(class Home extends Component {
     render() {
@@ -11,6 +12,7 @@ export default withRouter(class Home extends Component {
             <Fragment>
                 {console.log('đã vào render')}
                 <Header/>
+                <Main/>
                 <main>
                     <>
                         {console.log('đã vào main')}

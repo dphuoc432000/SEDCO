@@ -1,6 +1,8 @@
+@import '../assets/Font/fontawesome-free-5.15.4-web/fontawesome-free-5.15.4-web/css/all.min.css';
+
 *{
   box-sizing: border-box;
-  margin: 0 0;
+  /* margin: 0 0; */
   padding: 0 0;
 }
 body, html{

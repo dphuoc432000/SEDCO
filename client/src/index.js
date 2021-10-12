@@ -9,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 // import reducer2 from './stores/reducer/reducer2';
 import reducer from './stores/reducer/index';
 import "./styles/global.css";
-
+import './styles/DungChung.css';
 const reduxStore  =createStore(reducer);
 
 ReactDOM.render(

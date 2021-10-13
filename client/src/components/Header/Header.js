@@ -7,7 +7,6 @@ import "./header.css";
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router';
 import {get_role_user} from '../../stores/actions/role.action'
-import roleReducer from "../../stores/reducer/roleReducer";
 import { menuHeader } from "./menuHeader";
 import CustomizedMenus from './subMenu';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -42,21 +41,24 @@ class Header extends React.Component {
     }
 
     async componentDidMount(){
-        await this.props.get_role_user_action(this.props.verifyTokenData.role_id);
+        if(localStorage.getItem('accessToken')){
+            await this.props.get_role_user_action(this.props.verifyTokenData.role_id);
        
-        if(this.props.roleReducer.role_user ){
-            const role_name = this.props.roleReducer.role_user.role_name;
-            const roles = this.props.roleReducer.roles;
-            if(roles.includes(role_name)){
-                const menu = menuHeader.find(menu =>{
-                    return menu.name === role_name;
-                }) //-> menu{name:..., menu:[]}
-                this.setState({
-                    role_name: translateRoleName(role_name),
-                    menu: menu.menu
-                })
-            } 
+            if(this.props.roleReducer.role_user ){
+                const role_name = this.props.roleReducer.role_user.role_name;
+                const roles = this.props.roleReducer.roles;
+                if(roles.includes(role_name)){
+                    const menu = menuHeader.find(menu =>{
+                        return menu.name === role_name;
+                    }) //-> menu{name:..., menu:[]}
+                    this.setState({
+                        role_name: translateRoleName(role_name),
+                        menu: menu.menu
+                    })
+                } 
+            }
         }
+        
     }
 
     render () {

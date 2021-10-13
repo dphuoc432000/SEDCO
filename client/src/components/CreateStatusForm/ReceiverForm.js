@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Map extends Component {
+export default class ReceiverForm extends Component {
     render() {
         return (
             <div>
-                
+                reciver
             </div>
         )
     }

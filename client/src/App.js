@@ -10,13 +10,26 @@ import {
   Redirect
 } from "react-router-dom";
 import React from "react";
-
+import { ToastContainer } from 'react-toastify';
 class App extends React.Component {
   render(){
     return (
       <Router>
         <Switch>
             <>
+              <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              style={{fontSize:'13px'}}
+              />
+              
               <Route path="/" exact>
                 <Home/>
               </Route>
@@ -27,6 +40,7 @@ class App extends React.Component {
               <Route path="/register">
                 <Register/>
               </Route>
+
             </>
         </Switch>
       </Router>  

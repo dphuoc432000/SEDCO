@@ -14,17 +14,16 @@ const register = async (user_infor) =>{
         payload:{}
     }
     const object = {
-        username: user_infor.username,
-        password: user_infor.password,
-        full_name: user_infor.full_name,
-        age: parseInt(user_infor.age),
-        email: user_infor.email,
-        phone_number: user_infor.phone_number,
-        city: user_infor.city,
-        district: user_infor.district,
-        address: user_infor.specific_address,
+        username: user_infor.username.value,
+        password: user_infor.password.value,
+        full_name: user_infor.full_name.value,
+        age: parseInt(user_infor.age.value),
+        email: user_infor.email.value,
+        phone_number: user_infor.phone_number.value,
+        city: user_infor.city.value,
+        district: user_infor.district.value,
+        address: user_infor.specific_address.value,
     }
-    console.log((object));
     await axios.post(`${API_URL}/api/authentication/register_user`, object)
         .then(data => {
             action.type = REGISTER_SUCCESS;

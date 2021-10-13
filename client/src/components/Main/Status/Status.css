@@ -1,13 +1,14 @@
 .Status{
   width: 32%;
-  border-left: 2.1px solid #4591e0a6;
-  box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
-  position: absolute;
-  content: "";
-  top: 0%;
-  min-height: 800px;
-  left: 68%;
-  background-position-y: -105px;
+    border-left: 2.1px solid #4591e0a6;
+    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+    position: absolute;
+    content: "";
+    top: 8%;
+    right: 0%;
+    min-height: 800px;
+    /* left: 68%; */
+    background-position-y: -105px;
 }
 .Status-Not-Role{
   padding: 12px 18px;

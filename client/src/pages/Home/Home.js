@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from 'react'
-import Header from '../../components/Header/Header'
+import React, { Component, Fragment } from 'react';
+import Header from '../../components/Header/Header';
+import Main from '../../components/Main/Main'
 import "../../styles/main.css";
 import { withRouter } from 'react-router';
 import Main from '../../components/Main/Main.js'
@@ -13,12 +14,13 @@ export default withRouter(class Home extends Component {
                 {console.log('đã vào render')}
                 <Header/>
                 <Main/>
-                <main>
+
+                {/*<main>
                     <>
                         {console.log('đã vào main')}
                         {(check_localStorage)? "đã có Token ":"chưa có token"}
                     </>
-                </main>
+                </main>*/}
             </Fragment>
         )
     }

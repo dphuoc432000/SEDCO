@@ -7,12 +7,14 @@ import Status from './Status/Status.js'
 import './MainContent.css'
 export default class Main extends React.Component {
     render() {
+        const type_form = this.state.show_form_create;
         return (
             <main className="main">
                 <Map/>
                 <Status/>
             </main>
-            
         )
     }
 }
+
+export default withRouter(Main);

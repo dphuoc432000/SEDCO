@@ -81,7 +81,6 @@
 .register_container> form > .input_user_infor > .input_age,
 .register_container> form > .input_user_infor > .input_email,
 .register_container> form > .input_user_infor > .input_phone_number,
-.register_container> form > .input_user_infor > .input_address,
 .register_container> form > .input_user_infor > .input_specific_address{
     width: 342px;
     height: 40px;
@@ -101,6 +100,11 @@
 }
 
 .register_container> form > .input_user_infor > .input_address{
+    width: 342px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
     justify-content: space-between;
 }
 
@@ -109,6 +113,7 @@
     height: 100%;
     display: flex;
     justify-content: left;
+    flex-direction: column;
 }
 
 .register_container> form > .input_user_infor > .input_address >.input_district{
@@ -116,6 +121,7 @@
     height: 100%;
     display: flex;
     justify-content: right;
+    flex-direction: column;
 }
 .register_container> form > .input_user_infor > .input_address select{
     width: 100%;

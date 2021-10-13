@@ -80,8 +80,7 @@ class Register extends React.Component{
             console.log(error.message)
         }
     }
-  }
-
+  
     checkingForm =() =>{
         const dataForm = [...Object.values(this.state.user_infor)];
         return dataForm.some((item)=>{
@@ -107,15 +106,11 @@ class Register extends React.Component{
             this.props.history.push('/login');
         }
     }
-    const data = this.props.dataRedux.registerReducer;
-    console.log(data);
-  };
-
   handleDistricts = (districts) => {
     this.setState({
       districts: [...districts],
     });
-  };
+  }
 
   onChangeCitySelect = async (event) => {
     const city_select = document.getElementById("city");
@@ -512,7 +507,7 @@ class Register extends React.Component{
             </React.Fragment>
         );
     } 
-
+}
 const mapStateToProps = (state) => {
   return {
     dataRedux: state,

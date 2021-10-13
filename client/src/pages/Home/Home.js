@@ -3,7 +3,6 @@ import Header from '../../components/Header/Header';
 import Main from '../../components/Main/Main'
 import "../../styles/main.css";
 import { withRouter } from 'react-router';
-import Main from '../../components/Main/Main.js'
 
 export default withRouter(class Home extends Component {
     render() {

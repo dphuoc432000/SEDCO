@@ -1,0 +1,6 @@
+.ListRecent{
+  padding: 0 18px;
+  height: 340px;
+    overflow: hidden;
+    overflow-y: scroll;
+}

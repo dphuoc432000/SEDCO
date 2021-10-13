@@ -1,10 +1,10 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route, Link, withRouter}from "react-router-dom";
 import "./Register.css";
-import {connect} from 'react-redux';
-import {cities as citiesAction} from '../../../stores/actions/cities.action';
-import {districts as districtsAction} from '../../../stores/actions/districts.action';
-import {register as registerAction} from '../../../stores/actions/register.action';
+import { connect } from "react-redux";
+import { cities as citiesAction } from "../../../stores/actions/cities.action";
+import { districts as districtsAction } from "../../../stores/actions/districts.action";
+import { register as registerAction } from "../../../stores/actions/register.action";
 import Header from "../../../components/Header/Header";
 import {REGISTER_ERROR, REGISTER_LOADING, REGISTER_SUCCESS} from "../../../constants/actions"
 import { FormError } from '../../../components/FormError/FormError';
@@ -79,8 +79,8 @@ class Register extends React.Component{
         } catch (error) {
             console.log(error.message)
         }
-        
     }
+  }
 
     checkingForm =() =>{
         const dataForm = [...Object.values(this.state.user_infor)];
@@ -106,21 +106,25 @@ class Register extends React.Component{
             toast.success("Đăng ký tài khoản thành công. Mời bạn đăng nhập!");
             this.props.history.push('/login');
         }
-        
     }
+    const data = this.props.dataRedux.registerReducer;
+    console.log(data);
+  };
 
-    handleDistricts = (districts)=>{
-        this.setState({
-            districts: [...districts]
-        })
-    }
+  handleDistricts = (districts) => {
+    this.setState({
+      districts: [...districts],
+    });
+  };
 
-    onChangeCitySelect = async(event) =>{
-        const city_select = document.getElementById('city');
-        const city_code = city_select.options[city_select.selectedIndex].getAttribute("data_id");
+  onChangeCitySelect = async (event) => {
+    const city_select = document.getElementById("city");
+    const city_code =
+      city_select.options[city_select.selectedIndex].getAttribute("data_id");
 
-        const district_select = document.getElementById('district');
-        district_select.value = "";
+    const district_select = document.getElementById("district");
+    district_select.value = "";
+
 
         await this.props.get_districts(city_code);
         this.setState({
@@ -509,29 +513,28 @@ class Register extends React.Component{
         );
     } 
 
-}
-const mapStateToProps = (state) =>{
-    return {
-        dataRedux: state
-    }
-}
+const mapStateToProps = (state) => {
+  return {
+    dataRedux: state,
+  };
+};
 
 //dispatch này của redux không phải react
-const mapDispatchToProps =(dispatch)=>{
-    return {
-        get_cities: async () => {
-            const action = await citiesAction()
-            return dispatch(action)
-        },
-        get_districts: async(province_code) =>{
-            const action = await districtsAction(province_code)
-            return dispatch(action)
-        },
-        register: async(user_infor) =>{
-            const action = await registerAction(user_infor)
-            return dispatch(action);
-        }
-    }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    get_cities: async () => {
+      const action = await citiesAction();
+      return dispatch(action);
+    },
+    get_districts: async (province_code) => {
+      const action = await districtsAction(province_code);
+      return dispatch(action);
+    },
+    register: async (user_infor) => {
+      const action = await registerAction(user_infor);
+      return dispatch(action);
+    },
+  };
+};
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Register));

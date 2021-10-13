@@ -1,21 +1,31 @@
-import React, { Component } from 'react'
-import SenderForm from '../../CreateStatusForm/SenderForm';
+import React, { Component } from "react";
+import NguoiCho from "../../NguoiCho/NguoiCho";
+import NguoiNhan from "../../NguoiNhan/NguoiNhan";
 
-
-export default class Status extends Component {
-    showForm = (event) =>{
-        const type_button = event.target.id;
-        this.props.showForm(type_button);
-    }
-
-
-    render() {
-        return (
-            <div className="status_container">
-                <button id="btn_car_trip" onClick={(event)=>{this.showForm(event)}}>Người vận chuyển</button>
-                <button id="btn_support" onClick={(event)=>{this.showForm(event)}}>Người hỗ trợ</button>
-                <button id="btn_need_support" onClick={(event)=>{this.showForm(event)}}>Người cần hỗ trợ</button>
-            </div>
-        )
-    }
+import RecentList from "../../GanDay/RecentList";
+import "./Status.css";
+class Status extends Component {
+  render() {
+    return (
+      <div className="Status">
+        <div className="Status-Not-Role" style={{display: "none"}}>
+          <h2 className="Status-title">Tạo trạng thái</h2>
+          <h3 className="Status-Who">Bạn là người</h3>
+          <div className="Status-ListBTN">
+            <button className="Status-BTN__item Status-BTN__Taixe">
+              Vận chuyển
+            </button>
+            <button className="Status-BTN__item Status-BTN__Nguoicho">
+              Hỗ trợ
+            </button>
+            <button className="Status-BTN__item Status-BTN__Nguoinhan">
+              Cần hỗ trợ
+            </button>
+          </div>
+        </div>
+        {/* <RecentList/> */}
+        <NguoiCho/>
+      </div>
+    );
+  }
 }

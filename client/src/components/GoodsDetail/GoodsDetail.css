@@ -1,0 +1,122 @@
+.data-container{
+  transform: translateY(-7px);
+  width: 100%;
+  height: 475px;
+  overflow: hidden;
+  overflow-y: scroll;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+    
+}
+.data-container__title{
+  color: #0000ffb8;
+  padding-left: 12px;
+    margin-top: 13px;
+    padding: 0 19px;
+}
+.data-container__ListItems{
+  position: relative;
+  list-style: none;
+  /* padding-left: 15px; */
+  padding: 0 19px;
+  margin-top: -10px;
+}
+.data-container__Items{
+  padding: 6px 0;
+  display: flex;
+    font-size: 1.2rem;
+    
+}
+.data-container__ItemQuantity{
+margin: 0;
+padding-left: 6px;
+}
+
+.data-container__ListInfo{
+list-style: none;
+padding-left: 19px;
+margin-top: -10px;
+}
+.container-info__item{
+  padding: 4px 0;
+  font-size: 1.07rem;
+}
+.container-Info__title{
+  font-weight: 600;
+    font-size: 1.3rem;
+    color: #0000ffb8;
+}
+.container-Info__Name{
+  font-weight: 600;
+}
+.container-Info__Address{
+  font-weight: 600;
+
+}
+.container-Info__Note{
+  font-weight: 600;
+}
+/* người cho */
+.container-Info__Img{
+  font-weight: 600;
+}
+.container-Info__ImgSrc{
+
+  border: 4px solid #ff6d13;
+    margin-top: 8px;
+    background-repeat: no-repeat;
+    width: 100%;
+}
+/* người nhận */
+.container-Info__LichSuNhan{
+  font-weight: 600;
+}
+.container-Info__LichSu{
+  font-weight: 500;
+  margin-top: 4px;
+}
+.container-Info__form-Nhan{
+  border: 4px solid #ff6d13;
+  margin-top: 6px;
+}
+/* Button bên dưới  */
+.container-btn__ListBottom{
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 83px;
+  align-items:center;
+}
+.dataContainer-btn-item{
+    font-size: 1.3rem;
+    /* background-color: #EE5253; */
+    color: white;
+    padding: 10px 20px;
+    border: unset;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.data-btn__DKHT{
+  background-color: #EE5253;
+  display: none;
+}
+.data-btn__Del{
+  background-color: #EE5253;
+  /* display: none; */
+}
+.data-btn__DKNH{
+ background-color: #EE5253;
+ display: none;
+}
+.data-btn__Send{
+  background-color: #2E86DE;
+  display: none;
+}
+.data-btn__Update{
+  background-color: #2E86DE;
+  /* display: none; */
+}
+.data-btn-back{
+    text-decoration: none;
+    background-color: #dedefc;
+    padding: 2px 4px;
+    border-radius: 4px;
+}

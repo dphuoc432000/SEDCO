@@ -1,0 +1,9 @@
+.main {
+  width: 100%;
+  position: fixed;
+  content: "";
+  top: 66px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

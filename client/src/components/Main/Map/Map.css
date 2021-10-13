@@ -1,0 +1,7 @@
+.Map{
+  position: absolute;
+  content: "";
+  width: 68%;
+  
+  min-height: 800px;
+}

@@ -28,7 +28,7 @@ class Status extends Component {
    const checkSenderForm =  showSenderForm === true ? <SenderForm exitModalSenderForm={this.handleShowHideFormSender}/> : '';
    return (
       <div className="Status">
-        <div className="Status-Not-Role" style={{ display: "none" }}>
+        <div className="Status-Not-Role" style={{ display: "block" }}>
           <h2 className="Status-title">Tạo trạng thái</h2>
           <h3 className="Status-Who">Bạn là người</h3>
           <div className="Status-ListBTN">
@@ -43,8 +43,8 @@ class Status extends Component {
             </button>
           </div>
         </div>
-        {/* <RecentList /> */}
-        <NguoiCho/>
+        <RecentList />
+        {/* <NguoiCho/> */}
         {checkReceiverForm}
         {checkSenderForm}
       </div>

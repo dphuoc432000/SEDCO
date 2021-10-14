@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import "./SenderForm.css";
-export default class SenderForm extends Component {
+class UpdateSenderForm extends Component {
   render() {
     return (
       <div className="Modal-Sender__CreatStatus ">
@@ -10,12 +9,12 @@ export default class SenderForm extends Component {
           <div className="receiver-form js-receiver-form">
             <button
               className="back js-btn-ReceiverBack"
-              onClick={() => this.props.exitModalSenderForm()}
+              onClick={() => this.props.exitModalUpdateSender()}
             >
               X
             </button>
             <div className="content">
-              <p className="heading">Bạn muốn hỗ trợ</p>
+              <p className="heading">Cập nhật hỗ trợ</p>
             </div>
             <div className="input-1">
               <form action="#">
@@ -80,7 +79,7 @@ export default class SenderForm extends Component {
             </div>
 
             <div style={{ textAlign: "center", marginTop: "35px" ,marginBottom:'30px'}}>
-              <button className="button-2">Tạo</button>
+              <button className="button-2">Cập nhật</button>
             </div>
           </div>
         </div>
@@ -88,3 +87,5 @@ export default class SenderForm extends Component {
     );
   }
 }
+
+export default UpdateSenderForm;

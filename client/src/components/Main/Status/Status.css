@@ -31,6 +31,7 @@
   margin: 0px 8px;
   padding: 10px 15px;
   border: none;
+  cursor: pointer;
 }
 .Status-BTN__Taixe{
 background-color: var(--taixe)

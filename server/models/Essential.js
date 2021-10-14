@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const Essential = new Schema({
     name: {type: String, require: true},
-    type: {type: String}
+    type: {type: String},
+    unit: {type: String}
 },{
     timestamps: true
 })

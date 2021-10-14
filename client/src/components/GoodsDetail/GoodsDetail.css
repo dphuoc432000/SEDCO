@@ -1,122 +1,153 @@
-.data-container{
-  transform: translateY(-7px);
+.GoodDetail-container {
+  transform: translateY(-32px);
   width: 100%;
-  height: 475px;
+  height: 500px;
   overflow: hidden;
   overflow-y: scroll;
-  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
-    
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
+    rgb(60 64 67 / 15%) 0px 2px 6px 2px;
 }
-.data-container__title{
+.GoodDetail-container__title {
   color: #0000ffb8;
   padding-left: 12px;
-    margin-top: 13px;
-    padding: 0 19px;
+  margin-top: 13px;
+  padding: 0 19px;
 }
-.data-container__ListItems{
+.container__ListItems {
   position: relative;
   list-style: none;
   /* padding-left: 15px; */
   padding: 0 19px;
   margin-top: -10px;
 }
-.data-container__Items{
+.GoodDetail-container__Items {
   padding: 6px 0;
   display: flex;
-    font-size: 1.2rem;
-    
+  font-size: 1.2rem;
 }
-.data-container__ItemQuantity{
-margin: 0;
-padding-left: 6px;
+.GoodDetail-container__ItemQuantity {
+  margin: 0;
+  padding-left: 6px;
 }
 
-.data-container__ListInfo{
-list-style: none;
-padding-left: 19px;
-margin-top: -10px;
+.GoodDetail-container__ListInfo {
+  list-style: none;
+  padding-left: 19px;
+  margin-top: -10px;
 }
-.container-info__item{
-  padding: 4px 0;
-  font-size: 1.07rem;
+.GoodDetail-Info__item {
+  padding: 6px 0;
+  font-size: 1.24rem;
 }
-.container-Info__title{
+.GoodDetail-Info__title {
+  font-weight: bold;
+  font-size: 17px;
+  color: #0000ffb8;
+}
+.GoodDetail-Info__Name {
   font-weight: 600;
-    font-size: 1.3rem;
-    color: #0000ffb8;
 }
-.container-Info__Name{
+.GoodDetail-Info__Address {
   font-weight: 600;
 }
-.container-Info__Address{
-  font-weight: 600;
-
-}
-.container-Info__Note{
+.GoodDetail-Info__Note {
   font-weight: 600;
 }
 /* người cho */
-.container-Info__Img{
+.GoodDetail-Info__Img {
   font-weight: 600;
 }
-.container-Info__ImgSrc{
-
+.GoodDetail-Info__ImgSrc {
   border: 4px solid #ff6d13;
-    margin-top: 8px;
-    background-repeat: no-repeat;
-    width: 100%;
+  margin-top: 8px;
+  background-repeat: no-repeat;
+  width: 100%;
 }
 /* người nhận */
-.container-Info__LichSuNhan{
+.GoodDetail-Info__LichSuNhan {
   font-weight: 600;
 }
-.container-Info__LichSu{
+.GoodDetail-Info__LichSu {
   font-weight: 500;
   margin-top: 4px;
 }
-.container-Info__form-Nhan{
+.GoodDetail-Info__form-Nhan {
   border: 4px solid #ff6d13;
   margin-top: 6px;
 }
 /* Button bên dưới  */
-.container-btn__ListBottom{
+.container-btn__ListBottom {
+  margin-top: -8px;
   display: flex;
   justify-content: space-between;
-  padding: 16px 83px;
-  align-items:center;
+  padding: 0px 83px;
+  align-items: center;
 }
-.dataContainer-btn-item{
-    font-size: 1.3rem;
-    /* background-color: #EE5253; */
-    color: white;
-    padding: 10px 20px;
-    border: unset;
-    border-radius: 5px;
-    cursor: pointer;
+.GoodDetailContainer-btn-item {
+  font-size: 1.3rem;
+  /* background-color: #EE5253; */
+  color: white;
+  padding: 10px 20px;
+  border: unset;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.data-btn__DKHT{
-  background-color: #EE5253;
+.GoodDetail-btn__DKHT {
+  background-color: #ee5253;
   display: none;
 }
-.data-btn__Del{
-  background-color: #EE5253;
+.GoodDetail-btn__Del {
+  background-color: #ee5253;
   /* display: none; */
 }
-.data-btn__DKNH{
- background-color: #EE5253;
- display: none;
-}
-.data-btn__Send{
-  background-color: #2E86DE;
+.GoodDetail-btn__DKNH {
+  background-color: #ee5253;
   display: none;
 }
-.data-btn__Update{
-  background-color: #2E86DE;
+.GoodDetail-btn__Send {
+  background-color: #2e86de;
+  display: none;
+}
+.GoodDetail-btn__Update {
+  background-color: #2e86de;
   /* display: none; */
 }
-.data-btn-back{
-    text-decoration: none;
-    background-color: #dedefc;
-    padding: 2px 4px;
-    border-radius: 4px;
+.GoodDetail-btn-back {
+  text-decoration: none;
+  background-color: #dedefc;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+#Goods-Detail-Table {
+  border-collapse: collapse;
+  width: 100%;
+  /* padding: 88px; */
+  /* border: 1px solid black; */
+  margin: 38px 20px 20px 20px;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+#Goods-Detail-Table td,
+#Goods-Detail-Table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#Goods-Detail-Table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#Goods-Detail-Table tr:last-child {
+  font-weight: bold;
+}
+#Goods-Detail-Table tr:hover {
+  background-color: #ddd;
+}
+
+#Goods-Detail-Table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
 }

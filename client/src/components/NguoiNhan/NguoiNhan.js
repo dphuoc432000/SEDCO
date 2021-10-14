@@ -10,7 +10,7 @@ class NguoiNhan extends React.Component {
       <div className="NguoiNhan">
         <StatusForStatus />
         <SLCanNhan />
-        <GanDay />
+        
       </div>
     );
   }

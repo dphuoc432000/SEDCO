@@ -1,15 +1,26 @@
 import React from "react";
 import RecentList from "../GanDay/RecentList";
 import GoodsDetail from "../GoodsDetail/GoodsDetail";
+
 class SLHoTro extends React.Component {
   state = {
     showGoodsDetail: false,
+    showUpdateReceiverForm : false,
+    showUpdateSenderForm  : false,
   };
   handleShowHide = () => {
     this.setState({ showGoodsDetail: !this.state.showGoodsDetail });
   };
+  handleShowHideUpdateReceiver = () => { 
+    this.setState({showUpdateReceiverForm: !this.state.showUpdateReceiverForm})
+  }
+  handleShowHideUpdateSender = () => { 
+    this.setState({showUpdateSenderForm: !this.state.showUpdateSenderForm})
+  }
   render() {
     let { showGoodsDetail } = this.state;
+    
+
     return (
       <React.Fragment>
         <div
@@ -39,7 +50,7 @@ class SLHoTro extends React.Component {
                   this.handleShowHide();
                 }}
               >
-                Xem chi tiết <i className="fas fa-arrow-right" />
+                xem chi tiết <i className="fas fa-arrow-right" style={{fontSize: '12px'}} />
               </button>
               <li className="data-container__Items">
                 Tổng khối lượng:
@@ -53,6 +64,7 @@ class SLHoTro extends React.Component {
         ) : (
           <GoodsDetail showGoodsDetail={this.handleShowHide} />
         )}
+        
       </React.Fragment>
     );
   }

@@ -1,21 +1,24 @@
 import React, { Component } from "react";
-
-import "./SenderForm.css";
-export default class SenderForm extends Component {
+import './UpdateReceiverForm.css'
+class UpdateReceiverForm extends Component {
   render() {
     return (
-      <div className="Modal-Sender__CreatStatus ">
+      <div className="Modal-Reveiver__CreatStatus ">
         <div className="Modal-overlay"></div>
         <div className="Modal-body">
           <div className="receiver-form js-receiver-form">
             <button
               className="back js-btn-ReceiverBack"
-              onClick={() => this.props.exitModalSenderForm()}
+              onClick={() => this.props.exitModalUpdateReceiver()}
             >
               X
             </button>
             <div className="content">
-              <p className="heading">Bạn muốn hỗ trợ</p>
+              <p className="heading">Cập nhật cần hỗ trợ</p>
+              <p className="heading-2">
+                (Chỉ nhận giúp đở khi thật sự cần vì còn nhiều người khó khăn
+                hơn)
+              </p>
             </div>
             <div className="input-1">
               <form action="#">
@@ -72,15 +75,8 @@ export default class SenderForm extends Component {
                 <button className="button-addIMG">Thêm hình ảnh</button>
               </form>
             </div>
-            <div style={{textAlign:'center',marginTop:'40px',marginBottom:'30px'}}>
-              <p className="heading-2">Chúng tôi cảm ơn bạn rất nhiều</p>
-              <p className="heading-2">
-                Cùng chung tay hỗ trợ những hoàn cảnh khó khăn
-              </p>
-            </div>
-
-            <div style={{ textAlign: "center", marginTop: "35px" ,marginBottom:'30px'}}>
-              <button className="button-2">Tạo</button>
+            <div style={{textAlign: 'center',marginTop:'35px',marginBottom:'30px'}}>
+              <button className="button-2">Cập nhật</button>
             </div>
           </div>
         </div>
@@ -88,3 +84,5 @@ export default class SenderForm extends Component {
     );
   }
 }
+
+export default UpdateReceiverForm;

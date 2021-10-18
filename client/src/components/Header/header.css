@@ -107,6 +107,7 @@
   padding: 10px;
   text-decoration: none;
   color: black;
+  font-size: 13px;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__infor_user{
   display: flex;

@@ -11,7 +11,7 @@ import {API_URL} from '../../constants/api';
 const login = async (account) =>{
     const action ={
         type: LOGIN_LOADING,
-        payload:{}
+        payload:{},
     }
     const data_account = {
         username: account.username.value,
@@ -22,7 +22,6 @@ const login = async (account) =>{
             action.type = LOGIN_SUCCESS;
             action.payload = data.data;
             localStorage.setItem("accessToken", data.data.accessToken);
-            
         })
         .catch(err => {
             action.type = LOGIN_ERROR;
@@ -32,7 +31,7 @@ const login = async (account) =>{
                 errdata: err.response.data
             };
         });
-
+    console.log(action)
     return action;
 }
 

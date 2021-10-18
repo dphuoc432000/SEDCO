@@ -1,0 +1,33 @@
+.layer-infor-user{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 115%;
+    overflow: hidden;
+}
+.layer-infor-user:hover, 
+.layer-infor-user:active, 
+.layer-infor-user:focus {
+    overflow-y: auto;
+}
+.layer-infor-user::-webkit-scrollbar { width: 0 !important }
+.user-infor-container{
+    width: 75%;
+    padding-top: 20px;
+}
+.user-infor-container > .user-infor-title{
+    width: 100%;
+    padding: 10px 0;
+}
+
+.layer-infor-user >.user-infor-container> .btn-container{
+    width: 100%;
+    padding-top: 20px;
+    border-top: 1px #c5c5c5 solid;
+    margin-top: 20px;
+}
+
+.layer-infor-user >.user-infor-container> .btn-container > div{
+    width: 100%;
+    height: 30px;
+}

@@ -6,7 +6,7 @@ import { cities as citiesAction } from "../../../stores/actions/cities.action";
 import { districts as districtsAction } from "../../../stores/actions/districts.action";
 import { register as registerAction } from "../../../stores/actions/register.action";
 import Header from "../../../components/Header/Header";
-import {REGISTER_ERROR, REGISTER_LOADING, REGISTER_SUCCESS} from "../../../constants/actions"
+import {REGISTER_SUCCESS} from "../../../constants/actions"
 import { FormError } from '../../../components/FormError/FormError';
 import {toast } from 'react-toastify';
 
@@ -315,7 +315,6 @@ class Register extends React.Component{
         const districts = this.state.districts;
         return(
             <React.Fragment>
-                <Header />
                 <main>
                     <div className="register_container">
                         <div className="title">

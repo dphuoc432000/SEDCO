@@ -4,7 +4,6 @@ import {Link}from "react-router-dom";
 import "./Login.css";
 import {connect} from 'react-redux';
 import {login as loginAction} from '../../../stores/actions/auth.action';
-import Header from '../../../components/Header/Header';
 import '../../../styles/main.css';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -93,9 +92,11 @@ class Login extends React.Component{
                 toast.error(`Đăng nhập thất bại. ${data_action.payload.description}!`);
                 return;
             }
+            console.log(this.props.dataRedux)
             //Đăng ký thành công
             toast.success("Đăng nhập thành công!");
             this.props.history.push('/');
+            this.props.handleLogin();
         }
         
 
@@ -119,8 +120,6 @@ class Login extends React.Component{
         //     toast.error(`Đăng nhập thất bại. \n
 
         //     ${data_action.payload.description}`);
-        
-        console.log(this.checkingForm())
     }
 
     onChangeLoginForm = event =>{
@@ -151,7 +150,7 @@ class Login extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <Header/>
+                {/*<Header/>*/}
                 <main>
                
                     <div className="login_container">

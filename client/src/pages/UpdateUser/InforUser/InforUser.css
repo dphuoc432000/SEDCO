@@ -1,0 +1,80 @@
+.user-infor{
+    width: 100%;
+    padding: 10px 30px;
+}
+.user-infor > .name-id-status_user{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px #c5c5c5 solid;
+}
+.user-infor > .name-id-status_user > .name-id{
+    padding-bottom: 5px;
+}
+.user-infor > .name-id-status_user > .name-id > .name{
+    height: 20px;
+}
+.user-infor > .name-id-status_user > .name-id > .id{
+    height: 20px;
+    color: #7f8c8d;
+    font-size: 100%;
+}
+.user-infor > .infor{
+    width: 100%;
+}
+.user-infor > .infor table{
+    width: 690px
+}
+.user-infor > .infor table>caption{
+    text-align: left;
+    font-weight: bold;
+    padding: 15px 0 5px 0;
+}
+.user-infor > .infor table>tbody>tr>td{
+    height: 35px;
+}
+.user-infor > .infor table>tbody>tr>td:first-child{
+    width: 40%;
+}
+
+.user-infor > .image-private-container{
+    width: 100%;
+}
+.user-infor > .image-private-container> .image-private-title{
+    width: 100%;
+    display: flex;
+    padding: 15px 0 10px 0;
+}
+.user-infor > .image-private-container span{
+    font-weight: bold;
+}
+.user-infor > .image-private-container>.identity_card_img_container,
+.user-infor > .image-private-container>.face_img_container,
+.user-infor > .image-private-container>.driving_license_img_container,
+.user-infor > .image-private-container>.covid_test_paper_img_container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.user-infor > .image-private-container>.identity_card_img_container>span,
+.user-infor > .image-private-container>.face_img_container> span,
+.user-infor > .image-private-container>.driving_license_img_container> span,
+.user-infor > .image-private-container>.covid_test_paper_img_container> span{
+    padding: 15px 0 10px 0;
+    height: 45px;
+}
+
+.user-infor > .image-private-container .img_container{
+    display: flex;
+}
+.user-infor > .image-private-container .img_container> .img_front,
+.user-infor > .image-private-container .img_container> .img_back,
+.user-infor > .image-private-container .img_container> .img{
+    margin-right: 30px;
+}
+
+.user-infor > .image-private-container .img_container img{
+    width: 200px;
+    height: 200px;
+}

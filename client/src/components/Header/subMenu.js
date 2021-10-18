@@ -10,8 +10,9 @@ import Stack from '@mui/material/Stack';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import './subMenu.css';
 import { withRouter } from 'react-router';
+import {connect} from 'react-redux';
 
-export default withRouter(function MenuListComposition(props) {
+function MenuListComposition(props) {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
 
@@ -28,9 +29,15 @@ export default withRouter(function MenuListComposition(props) {
     };
 
     const  handleLogout = () =>{
+        props.logout();
         localStorage.removeItem('accessToken');
+        props.handleLogout();
         props.history.push('/')
-    } 
+    }
+    
+    const handleUpdateInformation = ()=>{
+        props.history.push('/user/information')
+    }
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -89,7 +96,7 @@ export default withRouter(function MenuListComposition(props) {
                         aria-labelledby="composition-button"
                         onKeyDown={handleListKeyDown}
                     >
-                        <MenuItem onClick={handleClose}>Cập nhật thông tin</MenuItem>
+                        <MenuItem onClick={(event) =>{handleClose(event); handleUpdateInformation();}}>Cập nhật thông tin</MenuItem>
                         <MenuItem onClick={handleClose}>Đổi mật khẩu</MenuItem>
                         <MenuItem onClick={(event) =>{handleClose(event); handleLogout();}}>Đăng xuất</MenuItem>
                     </MenuList>
@@ -101,4 +108,20 @@ export default withRouter(function MenuListComposition(props) {
         </div>
         </Stack>
     );
-})
+}
+
+//state này của redux không phải react
+const mapStateToProps = (state) =>{
+    return {
+        isLogined: state.loginReducer.isLogined
+    }
+}
+
+//dispatch này của redux không phải react
+const mapDispatchToProps =(dispatch)=>{
+    return {
+        logout: () => dispatch({type:"LOGOUT_ACCOUNT"})
+    }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(MenuListComposition)) ;

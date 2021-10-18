@@ -1,0 +1,318 @@
+.layer_form_update_container{
+    width: 100%;
+    display: flex;
+    justify-content : center;
+}
+.form_update_container{
+    width: 710px;
+    display: flex;
+    /* justify-content: center; */
+    font-size: 115%;
+    overflow: hidden;
+    flex-direction: column;
+    /* height: 100%; */
+    margin-top: 30px;
+}
+.form_update_container:hover, 
+.form_update_container:active, 
+.form_update_container:focus {
+    overflow-y: auto;
+}
+.form_update_container::-webkit-scrollbar { width: 0 !important }
+
+.form_update_container > .title{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form_update_container > .title > h2{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.form_update_container > form{
+    width: 710px;
+    /* height: 85%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+.form_update_container > form > .form_image{
+    margin: 20px 0;
+}
+.form_update_container > form > .form_private_infor,
+.form_update_container > form > .form_image{
+    font-size: 13px;
+    width:710px;
+}
+
+.form_update_container > form > .form_private_infor > caption,
+.form_update_container > form > .form_image > caption{
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+}
+
+.form_update_container > form > .form_private_infor > tbody{
+
+}
+
+.form_update_container > form > .form_private_infor > tbody> tr{
+    width: 710px;
+    display: flex;
+    justify-content: space-between;
+}
+.form_update_container > form > .form_private_infor > tbody> .input-data{
+    height: 45px;
+}
+.form_update_container > form > .form_private_infor > tbody> .input-error{
+    height: 20px;
+}
+.form_update_container > form > .form_private_infor > tbody> tr>.full_name,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_age,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_email,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_phone_number,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_city,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_district{
+   width: 330px;
+   height: 45px; 
+   display: flex;
+   flex-direction: column;
+}
+.form_update_container > form > .form_private_infor > tbody> tr>.input_specific_address{
+    width: 710px;
+    height: 45px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.form_update_container > form > .form_private_infor > tbody> .input-title> td{
+    width: 330px;
+    border-radius: 5px;
+}
+
+.form_update_container > form > .form_private_infor > tbody> tr>.full_name>#full_name,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_age>#age,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_email>#email,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_phone_number>#phone_number,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_city>#city,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_district>#district{
+    width: 330px;
+    height: 45px;
+    border-radius: 5px;
+    border: 1px gray solid;
+    padding: 0 10px;
+}
+
+.form_update_container > form > .form_private_infor > tbody> tr>.input_specific_address>#specific_address{
+    width: 710px;
+    height: 45px;
+    border-radius: 5px;
+    border: 1px gray solid;
+    padding: 0 10px;
+}
+
+.form_update_container > form > .form_private_infor > tbody> tr>.full_name>#full_name:focus,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_age>#age:focus,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_email>#email:focus,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_phone_number>#phone_number:focus,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_city>#city:focus,
+.form_update_container > form > .form_private_infor > tbody> tr>.input_district>#district:focus{
+    outline: none;
+}
+
+.form_update_container > form > .form_private_infor > tbody> tr>.input_specific_address>#specific_address:focus{
+    outline: none;
+}
+.form_update_container > form > .form_private_infor > tbody> tr p{
+    width: 330px!important;
+    height: 0px!important;
+}
+
+.form_update_container > form> .form_image >tbody> tr > td{
+    width: 300px;
+}
+
+.form_update_container > form> .form_image >tbody> tr > td > label{
+    margin: 5px 0;
+}
+
+.form_update_container > form> .form_image >tbody> .img_input_title{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.form_update_container > form> .form_image >tbody> .img_input_title> td{
+    padding: 10px 0 3px 0;
+}
+
+.form_update_container > form> .form_image >tbody> tr > td > label > p{
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px black solid;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/* .form_update_container > form span{
+    width: 342px;
+    min-width: 200px;
+    height: 25px;
+    display: flex;
+}
+.form_update_container> form >.form_private_infor> .input_user_infor{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.form_update_container> form >.form_private_infor> .input_user_infor > p{
+    width: 305px!important;
+}
+
+.form_update_container> form>.form_private_infor > .input_user_infor > .full_name,
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_age,
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_email,
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_phone_number,
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_specific_address{
+    width: 342px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+.form_update_container> form>.form_private_infor > .input_user_infor input[type=text],
+.form_update_container> form>.form_private_infor > .input_user_infor input[type=number],
+.form_update_container> form>.form_private_infor > .input_user_infor input[type=email]{
+    width: 100%;
+    height: 90%;
+    padding: 0 15px;
+    border: 1px gray solid;
+    border-radius: 5px;
+}
+
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_address{
+    width: 342px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+    justify-content: space-between;
+}
+
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_address >.input_city{
+    width: 49%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_address >.input_district{
+    width: 49%;
+    height: 100%;
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+}
+.form_update_container> form>.form_private_infor > .input_user_infor > .input_address select{
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px gray solid;
+    border-radius: 5px;
+}
+
+.form_update_container > form>.form_private_infor input[type=text]:focus,
+.form_update_container > form>.form_private_infor input[type=password]:focus,
+.form_update_container > form>.form_private_infor input[type=number]:focus,
+.form_update_container > form>.form_private_infor select:focus{
+    outline: none;
+}
+
+.form_update_container> form>.form_private_infor > .btn_submit{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+.form_update_container> form>.form_private_infor input[type=button]{
+    width: 35%;
+    height: 100%;
+    background-color: #5352ED;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 13px;
+}
+
+.image-private-container{
+    width: 345px;
+}
+.image-private-container> .image-private-title{
+    width: 100%;
+    display: flex;
+    padding: 15px 0 0px 0;
+}
+.image-private-container span{
+    font-weight: bold;
+}
+.image-private-container>.identity_card_img_container,
+.image-private-container>.face_img_container,
+.image-private-container>.driving_license_img_container,
+.image-private-container>.covid_test_paper_img_container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.image-private-container>.identity_card_img_container>span,
+.image-private-container>.face_img_container> span,
+.image-private-container>.driving_license_img_container> span,
+.image-private-container>.covid_test_paper_img_container> span{
+    padding: 15px 0 10px 0;
+    height: 40px;
+}
+
+.image-private-container .img_container{
+    display: flex;
+    width: 100%;
+}
+.image-private-container .img_container> .img_front,
+.image-private-container .img_container> .img_back,
+.image-private-container .img_container> .img{
+    margin-right: 20px;
+    width: 50%;
+}
+.image-private-container .img_container label{
+    margin: 5px 0;
+}
+.image-private-container .img_container label> p{
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px black solid;
+    border-radius: 5px;
+}
+.image-private-container .img_container img{
+    width: 200px;
+    height: 200px;
+} */

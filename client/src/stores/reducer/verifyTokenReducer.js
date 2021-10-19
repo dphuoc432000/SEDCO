@@ -25,7 +25,10 @@ const verifyTokenReducer = async (state, action)=>{
         const account_data = await get_account_by_id(state.account_id).then(data=>data);
         state.role_id = account_data.role_id;
     } catch (error) {
-        console.log(error.message)
+        state.error={
+            err:error,
+            message: error.message
+        }
     }
     return state;
 }

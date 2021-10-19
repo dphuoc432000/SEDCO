@@ -9,10 +9,15 @@ import '../../styles/main.css'
 class Main extends React.Component {
     render() {
         return (
-            <main className="main">
+            
+            <React.Fragment>
+            {/*<main className="main">
                 <Map/>
                 <Status/>
-            </main>
+            </main>*/}
+                <Map/>
+                <Status/>
+            </React.Fragment>
         )
     }
 }

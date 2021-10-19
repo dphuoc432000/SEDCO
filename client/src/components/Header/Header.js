@@ -1,14 +1,14 @@
 import React from "react";
 import logo from "../../assets/images/logo.png";
 import {
-    Link, NavLink
+    Link,
   } from "react-router-dom";
 import "./header.css";
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router';
 import {get_role_user} from '../../stores/actions/role.action'
 import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
-import { menuHeader } from "./menuHeader";
+// import { menuHeader } from "./menuHeader";
 import CustomizedMenus from './subMenu';
 import CircleIcon from '@mui/icons-material/Circle';
 
@@ -87,13 +87,13 @@ class Header extends React.Component {
     //             full_name: this.props.full_name
     //         })
     // }
-    
+    handleChangeShowFormLogin = ()=>{
+        this.props.handleChangeShowFormLogin();
+    }
     
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
-        // this.handlUpdateFull_name()
-        console.log(this.props.appProps)
         return (
             <header id="header">
                 <div className="header-navbar">
@@ -103,10 +103,10 @@ class Header extends React.Component {
                         </Link>
                         <ul className="header-navbar__list">
                             <li className="header-navbar__item">
-                                <Link to="/" className="header-navbar__item--link" exact="true">Trang Chủ</Link>
+                                <Link to="/" className="header-navbar__item--link home_link" exact="true">Trang Chủ</Link>
                             </li>
                             <li className="header-navbar__item">
-                                <Link to="" className="header-navbar__item--link">Bản Đồ</Link>
+                                <Link to="" className="header-navbar__item--link">Giới thiệu</Link>
                             </li>
                         </ul>
                     </div>
@@ -133,9 +133,9 @@ class Header extends React.Component {
                             </React.Fragment>
                             :
                             <div className="header-navbar__btn_login">
-                                <Link to="/login">
-                                    <button className="btn-dangnhap js-btn__login">Đăng nhập</button>
-                                </Link>
+                                {/*<Link to="/login">*/}
+                                    <button onClick={()=>this.handleChangeShowFormLogin()} className="btn-dangnhap js-btn__login">Đăng nhập</button>
+                                {/*</Link>*/}
                             </div>
                         }
                     </div>

@@ -13,6 +13,7 @@ import {
     LOGIN_ERROR
 } from "../../../constants/actions";
 import FormError from '../../../components/FormError/FormError';
+import CloseIcon from '@mui/icons-material/Close';
 
 class Login extends React.Component{
 
@@ -49,7 +50,7 @@ class Login extends React.Component{
                         errorMessage: ''};
                 }
                 return { isInputValue: false,
-                    errorMessage: 'Vui lòng nhập lại. Bao gồm: từ 6 đến 20 ký tự, ít nhất một chữ số, một chữ hoa và một chữ thường'};
+                    errorMessage: 'Vui lòng nhập lại. Bao gồm: từ 6 đến 20 ký tự, ít nhất một chữ số, một ký tự hoa và một ký tự thường'};
             default:
                 break;
         }
@@ -151,9 +152,10 @@ class Login extends React.Component{
         return(
             <React.Fragment>
                 {/*<Header/>*/}
-                <main>
+                {/*<main>*/}
                
                     <div className="login_container">
+                        <CloseIcon onClick={()=>{this.props.handleChangeShowFormLogin()}} style={{position: 'absolute', top:'5px', right:'5px',fontSize:'20px', cursor:'pointer'}}/>
                         <div className="title">
                             <h2>Đăng nhập</h2>
                         </div>
@@ -205,7 +207,7 @@ class Login extends React.Component{
                             <Link  to="/register">Tạo tài khoản</Link>
                         </div>
                     </div>
-                </main>
+                {/*</main>*/}
             </React.Fragment>
         );
     }

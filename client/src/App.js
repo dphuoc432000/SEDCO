@@ -1,12 +1,12 @@
 import Home from "./pages/Home/Home";
-import Login from "./pages/Auth/Login/Login";
-import Register from "./pages/Auth/Register/Register";
+// import Login from "./pages/Auth/Login/Login";
+// import Register from "./pages/Auth/Register/Register";
 import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUserInforForm";
 import UpdateUser from './pages/UpdateUser/UpdateUser'
 import { 
-  AuthenticatedSenderRoute,
-  AuthenticatedReceiverRoute,
-  AuthenticatedCarTripRoute,
+  // AuthenticatedSenderRoute,
+  // AuthenticatedReceiverRoute,
+  // AuthenticatedCarTripRoute,
   AuthenticatedAllRoute
 } from "./components/Authentication/authentication";
 import "./App.css";
@@ -15,7 +15,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  // Redirect,
 } from "react-router-dom";
 import React from "react";
 import { ToastContainer } from 'react-toastify';
@@ -50,6 +50,7 @@ class App extends React.Component {
     isAuthenticated: false,
     role_name: {},
     menu: [],
+    showFormLogin: false
   }
   componentDidMount = async () =>{
     if(localStorage.getItem('accessToken')){
@@ -80,11 +81,14 @@ class App extends React.Component {
   onLoad = () =>{
     if(localStorage.getItem('accessToken'))
       this.setState({
-        isAuthenticated: true
+        isAuthenticated: true,
       })
   }
   handleLogin = () =>{
     this.componentDidMount();
+    this.setState({
+      showFormLogin: !this.state.showFormLogin
+    })
   }
   handleLogout = ()=>{
       this.setState({
@@ -101,6 +105,13 @@ class App extends React.Component {
       full_name: value
     })
   }
+
+  handleChangeShowFormLogin = ()=>{
+    this.setState({
+        showFormLogin: !this.state.showFormLogin
+    })
+  }
+
   render(){
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false
     return (
@@ -119,9 +130,9 @@ class App extends React.Component {
                 pauseOnHover
                 style={{fontSize:'13px'}}
               />
-              <Header handleLogin={this.handleLogin} appProps={this.state} handleLogout={this.handleLogout}/>
-              <Route path="/">
-                <Home handleLogin={this.handleLogin}/>
+              <Header handleChangeShowFormLogin={this.handleChangeShowFormLogin} handleLogin={this.handleLogin} appProps={this.state} handleLogout={this.handleLogout}/>
+              <Route path="/" exact>
+                <Home handleChangeShowFormLogin={this.handleChangeShowFormLogin} showFormLogin={this.state.showFormLogin} handleLogin={this.handleLogin}/>
               </Route>
               {/*<Route path="/login" exact render={() =>{
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>

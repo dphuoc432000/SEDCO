@@ -1,4 +1,4 @@
-import { Route, Redirect, withRouter } from "react-router";
+import { Route, Redirect } from "react-router";
 
 function AuthenticatedAllRoute({ component: C, appProps, ...rest }) {
     // console.log(C)
@@ -7,7 +7,7 @@ function AuthenticatedAllRoute({ component: C, appProps, ...rest }) {
       <Route
         {...rest}
         render={props => appProps.checkLocalStorage ? <C {...props} {...appProps} />
-            : <Redirect to={`/login?redirect=${props.location}`}/>
+            : <Redirect to={`/?redirect=${props.location}`}/>
         }
       />
     );

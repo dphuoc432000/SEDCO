@@ -32,11 +32,11 @@ function MenuListComposition(props) {
         props.logout();
         localStorage.removeItem('accessToken');
         props.handleLogout();
-        props.history.push('/')
+        props.history.push('/');
     }
     
     const handleUpdateInformation = ()=>{
-        props.history.push('/user/information')
+        props.history.push('/user/information');
     }
 
     function handleListKeyDown(event) {

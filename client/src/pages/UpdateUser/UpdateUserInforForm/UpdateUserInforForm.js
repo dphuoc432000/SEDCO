@@ -74,6 +74,7 @@ class UpdateUserInforForm extends Component {
             const verifydata = {...await this.props.verifyTokenData};
             await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
             const user = {...await this.props.userIsLogined.user};
+            console.log(user)
             this.setState({
                 user_infor:{
                     ...this.state.user_infor,
@@ -431,7 +432,7 @@ class UpdateUserInforForm extends Component {
                                             >
                                                 <option value="" >Chọn quận/huyện(Bắt buộc)*</option>
                                                 {districts.map((item,index)=>{
-                                                    return <option key={index} value={item.name}>{item.name}</option> 
+                                                    return <option key={item.code} value={item.name}>{item.name}</option> 
                                                 })}
                                             </select>
                                         </td>

@@ -8,12 +8,14 @@ import {
 } from "react-router-dom";
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
+import './home.css';
 
 export default withRouter(class Home extends Component {
+    
     render() {
         return (
                 <Fragment>
-                    <Route path="/" exact>
+                   { /*<Route path="/" exact>
                         <Main/>
                     </Route>
                     <Route path="/login" exact>
@@ -21,7 +23,18 @@ export default withRouter(class Home extends Component {
                     </Route>
                     <Route path="/register" exact>
                         <Register/>
-                    </Route>
+                    </Route>*/}
+                    <main className={"main"}>
+                        <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin}/>
+                        {   this.props.showFormLogin &&
+                            <div className="showform_auth">
+                                <div className="form_auth">
+                                    <div className="layout_auth" onClick={()=>{this.props.handleChangeShowFormLogin()}}></div>
+                                    <Login handleChangeShowFormLogin={this.props.handleChangeShowFormLogin} handleLogin={this.props.handleLogin}/>
+                                </div>
+                            </div>
+                        }
+                    </main>
                 </Fragment>
             
         )

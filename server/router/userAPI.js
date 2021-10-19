@@ -5,6 +5,7 @@ const userController = require('../controllers/UserController.js');
 
 // router.post('/store', userController.addUser); //OK // Đã có hàm regis
 router.get('/list', userController.getAllUser); //OK
+router.get('/email/detail', userController.getUserDetailByEmail)
 router.get('/:id/detail', userController.getUserByID); //OK
 //dùng phương thức POST để update
 //có thể dùng phương thức PUT để đúng chuẩn RESTful

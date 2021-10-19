@@ -4,6 +4,7 @@ const User = require('../models/User');
 const userService = require('./UserService');
 const roleService = require('./RoleService');
 const handleOther = require('../controllers/handleOther');
+const bcrypt = require('bcryptjs');
 class AccountService{
     addAccount = async(user_id_param, role_id_param, object)=>{
         const user_objectId = await userService.getUserByID(user_id_param)
@@ -32,13 +33,27 @@ class AccountService{
         else
             return null;
     }
+    check_email_exists = async(email_param) =>{
+        return await User.findOne({email: email_param})
+            .then(data => data?true:false)
+            .catch(err => err);
+    }
     check_username_exists = async (username_param) =>{
         return await Account.findOne({username: username_param})
             .then(data => data?true:false)
             .catch(err => err);
     }
+    check_phone_number_exists =  async(phone_number) =>{
+        return await User.findOne({phone_number: phone_number})
+            .then(data => data?true:false)
+            .catch(err => err);
+    }
     addUserAccount = async (object) =>{
-        if(await this.check_username_exists(object.username)===false){
+        const check_username = await this.check_username_exists(object.username);
+        const check_email = await this.check_email_exists(object.email);
+        const check_phone_number = await this.check_phone_number_exists(object.phone_number);
+        
+        if(!check_username && !check_email && !check_phone_number){
             const form_user_data = {
                 full_name: object.full_name,
                 age: object.age,
@@ -54,11 +69,13 @@ class AccountService{
                 .catch((err)=> err);
             const form_account = {
                 username: object.username,
-                password: object.password,
+                password: bcrypt.hashSync(object.password,10),
                 user_id: user_data._id,
                 role_id: await roleService.getRoleByName("user")
                     .then(data => data._id) // thêm catch nếu chạy lỗi thì bỏ
-                    .catch(err => err)
+                    .catch(err => {
+                        return err
+                    })
             }
 
             const account = new Account(form_account);
@@ -68,7 +85,9 @@ class AccountService{
                     account_data.user = {...user_data};
                     return account_data;
                 })
-                .catch(err => err);
+                .catch((err) => {
+                    return err
+                });
         }
         return null;
     }
@@ -80,7 +99,7 @@ class AccountService{
 
     getAccountDetails = async(id)=>{
         return await Account.findById({_id:id})
-            .then(account => account)
+            .then(account => mongooseToObject(account))
             .catch(err => err);
     }
 
@@ -118,6 +137,31 @@ class AccountService{
             })// thêm catch nếu chạy lỗi thì bỏ
             .catch(err => err);
     }
+
+    getAccountByUserID = async(user_id_param) =>{
+        return await Account.findOne({user_id: user_id_param})
+            .then(account => mongooseToObject(account))
+            .catch(err=>err)
+    }
+    updatePassword = async(account_id_param, password_old_param, password_new_param) =>{
+        const account = await this.getAccountDetails(account_id_param)
+            .then(data => data)
+            .catch(err => err);
+        if(account){
+            let passwordIsValid = bcrypt.compareSync(password_old_param, account.password);
+            
+            if (!passwordIsValid) {
+                return null;
+            }
+            const object = {
+                password: bcrypt.hashSync(password_new_param, 10)
+            };
+            return await Account.findByIdAndUpdate({_id: account_id_param}, object)
+                .then(data => mongooseToObject(data))
+                .catch(err => err)
+        }
+        return null;
+    } 
 }
 
 module.exports = new AccountService();

@@ -14,6 +14,7 @@ class UserController{
     //         })
     // }
     
+
     //[GET] /users/user_list
     getAllUser = async (req, res, next) => {
         await userService.getUserList()
@@ -56,6 +57,16 @@ class UserController{
                 return res.status(400).json(handleOther.errorHandling("Lỗi nhập user_id", null)); 
             })
             .catch(error => next(error));
+    }
+
+    getUserDetailByEmail = async(req, res, next) =>{
+        await userService.getUserDetailByEmail(req.body.email)
+            .then(user =>{
+                if(user)
+                    return res.json(user);
+                return res.status(400).json(handleOther.errorHandling("Người dùng chưa được đăng ký", null)); 
+            })
+            .catch(error => next(error))
     }
 }
 

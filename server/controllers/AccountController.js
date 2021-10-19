@@ -67,6 +67,24 @@ class AccountController{
             })
             .catch(err => next(err));  
     }
+    getAccountByUserID = async(req, res, next) =>{
+        await accountService.getAccountByUserID(req.params.user_id)
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập user_id", null))
+            })
+            .catch(err => next(err));  
+    }
+    updatePassowrd = async(req, res, next) =>{
+        await accountService.updatePassword(req.params.account_id, req.body.password_old, req.body.password_new)
+            .then(account =>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Mật khẩu không chính xác", null))
+            })
+            .catch(err => next(err));  
+    }
 }
 
 module.exports = new AccountController();

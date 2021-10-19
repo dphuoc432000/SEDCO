@@ -9,6 +9,7 @@ router.get('/check_login', authmiddle.check_login);//OK
 router.post('/login',validate_login(), validation_result,authenticationController.login);//OK
 router.post('/register_user',validate_register(), validation_result, authenticationController.register);//OK
 router.get("/logout", authenticationController.logout);//OK
+router.post('/forgot_password', authenticationController.forgotPassword)
 
 router.get('/signin', (req,res, next) =>{res.sendFile(path.join("F:\\daiHoc\\Nam IV\\Capstone1\\SEDCO\\server", 'index.html'))})
 router.post("/signin", authenticationController.signin);

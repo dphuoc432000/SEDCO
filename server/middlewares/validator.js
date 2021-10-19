@@ -6,7 +6,7 @@ const validate_login = () =>{
         check('username', 'Vui lòng không nhập ký tự đặc biệt!').isAlphanumeric(),
         check('username', 'Vui lòng nhập ít nhất 6 ký tự!').isLength({min:6}),
         check('password', 'Vui lòng nhập mật khẩu!').not().isEmpty(),
-        check('password', 'Vui lòng nhập 6 - 20 ký tự!').isLength({min:6, max:20}),
+        check('password', 'Vui lòng nhập 6 - 20 ký tự!').isLength({min:6, max:256}),
     ]
 }
 
@@ -16,7 +16,7 @@ const validate_register = () =>{
         check('username', 'Vui lòng không nhập ký tự đặc biệt!').isAlphanumeric(),
         check('username', 'Vui lòng nhập ít nhất 6 ký tự!').isLength({min:6}),
         check('password', 'Vui lòng nhập mật khẩu!').not().isEmpty(),
-        check('password', 'Vui lòng nhập 6 - 20 ký tự!').isLength({min:6, max:20}),
+        check('password', 'Vui lòng nhập 6 - 20 ký tự!').isLength({min:6, max: 256}),
         check('full_name', 'Vui lòng nhập họ và tên!').not().isEmpty(),
         check('full_name')
             .custom(value => /[A-Za-z ]/.test(value))

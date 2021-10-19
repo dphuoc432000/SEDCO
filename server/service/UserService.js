@@ -43,6 +43,12 @@ class UserService{
             })
             .catch(err => err);
     }
+
+    getUserDetailByEmail = async(email_param) =>{
+        return await User.findOne({email: email_param})
+            .then(user => mongooseToObject(user))
+            .catch(err=>err);
+    }
 }
 
 module.exports = new UserService();

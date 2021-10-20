@@ -8,9 +8,7 @@ import '../../../styles/main.css';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
-    LOGIN_LOADING,
     LOGIN_SUCCESS,
-    LOGIN_ERROR
 } from "../../../constants/actions";
 import FormError from '../../../components/FormError/FormError';
 import CloseIcon from '@mui/icons-material/Close';
@@ -73,6 +71,7 @@ class Login extends React.Component{
         })
     }
 
+    //nếu form chưa nhập đúng thông tin thì bằng true
     checkingForm =() =>{
         const dataForm = [...Object.values(this.state)];
         return dataForm.some((item)=>{
@@ -201,10 +200,10 @@ class Login extends React.Component{
                             </div>
                         </form>  
                         <div className="btn_forget_password">
-                            <Link  to="/forget_password">Quên mật khẩu</Link>
+                            <p onClick={() =>{this.props.handleChangeShowFormForgotPassword()}}>Quên mật khẩu</p>
                         </div>
                         <div className="btn_register">
-                            <Link  to="/register">Tạo tài khoản</Link>
+                            <p onClick={() =>{this.props.handleChangeShowFormRegister()}}>Tạo tài khoản</p>
                         </div>
                     </div>
                 {/*</main>*/}

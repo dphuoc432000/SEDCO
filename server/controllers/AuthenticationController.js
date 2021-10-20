@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 const mailer_config = require("../config/mailer.config");
 const UserService = require("../service/UserService");
 const AccountService = require("../service/AccountService");
+const generator = require('generate-password');
 
 class AuthenticationController {
     signin = async (req, res) => {
@@ -138,7 +139,12 @@ class AuthenticationController {
                       pass: mailer_config.SEDCO_PASSWORD, // generated ethereal password
                     },
                 });
+                var password_new = generator.generate({
+                    length: 10,
+                    numbers: true
+                });
                 const account = await AccountService.getAccountByUserID(user._id);
+                await accountService.updatePasswordNoPassword_old(account._id, password_new)
                 // console.log(transporter)
                   // send mail with defined transport object
                 let info = await transporter.sendMail({
@@ -149,10 +155,10 @@ class AuthenticationController {
                     Chào ${user.full_name},
                     <p>Chúng tôi đã nhận được yêu cầu khôi phục mật khẩu tài khoản từ bạn.</p>
                     <span><nobr>Tên đăng nhập: <h4>${account.username}</h4></nobr></span>
-                    <span><nobr>Mật khẩu: <h4>${account.password}</h4></nobr><span>
+                    <span><nobr>Mật khẩu mới: <h4>${password_new}</h4></nobr><span>
                     <br>
                     <p>Vui lòng cập nhật lại mật khẩu của bạn. Để tiện trong quá trình đăng nhập lại.</p>
-                    <p><strong>Để cập nhập mật khẩu cần: </strong> <a href="http://localhost:5000"/> đăng nhập với mật khẩu trên. Vào menu. Thông tin cá nhân, đổi mật khẩu.</p>
+                    <p><strong>Để cập nhập mật khẩu cần: </strong> <a href="http://localhost:5000"/> đăng nhập với mật khẩu mới. Vào menu. Thông tin cá nhân, đổi mật khẩu.</p>
                     <p>Cảm ơn bạn vì đã sử dụng hệ thống. Chúc bạn sức khỏe!</p>
                     `, // html body
                 })

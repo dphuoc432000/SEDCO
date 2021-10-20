@@ -60,7 +60,7 @@ class UpdateUserInforForm extends Component {
             districts: [],
             cities: [],
         }
-        console.log("đã vào constructor",this.props)
+        // console.log("đã vào constructor",this.props)
     }
     
     //kiểm tra feild đã có giá trị. Nếu chưa có trả về isInputValue = false,
@@ -69,12 +69,12 @@ class UpdateUserInforForm extends Component {
         
         try {
             await this.props.get_cities();
-            const cities = this.props.dataRedux.citiesReducer.cities;
+            const cities = await this.props.dataRedux.citiesReducer.cities;
             // const isInputValue = true;
             const verifydata = {...await this.props.verifyTokenData};
             await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
             const user = {...await this.props.userIsLogined.user};
-            console.log(user)
+            // console.log(user)
             this.setState({
                 user_infor:{
                     ...this.state.user_infor,
@@ -123,7 +123,7 @@ class UpdateUserInforForm extends Component {
 
     handleDistricts = (districts) => {
         this.setState({
-        districts: [...districts],
+            districts: [...districts],
         });
     }
 
@@ -137,7 +137,6 @@ class UpdateUserInforForm extends Component {
                 }
             }
         })
-        console.log(event.target.value)
         const city_select = document.getElementById("city");
         const city_code = city_select.options[city_select.selectedIndex].getAttribute("data_id");
 
@@ -280,7 +279,9 @@ class UpdateUserInforForm extends Component {
     }
 
     handleUpdate = async () =>{
-        const user_id = this.props.userIsLogined.user._id;
+        const verifydata = {...await this.props.verifyTokenData};
+        await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
+        const user_id = await this.props.userIsLogined.user._id;
         const user_update = {
             full_name: this.state.user_infor.full_name.value,
             age: this.state.user_infor.age.value,
@@ -290,8 +291,10 @@ class UpdateUserInforForm extends Component {
             district: this.state.user_infor.district.value,
             address: this.state.user_infor.specific_address.value
         }            
+        // console.log(user_update)
         const action = await this.props.update_user_infor(user_id,user_update)
-        console.log(action)
+        // console.log(user_id)
+        // console.log(action)
         if(action.type !== UPDATE_USER_SUCCESS){
             toast.error("Cập nhật thất bại. Vui lòng nhập dữ liệu bắt buộc!");
             return;
@@ -299,6 +302,7 @@ class UpdateUserInforForm extends Component {
         this.props.handlUpdateFull_name(user_update.full_name);
         toast.success("Cập nhật thành công!");
         this.props.history.push("/user/information")
+        console.log(await this.props.dataRedux)
     }
 
     render() {
@@ -317,7 +321,7 @@ class UpdateUserInforForm extends Component {
                                 <caption>
                                     Thông tin người dùng<p style={{color:'red'}}>*</p>
                                 </caption>
-                                <tbody>
+                                <tbody id="form_user_infor">
                                     <tr className="input-title">
                                         <td>Họ và tên</td>
                                         <td>Tuổi</td>
@@ -333,7 +337,6 @@ class UpdateUserInforForm extends Component {
                                                 id="full_name"
                                                 onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
-                                            
                                         </td>
                                         <td className="input_age">
                                             <input 
@@ -363,7 +366,7 @@ class UpdateUserInforForm extends Component {
                                                     errorMessage={user_infor.age.errorMessage}
                                                 />
                                             </td>
-                                        </tr>:""
+                                        </tr>:<tr style={{height:"0"}}></tr>
                                     }
                                     <tr className="input-title">
                                         <td>Email</td>
@@ -409,7 +412,7 @@ class UpdateUserInforForm extends Component {
                                                     errorMessage={user_infor.phone_number.errorMessage}
                                                 />
                                             </td>
-                                        </tr>:""
+                                        </tr>:<tr style={{height:"0"}}></tr>
                                     }
                                     <tr className="input-title">
                                         <td>Tỉnh/Thành phố</td>
@@ -454,7 +457,7 @@ class UpdateUserInforForm extends Component {
                                                     errorMessage={user_infor.district.errorMessage}
                                                 />
                                             </td>
-                                        </tr>:""
+                                        </tr>:<tr style={{height:"0"}}></tr>
                                     }
                                     <tr className="input-title">
                                         <td colSpan={2}>Địa chỉ cụ thể</td>
@@ -481,7 +484,7 @@ class UpdateUserInforForm extends Component {
                                                     errorMessage={user_infor.specific_address.errorMessage}
                                                 />
                                             </td>
-                                        </tr>:""
+                                        </tr>:<tr style={{height:"0"}}></tr>
                                     }
                                 </tbody> 
                             </table>

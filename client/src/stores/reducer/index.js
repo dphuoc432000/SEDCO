@@ -6,6 +6,7 @@ import citiesReducer from './citiesReducer.js';
 import districtsReducer from './districtsReducer.js';
 import registerReducer from './registerReducer.js';
 import userIsLoginReducer from './userIsLoginReducer.js';
+import forgotPasswordReducer from './forgotPasswordReducer.js';
 
 export default combineReducers({
     roleReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
     districtsReducer,
     registerReducer,
     userIsLoginReducer,
+    forgotPasswordReducer
 });

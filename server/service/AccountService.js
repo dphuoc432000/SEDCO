@@ -162,6 +162,20 @@ class AccountService{
         }
         return null;
     } 
+    updatePasswordNoPassword_old = async(account_id_param, password_new_param) =>{
+        const account = await this.getAccountDetails(account_id_param)
+            .then(data => data)
+            .catch(err => err);
+        if(account){
+            const object = {
+                password: bcrypt.hashSync(password_new_param, 10)
+            };
+            return await Account.findByIdAndUpdate({_id: account_id_param}, object)
+                .then(data => mongooseToObject(data))
+                .catch(err => err)
+        }
+        return null;
+    } 
 }
 
 module.exports = new AccountService();

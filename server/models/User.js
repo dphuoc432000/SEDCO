@@ -6,8 +6,8 @@ const User = new Schema({
     age: {type: Number, min: 10, required: true},
     phone_number: {type: String, maxlength: 11, required: true},
     email: {type: String, maxlength: 30, required: true},
-    city: {type:String, maxlength: 20},
-    district: {type: String, maxlength: 20},
+    city: {type:String, maxlength: 50},
+    district: {type: String, maxlength: 50},
     address: {type: String, maxlength:100}
 }, {
     timestamps:true

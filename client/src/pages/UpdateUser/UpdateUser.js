@@ -8,6 +8,7 @@ import UpdateUserInforForm from './UpdateUserInforForm/UpdateUserInforForm';
 import {get_role_user} from '../../stores/actions/role.action'
 import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 import {connect} from 'react-redux';
+import bcrypt from 'bcryptjs';
 
 const translateRoleName = (role_name)=>{
     switch(role_name) {
@@ -35,7 +36,7 @@ class UpdateUser extends Component {
             account:{
                 _id: '',
                 username: '',
-                password: '',
+                password: '*********',
                 role_id: ''
             },
             user:{
@@ -65,9 +66,9 @@ class UpdateUser extends Component {
         this.setState({
             role_name: translateRoleName(role_name),
             account: {
+                ...this.state.account,
                 _id: account._id,
                 username: account.username,
-                password: account.password,
                 role_id: account.role_id
             },
             user: {

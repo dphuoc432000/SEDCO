@@ -11,7 +11,7 @@
     overflow: hidden;
     flex-direction: column;
     /* height: 100%; */
-    margin-top: 30px;
+    margin: 30px;
 }
 .form_update_container:hover, 
 .form_update_container:active, 
@@ -164,6 +164,24 @@
     cursor: pointer;
 }
 
+.form_update_container > form>.btn_submit {
+    width: 130px;
+    height: 40px;
+}
+.form_update_container > form > .btn_submit >input[type="button"] {
+    width: 130px;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background: #F25A5A;
+    cursor: pointer;
+}
+
+.form_update_container > .btn-back-page > p{
+    color: #0045ad;
+    cursor: pointer;
+}
 
 /* .form_update_container > form span{
     width: 342px;

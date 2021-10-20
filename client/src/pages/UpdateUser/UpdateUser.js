@@ -8,8 +8,7 @@ import UpdateUserInforForm from './UpdateUserInforForm/UpdateUserInforForm';
 import {get_role_user} from '../../stores/actions/role.action'
 import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 import {connect} from 'react-redux';
-import bcrypt from 'bcryptjs';
-
+import ChangePassword from '../../components/ChangePassword/ChangePassword';
 const translateRoleName = (role_name)=>{
     switch(role_name) {
         case "user":
@@ -50,6 +49,7 @@ class UpdateUser extends Component {
             },
             role_name: {},
             isEdit: false,
+            showChangePasswordForm:false
         }
     }
 
@@ -81,7 +81,13 @@ class UpdateUser extends Component {
                 address: user.address,
             }
         })
-        console.log("đã chạy")
+        // console.log("đã chạy")
+    }
+
+    handleShowChangePasswordForm = () =>{
+        this.setState({
+            showChangePasswordForm: !this.state.showChangePasswordForm
+        })
     }
     render() {
         return (
@@ -95,10 +101,10 @@ class UpdateUser extends Component {
                             <InforUser account={this.state.account} user={this.state.user} role_name={this.state.role_name}/>
                             <div className="btn-container">
                                 <div className="btn-update-password-account">
-                                    {<Link to="/user/account/update" >
+                                    {/*<Link to="/user/account/update" >
                                         <span>Đổi mật khẩu</span>
-                                    </Link>}
-                                    {/*<span onClick={()=>{}}>Đổi mật khẩu</span>*/}
+                                    </Link>*/}
+                                    {<span onClick={()=>{this.handleShowChangePasswordForm()}}>Đổi mật khẩu</span>}
                                 </div>
                                 <div className="btn-update-user-infor">
                                     <Link to="/user/information/update">
@@ -116,6 +122,14 @@ class UpdateUser extends Component {
                 <Route path="/user/account/update">
                     
         </Route>*/}
+                {this.state.showChangePasswordForm &&
+                    <div className="showform_auth">
+                        <div className="form_auth">
+                            <div className="layout_auth" onClick={()=>{this.handleShowChangePasswordForm()}}></div>
+                            <ChangePassword handleShowChangePasswordForm = {this.handleShowChangePasswordForm}/>
+                        </div>
+                    </div>
+                }
             </main>
            
         )

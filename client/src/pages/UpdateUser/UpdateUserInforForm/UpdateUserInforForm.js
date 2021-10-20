@@ -139,7 +139,7 @@ class UpdateUserInforForm extends Component {
         })
         const city_select = document.getElementById("city");
         const city_code = city_select.options[city_select.selectedIndex].getAttribute("data_id");
-
+        console.log(city_code)
         const district_select = document.getElementById("district");
         district_select.value = "";
 
@@ -584,7 +584,7 @@ class UpdateUserInforForm extends Component {
                             </div>
                         </form>
                         <div className="btn-back-page">
-                            <button onClick={() => {this.handleBackPage()}}>Quay lại</button>
+                            <p onClick={() => {this.handleBackPage()}}>Quay lại</p>
                         </div>
                     </div>
                 </div>

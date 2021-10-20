@@ -77,11 +77,13 @@ class AccountController{
             .catch(err => next(err));  
     }
     updatePassowrd = async(req, res, next) =>{
+        if(req.body.password_old === req.body.password_new)
+            return res.status(400).json(handleOther.errorHandling("Mật khẩu mới đã trùng với mật khẩu cũ!", null))
         await accountService.updatePassword(req.params.account_id, req.body.password_old, req.body.password_new)
             .then(account =>{
                 if(account)
                     return res.json(account);
-                return res.status(400).json(handleOther.errorHandling("Mật khẩu không chính xác", null))
+                return res.status(400).json(handleOther.errorHandling("Mật khẩu cũ không chính xác", null))
             })
             .catch(err => next(err));  
     }

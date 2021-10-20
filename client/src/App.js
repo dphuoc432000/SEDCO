@@ -175,13 +175,14 @@ class App extends React.Component {
               }}>
               </Route>*/}
               
-              <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage}}/>
+              <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
               {/*<Route path="/user/information" exact render={() =>{
                 return !localStorage.getItem('accessToken') ? <Redirect to="/login"/> : <UpdateUser/>}
               }/>*/}
 
               {/*<UpdateUser/>
               </Route>*/}
+              
               <Route path="/user/information/update" exact>
                 <UpdateUserInforForm handlUpdateFull_name={this.handlUpdateFull_name}/>
               </Route>

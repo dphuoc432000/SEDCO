@@ -59,7 +59,8 @@
 }
 
 .input-1 input {
-  width: 84%;
+  width: 87%;
+  height: 100%;
   padding: 3px;
   outline: none;
 }

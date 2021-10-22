@@ -8,43 +8,84 @@ import "./Status.css";
 // import {btnShowFormReceiver , btnExitFormReceiver , modalReceiverContainer , modalReceiver ,showModalReceiverForm , exitModalReceiverForm} from './HandleFormStatus'
 class Status extends Component {
   state = {
-    showReceiverForm : false,
-    showSenderForm : false,
-  }
+    showReceiverForm: false,
+    showSenderForm: false,
+    showCarTripForm: false,
+    showUserStatus: false,
+    showSenderStatus: false,
+    showReceiverStatus: false,
+    showCarTripStatus: false,
+  };
   handleShowHideFormReceiver = () => {
     this.setState({
-      showReceiverForm : !this.state.showReceiverForm
-    })
-  }
+      showReceiverForm: !this.state.showReceiverForm,
+    });
+  };
   handleShowHideFormSender = () => {
     this.setState({
-      showSenderForm : !this.state.showSenderForm
-    })
-  }
+      showSenderForm: !this.state.showSenderForm,
+    });
+  };
   
+  getRoleName = () => {
+    switch (this.props.role_name.name) {
+      case "Người dùng":
+        return "user";
+      case "Người hỗ trợ":
+        return "sender";
+      case "Người cần hỗ trợ":
+        return "receiver";
+      case "Người vận chuyển":
+        return "car trip";
+
+      default:
+        return;
+    }
+  };
   render() {
-   const { showReceiverForm , showSenderForm} = this.state;
-   const checkReceiverForm = showReceiverForm === true ? <ReceiverForm exitModalReceiverForm={this.handleShowHideFormReceiver}/> : '';
-   const checkSenderForm =  showSenderForm === true ? <SenderForm exitModalSenderForm={this.handleShowHideFormSender}/> : '';
-   return (
+    const { showReceiverForm, showSenderForm } = this.state;
+    const checkReceiverForm =
+      showReceiverForm === true ? (
+        <ReceiverForm exitModalReceiverForm={this.handleShowHideFormReceiver} />
+      ) : (
+        ""
+      );
+    const checkSenderForm =
+      showSenderForm === true ? (
+        <SenderForm exitModalSenderForm={this.handleShowHideFormSender} />
+      ) : (
+        ""
+      );
+      const getRoleName = this.getRoleName()
+    return (
       <div className="Status">
-        <div className="Status-Not-Role" style={{ display: "block" }}>
-          <h2 className="Status-title">Tạo trạng thái</h2>
-          <h3 className="Status-Who">Bạn là người</h3>
-          <div className="Status-ListBTN">
-            <button className="Status-BTN__item Status-BTN__Taixe">
-              Vận chuyển
-            </button>
-            <button className="Status-BTN__item Status-BTN__Nguoicho" onClick={this.handleShowHideFormSender}>
-              Hỗ trợ
-            </button>
-            <button className="Status-BTN__item Status-BTN__Nguoinhan" onClick={this.handleShowHideFormReceiver}>
-              Cần hỗ trợ
-            </button>
-          </div>
-        </div>
-        <RecentList />
-        {/* <NguoiCho/> */}
+        {getRoleName === 'sender' ? 
+          <div className="Status-Not-Role">
+            <h2 className="Status-title">Tạo trạng thái</h2>
+            <h3 className="Status-Who">Bạn là người</h3>
+            <div className="Status-ListBTN">
+              <button className="Status-BTN__item Status-BTN__Taixe">
+                Vận chuyển
+              </button>
+              <button
+                className="Status-BTN__item Status-BTN__Nguoicho"
+                onClick={this.handleShowHideFormSender}
+              >
+                Hỗ trợ
+              </button>
+              <button
+                className="Status-BTN__item Status-BTN__Nguoinhan"
+                onClick={this.handleShowHideFormReceiver}
+              >
+                Cần hỗ trợ
+              </button>
+            </div>
+            <RecentList/>
+          </div> : '' }
+        {/* {getRoleName === 'sender' ? <NguoiCho/> : ''} */}
+        
+        
+        
         {checkReceiverForm}
         {checkSenderForm}
       </div>

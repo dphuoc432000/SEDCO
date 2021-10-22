@@ -1,93 +1,128 @@
 import React, { Component } from "react";
 import "./GoodsDetail.css";
-import UpdateReceiverForm from '../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm'
-import UpdateSenderForm from '../CreateStatusForm/UpdateStatusForm/UpdateSenderForm'
+import UpdateReceiverForm from "../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm";
+import UpdateSenderForm from "../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
+import ImgInfo from "../../assets/images/logo.png";
 class GoodsDetail extends Component {
   state = {
-    
-    showUpdateReceiverForm : false,
-    showUpdateSenderForm  : false,
+    showUpdateReceiverForm: false,
+    showUpdateSenderForm: false,
   };
-  
-  handleShowHideUpdateReceiver = () => { 
-    this.setState({showUpdateReceiverForm: !this.state.showUpdateReceiverForm})
-  }
-  handleShowHideUpdateSender = () => { 
-    this.setState({showUpdateSenderForm: !this.state.showUpdateSenderForm})
-  }
+
+  handleShowHideUpdateReceiver = () => {
+    this.setState({
+      showUpdateReceiverForm: !this.state.showUpdateReceiverForm,
+    });
+  };
+  handleShowHideUpdateSender = () => {
+    this.setState({ showUpdateSenderForm: !this.state.showUpdateSenderForm });
+  };
   render() {
-    let {  showUpdateReceiverForm , showUpdateSenderForm} = this.state;
-    const checkUpdateReceiverForm = showUpdateReceiverForm === true ? <UpdateReceiverForm exitModalUpdateReceiver={this.handleShowHideUpdateReceiver}/>  : '';
-    const checkUpdateSenderForm = showUpdateSenderForm === true ? <UpdateSenderForm exitModalUpdateSender={this.handleShowHideUpdateSender}/>  : '';
+    let { showUpdateReceiverForm, showUpdateSenderForm } = this.state;
+    const checkUpdateReceiverForm =
+      showUpdateReceiverForm === true ? (
+        <UpdateReceiverForm
+          exitModalUpdateReceiver={this.handleShowHideUpdateReceiver}
+        />
+      ) : (
+        ""
+      );
+    const checkUpdateSenderForm =
+      showUpdateSenderForm === true ? (
+        <UpdateSenderForm
+          exitModalUpdateSender={this.handleShowHideUpdateSender}
+        />
+      ) : (
+        ""
+      );
     return (
       <div>
-        <div class="GoodDetail-container">
+        
+          <div class="GoodDetail-container">
           {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
-
-          <table id="Goods-Detail-Table">
-            <tr>
-              <th>Nhu yếu phẩm</th>
-              <th>Số lượng</th>
-              <th>đơn vị</th>
-            </tr>
+          <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>
+          <table className="List-Good-Detail">
             <tr>
               <td>Trứng</td>
-              <td>5</td>
-              <td>Cái</td>
+              <td>4 quả</td>
             </tr>
             <tr>
               <td>Gạo</td>
-              <td>20</td>
-              <td>Kg</td>
+              <td>4 bao</td>
             </tr>
             <tr>
-              <td>Mỳ tôm</td>
-              <td>2</td>
-              <td>Thùng</td>
+              <td>Rau củ</td>
+              <td>6 thùng</td>
             </tr>
             <tr>
-              <td>Khẩu trang</td>
-              <td>20</td>
-              <td>Cái</td>
+              <td>Gạo</td>
+              <td>4 bao</td>
             </tr>
+            <tr>
+              <td>Rau củ</td>
+              <td>6 thùng</td>
+            </tr>
+            <tr>
+              <td>Rau củ</td>
+              <td>6 thùng</td>
+            </tr>
+            <tr>
+              <td>Gạo</td>
+              <td>4 bao</td>
+            </tr>
+            <tr>
+              <td>Rau củ</td>
+              <td>6 thùng</td>
+            </tr>
+          
             <tr>
               <td>Tổng khối lượng</td>
-              <td>200</td>
-              <td>Kg</td>
+              <td>600kg</td>
             </tr>
           </table>
-          <ul class="GoodDetail-container__ListInfo">
-            <li class="GoodDetail-Info__item GoodDetail-Info__title">
-              Thông tin liên hệ:
-            </li>
-            <li class="GoodDetail-Info__item GoodDetail-Info__Name">
-              Số Điện Thoại:
-            </li>
-            9999
-            <li class="GoodDetail-Info__item GoodDetail-Info__Address">
-              Địa chỉ:
-            </li>
-            92 Thi Sach , Quan Hai Chau , Da Nang
-            <li class="GoodDetail-Info__item GoodDetail-Info__Note">
-              Mô tả hoàn cảnh / Ghi chú:{" "}
-            </li>
-            Chưa có người nhận hàng , hàng cần đi gấp
-
-            <li class="GoodDetail-Info__item GoodDetail-Info__Img">Hình Ảnh </li>
-            <img src="../../assets/images/logo.png" alt="Hi " />
-          </ul>
+          <h3 className="data-container__title">Thông tin liên hệ</h3>
+          <table className="List-Good-Detail">
+            <tr>
+              <td>Số điện thoại</td>
+              <td>0776872642</td>
+            </tr>
+            <tr>
+              <td>Địa chỉ</td>
+              <td>Vĩnh Điện, Điện Bàn, Quảng Nam</td>
+            </tr>
+            <tr>
+              <td>Ghi chú</td>
+              <td>Cần đi gấp nha then lol</td>
+            </tr>
+          </table>
+          <div className="GoodDetail-Info-Img">
+            <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
+            <img
+              src={ImgInfo}
+              alt="hình ảnh người dùng"
+              className="GoodDetail-Info-Img__src"
+            />
+          </div>
         </div>
-        <div class="container-btn__ListBottom">
+        
+        
+        <div className="container-btn__ListBottom">
           <button
-            class="GoodDetail-btn-back"
+            className="GoodDetail-btn-back"
             onClick={() => this.props.showGoodsDetail()}
           >
-            <i class="fas fa-chevron-left GoodDetail-icon-back"></i> Quay lại
+            <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
+            lại
           </button>
 
-          <button class="GoodDetailContainer-btn-item GoodDetail-btn__Del">Xóa</button>
+          <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del">
+            Xóa
+          </button>
 
-          <button class="GoodDetailContainer-btn-item GoodDetail-btn__Update" onClick={this.handleShowHideUpdateReceiver}>
+          <button
+            className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+            onClick={this.handleShowHideUpdateReceiver}
+          >
             Cập nhật
           </button>
         </div>

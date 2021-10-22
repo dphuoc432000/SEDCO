@@ -63,8 +63,8 @@
   box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
     rgb(60 64 67 / 15%) 0px 2px 6px 2px;
   /* border-bottom: 3px solid darkturquoise; */
-  /* background-color: aliceblue; */
- 
+/* background-color: aliceblue; */
+
 .data-container__title {
   color: #0000ffb8;
   padding-left: 12px;
@@ -74,15 +74,14 @@
 }
 .data-container__SeeDetail {
   border-radius: 5px;
+    margin-top: 12px;
+    height: 21px;
     cursor: pointer;
-    
-    padding: 2px 8px;
+    padding: 0px 8px;
     border: 1px solid #333333;
-    
     background-color: orangered;
-    
-    margin-right: 20px;
-    font-size: 1.2rem;
+    margin-right: 40px;
+    font-size: 1rem;
     color: white;
 }
 .data-container__ListItems {
@@ -102,4 +101,25 @@
 .data-container__ItemQuantity {
   margin: 0;
   padding-left: 6px;
+}
+/* Table Good */
+.List-Good {
+  padding: 5px 38px 0px 16px;
+  width: 100%;
+  /* margin-left: -1px; */
+  /* margin-top: 6px; */
+  font-weight: 500;
+}
+
+.List-Good td,
+td:last-child {
+  font-size: 15px;
+  padding: 2.5px;
+}
+.List-Good tr:last-child {
+  /* color: #f54d0f; */
+  font-weight: bold;
+}
+.List-Good tr td:last-child {
+  text-align: right;
 }

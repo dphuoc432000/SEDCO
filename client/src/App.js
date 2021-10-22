@@ -132,7 +132,7 @@ class App extends React.Component {
               />
               <Header handleChangeShowFormLogin={this.handleChangeShowFormLogin} handleLogin={this.handleLogin} appProps={this.state} handleLogout={this.handleLogout}/>
               <Route path="/" exact>
-                <Home handleChangeShowFormLogin={this.handleChangeShowFormLogin} showFormLogin={this.state.showFormLogin} handleLogin={this.handleLogin}/>
+                <Home handleChangeShowFormLogin={this.handleChangeShowFormLogin} showFormLogin={this.state.showFormLogin} handleLogin={this.handleLogin} role_name={this.state.role_name}/>
               </Route>
               {/*<Route path="/login" exact render={() =>{
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>

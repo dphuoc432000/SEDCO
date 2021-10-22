@@ -13,7 +13,9 @@ import './home.css';
 export default withRouter(class Home extends Component {
     
     render() {
+        
         return (
+            
                 <Fragment>
                    { /*<Route path="/" exact>
                         <Main/>
@@ -25,7 +27,7 @@ export default withRouter(class Home extends Component {
                         <Register/>
                     </Route>*/}
                     <main className={"main"}>
-                        <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin}/>
+                        <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin} role_name={this.props.role_name}/>
                         {   this.props.showFormLogin &&
                             <div className="showform_auth">
                                 <div className="form_auth">

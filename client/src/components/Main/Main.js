@@ -8,6 +8,7 @@ import Status from './Status/Status.js'
 import '../../styles/main.css'
 class Main extends React.Component {
     render() {
+        
         return (
             
             <React.Fragment>
@@ -16,7 +17,7 @@ class Main extends React.Component {
                 <Status/>
             </main>*/}
                 <Map/>
-                <Status/>
+                <Status role_name={this.props.role_name}/>
             </React.Fragment>
         )
     }

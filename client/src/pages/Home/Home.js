@@ -9,6 +9,8 @@ import {
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
 import './home.css';
+import ForgotPassword from '../../components/ForgotPassword/ForgotPassword';
+
 
 export default withRouter(class Home extends Component {
     
@@ -32,7 +34,34 @@ export default withRouter(class Home extends Component {
                             <div className="showform_auth">
                                 <div className="form_auth">
                                     <div className="layout_auth" onClick={()=>{this.props.handleChangeShowFormLogin()}}></div>
-                                    <Login handleChangeShowFormLogin={this.props.handleChangeShowFormLogin} handleLogin={this.props.handleLogin}/>
+                                    <Login 
+                                        handleChangeShowFormLogin={this.props.handleChangeShowFormLogin} 
+                                        handleLogin={this.props.handleLogin}
+                                        handleChangeShowFormRegister = {this.props.handleChangeShowFormRegister}
+                                        handleChangeShowFormForgotPassword = {this.props.handleChangeShowFormForgotPassword}
+                                    />
+                                </div>
+                            </div>
+                        }
+                        {   this.props.showFormRegister &&
+                            <div className="showform_auth">
+                                <div className="form_auth">
+                                    <div className="layout_auth" onClick={()=>{this.props.handleChangeShowFormLogin()}}></div>
+                                    <Register 
+                                        handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
+                                        handleChangeShowFormRegister = {this.props.handleChangeShowFormRegister}
+                                    />
+                                </div>
+                            </div>
+                        }
+                        {   this.props.showFormForgotPassword &&
+                            <div className="showform_auth">
+                                <div className="form_auth">
+                                    <div className="layout_auth" onClick={()=>{this.props.handleChangeShowFormLogin()}}></div>
+                                    <ForgotPassword 
+                                        handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
+                                        handleChangeShowFormRegister = {this.props.handleChangeShowFormRegister}
+                                    />
                                 </div>
                             </div>
                         }

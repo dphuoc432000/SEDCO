@@ -50,8 +50,11 @@ class App extends React.Component {
     isAuthenticated: false,
     role_name: {},
     menu: [],
-    showFormLogin: false
+    showFormLogin: false,
+    showFormRegister: false,
+    showFormForgotPassword: false
   }
+
   componentDidMount = async () =>{
     if(localStorage.getItem('accessToken')){
       const verifyData = await this.props.verifyTokenData;
@@ -78,18 +81,21 @@ class App extends React.Component {
     }
     // this.onLoad();
   }
+
   onLoad = () =>{
     if(localStorage.getItem('accessToken'))
       this.setState({
         isAuthenticated: true,
       })
   }
+
   handleLogin = () =>{
     this.componentDidMount();
     this.setState({
       showFormLogin: !this.state.showFormLogin
     })
   }
+
   handleLogout = ()=>{
       this.setState({
         full_name: '',
@@ -108,7 +114,25 @@ class App extends React.Component {
 
   handleChangeShowFormLogin = ()=>{
     this.setState({
-        showFormLogin: !this.state.showFormLogin
+        showFormLogin: !this.state.showFormLogin,
+        showFormRegister: false,
+        showFormForgotPassword: false
+    })
+  }
+  
+  handleChangeShowFormRegister = () =>{
+    this.setState({
+      showFormRegister: !this.state.showFormRegister,
+      showFormLogin: false,
+      showFormForgotPassword: false
+    })
+  }
+  
+  handleChangeShowFormForgotPassword = () =>{
+    this.setState({
+      showFormRegister: false,
+      showFormLogin: false,
+      showFormForgotPassword: !this.state.showFormForgotPassword
     })
   }
 
@@ -130,22 +154,39 @@ class App extends React.Component {
                 pauseOnHover
                 style={{fontSize:'13px'}}
               />
-              <Header handleChangeShowFormLogin={this.handleChangeShowFormLogin} handleLogin={this.handleLogin} appProps={this.state} handleLogout={this.handleLogout}/>
+              <Header 
+                handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
+                handleLogin={this.handleLogin} 
+                appProps={this.state} 
+                handleLogout={this.handleLogout}/>
               <Route path="/" exact>
+<<<<<<< HEAD
                 <Home handleChangeShowFormLogin={this.handleChangeShowFormLogin} showFormLogin={this.state.showFormLogin} handleLogin={this.handleLogin} role_name={this.state.role_name}/>
+=======
+                <Home 
+                  handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
+                  showFormLogin={this.state.showFormLogin} 
+                  handleLogin={this.handleLogin}
+                  handleChangeShowFormRegister={this.handleChangeShowFormRegister}
+                  showFormRegister={this.state.showFormRegister}
+                  handleChangeShowFormForgotPassword = {this.handleChangeShowFormForgotPassword}
+                  showFormForgotPassword = {this.state.showFormForgotPassword}
+                />
+>>>>>>> 9f44b35a234b583a781bfaac74926e727f8ed925
               </Route>
               {/*<Route path="/login" exact render={() =>{
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>
               }}>
               </Route>*/}
               
-              <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage}}/>
+              <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
               {/*<Route path="/user/information" exact render={() =>{
                 return !localStorage.getItem('accessToken') ? <Redirect to="/login"/> : <UpdateUser/>}
               }/>*/}
 
               {/*<UpdateUser/>
               </Route>*/}
+              
               <Route path="/user/information/update" exact>
                 <UpdateUserInforForm handlUpdateFull_name={this.handlUpdateFull_name}/>
               </Route>

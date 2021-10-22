@@ -96,8 +96,8 @@ function MenuListComposition(props) {
                         aria-labelledby="composition-button"
                         onKeyDown={handleListKeyDown}
                     >
-                        <MenuItem onClick={(event) =>{handleClose(event); handleUpdateInformation();}}>Cập nhật thông tin</MenuItem>
-                        <MenuItem onClick={handleClose}>Đổi mật khẩu</MenuItem>
+                        <MenuItem onClick={(event) =>{handleClose(event); handleUpdateInformation();}}>Trang cá nhân</MenuItem>
+                        {/*<MenuItem onClick={handleClose}>Đổi mật khẩu</MenuItem>*/}
                         <MenuItem onClick={(event) =>{handleClose(event); handleLogout();}}>Đăng xuất</MenuItem>
                     </MenuList>
                     </ClickAwayListener>

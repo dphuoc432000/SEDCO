@@ -1,5 +1,9 @@
+import React from "react";
 import { Route, Redirect } from "react-router";
-
+import {toast } from 'react-toastify';
+const notifyTost = (value)=>{
+  toast.warn(value)
+}
 function AuthenticatedAllRoute({ component: C, appProps, ...rest }) {
     // console.log(C)
     return (
@@ -7,7 +11,12 @@ function AuthenticatedAllRoute({ component: C, appProps, ...rest }) {
       <Route
         {...rest}
         render={props => appProps.checkLocalStorage ? <C {...props} {...appProps} />
-            : <Redirect to={`/?redirect=${props.location}`}/>
+            : 
+            <React.Fragment>
+              {notifyTost("Vui lòng đăng nhập!")}
+              {appProps.handleChangeShowFormLogin()}
+              <Redirect to={`/?redirect=${props.location}`}/>
+            </React.Fragment>
         }
       />
     );

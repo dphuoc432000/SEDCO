@@ -2,7 +2,7 @@ export default [
     'user',
     'sender',
     'receiver',
-    'car trip',
+    'car_trip',
     'admin',
     'mod'
 ]

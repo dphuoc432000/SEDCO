@@ -94,6 +94,7 @@ class Header extends React.Component {
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
+        
         return (
             <header id="header">
                 <div className="header-navbar">

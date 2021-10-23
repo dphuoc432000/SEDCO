@@ -99,27 +99,28 @@ class ReceiverStatusService {
         //update lại role account -> user 
         await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
 
-        //xoa file hinh uploaded
-        fs.unlink(path.join('..\\server', receiver_status.picture), (err) => {
-            if (err) {
-                console.log(err);
-                return ;
-            }
-        });
+        if(receiver_status.picture){
+            //xoa file hinh uploaded
+            fs.unlink(path.join('..\\server', receiver_status.picture), (err) => {
+                if (err) {
+                    console.log(err);
+                    return ;
+                }
+            });
 
-        //xoa folder nếu trống
-        const path_folder = path.join('..\\server', "\\uploads\\status\\RECEIVER", account_id.toString());
-        if(isEmpty(path.join(path_folder)))
-        {   
-            try {
-                fs.rmdirSync(path_folder, { recursive: true });
-            
-                console.log(`${path_folder} is deleted!`);
-            } catch (err) {
-                console.error(`Error while deleting ${dir}.`);
+            //xoa folder nếu trống
+            const path_folder = path.join('..\\server', "\\uploads\\status\\RECEIVER", account_id.toString());
+            if(isEmpty(path.join(path_folder)))
+            {   
+                try {
+                    fs.rmdirSync(path_folder, { recursive: true });
+                
+                    console.log(`${path_folder} is deleted!`);
+                } catch (err) {
+                    console.error(`Error while deleting ${dir}.`);
+                }
             }
         }
-
         return receiver_status;
     }
 

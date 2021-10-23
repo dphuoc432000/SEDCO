@@ -1,4 +1,5 @@
 
+const pagination = require("../middlewares/pagination");
 const handleOther = require('./handleOther.js');
 const userService = require('../service/UserService')
 class UserController{
@@ -65,6 +66,18 @@ class UserController{
                 if(user)
                     return res.json(user);
                 return res.status(400).json(handleOther.errorHandling("Người dùng chưa được đăng ký", null)); 
+            })
+            .catch(error => next(error))
+    }
+
+    getAllUserDriverNoCensorship = async(req, res, next) =>{
+        await userService.getAllUserDriverNoCensorship()
+            .then(users =>{
+                if(users){
+                    const datas = pagination(users, req.query._limit, req.query._page);
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi", null)); 
             })
             .catch(error => next(error))
     }

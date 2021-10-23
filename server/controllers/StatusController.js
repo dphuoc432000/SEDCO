@@ -3,6 +3,7 @@ const Status = require('../models/Status.js');
 const handleOther = require('./handleOther.js');
 const Account = require('../models/Account.js');
 const statusService = require('../service/StatusService');
+const accountService = require('../service/AccountService');
 // const upload = require('../middlewares/upload');
 const multer = require('multer');
 const pagination = require("../middlewares/pagination");
@@ -13,12 +14,32 @@ class StatusController{
 
     //[POST] /status/store/:account_id_pr
     addStatus = async (req, res, next) =>{
+        const start_receive_time = Date.parse(req.body.start_receive_time);
+        const departure_time = Date.parse(req.body.departure_time);
+        const date = new Date();
+        const current_date = date.getDate();
+        const current_month = date.getMonth() + 1;
+        const current_year = date.getFullYear();
+        const current_time = Date.parse(`${current_year}-${current_month}-${current_date}`);
+
+        if((current_time > departure_time || current_time> start_receive_time))
+            return res.status(400).json(handleOther.errorHandling("Lỗi ngày nhận nhu yếu phẩm hoặc ngày khởi hành đang nhỏ hơn ngày hiện tại!", null))
+        if((departure_time - start_receive_time < 0))
+            return res.status(400).json(handleOther.errorHandling("Lỗi ngày khởi hành đang nhỏ hơn ngày nhận hàng hóa!", null))
         const form_data = req.body;
-        form_data.picture = req.file.path;
+        form_data.picture = req.file?req.file.path:"";
+        // console.log(req.body)
         await statusService.addStatus(req.params.account_id_pr, req.params.status_type_pr, form_data)
-            .then(status => {
-                if(status)
+            .then(async status => {
+                if(status && Object.keys(status.detail).length > 0)
                     return res.json(status);
+                else if(status && Object.keys(status.detail).length === 0 && status.constructor === Object) {
+                    await Status.findByIdAndRemove({_id: status._id})
+                        .catch(err => res.status(400).json("Lỗi xóa status"));
+                    await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user')
+                        .catch(err => res.status(400).json("chuyển account role về user"));
+                    return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu con", null))
+                }
                 return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu", null))
             })
             .catch(error => next(error));

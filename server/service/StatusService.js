@@ -3,6 +3,7 @@ const Status = require('../models/Status');
 const accountService = require('./AccountService.js');
 const receiverStatusService = require('./ReceiverStatusService');
 const senderStatusService = require("./SenderStatusService");
+const carStatusService = require('./CarStatusService');
 const { getSenderStatusDetail } = require('./SenderStatusService');
 
 //update số lượng essential. Cho form nhập số lượng rồi bấm update sẽ chuyển body lên qua URL có các param status ID, loại STATUS. Lấy ra status với status_id. Từ status so sánh status_type với loại STATUS. Nếu đúng thì sửa đổi sai thì trả về null hoặc báo lỗi không đúng
@@ -24,11 +25,19 @@ class StatusService {
     // OK
     // Status sẽ được add khi tất cả status trước đó đã được hoàn thành --> status_completed: true;
     addStatus = async (account_id_param, status_type_param, object) => {
-        const checkAccount = await accountService.getAccountDetails(account_id_param)
-            .then(account => account?true:false)
-            .catch(()=>false);
-        const check_status_type = ["SENDER", "RECEIVER", "CAR TRIP"].includes(status_type_param)?true:false;
+        // const checkAccount = await accountService.getAccountDetails(account_id_param)
+        //     .then(account => account?true:false)
+        //     .catch(()=>false);
+        
+        //lấy account
+        const account = await accountService.getAccountDetails(account_id_param)
+            .then(account => account)
+            .catch(err => null)
 
+        const checkAccount = account?true:false;
+
+        const check_status_type = ["SENDER", "RECEIVER", "CAR_TRIP"].includes(status_type_param)?true:false;
+        // console.log("32", check_status_type)
         const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
 
         if(checkAccount && check_status_type && checkAllStatusFalse === false){
@@ -36,35 +45,44 @@ class StatusService {
             formData.account_id = account_id_param;
             formData.status_type = status_type_param;
             formData.status_completed = false;
-
             //tạo status
-            const status = await new Status(formData).save()
-                .then(data => mongooseToObject(data))
+            return await new Status(formData).save()
+                .then(async data => {
+                    let status = mongooseToObject(data);
+                    const staus_id = status._id;
+                    switch (status_type_param) {
+                        case "RECEIVER":
+                            //tạo receiver status
+                            status.detail = await receiverStatusService.addReceiverStatus(staus_id.toString(), object)
+                                .catch(err => err);
+                            //update role account
+                            await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver')
+                                .catch(err => err);
+                            break;
+                        case "SENDER":
+                            //tạo receiver status
+                            status.detail = await senderStatusService.addSenderStatus(staus_id.toString(), object)
+                                .catch(err => err);
+                            //update role account
+                            await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'sender')
+                                .catch(err => err);
+                            break;
+                        case "CAR_TRIP":
+                            //tạo receiver status
+                            status.detail = await carStatusService.addCarStatus(staus_id, account.user_id, object)
+                                .catch(err => err);
+                            //update role account
+                            await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'car_trip')
+                                .catch(err => err);
+                            break;
+                        default:
+                            break;
+            
+                    }
+                    console.log(status);
+                    return status;
+                })
                 .catch(err => err)
-            switch (status_type_param) {
-                case "RECEIVER":
-                    //tạo receiver status
-                    status.detail = await receiverStatusService.addReceiverStatus(status._id.toString(), object);
-                    //update role account
-                    accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver');
-                    break;
-                case "SENDER":
-                    //tạo receiver status
-                    status.detail = await senderStatusService.addSenderStatus(status._id.toString(), object);
-                    //update role account
-                    accountService.accountUpdate_roleId_byRoleName(account_id_param, 'sender');
-                    break;
-                // case "CAR TRIP":
-                //     console.log(status._id);
-                //     //tạo receiver status
-                //     receiverStatusService.addReceiverStatus(status._id.toString(), object)
-                //     //update role account
-                //     accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver');
-                //     break;
-                default:
-                    break;
-            }
-            return status;
         }
         else 
             return null;
@@ -89,11 +107,9 @@ class StatusService {
                         .then((data) =>{
                             obj.detail = data;
                         })
-                    break;
-                
-                //     break;
+                    break
                 // case "CAR TRIP":
-                
+                //     await 
                 //     break;
                 default:
                     break;
@@ -150,9 +166,9 @@ class StatusService {
                 case "SENDER":
                     status_detail = await senderStatusService.getSenderStatusDetail_status_id(status_id_param);
                     break;
-                // case "CAR TRIP":
-                
-                //     break;
+                case "CAR_TRIP":
+                    status_detail = await carStatusService.getCarStatusDetail_status_id(status_id_param);
+                    break;
                 default:
                     break;
             }
@@ -198,10 +214,9 @@ class StatusService {
                     // await receiverStatusService.deleteReceiverStatus(status.detail._id.toString());// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
                     await receiverStatusService.deleteReceiverStatus(status.detail._id);
                     break;
-                
-                // case "CAR TRIP":
-                
-                //     break;
+                case "CAR_TRIP":
+                    await carStatusService.deleteCarStatus(status.detail._id);
+                        break;
                 default:
                     break;
             }

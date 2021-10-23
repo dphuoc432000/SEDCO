@@ -7,7 +7,7 @@ const multer = require("multer");
 
 //thêm mới status bao gồm tạo status, status detail, đổi role user theo loại status và lưu hình
 router.post('/:account_id_pr/:status_type_pr/create', authmiddleware.check_login, authmiddleware.check_user_create_status, uploadFile.uploadFileStatus('uploads/status').single('picture'), statusController.addStatus); //OK
-router.get('/list', authmiddleware.check_login,authmiddleware.checkRole(["user", "sender", "receiver", "car trip"]), statusController.getAllStatus);//OK (Pagination)
+router.get('/list', authmiddleware.check_login,authmiddleware.checkRole(["user", "sender", "receiver", "car_trip"]), statusController.getAllStatus);//OK (Pagination)
 router.get('/:status_type_pr/list', statusController.getAllStatusByType);//OK
 router.get('/:status_id/detail', statusController.getStatusByID);//OK
 // // không cho phép update UserID

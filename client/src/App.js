@@ -140,7 +140,6 @@ class App extends React.Component {
 
   render(){
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
-    console.log(this.state)
     return (
       <Router>
         <Switch>
@@ -163,9 +162,6 @@ class App extends React.Component {
                 appProps={this.state} 
                 handleLogout={this.handleLogout}/>
               <Route path="/" exact>
-<<<<<<< HEAD
-                <Home handleChangeShowFormLogin={this.handleChangeShowFormLogin} showFormLogin={this.state.showFormLogin} handleLogin={this.handleLogin} role_name={this.state.role_name}/>
-=======
                 <Home 
                   handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
                   showFormLogin={this.state.showFormLogin} 
@@ -174,8 +170,8 @@ class App extends React.Component {
                   showFormRegister={this.state.showFormRegister}
                   handleChangeShowFormForgotPassword = {this.handleChangeShowFormForgotPassword}
                   showFormForgotPassword = {this.state.showFormForgotPassword}
+                  role_name={this.state.role_name}
                 />
->>>>>>> 9f44b35a234b583a781bfaac74926e727f8ed925
               </Route>
               {/*<Route path="/login" exact render={() =>{
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>

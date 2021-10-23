@@ -28,19 +28,22 @@ class Status extends Component {
   };
   
   getRoleName = () => {
-    switch (this.props.role_name.name) {
-      case "Người dùng":
-        return "user";
-      case "Người hỗ trợ":
-        return "sender";
-      case "Người cần hỗ trợ":
-        return "receiver";
-      case "Người vận chuyển":
-        return "car trip";
-
-      default:
-        return;
+    if(this.props.role_name.name){
+      switch (this.props.role_name.name) {
+        case "Người dùng":
+          return "user";
+        case "Người hỗ trợ":
+          return "sender";
+        case "Người cần hỗ trợ":
+          return "receiver";
+        case "Người vận chuyển":
+          return "car_trip";
+        default:
+          return;
+      }
     }
+    else
+      return "";
   };
   render() {
     const { showReceiverForm, showSenderForm } = this.state;
@@ -59,7 +62,7 @@ class Status extends Component {
       const getRoleName = this.getRoleName()
     return (
       <div className="Status">
-        {getRoleName === 'sender' ? 
+        {getRoleName === 'user' || getRoleName ===""  ?
           <div className="Status-Not-Role">
             <h2 className="Status-title">Tạo trạng thái</h2>
             <h3 className="Status-Who">Bạn là người</h3>

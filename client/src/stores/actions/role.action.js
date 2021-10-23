@@ -15,6 +15,7 @@ const get_role_user = async (role_id) =>{
     await axios.get(`${API_URL}/api/role/${role_id}/detail`)
         .then(data => {
             action.payload = data.data;
+            console.log(action.payload)
         })
         .catch(err => {
             action.type = ROLE_USER_ERROR;

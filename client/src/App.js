@@ -32,7 +32,7 @@ const translateRoleName = (role_name)=>{
           return {name:"Người hỗ trợ",color:"#FED330" };
       case "receiver":
           return {name:"Người cần hỗ trợ",color:"#EE5A24" };
-      case "car trip":
+      case "car_trip":
           return {name:"Người vận chuyển",color:"#A3CB38" };
       case "mod":
           return {name:"Mod",color:"#EA2027" };
@@ -62,9 +62,11 @@ class App extends React.Component {
       const user = await this.props.userIsLogined.user;
       await this.props.get_role_user_action(verifyData.role_id);
       const role_user = await this.props.roleReducer.role_user;
-      if(role_user ){
+      if(role_user){
         const role_name = role_user.role_name;
         const roles = await this.props.roleReducer.roles;
+        
+        console.log(roles)
         if(roles.includes(role_name)){
             const menu = menuHeader.find(menu =>{
                 return menu.name === role_name;
@@ -137,7 +139,8 @@ class App extends React.Component {
   }
 
   render(){
-    const checkLocalStorage = localStorage.getItem('accessToken')?true:false
+    const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
+    console.log(this.state)
     return (
       <Router>
         <Switch>

@@ -30,7 +30,7 @@ export const menuHeader =[
         ]        
     },
     {
-        name: "car trip",
+        name: "car_trip",
         menu: [
             {
                 name: "Quản lý giao dịch",

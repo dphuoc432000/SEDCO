@@ -22,6 +22,17 @@ class StatusService {
         return true;
     }
 
+    check_account = async(account_id_param) =>{
+        const account = await accountService.getAccountDetails(account_id_param)
+            .then(account => account)
+            .catch(err => null)
+
+        return account?true:false;
+    }
+
+    check_status_type = async (status_type_param) =>{
+        return ["SENDER", "RECEIVER", "CAR_TRIP"].includes(status_type_param)?true:false;
+    }
     // OK
     // Status sẽ được add khi tất cả status trước đó đã được hoàn thành --> status_completed: true;
     addStatus = async (account_id_param, status_type_param, object) => {
@@ -79,13 +90,85 @@ class StatusService {
                             break;
             
                     }
-                    console.log(status);
                     return status;
                 })
                 .catch(err => err)
         }
         else 
             return null;
+    }
+
+    addStatusCarTrip = async(account_id_param, object) => {
+        const check_account = await this.check_account(account_id_param);
+        const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
+        if(check_account && checkAllStatusFalse === false){
+            const formData = {};
+            formData.account_id = account_id_param;
+            formData.status_type = 'CAR_TRIP';
+            formData.status_completed = false;
+            return await new Status(formData).save()
+                .then(async data => {
+                    let status = mongooseToObject(data);
+                    const staus_id = status._id;
+                        status.detail = await carStatusService.addCarStatus(staus_id, account.user_id, object)
+                            .catch(err => err);
+                        await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'car_trip')
+                            .catch(err => err);
+                    return status;
+                })
+                .catch(err => err);
+        }
+        return null;
+    }
+
+    addStatusSender = async(account_id_param, object) =>{
+        const check_account = await this.check_account(account_id_param);
+        const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
+        if(check_account && checkAllStatusFalse === false){
+            const formData = {};
+            formData.account_id = account_id_param;
+            formData.status_type = 'SENDER';
+            formData.status_completed = false;
+            return await new Status(formData).save()
+                .then(async data => {
+                    let status = mongooseToObject(data);
+                    const staus_id = status._id;
+                            //tạo receiver status
+                    status.detail = await senderStatusService.addSenderStatus(staus_id, object)
+                        .catch(err => err);
+                    //update role account
+                    await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'sender')
+                        .catch(err => err);
+                    return status;
+                })
+                .catch(err => err);
+        }
+        return null;
+    }
+
+    addStatusReceiver = async(account_id_param, object) =>{
+        const check_account = await this.check_account(account_id_param);
+        const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
+        if(check_account && checkAllStatusFalse === false){
+            const formData = {};
+            formData.account_id = account_id_param;
+            formData.status_type = 'RECEIVER';
+            formData.status_completed = false;
+            return await new Status(formData).save()
+                .then(async data => {
+                    let status = mongooseToObject(data);
+                    const staus_id = status._id;
+                            //tạo receiver status
+                    status.detail = await receiverStatusService.addReceiverStatus(staus_id, object)
+                        .catch(err => err);
+                    //update role account
+                    await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'receiver')
+                        .catch(err => err);
+                    return status;
+                })
+                .catch(err => err);
+        }
+        return null;
     }
 
     // OK
@@ -108,9 +191,12 @@ class StatusService {
                             obj.detail = data;
                         })
                     break
-                // case "CAR TRIP":
-                //     await 
-                //     break;
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
                 default:
                     break;
             }
@@ -138,10 +224,12 @@ class StatusService {
                             obj.detail = data;
                         })
                     break;
-
-                // case "CAR TRIP":
-                
-                //     break;
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
                 default:
                     break;
             }

@@ -109,10 +109,24 @@ class CarStatusService {
         return car_status;
     }
 
-    //Lấy các chuyến xe chưa được kiểm duyệt
+    //Lấy các chuyến xe chưa được kiểm duyệt ->userService
     getAllCarStatusNoCensorship = async () =>{
         return await CarStatus.find({censorship: false})
             .then(data => multiplemongooseToObject(data));
+    }
+
+    //lấy tất cả các chuyến xe bao gồm chưa được kiểm duyệt và đã được kiểm duyệt
+    // getAllCarStatus
+
+    getCarStatusDetail_status_id = async(status_id) =>{
+        return await CarStatus.findOne({status_id: status_id})
+            .then(async data =>{ 
+                const carStatus = mongooseToObject(data);
+                carStatus.detail = await carService.getCarbyID(data.car_id)
+                    .catch(err => err);
+                return carStatus;
+            })
+            .catch(err => err);
     }
 }
 

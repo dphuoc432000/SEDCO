@@ -109,6 +109,7 @@ class SenderStatusService {
 
             //xóa folder nếu trống
             const path_folder = path.join('..\\server', "\\uploads\\status\\SENDER", account_id.toString());
+            console.log(path_folder, isEmpty(path.join(path_folder)))
             if(isEmpty(path.join(path_folder)))
             {   
                 try {

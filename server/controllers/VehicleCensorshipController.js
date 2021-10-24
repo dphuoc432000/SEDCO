@@ -14,11 +14,7 @@ class VehicleCensorshipController {
         const test_img_2 = files.test_img_2;
         if(typeof face_img != 'undefined' &&  typeof id_card_img_before != 'undefined' &&  typeof id_card_img_after != 'undefined' 
             && typeof driving_license_img_before != 'undefined'&& typeof driving_license_img_after != 'undefined'&& typeof test_img_1 != 'undefined'
-            ){
-        
-            // const object =  files.map(file =>{
-            //     return file.path
-            // });
+        ){
             const object = {
                 face_img : face_img[0].path,
                 id_card_img_before : id_card_img_before[0].path,

@@ -44,6 +44,76 @@ class StatusController{
             })
             .catch(error => next(error));
     }
+    getPathAllImageCar = (req, res, next) =>{
+        const files = req.files;
+        const face_img = files.face_img;
+        const id_card_img_before = files.id_card_img_before;
+        const id_card_img_after = files.id_card_img_after;
+        const driving_license_img_before = files.driving_license_img_before;
+        const driving_license_img_after = files.driving_license_img_after;
+        const test_img_1 = files.test_img_1;
+        const test_img_2 = files.test_img_2;
+        if(typeof face_img != 'undefined' &&  typeof id_card_img_before != 'undefined' &&  typeof id_card_img_after != 'undefined' 
+            && typeof driving_license_img_before != 'undefined'&& typeof driving_license_img_after != 'undefined'&& typeof test_img_1 != 'undefined'
+        ){
+            const object = {
+                face_img : face_img[0].path,
+                id_card_img_before : id_card_img_before[0].path,
+                id_card_img_after : id_card_img_after[0].path,
+                driving_license_img_before : driving_license_img_before[0].path,
+                driving_license_img_after : driving_license_img_after[0].path,
+                test_img_1 : test_img_1[0].path,
+            }
+            if(typeof test_img_2 != 'undefined')
+                object.test_img_2 = test_img_2[0].path
+            return object
+        }
+        return null;
+    }
+    addStatusCar = async(req, res, next) =>{
+        // console.log('req.file: ',req.file)
+        const pathImages = this.getPathAllImageCar(req, res, next);
+        if(path)
+        res.json({})
+    }
+    //[POST] /status/store/:account_id_pr
+    addStatusReceiver = async(req, res, next) =>{
+        const form_data = req.body;
+        form_data.picture = req.file?req.file.path:"";
+        await statusService.addStatusReceiver(req.params.account_id_pr, form_data)
+            .then(async status => {
+                if(status && Object.keys(status.detail).length > 0)
+                    return res.json(status);
+                else if(status && Object.keys(status.detail).length === 0 && status.constructor === Object) {
+                    await Status.findByIdAndRemove({_id: status._id})
+                        .catch(err => res.status(400).json("Lỗi xóa status"));
+                    await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user')
+                        .catch(err => res.status(400).json("chuyển account role về user"));
+                    return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu con", null))
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu", null))
+            })
+            .catch(error => next(error));
+    }
+
+    addStatusSender= async(req, res, next) =>{
+        const form_data = req.body;
+        form_data.picture = req.file?req.file.path:"";
+        await statusService.addStatusSender(req.params.account_id_pr, form_data)
+            .then(async status => {
+                if(status && Object.keys(status.detail).length > 0)
+                    return res.json(status);
+                else if(status && Object.keys(status.detail).length === 0 && status.constructor === Object) {
+                    await Status.findByIdAndRemove({_id: status._id})
+                        .catch(err => res.status(400).json("Lỗi xóa status"));
+                    await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user')
+                        .catch(err => res.status(400).json("chuyển account role về user"));
+                    return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu con", null))
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu", null))
+            })
+            .catch(error => next(error));
+    }
     
     //[GET] /status/status_list
     getAllStatus = async (req, res, next) => {
@@ -94,7 +164,7 @@ class StatusController{
             .catch(err => next(err))
     }
     
-    //[POST] /statuss/delete/:status_id_pr
+    //[POST] /status/:status_id_pr/delete
     deleteStatus = async(req, res, next) =>{
         statusService.deleteStatus(req.params.status_id_pr)
             .then(status => {
@@ -107,7 +177,7 @@ class StatusController{
 
     getEssentialOfStatus = async(req, res, next) =>{
     }
-
+    
 }
 
 module.exports = new StatusController();

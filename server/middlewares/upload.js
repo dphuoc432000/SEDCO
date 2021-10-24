@@ -94,11 +94,13 @@ const uploadFileStatus = (directory) =>{
                 let direc = directory ;
                 // console.log(req.params.status_type_pr !== undefined);
                 // if(req.params.status_type_pr !== "undefine")
-                if(["SENDER", "RECEIVER", "CAR_TRIP"].includes(req.params.status_type_pr)){
-                    direc +=  "\\" + req.params.status_type_pr + "\\" + req.data._id;
-                }
-                else 
-                    direc += "\\"  + req.data._id;
+                
+                //24/10/2021
+                // if(["SENDER", "RECEIVER", "CAR_TRIP"].includes(req.params.status_type_pr)){
+                //     direc +=  "\\" + req.params.status_type_pr + "\\" + req.data._id;
+                // }
+                // else 
+                direc += "\\"  + req.data._id;
                 if(!fs.existsSync(direc))
                     fs.mkdirSync(direc)
                 cb(null, direc);

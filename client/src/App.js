@@ -1,4 +1,5 @@
 import Home from "./pages/Home/Home";
+import Admin from "./pages/Admin/Admin";
 // import Login from "./pages/Auth/Login/Login";
 // import Register from "./pages/Auth/Register/Register";
 import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUserInforForm";
@@ -177,6 +178,9 @@ class App extends React.Component {
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>
               }}>
               </Route>*/}
+              <Route path="/admin">
+                <Admin/>
+              </Route>
               
               <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
               {/*<Route path="/user/information" exact render={() =>{

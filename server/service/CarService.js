@@ -23,6 +23,28 @@ class CarService {
             .then(data => mongooseToObject(data))
             .catch(err => err);
     }
+
+    updateCarById = async(id, object) =>{
+        //trả về dữ liệu củ
+        await Car.findByIdAndUpdate({_id: id}, object)
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        //trả về dữ liệu mới
+        return await this.getCarbyID(id)
+            .then(data => data)
+            .catch(err => err);
+    }
+
+    updateCarByUserID = async(user_id, object) =>{
+        //trả về dữ liệu cuũ
+        await Car.findOneAndUpdate({user_id: user_id}, object)
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        //trả về dữ liệu mới
+        return await this.getCarByUserID(user_id)
+            .then(data => data)
+            .catch(err => err);
+    }
 }
 
 module.exports = new CarService();

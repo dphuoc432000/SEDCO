@@ -4,6 +4,7 @@ const accountService = require('./AccountService.js');
 const receiverStatusService = require('./ReceiverStatusService');
 const senderStatusService = require("./SenderStatusService");
 const carStatusService = require('./CarStatusService');
+const vehicleCensorshipService = require('../service/VehicleCensorshipService')
 const { getSenderStatusDetail } = require('./SenderStatusService');
 
 //update số lượng essential. Cho form nhập số lượng rồi bấm update sẽ chuyển body lên qua URL có các param status ID, loại STATUS. Lấy ra status với status_id. Từ status so sánh status_type với loại STATUS. Nếu đúng thì sửa đổi sai thì trả về null hoặc báo lỗi không đúng
@@ -17,6 +18,7 @@ class StatusService {
     check_accID_has_status_no_complete = async (id) =>{
         let statusList = await Status.find({account_id: id,status_completed: false})
             .then(status => multiplemongooseToObject(status));
+            console.log(statusList)
         if(statusList.length === 0)
             return false;
         return true;
@@ -101,7 +103,9 @@ class StatusService {
     addStatusCarTrip = async(account_id_param, object) => {
         const check_account = await this.check_account(account_id_param);
         const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
+        // console.log(check_account, checkAllStatusFalse)
         if(check_account && checkAllStatusFalse === false){
+            //tạo status
             const formData = {};
             formData.account_id = account_id_param;
             formData.status_type = 'CAR_TRIP';
@@ -110,10 +114,29 @@ class StatusService {
                 .then(async data => {
                     let status = mongooseToObject(data);
                     const staus_id = status._id;
-                        status.detail = await carStatusService.addCarStatus(staus_id, account.user_id, object)
+                    const account = await accountService.getAccountDetails(account_id_param)
+                        .catch(err => null)
+                    const user_id = account.user_id;
+                    //tạo car status
+                    status.detail = await carStatusService.addCarStatus(staus_id, user_id, object)
+                        .catch(err => err);
+
+                    //lưu hình ảnh vehicle_ship
+                    const vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user_id)
+                        .catch(err => err);
+                    //nếu đã có hình ảnh của tài xế rồi thì cập nhật hình ảnh
+                    // console.log('vehicle_censorship', vehicle_censorship)
+                    if(vehicle_censorship)
+                        status.vehicle_censorship = await vehicleCensorshipService.updateVehicleCensorshipByUserID(user_id, object.file_images)
                             .catch(err => err);
-                        await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'car_trip')
+                    else
+                        status.vehicle_censorship = await vehicleCensorshipService.addVehicleCensorship(user_id,object.file_images)
+                            .then(data => data)
                             .catch(err => err);
+                    //cập nhật role thành car_trip
+                    await accountService.accountUpdate_roleId_byRoleName(account_id_param, 'car_trip')
+                        .catch(err => err);
+                    console.log(status)
                     return status;
                 })
                 .catch(err => err);
@@ -125,6 +148,7 @@ class StatusService {
         const check_account = await this.check_account(account_id_param);
         const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
         if(check_account && checkAllStatusFalse === false){
+            //tạo status
             const formData = {};
             formData.account_id = account_id_param;
             formData.status_type = 'SENDER';
@@ -150,6 +174,7 @@ class StatusService {
         const check_account = await this.check_account(account_id_param);
         const checkAllStatusFalse = await this.check_accID_has_status_no_complete(account_id_param);
         if(check_account && checkAllStatusFalse === false){
+            //tạo status
             const formData = {};
             formData.account_id = account_id_param;
             formData.status_type = 'RECEIVER';

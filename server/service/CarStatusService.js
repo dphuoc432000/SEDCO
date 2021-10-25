@@ -23,20 +23,23 @@ class CarStatusService {
     addCarStatus = async (status_id, user_id, object) => {
         const car_object = {...object.car};
         const car_of_user = await carService.getCarByUserID(user_id);
+        console.log('car_of_user',car_of_user)
         let car_id;
-        if( !car_of_user || car_of_user.license_plate !== car_object.license_plate){
+        if( !car_of_user ){
             car_id = await carService.addCar(user_id, car_object)
                 .then(car_data => car_data._id)
                 .catch(err => err);
         }
-        else
-            car_id = car_of_user._id;
+        else{
+            car_id = await carService.updateCarByUserID(user_id, car_object)
+                .then(car_data => car_data._id)
+                .catch(err => err);
+        }
         const date = new Date();
         const current_date = date.getDate();
         const current_month = date.getMonth() + 1;
         const current_year = date.getFullYear();
         const current_time = Date.parse(`${current_year}-${current_month}-${current_date}`);
-        console.log(current_time)
         const start_receive_time = Date.parse(object.start_receive_time);
         const departure_time = Date.parse(object.departure_time);
         const car_status_object = {
@@ -76,7 +79,7 @@ class CarStatusService {
         const car_status = await CarStatus.findByIdAndRemove({_id: car_status_id_param})
             .then(data => mongooseToObject(data))
             .catch(err=>err);
-        console.log(car_status)
+        // console.log(car_status)
         //xóa status đi. Đồng thời trả về account id
         const account_id = await Status.findByIdAndRemove({_id: car_status.status_id})
             .then(data => data.account_id)
@@ -127,6 +130,43 @@ class CarStatusService {
                 return carStatus;
             })
             .catch(err => err);
+    }
+    updateCarStatusInfor = async(car_status_id, object)=>{
+        const car = object.car;
+        const car_status =  {
+            start_receive_time: object.start_receive_time,
+            departure_time: object.departure_time,
+            location_start: object.location_start,
+            location_finish: object.location_finish,
+            note: object.note,
+            picture: object.picture,
+        }
+        console.log(car_status.picture)
+        const car_status_update = await CarStatus.findByIdAndUpdate({_id: car_status_id},car_status)
+            .then(async data =>{
+                const update_data = mongooseToObject(data);
+
+                if(update_data.picture)
+                    fs.unlink(path.join('..\\server', update_data.picture), (err) => {
+                        if (err) {
+                            console.log(err);
+                            return ;
+                        }
+                    });
+                //trả về lại car_status với dữ liệu mới
+                const car_status_current = await CarStatus.findById({_id: update_data._id})
+                    .then(data => mongooseToObject(data))
+                    .catch(err => err)
+
+                car_status_current.car = await carService.updateCarById(update_data.car_id,car)
+                    .then(data => data)
+                    .catch(err=> err);
+                return car_status_current;
+            })
+            .catch(err => err);
+            console.log('new car', car_status_update)
+        return car_status_update;
+
     }
 }
 

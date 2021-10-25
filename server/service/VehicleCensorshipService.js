@@ -4,6 +4,8 @@ const Car_status = require('../models/Car_Status');
 const carStatusSevice = require('./CarStatusService');
 const carService = require('./CarService');
 const userService = require('./UserService');
+const fs = require('fs');
+const path = require('path');
 
 class VehicleCensorshipService {
 
@@ -17,23 +19,57 @@ class VehicleCensorshipService {
 
     getAllVehicleCensorship = async () => {
         return await Vehicle_censorship.find({})
-            .then(data => data)
+            .then(data => mongooseToObject(data))
             .catch(err => err)
     }
 
     getVehicleCensorshipById = async (id_param) =>{
         return await Vehicle_censorship.findById({_id: id_param})
-            .then(data => data)
+            .then(data => mongooseToObject(data))
             .catch(err => err);
     }
 
     getVehicleCensorshipByUserId = async (user_id_param) =>{
         return await Vehicle_censorship.findOne({user_id: user_id_param})
-            .then(data => data)
+            .then(data => mongooseToObject(data))
             .catch(err => err);
     }
 
-
+    updateVehicleCensorshipByUserID = async (user_id_param, object) =>{
+        
+        //xóa dhinhf cũ update hình mới
+        const images = await this.getVehicleCensorshipByUserId(user_id_param)
+            .then(data => {
+                return {
+                    face_img: data.face_img,
+                    id_card_img_before: data.id_card_img_before,
+                    id_card_img_after: data.id_card_img_after,
+                    driving_license_img_before: data.driving_license_img_before,
+                    driving_license_img_after: data.driving_license_img_after,
+                    test_img_1: data.test_img_1,
+                    test_img_2: data.test_img_2,
+                }
+            })
+            .catch(err => null);
+        if(images)
+            for (const [key, value] of Object.entries(images)) {
+                if(key)
+                    fs.unlink(path.join('..\\server', value), (err) => {
+                        if (err) {
+                            console.log(err);
+                            return ;
+                        }
+                    });
+            } 
+        //trả về dữ liệu cũ 
+        await Vehicle_censorship.findOneAndUpdate({user_id: user_id_param}, object)
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        //trả về dữ liệu mới
+        return await this.getVehicleCensorshipByUserId(user_id_param)
+            .then(data => data)
+            .catch(err => err);
+    }
 }
 
 module.exports = new VehicleCensorshipService();

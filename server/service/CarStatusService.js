@@ -66,11 +66,12 @@ class CarStatusService {
             .catch(err => err);
         
     }
-    getCarStatusDetail_status_id = async(status_id) =>{
-        return await CarStatus.findOne({status_id: status_id})
-            .then(data => mongooseToObject(data))
-            .catch(err => err);
-    }
+
+    // getCarStatusDetail_status_id = async(status_id) =>{
+    //     return await CarStatus.findOne({status_id: status_id})
+    //         .then(data => mongooseToObject(data))
+    //         .catch(err => err);
+    // }
 
 
     deleteCarStatus = async (car_status_id_param) => {
@@ -125,7 +126,7 @@ class CarStatusService {
         return await CarStatus.findOne({status_id: status_id})
             .then(async data =>{ 
                 const carStatus = mongooseToObject(data);
-                carStatus.detail = await carService.getCarbyID(data.car_id)
+                carStatus.car = await carService.getCarbyID(data.car_id)
                     .catch(err => err);
                 return carStatus;
             })

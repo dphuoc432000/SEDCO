@@ -19,6 +19,18 @@ router.post('/:account_id_pr/create',
                         {name: 'test_img_1', maxCount: 1},
                         {name: 'test_img_2', maxCount: 1}]),
                 // uploadFile.uploadFileStatus('uploads\\CAR_TRIP').single('picture'),
-                statusController.addStatusCar)
-router.post('/:car_status_id_pr/update', authmiddleware.check_login ,authmiddleware.checkRole(['car_trip']), uploadFile.uploadFileStatus('uploads/status/CAR_TRIP').single('picture'), carStatusController.updateCarStatusInfor)
+                statusController.addStatusCar); //OK
+router.post('/:car_status_id_pr/update', authmiddleware.check_login ,authmiddleware.checkRole(['car_trip']), uploadFile.uploadFileStatus('uploads/status/CAR_TRIP').single('picture'), carStatusController.updateCarStatusInfor); //OK
+router.post('/:car_status_id_pr/:sender_status_id_pr/register/sender', carStatusController.registerSenderStatus); //OK
+router.post('/:car_status_id_pr/:receiver_status_id_pr/register/receiver', carStatusController.registerReceiverStatus); //OK
+//Lấy ra những người đã được chuyến xe đăng ký nhưng chưa nhận nhu yếu phẩm(chưa click nut xác nhận)
+//Điều kiện lọc:
+//- Có data trong history_sender
+//- Chưa được 2/2 confirm (confirm 0/2)
+router.get('/:car_status_id_pr/register/sender/02/list', carStatusController.getAllRegisterSenderNoConfirm_0_2);//OK đã có pagination
+//Lấy ra những người đã được chuyến xe đăng ký nhưng chưa gủi nhu yếu phẩm(chưa click nut xác nhận)
+//Điều kiện lọc:
+//- Có data trong history_receiver
+//- Chưa được 2/2 confirm (confirm 0/2)
+router.get('/:car_status_id_pr/register/receiver/02/list', carStatusController.getAllRegisterReceiverNoConfirm_0_2);//OK đã có pagination
 module.exports = router;

@@ -54,16 +54,16 @@
   color: rgb(52, 71, 243);
 }
 
-.input-1 {
+.input-UpdateStatusForm {
   margin-left: 10%;
 }
 
-.input-1 input {
+.input-UpdateStatusForm input {
   width: 87%;
   padding: 3px;
   outline: none;
 }
-.input-1 input:focus{
+.input-UpdateStatusForm input:focus{
   border-color: cornflowerblue;
 }
 .unit {
@@ -182,8 +182,9 @@
   margin-top: 9px;
   margin-bottom: 6px;
 }
-.input-item{  
+.input-item-Update{  
   width: 430px;
+  align-items: center;
     border-radius: 4px;
     display: flex;
     align-items: center;

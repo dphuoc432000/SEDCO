@@ -49,7 +49,7 @@ class Status extends Component {
     const { showReceiverForm, showSenderForm } = this.state;
     const checkReceiverForm =
       showReceiverForm === true ? (
-        <ReceiverForm exitModalReceiverForm={this.handleShowHideFormReceiver} />
+        <ReceiverForm exitModalReceiverForm={this.handleShowHideFormReceiver} account_id={this.props.account_id} />
       ) : (
         ""
       );
@@ -85,7 +85,7 @@ class Status extends Component {
             </div>
             <RecentList/>
           </div> : '' }
-        {/* {getRoleName === 'sender' ? <NguoiCho/> : ''} */}
+        {getRoleName === 'sender' ? <NguoiCho/> : ''}
         
         
         

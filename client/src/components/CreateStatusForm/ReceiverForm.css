@@ -8,7 +8,7 @@
   position: relative;
   z-index: 4;
   width: 40%;
-  
+
   height: 100%;
   /* overflow: hidden;
   overflow-y: scroll; */
@@ -18,18 +18,18 @@
 
 .back {
   position: fixed;
-    border-radius: 0px;
-    padding: 3px 14px;
-    background-color: #ee5253;
-    font-weight: bold;
-    font-size: 15px;
-    color: white;
-    border: 1px solid #fff9f9;
-    cursor: pointer;
+  border-radius: 0px;
+  padding: 3px 14px;
+  background-color: #ee5253;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  border: 1px solid #fff9f9;
+  cursor: pointer;
 }
 
 .content {
-  margin-top:30px;
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -42,7 +42,7 @@
 
 .heading-2 {
   margin: 8px 0px;
-    font-size: 16px;
+  font-size: 16px;
   font-weight: bold;
   color: rgba(243, 52, 52, 1);
 }
@@ -58,13 +58,15 @@
   margin-left: 10%;
 }
 
-.input-1 input {
+.input-1 .input-item1 {
   width: 87%;
-  height:100%;
+  height: 100%;
   padding: 3px;
+  border: none;
+  border-right: 1px solid #9f9f9f;
   outline: none;
 }
-.input-1 input:focus{
+.input-1 .input-item1:focus {
   border-color: cornflowerblue;
 }
 .unit {
@@ -156,7 +158,7 @@
   bottom: 0;
   /* display: none; */
 }
-.Modal-Reveiver__CreatStatus.open{
+.Modal-Reveiver__CreatStatus.open {
   display: flex;
 }
 .Modal-overlay {
@@ -176,25 +178,24 @@
   animation: modalFadeIn ease 0.5s;
   /* khi thèn con vượt quá thèn cha thì ẩn đi */
 }
-.GhiChu{
-  height: 54px;
+.GhiChu {
+  height: 90px;
+  width: 430px;
 }
-.input-title{
+.input-title {
   margin-top: 9px;
   margin-bottom: 6px;
 }
-.input-item{  
+.input-item {
   width: 430px;
-    border-radius: 4px;
-    display: flex;
-    height: 37px;
-    border: 1px solid #3333339c;
+  border-radius: 4px;
+  display: flex;
+  height: 37px;
+  border: 1.5px solid #3333339c;
 }
-.unit{
-
+.unit {
 }
-.button-addIMG{
+.button-addIMG {
   padding: 9px;
-    border-radius: 6px;
-
+  border-radius: 6px;
 }

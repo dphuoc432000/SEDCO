@@ -171,6 +171,7 @@ class App extends React.Component {
                   handleChangeShowFormForgotPassword = {this.handleChangeShowFormForgotPassword}
                   showFormForgotPassword = {this.state.showFormForgotPassword}
                   role_name={this.state.role_name}
+                  account_id={this.state.account_id}
                 />
               </Route>
               {/*<Route path="/login" exact render={() =>{

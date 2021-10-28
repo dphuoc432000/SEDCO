@@ -20,41 +20,41 @@ class UpdateReceiverForm extends Component {
                 hơn)
               </p>
             </div>
-            <div className="input-1">
+            <div className="input-UpdateStatusForm">
               <form action="#">
                 <p className="heading-3 total">Nhu yếu phẩm</p>
                 <h3 className="input-title">Khẩu trang</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Cái</p>
                 </div>
                 <h3 className="input-title">Quần áo</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Cái</p>
                 </div>
                 <h3 className="input-title">Gạo</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Kg</p>
                 </div>
                 <h3 className="input-title">Mỳ gói</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Thùng</p>
                 </div>
                 <h3 className="input-title">Sữa</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Lốc</p>
                 </div>
                 <h3 className="input-title">Trứng</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Quả</p>
                 </div>
                 <h3 className="input-title">Rau củ</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Kg</p>
                 </div>
@@ -62,7 +62,7 @@ class UpdateReceiverForm extends Component {
                 <p className="heading-3 total">Thông tin khác</p>
 
                 <h3 className="input-title">Số người trong gia đình</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Người</p>
                 </div>

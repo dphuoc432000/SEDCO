@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-
+import './UpdateReceiverForm.css'
 class UpdateSenderForm extends Component {
   render() {
     return (
-      <div className="Modal-Sender__CreatStatus ">
+      <div className="Modal-Reveiver__CreatStatus ">
         <div className="Modal-overlay"></div>
         <div className="Modal-body">
           <div className="receiver-form js-receiver-form">
@@ -14,43 +14,47 @@ class UpdateSenderForm extends Component {
               X
             </button>
             <div className="content">
-              <p className="heading">Cập nhật hỗ trợ</p>
+              <p className="heading">Cập nhật cần hỗ trợ</p>
+              <p className="heading-2">
+                (Chỉ nhận giúp đở khi thật sự cần vì còn nhiều người khó khăn
+                hơn)
+              </p>
             </div>
-            <div className="input-1">
+            <div className="input-UpdateStatusForm">
               <form action="#">
                 <p className="heading-3 total">Nhu yếu phẩm</p>
                 <h3 className="input-title">Khẩu trang</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Cái</p>
                 </div>
                 <h3 className="input-title">Quần áo</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Cái</p>
                 </div>
                 <h3 className="input-title">Gạo</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Kg</p>
                 </div>
                 <h3 className="input-title">Mỳ gói</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Thùng</p>
                 </div>
                 <h3 className="input-title">Sữa</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Lốc</p>
                 </div>
                 <h3 className="input-title">Trứng</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Quả</p>
                 </div>
                 <h3 className="input-title">Rau củ</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Kg</p>
                 </div>
@@ -58,7 +62,7 @@ class UpdateSenderForm extends Component {
                 <p className="heading-3 total">Thông tin khác</p>
 
                 <h3 className="input-title">Số người trong gia đình</h3>
-                <div className="input-item">
+                <div className="input-item-Update">
                   <input type="number" placeholder="0" />
                   <p className="unit">Người</p>
                 </div>
@@ -71,14 +75,7 @@ class UpdateSenderForm extends Component {
                 <button className="button-addIMG">Thêm hình ảnh</button>
               </form>
             </div>
-            <div style={{textAlign:'center',marginTop:'40px',marginBottom:'30px'}}>
-              <p className="heading-2">Chúng tôi cảm ơn bạn rất nhiều</p>
-              <p className="heading-2">
-                Cùng chung tay hỗ trợ những hoàn cảnh khó khăn
-              </p>
-            </div>
-
-            <div style={{ textAlign: "center", marginTop: "35px" ,marginBottom:'30px'}}>
+            <div style={{textAlign: 'center',marginTop:'35px',marginBottom:'30px'}}>
               <button className="button-2">Cập nhật</button>
             </div>
           </div>

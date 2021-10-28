@@ -29,7 +29,7 @@ export default withRouter(class Home extends Component {
                         <Register/>
                     </Route>*/}
                     <main className={"main"}>
-                        <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin} role_name={this.props.role_name}/>
+                        <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin} role_name={this.props.role_name} account_id={this.props.account_id}/>
                         {   this.props.showFormLogin &&
                             <div className="showform_auth">
                                 <div className="form_auth">

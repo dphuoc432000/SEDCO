@@ -91,14 +91,14 @@ class Register extends React.Component{
     handleRegister = async() =>{
         //Nếu có feild chưa nhập thì đúng. Nhập hết rồi thì là sai
         if(this.checkingForm()){
-            toast.error(`Đăng ký thất bại. Vui lòng nhập đúng thông tin bắt buộc!`);
+            toast.error(`Đăng ký thất bại. Vui lòng nhập thông tin bắt buộc!`);
         }
         else{
             //chay action
             const regisActionPropsData = await this.props.register(this.state.user_infor);
             //Đăng ký thất bại
             if(regisActionPropsData.type !== REGISTER_SUCCESS){
-                toast.error(`Đã xãy ra lỗi trong quá trình đăng ký. ${regisActionPropsData.payload.errdata}!`);
+                toast.warn(`Đã xãy ra lỗi trong quá trình đăng ký. ${regisActionPropsData.payload.errdata}!`);
                 return;
             }
             //Đăng ký thành công

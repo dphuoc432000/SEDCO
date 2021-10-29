@@ -9,6 +9,8 @@ import {get_role_user} from '../../stores/actions/role.action'
 import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 import {connect} from 'react-redux';
 import ChangePassword from '../../components/ChangePassword/ChangePassword';
+import {getVehicleCensorship_forUser} from '../../stores/actions/vehicle_censorship.action';
+
 const translateRoleName = (role_name)=>{
     switch(role_name) {
         case "user":
@@ -17,7 +19,7 @@ const translateRoleName = (role_name)=>{
             return {name:"Người hỗ trợ",color:"#FED330" };
         case "receiver":
             return {name:"Người cần hỗ trợ",color:"#EE5A24" };
-        case "car trip":
+        case "car_trip":
             return {name:"Người vận chuyển",color:"#A3CB38" };
         case "mod":
             return {name:"Mod",color:"#EA2027" };
@@ -39,6 +41,7 @@ class UpdateUser extends Component {
                 role_id: ''
             },
             user:{
+                _id:'',
                 full_name: '',
                 age: null,
                 email: '',
@@ -47,6 +50,7 @@ class UpdateUser extends Component {
                 district: '',
                 address: '',
             },
+            vehicle_censorship:{},
             role_name: {},
             isEdit: false,
             showChangePasswordForm:false
@@ -62,7 +66,9 @@ class UpdateUser extends Component {
         await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
         const account = this.props.userIsLogined.account;
         const user = this.props.userIsLogined.user;
-        
+        // console.log(user)
+        await this.props.getVehicleCensorship_forUser(user._id);
+        const vehicle_censorship = this.props.vehicleCensorshipReducer;
         this.setState({
             role_name: translateRoleName(role_name),
             account: {
@@ -72,6 +78,7 @@ class UpdateUser extends Component {
                 role_id: account.role_id
             },
             user: {
+                _id: user._id,
                 full_name: user.full_name,
                 age: user.age,
                 email: user.email,
@@ -79,7 +86,8 @@ class UpdateUser extends Component {
                 city: user.city,
                 district: user.district,
                 address: user.address,
-            }
+            },
+            vehicle_censorship: vehicle_censorship
         })
         // console.log("đã chạy")
     }
@@ -98,7 +106,7 @@ class UpdateUser extends Component {
                             <div className="user-infor-title">
                                 <h2>Thông tin người dùng</h2>
                             </div>
-                            <InforUser account={this.state.account} user={this.state.user} role_name={this.state.role_name}/>
+                            <InforUser account={this.state.account} user={this.state.user} role_name={this.state.role_name} vehicle_censorship={this.state.vehicle_censorship}/>
                             <div className="btn-container">
                                 <div className="btn-update-password-account">
                                     {/*<Link to="/user/account/update" >
@@ -140,7 +148,8 @@ const mapStateToProps = (state) =>{
     return {
         verifyTokenData: state.verifyTokenReducer,
         roleReducer: state.roleReducer,
-        userIsLogined: state.userIsLoginReducer
+        userIsLogined: state.userIsLoginReducer,
+        vehicleCensorshipReducer: state.vehicleCensorshipReducer,
     }
 }
 
@@ -153,6 +162,10 @@ const mapDispatchToProps =(dispatch)=>{
         },
         get_User_Infor_Is_Logined: async (account_id) =>{
             const action = await getUserInforIsLogined(account_id);
+            return dispatch(action);
+        },
+        getVehicleCensorship_forUser: async(user_id) =>{
+            const action = await getVehicleCensorship_forUser(user_id);
             return dispatch(action);
         }
     }

@@ -4,7 +4,8 @@ const accountService = require('./AccountService.js');
 const receiverStatusService = require('./ReceiverStatusService');
 const senderStatusService = require("./SenderStatusService");
 const carStatusService = require('./CarStatusService');
-const vehicleCensorshipService = require('../service/VehicleCensorshipService')
+const vehicleCensorshipService = require('../service/VehicleCensorshipService');
+const roleService = require('./RoleService')
 const { getSenderStatusDetail } = require('./SenderStatusService');
 
 //update số lượng essential. Cho form nhập số lượng rồi bấm update sẽ chuyển body lên qua URL có các param status ID, loại STATUS. Lấy ra status với status_id. Từ status so sánh status_type với loại STATUS. Nếu đúng thì sửa đổi sai thì trả về null hoặc báo lỗi không đúng
@@ -302,6 +303,30 @@ class StatusService {
         else
             object = null; 
         return object;
+    }
+
+    getStatusDetailByAccountID = async(account_id_param)=>{
+        const account = await accountService.getAccountDetails(account_id_param);
+        let role;
+        if(account){
+            role = await roleService.getRoleByID(account.role_id);
+            if(role.role_name !== 'user'){
+                const status = await Status.findOne({account_id: account_id_param, status_completed: false})
+                    .then(status => mongooseToObject(status))
+                    .catch(err=>err);
+                let status_detail;
+                let object;
+                if(status){
+                    status_detail = await this.getEssentialOfStatus(status._id);
+                    object = {...status, detail: {...status_detail}};
+                }
+                else
+                    object = null; 
+                return object;
+            }
+            return 'NO PERMISSION';
+        }
+        return null;
     }
 
     updateStatus = async(status_id_param,object) =>{

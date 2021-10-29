@@ -1,7 +1,7 @@
 .ListRecent{
   padding: 0 18px;
   height: 340px;
-  margin-top:8px;
+  margin-top:18px;
     overflow: hidden;
     overflow-y: scroll;
 }

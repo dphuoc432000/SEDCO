@@ -55,7 +55,7 @@ class Status extends Component {
       );
     const checkSenderForm =
       showSenderForm === true ? (
-        <SenderForm exitModalSenderForm={this.handleShowHideFormSender} />
+        <SenderForm exitModalSenderForm={this.handleShowHideFormSender} account_id={this.props.account_id} />
       ) : (
         ""
       );

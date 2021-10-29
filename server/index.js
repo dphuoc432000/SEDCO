@@ -5,6 +5,7 @@ const db = require('./config/db/index.js');
 const router = require('./router/index.js');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const path = require('path')
 const app = express();
 
 app.use(cors());
@@ -12,7 +13,8 @@ app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
+app.use(express.static(path.join(__dirname)));
+// console.log(path.join(__dirname, '/uploads'));
 //Connect database
 db.connect();
 // chuyển body trả về về kiểu json

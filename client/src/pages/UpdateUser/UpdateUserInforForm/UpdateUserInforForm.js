@@ -74,7 +74,13 @@ class UpdateUserInforForm extends Component {
             const verifydata = {...await this.props.verifyTokenData};
             await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
             const user = {...await this.props.userIsLogined.user};
-            // console.log(user)
+            //lấy district
+            const city = cities.find(city =>{
+                // console.log(city)
+                return city.name === user.city
+            })
+            await this.props.get_districts(city.code);
+            const districts = await this.props.dataRedux.districtsReducer.districts;
             this.setState({
                 user_infor:{
                     ...this.state.user_infor,
@@ -114,7 +120,8 @@ class UpdateUserInforForm extends Component {
                         // isInputValue: this.checkInputedValue(user.address),
                     },
                 },
-                cities: [...cities]
+                cities: [...cities],
+                districts: [...districts]
             })
         } catch (error) {
             console.log(error.message)
@@ -128,33 +135,53 @@ class UpdateUserInforForm extends Component {
     }
 
     onChangeCitySelect = async (event) => {
+        let value = event.target.value;
+        const name = event.target.name;
+        const dataValidate = this.validateInput(name, value)
         this.setState({
             user_infor:{
                 ...this.state.user_infor,
                 city:{
                     ...this.state.user_infor.city,
-                    value: event.target.value
+                    value: event.target.value,
+                    ...dataValidate
                 }
             }
         })
         const city_select = document.getElementById("city");
         const city_code = city_select.options[city_select.selectedIndex].getAttribute("data_id");
-        console.log(city_code)
+        // console.log(city_code)
         const district_select = document.getElementById("district");
         district_select.value = "";
+        let districts =[];
 
         await this.props.get_districts(city_code);
-        const districts = this.props.dataRedux.districtsReducer.districts;
+        districts =  await this.props.dataRedux.districtsReducer.districts;
+        
+        this.setState({
+            user_infor:{
+                ...this.state.user_infor,
+                district:{
+                    value:"",
+                    isInputValue: false,
+                    errorMessage:''
+                },
+            }
+        })
         this.handleDistricts(districts)
     }
 
     onChangeDistrictSelect = (event) =>{
+        let value = event.target.value;
+        const name = event.target.name;
+        const dataValidate = this.validateInput(name, value)
         this.setState({
             user_infor:{
                 ...this.state.user_infor,
                 district:{
                     ...this.state.user_infor.district,
-                    value: event.target.value,
+                    value: value,
+                    ...dataValidate
                 } 
             }
         })
@@ -180,7 +207,8 @@ class UpdateUserInforForm extends Component {
         switch (type) {
             case 'full_name':
                 var full_name_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]{5,}$/;
-                if((full_name_regex).test(checkingText)) 
+                var spec_char_regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                if((full_name_regex).test(checkingText) && !(spec_char_regex).test(checkingText)) 
                 { 
                     return { isInputValue: true,
                         errorMessage: ''};
@@ -279,30 +307,60 @@ class UpdateUserInforForm extends Component {
     }
 
     handleUpdate = async () =>{
-        const verifydata = {...await this.props.verifyTokenData};
-        await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
-        const user_id = await this.props.userIsLogined.user._id;
-        const user_update = {
-            full_name: this.state.user_infor.full_name.value,
-            age: this.state.user_infor.age.value,
-            email: this.state.user_infor.email.value,
-            phone_number: this.state.user_infor.phone_number.value,
-            city: this.state.user_infor.city.value,
-            district: this.state.user_infor.district.value,
-            address: this.state.user_infor.specific_address.value
-        }            
-        // console.log(user_update)
-        const action = await this.props.update_user_infor(user_id,user_update)
-        // console.log(user_id)
-        // console.log(action)
-        if(action.type !== UPDATE_USER_SUCCESS){
-            toast.error("Cập nhật thất bại. Vui lòng nhập dữ liệu bắt buộc!");
-            return;
+        if(this.checkingForm()){
+            toast.error("Cập nhật thất bại. Vui lòng nhập thông tin bắt buộc!")
         }
-        this.props.handlUpdateFull_name(user_update.full_name);
-        toast.success("Cập nhật thành công!");
-        this.props.history.push("/user/information")
-        console.log(await this.props.dataRedux)
+        else{
+            const verifydata = {...await this.props.verifyTokenData};
+            await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
+            const user_id = await this.props.userIsLogined.user._id;
+            const user_update = {
+                full_name: this.state.user_infor.full_name.value,
+                age: this.state.user_infor.age.value,
+                email: this.state.user_infor.email.value,
+                phone_number: this.state.user_infor.phone_number.value,
+                city: this.state.user_infor.city.value,
+                district: this.state.user_infor.district.value,
+                address: this.state.user_infor.specific_address.value
+            }            
+            // console.log(user_update)
+            const action = await this.props.update_user_infor(user_id,user_update)
+            // console.log(user_id)
+            // console.log(action)
+            if(action.type !== UPDATE_USER_SUCCESS){
+                toast.warn("Đã xãy ra lỗi trong quá trình cập nhật!");
+                return;
+            }
+            this.props.handlUpdateFull_name(user_update.full_name);
+            toast.success("Cập nhật thành công!");
+            this.props.history.push("/user/information")
+        }
+}
+
+    checkingForm =() =>{
+        const dataForm = [...Object.values(this.state.user_infor)];
+        return dataForm.some((item)=>{
+            return item.isInputValue === false
+        })
+    }
+
+    handleAgeInput = (event) =>{
+        var text_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]$/;
+        var spec_char_regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        console.log(spec_char_regex.test(event.target.value))
+        if(spec_char_regex.test(event.target.value) || text_regex.test(event.target.value) ){
+            this.setState({
+                user_infor:{
+                    ...this.state.user_infor,
+                    age:{
+                        ...this.state.user_infor.age,
+                        value: ''
+                    }
+                }
+            })
+            return false;
+        }
+        return true;
     }
 
     render() {
@@ -335,18 +393,19 @@ class UpdateUserInforForm extends Component {
                                                 value={user_infor.full_name.value} 
                                                 name="full_name" 
                                                 id="full_name"
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
                                         </td>
                                         <td className="input_age">
                                             <input 
-                                                type="number" 
+                                                type="text" 
                                                 placeholder="Tuổi" 
-                                                onChange={(event) => {this.onChangeUpdateForm(event)}} 
+                                                onChange={(event) => {this.handleAgeInput(event);if(this.handleAgeInput(event))this.onChangeUpdateForm(event)}} 
                                                 value={user_infor.age.value} 
                                                 name="age" 
                                                 id="age" 
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                min="0"
+                                                max="100"
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
                                         </td>
                                     </tr>
@@ -357,7 +416,7 @@ class UpdateUserInforForm extends Component {
                                                     type="full_name"
                                                     isHidden={user_infor.full_name.isInputValue} 
                                                     errorMessage={user_infor.full_name.errorMessage}
-                                                />
+                                                    />
                                             </td>
                                             <td>
                                                 <FormError 
@@ -372,7 +431,7 @@ class UpdateUserInforForm extends Component {
                                         <td>Email</td>
                                         <td>Số điện thoại</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="input-data">
                                         <td className="input_email">
                                             <input 
                                                 type="email" 
@@ -381,7 +440,7 @@ class UpdateUserInforForm extends Component {
                                                 value={user_infor.email.value} 
                                                 name="email" 
                                                 id="email" 
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
                                         </td>
                                         <td className="input_phone_number">
@@ -392,7 +451,7 @@ class UpdateUserInforForm extends Component {
                                                 value={user_infor.phone_number.value} 
                                                 name="phone_number" 
                                                 id="phone_number" 
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
                                         </td>
                                     </tr>
@@ -418,12 +477,12 @@ class UpdateUserInforForm extends Component {
                                         <td>Tỉnh/Thành phố</td>
                                         <td>Quận/Huyện</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="input-data">
                                         <td className="input_city">
                                             <select id="city" name="city" value={user_infor.city.value} onChange={(event) => {this.onChangeCitySelect(event)}}
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             >
-                                                <option>Chọn tỉnh/thành phố(Bắt buộc)*</option>
+                                                <option value="">Chọn tỉnh/thành phố(Bắt buộc)*</option>
                                                 {cities.map((item,index)=>{
                                                     return <option key={item.code} data_id={item.code} value={item.name}>{item.name}</option> 
                                                 })}
@@ -431,7 +490,7 @@ class UpdateUserInforForm extends Component {
                                         </td>
                                         <td className="input_district">
                                             <select id="district" name="district" value={user_infor.district.value} onChange={(event) => {this.onChangeDistrictSelect(event)}}
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             >
                                                 <option value="" >Chọn quận/huyện(Bắt buộc)*</option>
                                                 {districts.map((item,index)=>{
@@ -462,7 +521,7 @@ class UpdateUserInforForm extends Component {
                                     <tr className="input-title">
                                         <td colSpan={2}>Địa chỉ cụ thể</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="input-data">
                                         <td colSpan={2} className="input_specific_address">
                                             <input 
                                                 type="text" 

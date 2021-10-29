@@ -15,5 +15,6 @@ router.get('/:status_id/detail', statusController.getStatusByID);//OK
 router.post('/update/:status_id_pr', statusController.updateStatus);
 //xóa status bao gồm xóa status, status detail, đổi role user thành user và xóa hình 
 router.post('/:status_id_pr/delete', statusController.deleteStatus);//OK
+router.get('/account_id/:account_id_pr/detail', statusController.getStatusDetailByAccountID)
 
 module.exports = router;

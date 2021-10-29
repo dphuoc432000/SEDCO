@@ -47,6 +47,8 @@ const check_login = async (req, res, next) =>{
     try {
         const token = req.cookies.account_cookie;
         const tokenlocalstorage = localStorage.getItem('accessToken');
+        // console.log(tokenlocalstorage)
+      
         // const account_id = jwt.verify(token,'mk');
         const account_id = jwt.verify(tokenlocalstorage,'mk');
         // console.log(account_id); ==> { _id: '614c8b99f18a19a3af1ed670', iat: 1632411630 }

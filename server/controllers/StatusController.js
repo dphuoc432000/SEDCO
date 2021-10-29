@@ -171,7 +171,7 @@ class StatusController{
     getStatusByID = async  (req, res, next) =>{
         /*statusService.getEssentialOfStatus(req.params.status_id);*/
         // console.log(req.params.status_id)
-        statusService.getStatusDetail(req.params.status_id)
+        await statusService.getStatusDetail(req.params.status_id)
             .then(status => {
                 if(status)
                     return res.json(status);
@@ -182,7 +182,7 @@ class StatusController{
 
     //[POST] /status/update/:status_id_pr
     updateStatus = async(req, res, next) =>{
-        statusService.updateStatus(req.params.status_id_pr, req.body)
+        await statusService.updateStatus(req.params.status_id_pr, req.body)
             .then(status => {
                 if(status)
                     return res.json(status);
@@ -193,7 +193,7 @@ class StatusController{
     
     //[POST] /status/:status_id_pr/delete
     deleteStatus = async(req, res, next) =>{
-        statusService.deleteStatus(req.params.status_id_pr)
+        await statusService.deleteStatus(req.params.status_id_pr)
             .then(status => {
                 if(status)
                     return res.json(status)
@@ -205,6 +205,19 @@ class StatusController{
     getEssentialOfStatus = async(req, res, next) =>{
     }
     
+    //Lấy về chi tiết status account chưa hoàn thành
+    getStatusDetailByAccountID = async (req, res, next)=>{
+        await statusService.getStatusDetailByAccountID(req.params.account_id_pr)
+            .then(status => {
+                if(status && status !== 'NO PERMISSION')
+                    return res.json(status);
+                else if(status === 'NO PERMISSION')
+                    return res.status(400).json(handleOther.errorHandling("Bạn là người dùng nên không có quyền truy cập status chi tiết", null));
+                else
+                    return res.status(400).json(handleOther.errorHandling("account_id không chính xác", null));
+            })
+            .catch(error => next(error));
+    }
 }
 
 module.exports = new StatusController();

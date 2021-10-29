@@ -71,32 +71,44 @@
     justify-content: space-between;
 }
 .form_update_container > form > .form_private_infor > tbody> .input-data{
+    width: 710px;
     height: 45px;
 }
 .form_update_container > form > .form_private_infor > tbody> .input-error{
     height: 20px;
 }
-.form_update_container > form > .form_private_infor > tbody> tr>.full_name,
-.form_update_container > form > .form_private_infor > tbody> tr>.input_age,
-.form_update_container > form > .form_private_infor > tbody> tr>.input_email,
-.form_update_container > form > .form_private_infor > tbody> tr>.input_phone_number,
-.form_update_container > form > .form_private_infor > tbody> tr>.input_city,
-.form_update_container > form > .form_private_infor > tbody> tr>.input_district{
+.form_update_container > form > .form_private_infor > tbody> .input-data>.full_name,
+.form_update_container > form > .form_private_infor > tbody> .input-data>.input_age,
+.form_update_container > form > .form_private_infor > tbody> .input-data>.input_email,
+.form_update_container > form > .form_private_infor > tbody> .input-data>.input_phone_number,
+.form_update_container > form > .form_private_infor > tbody> .input-data>.input_city,
+.form_update_container > form > .form_private_infor > tbody> .input-data>.input_district{
    width: 330px;
    height: 45px; 
    display: flex;
    flex-direction: column;
+   padding: 0 0;
 }
 .form_update_container > form > .form_private_infor > tbody> tr>.input_specific_address{
     width: 710px;
     height: 45px; 
     display: flex;
     flex-direction: column;
+    padding: 0!important;
 }
 
 .form_update_container > form > .form_private_infor > tbody> .input-title> td{
     width: 330px;
     border-radius: 5px;
+    font-size: 13px;
+    padding: 0;
+}
+
+.form_update_container > form > .form_private_infor > tbody> .input-error> td{
+    width: 330px;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 0;
 }
 
 .form_update_container > form > .form_private_infor > tbody> tr>.full_name>#full_name,
@@ -135,6 +147,7 @@
 .form_update_container > form > .form_private_infor > tbody> tr p{
     width: 330px!important;
     height: 0px!important;
+    margin-left: 13px;
 }
 
 .form_update_container > form> .form_image >tbody> tr > td{

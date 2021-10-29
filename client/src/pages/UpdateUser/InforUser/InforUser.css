@@ -72,9 +72,10 @@
 .user-infor > .image-private-container .img_container> .img_back,
 .user-infor > .image-private-container .img_container> .img{
     margin-right: 30px;
+    width: 200px;
 }
 
 .user-infor > .image-private-container .img_container img{
     width: 200px;
-    height: 200px;
+    /* height: 200px; */
 }

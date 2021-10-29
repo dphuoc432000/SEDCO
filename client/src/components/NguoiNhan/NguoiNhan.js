@@ -1,6 +1,5 @@
 import React from "react";
 import SLCanNhan from "./SLCanNhan"
-import GanDay from "../GanDay/RecentList"
 import StatusForStatus from "../StatusForStatus/StatusForStatus";
 import './NguoiNhan.css'
 

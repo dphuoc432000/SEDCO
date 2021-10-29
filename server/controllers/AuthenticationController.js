@@ -42,6 +42,7 @@ class AuthenticationController {
                 // console.log("header: ",req.headers)
                 res.cookie("account_cookie", token, {expires:  new Date(Date.now() + 1 * 3600000)});
                 localStorage.setItem('accessToken', token)
+                // res.cookie("account_cookie", token, {expires:  new Date(Date.now() + 1 * 3600000)});
                 // console.log(localStorage.getItem('accessToken'))
 
                 return res.status(200).json({

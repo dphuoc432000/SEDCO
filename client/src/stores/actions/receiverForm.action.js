@@ -30,6 +30,10 @@ const receiverFormCreate = async (account_id , receiver_status_data) => {
       action.type = RECEIVER_FORM_CREATE_SUCCESS;
       action.payload = data.data;
       console.log("check: ", action.payload);
+    })
+    .catch(err => {
+      action.type = RECEIVER_FORM_CREATE_ERROR;
+      console.log("check: ", err.response.data)
     });
 
   return action;

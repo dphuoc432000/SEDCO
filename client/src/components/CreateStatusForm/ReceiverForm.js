@@ -66,9 +66,9 @@ class ReceiverForm extends Component {
     console.log(await this.props.receiverFormCreate(this.props.account_id,this.state))
   };
   render() {
-    console.log("check >>>", this.props.essentialsRedux);
-    // let {  } = this.state;
-    let essentitalsReact = this.props.essentialsRedux;
+    // console.log("check >>>", this.props.essentialsRedux);
+    // // let {  } = this.state;
+    // let essentitalsReact = this.props.essentialsRedux;
    
     let essentials = this.props.essentialsReducer.essentials;
     console.log("check", this.state);

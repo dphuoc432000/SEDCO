@@ -8,6 +8,7 @@ import registerReducer from './registerReducer.js';
 import userIsLoginReducer from './userIsLoginReducer.js';
 import forgotPasswordReducer from './forgotPasswordReducer.js';
 import changePasswordReducer from './changePasswordReducer.js';
+import vehicleCensorshipReducer from './vehicleCensorshipReducer';
 import receiverFormReducer from './receiverFormReducer.js';
 import essentialsReducer from './essentialsReducer.js';
 export default combineReducers({
@@ -20,6 +21,7 @@ export default combineReducers({
     userIsLoginReducer,
     forgotPasswordReducer,
     changePasswordReducer,
+    vehicleCensorshipReducer
     receiverFormReducer,
     essentialsReducer,
 });

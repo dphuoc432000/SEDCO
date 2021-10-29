@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import './InforUser.css';
 import {get_role_user} from '../../../stores/actions/role.action'
-import {getUserInforIsLogined} from '../../../stores/actions/userIsLogin.action';
+import {getUserInforIsLogined} from '../../../stores/actions/userIsLogin.action'
+import {getVehicleCensorship_forUser} from '../../../stores/actions/vehicle_censorship.action';
 import {connect} from 'react-redux';
+import {API_IMAGE_URL} from '../../../constants/api';
 
 // const translateRoleName = (role_name)=>{
 //     switch(role_name) {
@@ -76,11 +78,19 @@ class InforUser extends Component {
     //         }
     //     })
     // }
-
+    // getVehicleCensorship = async () =>{
+    //     if(this.state.vehicle_censorship){
+    //         await this.props.getVehicleCensorship_forUser(this.props.user._id);
+    //         console.log(this.props.vehicleCensorshipReducer) 
+    //     }
+       
+    // }
     render() {
         const account = this.props.account;
         const user = this.props.user;
         const role_name = this.props.role_name;
+        const vehicle_censorship = this.props.vehicle_censorship;
+        console.log(vehicle_censorship)
         return (
             <React.Fragment>
                 <div className="user-infor">
@@ -158,11 +168,19 @@ class InforUser extends Component {
                             <div className="img_container">
                                 <div className="img_front">
                                     <p>Mặt trước</p>
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.id_card_img_before ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_before}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                                 <div className="img_back">
                                     <p>Mặt sau</p>
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.id_card_img_after ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_after}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                             </div>
                             
@@ -171,7 +189,11 @@ class InforUser extends Component {
                             <span>Khuôn mặt</span>
                             <div className="img_container">
                                 <div className="img">
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                {vehicle_censorship.face_img ?
+                                    <img src={`${API_IMAGE_URL}\\${vehicle_censorship.face_img}`} alt="" />
+                                    :
+                                    <p>Chưa có hình ảnh</p>
+                                }
                                 </div>
                             </div>
                         </div>
@@ -180,11 +202,19 @@ class InforUser extends Component {
                             <div className="img_container">
                                 <div className="img_front">
                                     <p>Mặt trước</p>
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.driving_license_img_before ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_before}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                                 <div className="img_back">
                                     <p>Mặt sau</p>
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.driving_license_img_after ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_after}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -192,10 +222,18 @@ class InforUser extends Component {
                             <span>Giấy xét nghiệm Covid/Đã tiêm vaccine</span>
                             <div className="img_container">
                                 <div className="img">
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.test_img_1 ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_1}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                                 <div className="img">
-                                    <img src="https://via.placeholder.com/100" alt="" />
+                                    {vehicle_censorship.test_img_2 ?
+                                        <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_2}`} alt="" />
+                                        :
+                                        <p>Chưa có hình ảnh</p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -210,7 +248,8 @@ const mapStateToProps = (state) =>{
     return {
         verifyTokenData: state.verifyTokenReducer,
         roleReducer: state.roleReducer,
-        userIsLogined: state.userIsLoginReducer
+        userIsLogined: state.userIsLoginReducer,
+        vehicleCensorshipReducer: state.vehicleCensorshipReducer,
     }
 }
 
@@ -223,8 +262,14 @@ const mapDispatchToProps =(dispatch)=>{
             // console.log(action)
             return dispatch(action)
         },
+
         get_User_Infor_Is_Logined: async (account_id) =>{
             const action = await getUserInforIsLogined(account_id);
+            return dispatch(action);
+        },
+
+        getVehicleCensorship_forUser: async(user_id) =>{
+            const action = await getVehicleCensorship_forUser(user_id);
             return dispatch(action);
         }
     }

@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const accountService = require("../service/AccountService");
 const roleService = require("../service/RoleService");
 const config_auth = require('../config/auth.config');
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
 
 const {TokenExpiredError} = jwt;
 
@@ -44,8 +46,9 @@ const verifyToken = async (req, res, next) => {
 const check_login = async (req, res, next) =>{
     try {
         const token = req.cookies.account_cookie;
-        
-        const account_id = jwt.verify(token,'mk');
+        const tokenlocalstorage = localStorage.getItem('accessToken');
+        // const account_id = jwt.verify(token,'mk');
+        const account_id = jwt.verify(tokenlocalstorage,'mk');
         // console.log(account_id); ==> { _id: '614c8b99f18a19a3af1ed670', iat: 1632411630 }
         await accountService.getAccountDetails(account_id._id)
             .then(data => {

@@ -1,35 +1,75 @@
 import React from "react";
+import ReceiverStatusDetail from "../../components/GoodsDetail/ReceiverStatusDetail/ReceiverStatusDetail";
 
 class SLCanNhan extends React.Component {
+  state = {
+    showGoodsDetail: false,
+    showUpdateReceiverForm: false,
+    showUpdateSenderForm: false,
+  };
+  handleShowHide = () => {
+    console.log("1");
+    this.setState({ showGoodsDetail: !this.state.showGoodsDetail });
+  };
+  handleShowHideUpdateReceiver = () => {
+    this.setState({
+      showUpdateReceiverForm: !this.state.showUpdateReceiverForm,
+    });
+  };
+  handleShowHideUpdateSender = () => {
+    this.setState({ showUpdateSenderForm: !this.state.showUpdateSenderForm });
+  };
   render() {
     return (
       <React.Fragment>
-        <div style="display: flex; justify-content: space-between;align-items: center;">
-          <h3 class="data-container__title">Cần hỗ trợ</h3>
-          <a
-            href=""
-            class="data-container__SeeDetail"
-            style="padding-right: 39px;font-size: 1.2rem;"
-          >
-            Xem chi tiết <i class="fas fa-arrow-right"></i>
-          </a>
-        </div>
+        <div>
+          {this.state.showGoodsDetail === false ? (
+            <>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
+                <button
+                  className="data-container__SeeDetail"
+                  onClick={() => {
+                    this.handleShowHide();
+                  }}
+                >
+                  xem chi tiết{" "}
+                  <i
+                    className="fas fa-arrow-right"
+                    style={{ fontSize: "12px" }}
+                  />
+                </button>
+              </div>
 
-        <ul class="data-container__ListItems">
-          <li class="data-container__Items">
-            Trứng: <h4 class="data-container__ItemQuantity">4 quả</h4>
-          </li>
-          <li class="data-container__Items">
-            Gạo: <h4 class="data-container__ItemQuantity"> 3 bao</h4>{" "}
-          </li>
-          <li class="data-container__Items">
-            Rau củ:<h4 class="data-container__ItemQuantity">2 thùng</h4>{" "}
-          </li>
-          <li class="data-container__Items">...</li>
-          <li class="data-container__Items">
-            Tổng khối lượng:<h4 class="data-container__ItemQuantity">270 kg</h4>{" "}
-          </li>
-        </ul>
+              <table className="List-Good">
+                <tr>
+                  <td>Trứng</td>
+                  <td>4 quả</td>
+                </tr>
+                <tr>
+                  <td>Gạo</td>
+                  <td>4 bao</td>
+                </tr>
+                <tr>
+                  <td>Rau củ</td>
+                  <td>6 thùng</td>
+                </tr>
+                <tr>
+                  <td>...</td>
+                  <td>...</td>
+                </tr>
+                <tr>
+                  <td>Tổng khối lượng</td>
+                  <td>600kg</td>
+                </tr>
+              </table>
+            </>
+          ) : (
+            <ReceiverStatusDetail
+              handleHideReceiverStatusDetail={this.handleShowHide}
+            />
+          )}
+        </div>
       </React.Fragment>
     );
   }

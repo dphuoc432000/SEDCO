@@ -73,7 +73,7 @@ class SLHoTro extends React.Component {
             </table>
 
             <h3 className="data-container__title">Gần đây</h3>
-            <RecentList />
+            {/* <RecentList /> */}
           </>
         ) : (
           <GoodsDetail showGoodsDetail={this.handleShowHide} />

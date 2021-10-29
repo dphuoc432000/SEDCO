@@ -24,6 +24,7 @@
     "mongoose": "^6.0.6",
     "mongoose-double": "0.0.1",
     "multer": "^1.4.3",
+    "node-localstorage": "^2.2.1",
     "nodemailer": "^6.7.0",
     "uuid": "^8.3.2"
   },

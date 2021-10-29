@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NguoiCho from "../../NguoiCho/NguoiCho";
-// import NguoiNhan from "../../NguoiNhan/NguoiNhan";
+import NguoiNhan from "../../NguoiNhan/NguoiNhan";
 import SenderForm from "../../CreateStatusForm/SenderForm";
 import ReceiverForm from "../../CreateStatusForm/ReceiverForm";
 import RecentList from "../../GanDay/RecentList";
@@ -26,9 +26,9 @@ class Status extends Component {
       showSenderForm: !this.state.showSenderForm,
     });
   };
-  
+
   getRoleName = () => {
-    if(this.props.role_name.name){
+    if (this.props.role_name.name) {
       switch (this.props.role_name.name) {
         case "Người dùng":
           return "user";
@@ -41,28 +41,32 @@ class Status extends Component {
         default:
           return;
       }
-    }
-    else
-      return "";
+    } else return "";
   };
   render() {
     const { showReceiverForm, showSenderForm } = this.state;
     const checkReceiverForm =
       showReceiverForm === true ? (
-        <ReceiverForm exitModalReceiverForm={this.handleShowHideFormReceiver} account_id={this.props.account_id} />
+        <ReceiverForm
+          exitModalReceiverForm={this.handleShowHideFormReceiver}
+          account_id={this.props.account_id}
+        />
       ) : (
         ""
       );
     const checkSenderForm =
       showSenderForm === true ? (
-        <SenderForm exitModalSenderForm={this.handleShowHideFormSender} account_id={this.props.account_id} />
+        <SenderForm
+          exitModalSenderForm={this.handleShowHideFormSender}
+          account_id={this.props.account_id}
+        />
       ) : (
         ""
       );
-      const getRoleName = this.getRoleName()
+    const getRoleName = this.getRoleName();
     return (
       <div className="Status">
-        {getRoleName === 'user' || getRoleName ===""  ?
+        {getRoleName === "user" || getRoleName === "" ? (
           <div className="Status-Not-Role">
             <h2 className="Status-title">Tạo trạng thái</h2>
             <h3 className="Status-Who">Bạn là người</h3>
@@ -83,12 +87,13 @@ class Status extends Component {
                 Cần hỗ trợ
               </button>
             </div>
-            <RecentList/>
-          </div> : '' }
-        {getRoleName === 'sender' ? <NguoiCho/> : ''}
-        
-        
-        
+          </div>
+        ) : (
+          ""
+        )}
+        {getRoleName === "receiver" ? <NguoiNhan /> : ""}
+        <RecentList />
+
         {checkReceiverForm}
         {checkSenderForm}
       </div>

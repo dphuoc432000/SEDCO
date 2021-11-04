@@ -53,12 +53,15 @@ class App extends React.Component {
     menu: [],
     showFormLogin: false,
     showFormRegister: false,
-    showFormForgotPassword: false
+    showFormForgotPassword: false,
+    status_current: {},
+    user: {},
   }
 
   componentDidMount = async () =>{
     if(localStorage.getItem('accessToken')){
       const verifyData = await this.props.verifyTokenData;
+      const statusCurrentData = await this.props.statusCurrentReducer;
       await this.props.get_User_Infor_Is_Logined(verifyData.account_id);
       const user = await this.props.userIsLogined.user;
       await this.props.get_role_user_action(verifyData.role_id);
@@ -67,7 +70,7 @@ class App extends React.Component {
         const role_name = role_user.role_name;
         const roles = await this.props.roleReducer.roles;
         
-        console.log(roles)
+        // console.log(roles)
         if(roles.includes(role_name)){
             const menu = menuHeader.find(menu =>{
                 return menu.name === role_name;
@@ -77,7 +80,9 @@ class App extends React.Component {
               account_id:verifyData.account_id,
               isAuthenticated: true,
               role_name: translateRoleName(role_name),
-              menu: menu.menu
+              menu: menu.menu,
+              status_current : statusCurrentData,
+              user: user
             })
         }
       }
@@ -138,7 +143,12 @@ class App extends React.Component {
       showFormForgotPassword: !this.state.showFormForgotPassword
     })
   }
-
+  handleUpdateStatusCurrent = async (status_current) => {
+    const statusCurrentData = await this.props.statusCurrentReducer;
+    this.setState({ 
+      status_current: statusCurrentData
+    })
+  }
   render(){
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
     return (
@@ -173,6 +183,10 @@ class App extends React.Component {
                   showFormForgotPassword = {this.state.showFormForgotPassword}
                   role_name={this.state.role_name}
                   account_id={this.state.account_id}
+                  status_current={this.state.status_current}
+                  user = {this.state.user}
+                  handleUpdateStatusCurrent={this.handleUpdateStatusCurrent}
+                  
                 />
               </Route>
               {/*<Route path="/login" exact render={() =>{
@@ -205,6 +219,7 @@ class App extends React.Component {
 //state này của redux không phải react
 const mapStateToProps = (state) =>{
   return {
+      statusCurrentReducer : state.statusCurrentReducer,
       verifyTokenData: state.verifyTokenReducer,
       roleReducer: state.roleReducer,
       isLogined: state.loginReducer.isLogined,

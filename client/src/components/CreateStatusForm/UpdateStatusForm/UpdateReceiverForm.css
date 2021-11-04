@@ -58,9 +58,12 @@
   margin-left: 10%;
 }
 
-.input-UpdateStatusForm input {
+.input-UpdateStatusForm .input-item-update {
   width: 87%;
   padding: 3px;
+  height: 100%;
+  border:none;
+  border-right: 1px solid #333;
   outline: none;
 }
 .input-UpdateStatusForm input:focus{
@@ -175,8 +178,9 @@
   animation: modalFadeIn ease 0.5s;
   /* khi thèn con vượt quá thèn cha thì ẩn đi */
 }
-.GhiChu{
-  height: 54px;
+.GhiChu-Update{
+  height: 110px;
+  width: 91%;
 }
 .input-title{
   margin-top: 9px;

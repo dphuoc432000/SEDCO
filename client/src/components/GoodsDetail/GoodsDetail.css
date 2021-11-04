@@ -143,6 +143,7 @@
 }
 .List-Good-Detail tr td:last-child {
   text-align: right;
+  width: 55px;
 }
 .List-Good-Detail tr:last-child {
   /* color: #f54d0f; */

@@ -1,18 +1,22 @@
 import React, { Component } from "react";
-import UpdateReceiverForm from "../../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm";
-// import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
+// import UpdateReceiverForm from "../../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm";
+import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
 import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import "./ReceiverStatusDetail.css";
 import { connect } from "react-redux";
-import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
+import getEssentialsDetail from '../../../stores/actions/essentialsDetail.action'
 
 class ReceiverStatusDetail extends Component {
   state = {
-    showUpdateReceiverForm: false,
-    essentials: this.props.essentials,
+    showUpdateSenderForm: false,
+    essentials: this.props.essentials
   };
-
+  handleShowHideUpdateSender = () => {
+    this.setState({
+      showUpdateSenderForm: !this.state.showUpdateSenderForm,
+    });
+  };
   componentDidMount = async () => {
     if(this.state.essentials.length > 0){
         const essentials_map =await Promise.all(this.state.essentials.map(async essential =>{
@@ -29,17 +33,13 @@ class ReceiverStatusDetail extends Component {
         })
     }
   }
-  handleShowHideUpdateReceiver = () => {
-    this.setState({
-      showUpdateReceiverForm: !this.state.showUpdateReceiverForm,
-    });
-  };
   getEssentialsDetail = async (essential_id) => {
     await this.props.getEssentialsDetail(essential_id);
     const essentialsDetail = await this.props.essentialsDetailReducer;
     // console.log(essentialsDetail)
     return essentialsDetail;
   };
+
   handleUpdateEssentials = (essentials) => {
      this.setState({
       essentials : essentials ,
@@ -47,21 +47,20 @@ class ReceiverStatusDetail extends Component {
      })
      this.props.handleUpdateEssentials(essentials)
   }
-  
   render() {
     const status_current = this.props.status_current;
+    // const essentials = status_current.detail.essentials;
     const note = status_current.detail.note;
-    const number_per_of_family = status_current.detail.number_per_of_family;
+    const weight_essential = status_current.detail.weight_essential;
     const essentials_state = this.state.essentials;
-    let { showUpdateReceiverForm } = this.state;
-    // console.log(this.props)
-    const checkUpdateReceiverForm =
-      showUpdateReceiverForm === true ? (
-        <UpdateReceiverForm
-          receiver_status_id = {this.props.status_current.detail._id}
-          handleShowHideUpdateReceiver={this.handleShowHideUpdateReceiver}
-          handleUpdateEssentials={this.handleUpdateEssentials}
-          handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+    let { showUpdateSenderForm } = this.state;
+    const checkUpdateSenderForm =
+      showUpdateSenderForm === true ? (
+        <UpdateSenderForm
+        sender_status_id = {this.props.status_current.detail._id}
+        handleShowHideUpdateSender={this.handleShowHideUpdateSender}
+        handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+        handleUpdateEssentials={this.handleUpdateEssentials}
         />
       ) : (
         ""
@@ -71,30 +70,27 @@ class ReceiverStatusDetail extends Component {
       <div>
         <div class="GoodDetail-container">
           {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
-          <h3 className="data-container__title">Cần hỗ trợ  </h3>
+          <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>
+
           <table className="List-Good-Detail">
             {essentials_state &&
-               essentials_state.map( (essential) => {
+              essentials_state.map((essential) => {
                 return (
                   <>
-                  {
-                    essential.quantity > 0 &&
-                      <tr key={essential.essential_id}>
-                        <td>{essential.name}</td>
-                        <td>{essential.quantity}</td>
-                        <td>{essential.unit}</td>
-                      </tr>
-                  }
+                    <tr key={essential.essential_id}>
+                      <td>{essential.name}</td>
+                      <td>{essential.quantity}</td>
+                      <td>{essential.unit}</td>
+                    </tr>
                   </>
                 );
-              })
-              }
-          
+              })}
+            
 
             <tr>
-              <td>Số người trong hộ trong hộ gia đình</td>
-              <td>{number_per_of_family}</td>
-              <td>Người</td>
+              <td>Tổng khối lượng</td>
+              <td>{weight_essential}</td>
+              <td>Kg</td>
             </tr>
           </table>
           <h3 className="data-container__title">Thông tin liên hệ</h3>
@@ -125,7 +121,7 @@ class ReceiverStatusDetail extends Component {
         <div className="container-btn__ListBottom">
           <button
             className="GoodDetail-btn-back"
-            onClick={() => this.props.handleHideReceiverStatusDetail()}
+            onClick={() => this.props.handleHideSenderStatusDetail()}
           >
             <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
             lại
@@ -137,17 +133,16 @@ class ReceiverStatusDetail extends Component {
 
           <button
             className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-            onClick={this.handleShowHideUpdateReceiver}
+            onClick={this.handleShowHideUpdateSender}
           >
             Cập nhật
           </button>
         </div>
-        {checkUpdateReceiverForm}
+        {checkUpdateSenderForm}
       </div>
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
     essentialsDetailReducer: state.essentialsDetailReducer,

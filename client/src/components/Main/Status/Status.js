@@ -5,17 +5,27 @@ import SenderForm from "../../CreateStatusForm/SenderForm";
 import ReceiverForm from "../../CreateStatusForm/ReceiverForm";
 import RecentList from "../../GanDay/RecentList";
 import "./Status.css";
+import _ from "lodash"
+import { connect } from "react-redux";
+import {getUserInforIsLogined} from "../../../stores/actions/userIsLogin.action"
 // import {btnShowFormReceiver , btnExitFormReceiver , modalReceiverContainer , modalReceiver ,showModalReceiverForm , exitModalReceiverForm} from './HandleFormStatus'
 class Status extends Component {
-  state = {
-    showReceiverForm: false,
-    showSenderForm: false,
-    showCarTripForm: false,
-    showUserStatus: false,
-    showSenderStatus: false,
-    showReceiverStatus: false,
-    showCarTripStatus: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      showReceiverForm: false,
+      showSenderForm: false,
+      showCarTripForm: false,
+      showUserStatus: false,
+      showSenderStatus: false,
+      showReceiverStatus: false,
+      showCarTripStatus: false,
+      account_id: this.props.account_id,
+    };
+  }
+  
+
+
   handleShowHideFormReceiver = () => {
     this.setState({
       showReceiverForm: !this.state.showReceiverForm,
@@ -44,6 +54,7 @@ class Status extends Component {
     } else return "";
   };
   render() {
+    console.log(this.props.user)
     const { showReceiverForm, showSenderForm } = this.state;
     const checkReceiverForm =
       showReceiverForm === true ? (
@@ -91,7 +102,9 @@ class Status extends Component {
         ) : (
           ""
         )}
-        {getRoleName === "receiver" ? <NguoiNhan /> : ""}
+        {getRoleName === "receiver" ? <NguoiNhan user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
+        {getRoleName === "sender" ? <NguoiCho user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
+
         <RecentList />
 
         {checkReceiverForm}
@@ -100,5 +113,20 @@ class Status extends Component {
     );
   }
 }
-
-export default Status;
+const mapStateToProps = (state) => {
+  return {
+    userIsLoginReducer: state.userIsLoginReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserInforIsLogined: async (account_id) => {
+      const action = await getUserInforIsLogined(account_id);
+      return dispatch(action);
+    }
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Status);

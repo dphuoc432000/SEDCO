@@ -72,12 +72,13 @@ class ReceiverStatusService {
         return await ReceiverStatus.findByIdAndUpdate({_id: receiver_status_id}, object)
             .then(data =>{
                 if(data){
-                    fs.unlink(path.join('..\\server', data.picture), (err) => {
-                        if (err) {
-                            console.log(err);
-                            return ;
-                        }
-                    });
+                    if(object.picture="")
+                        fs.unlink(path.join('..\\server', data.picture), (err) => {
+                            if (err) {
+                                console.log(err);
+                                return ;
+                            }
+                        });
                 }
                 return mongooseToObject(data);
             })

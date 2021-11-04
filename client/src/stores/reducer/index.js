@@ -11,6 +11,10 @@ import changePasswordReducer from './changePasswordReducer.js';
 import vehicleCensorshipReducer from './vehicleCensorshipReducer';
 import receiverFormReducer from './receiverFormReducer.js';
 import essentialsReducer from './essentialsReducer.js';
+import statusCurrentReducer from './StatusCurrentReducer.js';
+import essentialsDetailReducer from './essentialsDetailReducer.js';
+import updateStatusReceiverReducer from './updateStatusReceiverReducer';
+
 export default combineReducers({
     roleReducer,
     loginReducer,
@@ -21,7 +25,10 @@ export default combineReducers({
     userIsLoginReducer,
     forgotPasswordReducer,
     changePasswordReducer,
-    vehicleCensorshipReducer
+    vehicleCensorshipReducer,
     receiverFormReducer,
     essentialsReducer,
+    statusCurrentReducer,
+    essentialsDetailReducer,
+    updateStatusReceiverReducer
 });

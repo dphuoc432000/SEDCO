@@ -15,6 +15,9 @@ import statusListReducer from './status_listReducer'
 import senderStatusListReducer from './sender_status_listReducer';
 import receiverStatusListReducer from './receiver_status_listReducer';
 import car_tripStatusListReducer from './car_trip_status_listReducer';
+import statusCurrentReducer from './StatusCurrentReducer.js';
+import essentialsDetailReducer from './essentialsDetailReducer.js';
+import updateStatusReceiverReducer from './updateStatusReceiverReducer';
 
 export default combineReducers({
     roleReducer,
@@ -33,4 +36,7 @@ export default combineReducers({
     senderStatusListReducer,
     receiverStatusListReducer,
     car_tripStatusListReducer,
+    statusCurrentReducer,
+    essentialsDetailReducer,
+    updateStatusReceiverReducer
 });

@@ -143,13 +143,14 @@
 }
 .List-Good-Detail tr td:last-child {
   text-align: right;
+  width: 55px;
 }
 .List-Good-Detail tr:last-child {
   /* color: #f54d0f; */
   font-weight: bold;
 }
 .GoodDetail-Info-Img {
-  width: 100%;
+  width: 240px;
   padding: 12px 17px;
 }
 .GoodDetail-Info-Img__label {

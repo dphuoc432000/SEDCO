@@ -21,7 +21,7 @@ const receiverFormCreate = async (account_id , receiver_status_data) => {
   }) 
   const object = {
     note : receiver_status_data.note,
-    number_per_of_family : receiver_status_data.number_per_family,
+    number_per_of_family : receiver_status_data.number_per_of_family,
     essentials : essentialsConvert,
   };
   await axios

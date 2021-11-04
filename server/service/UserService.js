@@ -3,7 +3,7 @@ const {multiplemongooseToObject, mongooseToObject} = require("../util/mongoose.j
 const carStatusSevice = require('./CarStatusService');
 const carService = require('./CarService');
 const userService = require('./UserService');
-
+const vehicleCensorshipService = require('./VehicleCensorshipService')
 class UserService{
 
     getUserList = async () =>{
@@ -30,13 +30,56 @@ class UserService{
             })
             .catch(err => err);
     }
+    updateUserInfor = async(id, object) =>{
+        return await User.findByIdAndUpdate({_id: id}, object)
+        .then(async user =>{
+            user = mongooseToObject(user)
+            //lưu hình ảnh vehicle_ship
+            const vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user._id)
+            .catch(err => err);
+            //nếu đã có hình ảnh của tài xế rồi thì cập nhật hình ảnh
+            // console.log('vehicle_censorship', vehicle_censorship)
+            if(vehicle_censorship)
+                user.vehicle_censorship = await vehicleCensorshipService.updateVehicleCensorshipByUserIDForUserInfor(user._id, object.file_images)
+                    .catch(err => err);
+            else
+                user.vehicle_censorship = await vehicleCensorshipService.addVehicleCensorship(user._id,object.file_images)
+                    .then(data => data)
+                    .catch(err => err);
+            
+            return user;
+        
+        
+        })
+        .catch(err => err);
+
+
+    }
 
     updateUser = async(id, object) =>{
         return await User.findByIdAndUpdate({_id: id}, object)
-            .then(user =>{
-                return mongooseToObject(user);
+            .then(async user =>{
+                user = mongooseToObject(user)
+                //lưu hình ảnh vehicle_ship
+                const vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user._id)
+                .catch(err => err);
+                //nếu đã có hình ảnh của tài xế rồi thì cập nhật hình ảnh
+                // console.log('vehicle_censorship', vehicle_censorship)
+                if(vehicle_censorship)
+                    user.vehicle_censorship = await vehicleCensorshipService.updateVehicleCensorshipByUserID(user._id, object.file_images)
+                        .catch(err => err);
+                else
+                    user.vehicle_censorship = await vehicleCensorshipService.addVehicleCensorship(user._id,object.file_images)
+                        .then(data => data)
+                        .catch(err => err);
+                
+                return user;
+            
+            
             })
             .catch(err => err);
+
+    
     }
 
     deleteUser = async(id) =>{

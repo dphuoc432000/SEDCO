@@ -38,9 +38,46 @@ class UserController{
             .catch(error => next(error));
     }
 
+    getPathAllImageCar = (req, res, next) =>{
+        const files = req.files;
+        console.log(files)
+        const face_img =  files.face_img;
+        const id_card_img_before = files.id_card_img_before;
+        const id_card_img_after = files.id_card_img_after;
+        const driving_license_img_before = files.driving_license_img_before;
+        const driving_license_img_after = files.driving_license_img_after;
+        const test_img_1 = files.test_img_1;
+        const test_img_2 = files.test_img_2;
+        // if(typeof face_img != 'undefined' &&  typeof id_card_img_before != 'undefined' &&  typeof id_card_img_after != 'undefined' 
+        //     && typeof driving_license_img_before != 'undefined'&& typeof driving_license_img_after != 'undefined'&& typeof test_img_1 != 'undefined'
+        // ){
+            const object = {
+                face_img : typeof face_img != 'undefined'?face_img[0].path:'',
+                id_card_img_before : typeof id_card_img_before != 'undefined'?id_card_img_before[0].path:'',
+                id_card_img_after : typeof id_card_img_after != 'undefined'?id_card_img_after[0].path:'',
+                driving_license_img_before :typeof driving_license_img_before != 'undefined' ? driving_license_img_before[0].path:'',
+                driving_license_img_after : typeof driving_license_img_after != 'undefined'? driving_license_img_after[0].path:'',
+                test_img_1 : typeof test_img_1 != 'undefined'? test_img_1[0].path:'',
+                test_img_2 : typeof test_img_2 != 'undefined'?test_img_2[0].path:""
+            }
+            // if(typeof test_img_2 != 'undefined')
+            //     object.test_img_2 = test_img_2[0].path?test_img_2[0].path:"";
+            return object
+        // }
+        // return null;
+    }
+
     //[POST] /users/update/:id
     updateUser = async(req, res, next) =>{
-        await userService.updateUser(req.params.id, req.body)
+        const pathImages = this.getPathAllImageCar(req, res, next);
+        let form_data = {
+            ...req.body,
+            file_images: {}
+        }
+        if(pathImages){
+            form_data.file_images = {...pathImages}
+        }
+        await userService.updateUserInfor(req.params.id, form_data)
             .then((user) =>{
                 if(user)
                     return res.json(user);

@@ -1,6 +1,7 @@
 const {multiplemongooseToObject, mongooseToObject} = require('../util/mongoose.js');
 const Status = require('../models/Status');
 const accountService = require('./AccountService.js');
+const userService = require('./UserService')
 const receiverStatusService = require('./ReceiverStatusService');
 const senderStatusService = require("./SenderStatusService");
 const carStatusService = require('./CarStatusService');
@@ -204,6 +205,46 @@ class StatusService {
                 return multiplemongooseToObject(list);
             });
         const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
+            switch (obj.status_type) {
+                case "RECEIVER":
+                    await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        }))
+        .then(data => data);
+        return status_list_map;
+    }
+    //Lấy StatusList Chưa hoàn thành completed = false
+    getStatusListNoComplete = async() => {
+        const status_list = await Status.find({status_completed: false})
+            .then(list => {
+                return multiplemongooseToObject(list);
+            });
+        const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
             switch (obj.status_type) {
                 case "RECEIVER":
                     await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
@@ -237,6 +278,9 @@ class StatusService {
         const status_list = await Status.find({status_type: status_type_param})
             .then(status => multiplemongooseToObject(status)); 
         const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
             switch (obj.status_type) {
                 case "RECEIVER":
                     await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
@@ -264,7 +308,41 @@ class StatusService {
         .then(data => data);
         return status_list_map;   
     }
-
+    // lấy danh sách status theo loại chưa hoàn thành
+    getStatusListByTypeNoComplete = async (status_type_param) => {
+        const status_list = await Status.find({status_type: status_type_param, status_completed: false})
+            .then(status => multiplemongooseToObject(status)); 
+        const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
+            switch (obj.status_type) {
+                case "RECEIVER":
+                    await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        }))
+        .then(data => data);
+        return status_list_map;   
+    }
     // ok
     //lấy ra tất cả thông tin một thông tin(receiver/ sender/car trip) essential cuả status
     getEssentialOfStatus = async(status_id_param) =>{

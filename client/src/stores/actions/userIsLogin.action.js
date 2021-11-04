@@ -52,9 +52,14 @@ const updateUserInfor = async (user_id, user_update) =>{
         type:UPDATE_USER_LOADING,
         payload:{}
     };
+    console.log(user_update)
 
     const api_update_user = `${API_URL}/api/user/${user_id}/update`;
-    await axios.post(api_update_user, user_update)
+    await axios.post(api_update_user, user_update,{
+        headers:{
+            'Content-Type': 'multipart/form-data'
+        }
+    })
         .then(res =>{
             action.type = UPDATE_USER_SUCCESS;
             action.payload = res.data;

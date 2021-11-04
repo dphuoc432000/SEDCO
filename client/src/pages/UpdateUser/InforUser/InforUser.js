@@ -90,7 +90,6 @@ class InforUser extends Component {
         const user = this.props.user;
         const role_name = this.props.role_name;
         const vehicle_censorship = this.props.vehicle_censorship;
-        console.log(vehicle_censorship)
         return (
             <React.Fragment>
                 <div className="user-infor">

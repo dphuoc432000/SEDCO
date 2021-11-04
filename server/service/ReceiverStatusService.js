@@ -42,6 +42,7 @@ class ReceiverStatusService {
 
     addReceiverStatus = async (status_id, object) => {
         object.status_id = status_id;
+        object.regis_status = false;
         const receiver_status = new ReceiverStatus(object);
         return await receiver_status.save()
             .then(data => mongooseToObject(data))

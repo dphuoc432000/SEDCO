@@ -1,0 +1,1 @@
+export const key = 'pk.eyJ1IjoiaGFkdWNwaHVvYyIsImEiOiJja3ZmNmhiaG0xYm50MnhvODhqc2FkYmc1In0.jiGzcsMwYkfTqu3GfNnhKg'

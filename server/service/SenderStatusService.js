@@ -43,7 +43,7 @@ class SenderStatusService {
 
     addSenderStatus = async (status_id, object) => {
         object.status_id = status_id;
-        console.log(object);
+        object.regis_status = false;
         const sender_status = new SenderStatus(object);
         return await sender_status.save()
             .then(data => mongooseToObject(data))

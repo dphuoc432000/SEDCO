@@ -155,6 +155,20 @@ class StatusController{
             })
             .catch(error => next(error));
     }
+
+    getAllStatusNoComplete = async (req, res, next) => {
+        await statusService.getStatusListNoComplete()
+            .then((status) => {
+                if(status){
+                    // console.log(req.query._limit, req.query._page)
+                    const datas = pagination(status, req.query._limit, req.query._page);
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi", null)); 
+            })
+            .catch(error => next(error));
+    }
+
     //[GET] /status_list/:status_type_pr
     getAllStatusByType = async(req, res, next)=>{
         await statusService.getStatusListByType(req.params.status_type_pr)
@@ -167,6 +181,20 @@ class StatusController{
             })
             .catch(error => next(error));
     }
+
+    getAllStatusByTypeNoComplete = async(req, res, next)=>{
+        await statusService.getStatusListByTypeNoComplete(req.params.status_type_pr)
+            .then((status) => {
+                if(status){
+                    const datas = pagination(status, req.query._limit, req.query._page)
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
+            })
+            .catch(error => next(error));
+    }
+
+    
     //[GET] /status/details/:status_id
     getStatusByID = async  (req, res, next) =>{
         /*statusService.getEssentialOfStatus(req.params.status_id);*/

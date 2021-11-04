@@ -150,12 +150,24 @@
     margin-left: 13px;
 }
 
+.form_update_container > form> .form_image >tbody> .img_data_title{
+    display: flex;
+}
+
+.form_update_container > form> .form_image >tbody> .img_data{
+    display: flex;
+}
+
 .form_update_container > form> .form_image >tbody> tr > td{
     width: 300px;
 }
 
 .form_update_container > form> .form_image >tbody> tr > td > label{
     margin: 5px 0;
+}
+.form_update_container > form> .form_image >tbody> tr > td > img{
+    margin-top: 10px;
+    width: 200px;
 }
 
 .form_update_container > form> .form_image >tbody> .img_input_title{

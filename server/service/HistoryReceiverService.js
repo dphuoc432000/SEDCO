@@ -96,7 +96,11 @@ class HistoryReceiverService{
                     car_confirm: false
                 })
                 return await history_receiver.save()
-                    .then(data => mongooseToObject(data))
+                    .then(async data => {
+                        //sau khi lưu update lại status đã được đăng ký
+                        await receiverStatusService.updateReceiverStatus(receiver_status_id_pr,{regis_status: true})
+                        return mongooseToObject(data)
+                    })
                     .catch(err => err);
             }
             return "NOT COMPLETED"

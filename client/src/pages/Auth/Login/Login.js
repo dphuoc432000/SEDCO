@@ -92,7 +92,7 @@ class Login extends React.Component{
                 toast.error(`Đăng nhập thất bại. ${data_action.payload.description}!`);
                 return;
             }
-            console.log(this.props.dataRedux)
+            // console.log(this.props.dataRedux)
             //Đăng ký thành công
             toast.success("Đăng nhập thành công!");
             this.props.history.push('/');

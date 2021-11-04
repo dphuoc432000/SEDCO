@@ -16,7 +16,7 @@ class Main extends React.Component {
                 <Map/>
                 <Status/>
             </main>*/}
-                <Map/>
+                <Map role_name={this.props.role_name}/>
                 <Status role_name={this.props.role_name} account_id={this.props.account_id}/>
             </React.Fragment>
         )

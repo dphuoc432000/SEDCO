@@ -35,6 +35,61 @@ class VehicleCensorshipService {
             .catch(err => err);
     }
 
+
+    updateVehicleCensorshipByUserIDForUserInfor = async (user_id_param, object) =>{
+        console.log('object', object)
+        //xóa dhinhf cũ update hình mới
+        const images = await this.getVehicleCensorshipByUserId(user_id_param)
+            .then(data => {
+                return {
+                    face_img: object.face_img?data.face_img:'',
+                    id_card_img_before: object.id_card_img_before?data.id_card_img_before:'',
+                    id_card_img_after: object.id_card_img_after?data.id_card_img_after:'',
+                    driving_license_img_before: object.driving_license_img_before?data.driving_license_img_before:'',
+                    driving_license_img_after: object.driving_license_img_after?data.driving_license_img_after:'',
+                    test_img_1: object.test_img_1?data.test_img_1:'',
+                    test_img_2: object.test_img_2?data.test_img_2:'',
+                }
+            })
+            .catch(err => null);
+            console.log(images)
+        if(images)
+            for (const [key, value] of Object.entries(images)) {
+                if(key)
+                    if(value)
+                        fs.unlink(path.join('..\\server', value), (err) => {
+                            if (err) {
+                                console.log(err);
+                                return ;
+                            }
+                        });
+            }
+            //lọc imgae nào được update nào không được
+        const Vehicle_censorship_update = await this.getVehicleCensorshipByUserId(user_id_param)
+            .then(data => {
+                console
+                return {
+                    face_img: object.face_img?object.face_img:data.face_img,
+                    id_card_img_before: object.id_card_img_before?object.id_card_img_before:data.id_card_img_before,
+                    id_card_img_after: object.id_card_img_after?object.id_card_img_after:data.id_card_img_after,
+                    driving_license_img_before: object.driving_license_img_before?object.driving_license_img_before:data.driving_license_img_before,
+                    driving_license_img_after: object.driving_license_img_after?object.driving_license_img_after:data.driving_license_img_after,
+                    test_img_1: object.test_img_1?object.test_img_1:data.test_img_1,
+                    test_img_2: object.test_img_2?object.test_img_2:data.test_img_2,
+                }
+            })
+            .catch(err => null);
+            console.log(Vehicle_censorship_update)
+        //trả về dữ liệu cũ 
+        await Vehicle_censorship.findOneAndUpdate({user_id: user_id_param}, Vehicle_censorship_update)
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        //trả về dữ liệu mới
+        return await this.getVehicleCensorshipByUserId(user_id_param)
+            .then(data => data)
+            .catch(err => err);
+    }
+
     updateVehicleCensorshipByUserID = async (user_id_param, object) =>{
         
         //xóa dhinhf cũ update hình mới
@@ -54,12 +109,13 @@ class VehicleCensorshipService {
         if(images)
             for (const [key, value] of Object.entries(images)) {
                 if(key)
-                    fs.unlink(path.join('..\\server', value), (err) => {
-                        if (err) {
-                            console.log(err);
-                            return ;
-                        }
-                    });
+                    if(value)
+                        fs.unlink(path.join('..\\server', value), (err) => {
+                            if (err) {
+                                console.log(err);
+                                return ;
+                            }
+                        });
             } 
         //trả về dữ liệu cũ 
         await Vehicle_censorship.findOneAndUpdate({user_id: user_id_param}, object)

@@ -1,6 +1,55 @@
 .Map{
-  /* position: absolute; */
-  content: "";
-  width: 68%;
-  /* min-height: 800px; */
+    /* position: absolute; */
+    content: "";
+    width: 68%;
+    /* min-height: 800px; */
+    position: relative;
+}
+.Map > .map-container{
+    width: 100%;
+    height: 100vh;
+}
+/* .Map .all_status_action {
+    width: 85px;
+    height: 32px;
+    background-color: #808E9B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9px;
+    position: absolute;
+    top: 10px;
+    left: 34%;
+} */
+.Map > .display-status-action-container {
+  width: 480px  ;
+  position: absolute;
+  top: 15px;
+  left: 30%;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: revert;
+}
+.Map > .display-status-action-container > .all-status-action,
+.Map > .display-status-action-container > .sender-status-action,
+.Map > .display-status-action-container > .receiver-status-action,
+.Map > .display-status-action-container > .car_trip-status-action{
+  padding: 7px 20px;
+  color: white;
+  border-radius: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.Map > .display-status-action-container > .all-status-action{
+  background: #808E9B;
+}
+.Map > .display-status-action-container > .sender-status-action{
+  background: #FED330;
+}
+.Map > .display-status-action-container > .receiver-status-action{
+  background: #EE5A24;
+}
+.Map > .display-status-action-container > .car_trip-status-action{
+  background: #A3CB38;
 }

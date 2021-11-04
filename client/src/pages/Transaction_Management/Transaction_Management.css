@@ -1,0 +1,18 @@
+.status_content_container{
+    position: absolute;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    align-items: center;
+    /* padding-top: 25px; */
+    padding-top: 5px;
+}
+.status_content_container > .status_content{
+    width: 1000px;
+    /* padding-top: 10px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+

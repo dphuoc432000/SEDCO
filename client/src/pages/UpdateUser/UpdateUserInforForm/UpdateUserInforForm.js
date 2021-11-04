@@ -7,7 +7,10 @@ import { withRouter}from "react-router-dom";
 import {getUserInforIsLogined, updateUserInfor} from '../../../stores/actions/userIsLogin.action';
 import { connect } from "react-redux";
 import {toast } from 'react-toastify';
-import {UPDATE_USER_SUCCESS,UPDATE_USER_ERROR} from '../../../constants/actions'
+import {UPDATE_USER_SUCCESS,UPDATE_USER_ERROR} from '../../../constants/actions';
+import {getVehicleCensorship_forUser} from '../../../stores/actions/vehicle_censorship.action';
+import {API_IMAGE_URL} from '../../../constants/api';
+
 // import Header from '../../components/Header/Header';
 // import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 class UpdateUserInforForm extends Component {
@@ -57,6 +60,14 @@ class UpdateUserInforForm extends Component {
                     errorMessage:''
                 },
             },
+            face_img: null,
+            id_card_img_before: null,
+            id_card_img_after:  null,
+            driving_license_img_before:  null,
+            driving_license_img_after: null,
+            test_img_1: null,
+            test_img_2:null,
+            vehicle_censorship: [],
             districts: [],
             cities: [],
         }
@@ -75,6 +86,8 @@ class UpdateUserInforForm extends Component {
             await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
             const user = {...await this.props.userIsLogined.user};
             //lấy district
+            await this.props.getVehicleCensorship_forUser(user._id);
+            const vehicle_censorship = this.props.vehicleCensorshipReducer;
             const city = cities.find(city =>{
                 // console.log(city)
                 return city.name === user.city
@@ -120,8 +133,16 @@ class UpdateUserInforForm extends Component {
                         // isInputValue: this.checkInputedValue(user.address),
                     },
                 },
+                face_img: vehicle_censorship.face_img,
+                id_card_img_before: vehicle_censorship.id_car_img_before,
+                id_card_img_after:  vehicle_censorship.id_cad_img_after,
+                driving_license_img_before:  vehicle_censorship.driving_licens_img_before,
+                driving_license_img_after: vehicle_censorship.driving_licene_img_after,
+                test_img_1: vehicle_censorship.test_img_1,
+                test_img_2:vehicle_censorship.test_img_2,
                 cities: [...cities],
-                districts: [...districts]
+                districts: [...districts],
+                vehicle_censorship: vehicle_censorship
             })
         } catch (error) {
             console.log(error.message)
@@ -314,24 +335,40 @@ class UpdateUserInforForm extends Component {
             const verifydata = {...await this.props.verifyTokenData};
             await this.props.get_User_Infor_Is_Logined(verifydata.account_id);
             const user_id = await this.props.userIsLogined.user._id;
-            const user_update = {
-                full_name: this.state.user_infor.full_name.value,
-                age: this.state.user_infor.age.value,
-                email: this.state.user_infor.email.value,
-                phone_number: this.state.user_infor.phone_number.value,
-                city: this.state.user_infor.city.value,
-                district: this.state.user_infor.district.value,
-                address: this.state.user_infor.specific_address.value
-            }            
+            
+            let formData = new FormData();
+            formData.append('face_img', this.state.face_img);
+            formData.append('id_card_img_before', this.state.id_card_img_before);
+            formData.append('id_card_img_after', this.state.id_card_img_after);
+            formData.append('driving_license_img_before', this.state.driving_license_img_before);
+            formData.append('driving_license_img_after', this.state.driving_license_img_after);
+            formData.append('test_img_1', this.state.test_img_1);
+            formData.append('test_img_2', this.state.test_img_2);
+            formData.append('full_name', this.state.user_infor.full_name.value);
+            formData.append('age', this.state.user_infor.age.value);
+            formData.append('email', this.state.user_infor.email.value);
+            formData.append('phone_number', this.state.user_infor.phone_number.value);
+            formData.append('city', this.state.user_infor.city.value);
+            formData.append('district', this.state.user_infor.district.value);
+            formData.append('address', this.state.user_infor.specific_address.value);
+            // const user_update = {
+            //     full_name: this.state.user_infor.full_name.value,
+            //     age: this.state.user_infor.age.value,
+            //     email: this.state.user_infor.email.value,
+            //     phone_number: this.state.user_infor.phone_number.value,
+            //     city: this.state.user_infor.city.value,
+            //     district: this.state.user_infor.district.value,
+            //     address: this.state.user_infor.specific_address.value,
+            // }
             // console.log(user_update)
-            const action = await this.props.update_user_infor(user_id,user_update)
+            const action = await this.props.update_user_infor(user_id, formData)
             // console.log(user_id)
             // console.log(action)
             if(action.type !== UPDATE_USER_SUCCESS){
                 toast.warn("Đã xãy ra lỗi trong quá trình cập nhật!");
                 return;
             }
-            this.props.handlUpdateFull_name(user_update.full_name);
+            this.props.handlUpdateFull_name(this.state.user_infor.full_name.value);
             toast.success("Cập nhật thành công!");
             this.props.history.push("/user/information")
         }
@@ -363,10 +400,31 @@ class UpdateUserInforForm extends Component {
         return true;
     }
 
+    onChangeImageInput =(event, id_img) =>{
+        // console.log(id_img)
+        const output = document.getElementById(id_img);
+        const file = event.target.files[0];
+        const name = event.target.name;
+        // console.log(output)
+        if(file){
+            
+            console.log(URL.createObjectURL(file))
+            output.src = URL.createObjectURL(file);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+            this.setState({
+                [name]: file    
+            })
+        }
+    }
+
     render() {
         const user_infor = this.state.user_infor;
         const cities = this.state.cities;
         const districts = this.state.districts;
+        const vehicle_censorship = this.state.vehicle_censorship;
+        // console.log(this.state)
         return (
             <main>
                 <div className="layer_form_update_container">
@@ -555,7 +613,7 @@ class UpdateUserInforForm extends Component {
                                             <span>Căn cước công dân/CMND</span>
                                         </td>
                                     </tr> 
-                                    <tr>
+                                    <tr className="img_data_title">
                                         <td>
                                             <p>Mặt trước</p>
                                         </td>
@@ -563,18 +621,57 @@ class UpdateUserInforForm extends Component {
                                             <p>Mặt sau</p>
                                         </td>
                                     </tr>
-                                    <tr className="identity_card_img_container">
+                                    <tr className="identity_card_img_container img_data">
                                         <td className="img_front">
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="id_card_front"/>
-                                            <label htmlFor="id_card_front">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                            <input 
+                                                onChange={(event) => this.onChangeImageInput(event,'id_card_img_before_data')} 
+                                                type="file" 
+                                                name="id_card_img_before" 
+                                                style={{visibility:'hidden', display: 'none'}} 
+                                                id="id_card_front"
+                                                accept="image/png, image/jpeg"
+                                            />
+                                            {vehicle_censorship.id_card_img_before ?
+                                                <React.Fragment>
+                                                    <label htmlFor="id_card_front">
+                                                        <p>Chỉnh sửa</p>
+                                                    </label>
+                                                    <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_before}`} id="id_card_img_before_data" alt="" />
+                                                </React.Fragment>
+                                                :
+                                                <React.Fragment>
+                                                    <label htmlFor="id_card_front">
+                                                        <p>Cập nhật</p>
+                                                    </label>
+                                                    <img src='' id="id_card_img_before_data" alt="" />
+                                               </React.Fragment>
+                                            }
+                                            
                                         </td>
                                         <td className="img_back"> 
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="id_card_back"/>
-                                            <label htmlFor="id_card_back">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input 
+                                            onChange={(event) => this.onChangeImageInput(event,'id_card_img_after_data')} 
+                                            type="file" 
+                                            name="id_card_img_after" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="id_card_back"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.id_card_img_after ?
+                                            <React.Fragment>
+                                                <label htmlFor="id_card_back">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_after}`} id="id_card_img_after_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="id_card_back">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="id_card_img_after_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                     </tr>
                                     <tr className="img_input_title">
@@ -582,12 +679,31 @@ class UpdateUserInforForm extends Component {
                                             <span>Khuôn mặt</span>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="img_data">
                                         <td className="img" colSpan={2}  >
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="face_img"/>
-                                            <label htmlFor="face_img">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input 
+                                            onChange={(event) => this.onChangeImageInput(event,'face_img_data')} 
+                                            type="file" 
+                                            name="face_img" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="face_img"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.face_img ?
+                                            <React.Fragment>
+                                                <label htmlFor="face_img">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.face_img}`} id="face_img_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="face_img">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="face_img_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                     </tr>
                                     <tr className="img_input_title">
@@ -595,7 +711,7 @@ class UpdateUserInforForm extends Component {
                                             <span >Giấy phép lái xe</span>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="img_data_title">
                                         <td>
                                             <p>Mặt trước</p>
                                         </td>
@@ -603,18 +719,56 @@ class UpdateUserInforForm extends Component {
                                             <p>Mặt sau</p>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="img_data">
                                         <td className="img_front">
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="driving_front"/>
-                                            <label htmlFor="driving_front">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input
+                                            onChange={(event) => this.onChangeImageInput(event,'driving_license_img_before_data')}
+                                            type="file" 
+                                            name="driving_license_img_before" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="driving_front"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.driving_license_img_before ?
+                                            <React.Fragment>
+                                                <label htmlFor="driving_front">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_before}`} id="driving_license_img_before_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="driving_front">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="driving_license_img_before_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                         <td className="img_back">
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="driving_back"/>
-                                            <label htmlFor="driving_back">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input 
+                                            onChange={(event) => this.onChangeImageInput(event,'driving_license_img_after_data')} 
+                                            type="file" 
+                                            name="driving_license_img_after" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="driving_back"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.driving_license_img_after ?
+                                            <React.Fragment>
+                                                <label htmlFor="driving_back">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_after}`} id="driving_license_img_after_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="driving_back">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="driving_license_img_after_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                     </tr>
                                     <tr className="img_input_title">
@@ -622,18 +776,56 @@ class UpdateUserInforForm extends Component {
                                             <span >Giấy xét nghiệm Covid/Đã tiêm vaccine</span>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="img_data">
                                         <td className="img">
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="covid_test_1"/>
-                                            <label htmlFor="covid_test_1">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input 
+                                            onChange={(event) => this.onChangeImageInput(event,'test_img_1_data')} 
+                                            type="file" 
+                                            name="test_img_1" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="covid_test_1"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.test_img_1 ?
+                                            <React.Fragment>
+                                                <label htmlFor="covid_test_1">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_1}`} id="test_img_1_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="covid_test_1">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="test_img_1_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                         <td className="img">
-                                            <input type="file" name="" style={{visibility:'hidden', display: 'none'}} id="covid_test_2"/>
-                                            <label htmlFor="covid_test_2">
-                                                <p>Thêm hình ảnh</p>
-                                            </label>
+                                        <input 
+                                            onChange={(event) => this.onChangeImageInput(event,'test_img_2_data')} 
+                                            type="file" 
+                                            name="test_img_2" 
+                                            style={{visibility:'hidden', display: 'none'}} 
+                                            id="covid_test_2"
+                                            accept="image/png, image/jpeg"
+                                        />
+                                        {vehicle_censorship.test_img_2 ?
+                                            <React.Fragment>
+                                                <label htmlFor="covid_test_2">
+                                                    <p>Chỉnh sửa</p>
+                                                </label>
+                                                <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_2}`} id="test_img_2_data" alt="" />
+                                            </React.Fragment>
+                                            :
+                                            <React.Fragment>
+                                                <label htmlFor="covid_test_2">
+                                                    <p>Cập nhật</p>
+                                                </label>
+                                                <img src='' id="test_img_2_data" alt="" />
+                                            </React.Fragment>
+                                        }
                                         </td>
                                     </tr>
                                 </tbody>
@@ -656,7 +848,8 @@ const mapStateToProps = (state) => {
     return {
       dataRedux: state,
       verifyTokenData: state.verifyTokenReducer,
-      userIsLogined: state.userIsLoginReducer
+      userIsLogined: state.userIsLoginReducer,
+      vehicleCensorshipReducer: state.vehicleCensorshipReducer,
     };
   };
   
@@ -677,6 +870,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         update_user_infor: async (user_id, user_update)=>{
             const action = await updateUserInfor(user_id, user_update);
+            return dispatch(action);
+        },
+        getVehicleCensorship_forUser: async(user_id) =>{
+            const action = await getVehicleCensorship_forUser(user_id);
             return dispatch(action);
         }
     };

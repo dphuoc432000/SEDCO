@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import Main from '../../components/Main/Main'
+import Main from '../../components/Main/Main';
 import "../../styles/main.css";
 // import {  } from 'react-router';
 import {
@@ -28,6 +28,7 @@ export default withRouter(class Home extends Component {
                     <Route path="/register" exact>
                         <Register/>
                     </Route>*/}
+                    
                     <main className={"main"}>
                         <Main handleChangeShowFormLogin={this.handleChangeShowFormLogin} role_name={this.props.role_name} account_id={this.props.account_id}/>
                         {   this.props.showFormLogin &&

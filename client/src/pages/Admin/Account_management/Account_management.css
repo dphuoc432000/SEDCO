@@ -1,0 +1,126 @@
+#Account_manager_content {}
+
+.Account_manager_content-Title {
+    margin-left   : 40px;
+    padding-top   : 30px;
+    padding-bottom: 20px;
+    color         : #000;
+    font-size     : 1.6rem;
+}
+
+.Block-Search-Filter {
+    margin-top     : -12px;
+    display        : flex;
+    justify-content: space-between;
+}
+
+.content-search {
+    display      : flex;
+    margin-top   : 14px;
+    align-content: center;
+}
+
+.content-search__lable {
+    margin-left : 18px;
+    margin-right: 12px;
+    color       : #000;
+}
+
+.content-search__input {
+    border       : 1px solid #a5a5a5c7;
+    border-radius: 6px;
+    height       : 37px;
+    margin-top   : 6px;
+    width        : 210px;
+}
+
+.Filter_data_account {
+    display     : flex;
+    margin-right: 90px;
+}
+
+.Filter_data_account__lable {
+    margin-left : 18px;
+    margin-right: 12px;
+    font-weight : 400;
+    margin-top  : 28px;
+    color       : #000;
+}
+
+#Filter_box_account {
+    border-radius: 6px;
+    width        : 180px;
+    height       : 36px;
+    color        : #636363ad;
+    font-size    : 1.2rem;
+    margin-right : 40px;
+    margin-top   : 21px;
+}
+
+.Filter_box_account__item {
+    font-size: 1.2rem;
+}
+
+#table-ListGoods-Giver {
+    border-collapse: collapse;
+    width          : 86%;
+    margin-left    : 40px;
+    font-size      : 1.2rem;
+    margin-top     : 10px;
+}
+
+#table-ListGoods-Giver td,
+#table-ListGoods-Giver th {
+    border : 1px solid #ddd;
+    padding: 12px;
+    height : 45px;
+}
+
+#table-ListGoods-Giver tr:nth-child(even) {
+    background-color: #fff;
+}
+
+/* #table-ListGoods-Giver tr:hover {
+    background-color: #fff;
+} */
+
+#table-ListGoods-Giver th {
+    padding-top     : 12px;
+    padding-bottom  : 12px;
+    text-align      : center;
+    background-color: #ccc;
+    color           : #000;
+}
+
+.btn_Delete {
+    color          : #000;
+    text-decoration: none;
+}
+
+.pagination {
+    display        : flex;
+    list-style     : none;
+    justify-content: center;
+    float          : right;
+    width          : 30%;
+
+}
+
+.pagination-item {
+    border-radius: 6px;
+    padding      : 0;
+    margin       : 0 1px;
+}
+
+.pagination-item--active,
+.pagination-item--active .pagination-item__link {
+    color: #485AFF;
+}
+
+.pagination-item__link {
+    text-decoration: none;
+    color          : #485AFF;
+    font-size      : 1rem;
+}
+
+.fas fa-chevron-right {}

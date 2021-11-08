@@ -3,6 +3,7 @@ import Home from "./pages/Home/Home";
 // import Register from "./pages/Auth/Register/Register";
 import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUserInforForm";
 import UpdateUser from './pages/UpdateUser/UpdateUser'
+import Admin from './pages/Admin/Admin'
 import { 
   // AuthenticatedSenderRoute,
   // AuthenticatedReceiverRoute,
@@ -178,6 +179,10 @@ class App extends React.Component {
               }}>
               </Route>*/}
               
+              <Route path="/admin">
+                  <Admin/>
+                </Route>
+
               <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
               {/*<Route path="/user/information" exact render={() =>{
                 return !localStorage.getItem('accessToken') ? <Redirect to="/login"/> : <UpdateUser/>}

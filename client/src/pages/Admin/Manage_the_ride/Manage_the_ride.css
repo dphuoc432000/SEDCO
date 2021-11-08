@@ -1,0 +1,239 @@
+#Content_Manage_the_ride {
+    width                      : 78%;
+    /* border-left             : 2.1px solid #4591e0a6; */
+    /* box-shadow              : rgb(99 99 99 / 20%) 0px 2px 8px 0px; */
+    position                   : absolute;
+    content                    : "";
+    /* top                     : 0%; */
+    min-height                 : 800px;
+    left                       : 22%;
+    background-position-y      : -105px;
+}
+
+.content-Title {
+    margin-left   : 40px;
+    padding-top   : 30px;
+    padding-bottom: 20px;
+    padding       : auto;
+    color         : #000;
+    font-size     : 1.6rem;
+}
+
+.Filter_the_data {
+    display     : flex;
+    margin-right: 90px;
+}
+
+.Filter_the_data_lable {
+    margin-left : 18px;
+    margin-right: 12px;
+    font-weight : 400;
+    margin-top  : 28px;
+    color       : #000;
+}
+
+#Filter_data {
+    border-radius: 6px;
+    width        : 180px;
+    height       : 36px;
+    margin-top   : 21px;
+    color        : #636363ad;
+    font-size    : 1.2rem;
+    margin-right : 40px;
+}
+
+.Filter_data__item {
+    font-size: 1.2rem;
+}
+
+.Data_content_manage_the_ride {
+    width  : 100%;
+    display: flex;
+}
+
+#Car_list {
+    width: 28%;
+}
+
+#List_Car_trips {
+    margin-left   : 35px;
+    /* height     : 500px; */
+    overflow      : hidden;
+    /* overflow-y : scroll;
+    margin-top    : -8px;
+    border        : 1px solid black; */
+}
+
+.Car_trips_item {
+    margin                : 0 6px;
+    padding               : 6px 8px;
+    margin-top            : 12px;
+    /* display            : flex; */
+    background-color      : #F5F6FA;
+    justify-content       : space-between;
+    /* border             : 1px solid #818181b0; */
+    border-radius         : 6px;
+    align-items           : center;
+}
+
+.Car_trips_item--name {
+    font-size: 1.1rem;
+}
+
+.Car_trips_item--status {
+    display    : flex;
+    align-items: center;
+}
+
+.Car_trips_item--status-ICON {
+    color: #000;
+}
+
+.Car_trips_item--status-lable {
+    font-size  : 0.9rem;
+    margin-left: 3.1px;
+    color      : #000;
+    font-weight: 400;
+}
+
+.Car_trips {
+    margin-top   : 20px;
+    margin-bottom: 0px;
+    font-size    : 1.45rem;
+    margin-left  : 40px;
+    color        : #000;
+}
+
+#Car_trips_information {
+    width: 72%;
+}
+
+.Information_car_trips {
+    margin-top   : 20px;
+    margin-bottom: 0px;
+    font-size    : 1.45rem;
+    margin-left  : 40px;
+    color        : #000;
+}
+
+.Rides_management_form {
+    margin-top            : 20px;
+    width                 : 84%;
+    margin-left           : 20px;
+    background-color      : #F5F6FA;
+    height                : 600px;
+    /* overflow-y         : scroll; */
+    /* border             : 1px solid black; */
+    /* overflow           : hidden;*/
+}
+
+.Rides_management_form_header {
+    margin-bottom      : 9px;
+    /* border          : 1px solid; */
+    margin-top         : -8px;
+    width              : 100%;
+    margin-left        : 0;
+    /* width           : 98%; */
+    display            : flex;
+    background-color   : #F5F6FA;
+    justify-content    : space-between;
+}
+
+.Rides_management_form_header--name {
+    margin: 15px 17px;
+}
+
+.Rides_management_form_header--Date {
+    margin-right: 20px;
+    margin-top  : 10px;
+    font-weight : 400;
+}
+
+.Rides_management_form--name {
+    margin: 15px 17px;
+}
+
+.Rides_management_form--Date {
+    margin-right: 20px;
+    margin-top  : 10px;
+    font-weight : 400;
+}
+
+.Rides_management_form_header--Status {
+    margin-right: 60px;
+}
+
+.Rides_management_form_header--Status-lable {
+    font-weight: 400;
+}
+
+.Rides_management_form_header--Date {}
+
+.Form-QLCX-Title-Major {
+    margin: 10px 17px;
+}
+
+.Status_of_the_ride {
+    display    : flex;
+    align-items: center;
+    margin-left: 126px;
+}
+
+.Manage_the_ride_form_list {
+    width  : 100%;
+    display: flex;
+}
+
+.List_Infor_car_trips {
+    list-style       : none;
+    width            : 35%;
+    padding-top      : 0;
+    /* padding-bottom: 30px; */
+    padding-left     : 17px;
+}
+
+.List_detail_Infor_car_trips {
+    list-style       : none;
+    width            : 60%;
+    padding-top      : 0;
+    /* padding-bottom: 30px; */
+    padding-left     : 17px;
+}
+
+.Sub_list_detail_Infor_car_trips {
+    list-style       : none;
+    width            : 30%;
+    padding-top      : 0;
+    /* padding-bottom: 30px; */
+    padding-left     : 17px;
+}
+
+.Infor-Chuyen-Xe__item {
+    font-size  : 1.16rem;
+    display    : flex;
+    align-items: center;
+    margin     : 10px 0;
+}
+
+.Form-QLCX__container {
+    /* margin: 10px 17px; */
+}
+
+.Form-QLCX-Detail {}
+
+.IMG_driver {
+    width          : 130px;
+    height         : 130px;
+    align-items    : center;
+    justify-content: center;
+}
+
+.lable_img_driver {
+    text-align   : center;
+    margin-top   : -30px;
+    margin-bottom: 20px;
+}
+
+.img_of_driver {
+    width : 100%;
+}

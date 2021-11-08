@@ -43,7 +43,7 @@ class SenderStatusService {
 
     addSenderStatus = async (status_id, object) => {
         object.status_id = status_id;
-        console.log(object);
+        object.regis_status = false;
         const sender_status = new SenderStatus(object);
         return await sender_status.save()
             .then(data => mongooseToObject(data))
@@ -72,12 +72,13 @@ class SenderStatusService {
         return await SenderStatus.findByIdAndUpdate({_id: sender_status_id}, object)
             .then(data =>{
                 if(data){
-                    fs.unlink(path.join('..\\server', data.picture), (err) => {
-                        if (err) {
-                            console.log(err);
-                            return ;
-                        }
-                    });
+                    if(object.picture)
+                        fs.unlink(path.join('..\\server', data.picture), (err) => {
+                            if (err) {
+                                console.log(err);
+                                return ;
+                            }
+                        });
                 }
                 return mongooseToObject(data);
             })
@@ -109,6 +110,7 @@ class SenderStatusService {
 
             //xóa folder nếu trống
             const path_folder = path.join('..\\server', "\\uploads\\status\\SENDER", account_id.toString());
+            console.log(path_folder, isEmpty(path.join(path_folder)))
             if(isEmpty(path.join(path_folder)))
             {   
                 try {

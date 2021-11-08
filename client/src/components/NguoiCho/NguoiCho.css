@@ -122,4 +122,5 @@ td:last-child {
 }
 .List-Good tr td:last-child {
   text-align: right;
+  width: 55px;
 }

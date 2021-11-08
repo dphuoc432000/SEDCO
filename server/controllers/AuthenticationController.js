@@ -11,6 +11,8 @@ const mailer_config = require("../config/mailer.config");
 const UserService = require("../service/UserService");
 const AccountService = require("../service/AccountService");
 const generator = require('generate-password');
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
 
 class AuthenticationController {
     signin = async (req, res) => {
@@ -39,6 +41,9 @@ class AuthenticationController {
                 // res.set('x-access-token', token);
                 // console.log("header: ",req.headers)
                 res.cookie("account_cookie", token, {expires:  new Date(Date.now() + 1 * 3600000)});
+                localStorage.setItem('accessToken', token)
+                // res.cookie("account_cookie", token, {expires:  new Date(Date.now() + 1 * 3600000)});
+                // console.log(localStorage.getItem('accessToken'))
 
                 return res.status(200).json({
                     _id: account._id,

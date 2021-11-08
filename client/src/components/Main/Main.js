@@ -12,12 +12,8 @@ class Main extends React.Component {
         return (
             
             <React.Fragment>
-            {/*<main className="main">
-                <Map/>
-                <Status/>
-            </main>*/}
-                <Map/>
-                <Status role_name={this.props.role_name}/>
+                <Map role_name={this.props.role_name}/>
+                <Status handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent} user={this.props.user} status_current={this.props.status_current} role_name={this.props.role_name} account_id={this.props.account_id} />
             </React.Fragment>
         )
     }

@@ -49,7 +49,7 @@ class RecriverStatusController{
     //[POST] /api/receiver/:receiver_status_id_pr/update
     updateReceiverStatus = async(req, res, next) =>{
         const form_data = req.body;
-        form_data.picture = req.file.path;
+        form_data.picture = req.file?req.file.path:"";
         await receiverStatusService.updateReceiverStatus(req.params.receiver_status_id_pr, req.body)
             .then(data =>  {
                 if(data)

@@ -27,23 +27,23 @@ const getUserInforIsLogined = async (account_id)=>{
                 errdata: err.response.data
             };
         });
-
-    const api_user_detail = `${API_URL}/api/user/${account_detail.user_id}/detail`;
-    await axios.get(api_user_detail)
-        .then(res => {
-            action.type = USER_IS_LOGINED_SUCCESS;
-            action.payload.account = account_detail;
-            action.payload.user = res.data;
-        })
-        .catch(err=>{
-            action.type = USER_IS_LOGINED_ERROR;
-            action.payload = {
-                description: "Tên đăng nhập hoặc mật khẩu không chính xác",
-                message:err.message,
-                errdata: err.response.data
-            };
-        });
-
+    if(account_detail){
+        const api_user_detail = `${API_URL}/api/user/${account_detail.user_id}/detail`;
+        await axios.get(api_user_detail)
+            .then(res => {
+                action.type = USER_IS_LOGINED_SUCCESS;
+                action.payload.account = account_detail;
+                action.payload.user = res.data;
+            })
+            .catch(err=>{
+                action.type = USER_IS_LOGINED_ERROR;
+                action.payload = {
+                    description: "Tên đăng nhập hoặc mật khẩu không chính xác",
+                    message:err.message,
+                    errdata: err.response.data
+                };
+            });
+    }
     return action;
 }
 
@@ -52,9 +52,14 @@ const updateUserInfor = async (user_id, user_update) =>{
         type:UPDATE_USER_LOADING,
         payload:{}
     };
+    console.log(user_update)
 
     const api_update_user = `${API_URL}/api/user/${user_id}/update`;
-    await axios.post(api_update_user, user_update)
+    await axios.post(api_update_user, user_update,{
+        headers:{
+            'Content-Type': 'multipart/form-data'
+        }
+    })
         .then(res =>{
             action.type = UPDATE_USER_SUCCESS;
             action.payload = res.data;

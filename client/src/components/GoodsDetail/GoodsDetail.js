@@ -46,39 +46,7 @@ class GoodsDetail extends Component {
               <td>Trứng</td>
               <td>4 quả</td>
             </tr>
-            <tr>
-              <td>Gạo</td>
-              <td>4 bao</td>
-            </tr>
-            <tr>
-              <td>Rau củ</td>
-              <td>6 thùng</td>
-            </tr>
-            <tr>
-              <td>Gạo</td>
-              <td>4 bao</td>
-            </tr>
-            <tr>
-              <td>Rau củ</td>
-              <td>6 thùng</td>
-            </tr>
-            <tr>
-              <td>Rau củ</td>
-              <td>6 thùng</td>
-            </tr>
-            <tr>
-              <td>Gạo</td>
-              <td>4 bao</td>
-            </tr>
-            <tr>
-              <td>Rau củ</td>
-              <td>6 thùng</td>
-            </tr>
-          
-            <tr>
-              <td>Tổng khối lượng</td>
-              <td>600kg</td>
-            </tr>
+           
           </table>
           <h3 className="data-container__title">Thông tin liên hệ</h3>
           <table className="List-Good-Detail">

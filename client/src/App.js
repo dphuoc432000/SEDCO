@@ -1,13 +1,12 @@
 import Home from "./pages/Home/Home";
-// import Login from "./pages/Auth/Login/Login";
-// import Register from "./pages/Auth/Register/Register";
+import Admin from "./pages/Admin/Admin";
 import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUserInforForm";
-import UpdateUser from './pages/UpdateUser/UpdateUser'
-import Admin from './pages/Admin/Admin'
+import UpdateUser from './pages/UpdateUser/UpdateUser';
+import Transaction_Management from "./pages/Transaction_Management/Transaction_Management";
 import { 
   // AuthenticatedSenderRoute,
   // AuthenticatedReceiverRoute,
-  // AuthenticatedCarTripRoute,
+  AuthenticatedCarTripRoute,
   AuthenticatedAllRoute
 } from "./components/Authentication/authentication";
 import "./App.css";
@@ -16,7 +15,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  // Redirect,
+  Redirect,
 } from "react-router-dom";
 import React from "react";
 import { ToastContainer } from 'react-toastify';
@@ -28,17 +27,17 @@ import { menuHeader } from "./components/Header/menuHeader";
 const translateRoleName = (role_name)=>{
   switch(role_name) {
       case "user":
-          return {name:"Người dùng",color:"#808E9B" };
+          return {role_name: 'user', name:"Người dùng",color:"#808E9B" };
       case "sender":
-          return {name:"Người hỗ trợ",color:"#FED330" };
+          return {role_name: 'sender', name:"Người hỗ trợ",color:"#FED330" };
       case "receiver":
-          return {name:"Người cần hỗ trợ",color:"#EE5A24" };
+          return {role_name: 'receiver', name:"Người cần hỗ trợ",color:"#EE5A24" };
       case "car_trip":
-          return {name:"Người vận chuyển",color:"#A3CB38" };
+          return {role_name: 'car_trip', name:"Người vận chuyển",color:"#A3CB38" };
       case "mod":
-          return {name:"Mod",color:"#EA2027" };
+          return {role_name: 'mod', name:"Mod",color:"#EA2027" };
       case "admin":
-          return {name:"Admin",color: "#EA2027"};
+          return {role_name: 'admin', name:"Admin",color: "#EA2027"};
       default:
           return;
   }
@@ -53,12 +52,15 @@ class App extends React.Component {
     menu: [],
     showFormLogin: false,
     showFormRegister: false,
-    showFormForgotPassword: false
+    showFormForgotPassword: false,
+    status_current: {},
+    user: {},
   }
 
   componentDidMount = async () =>{
     if(localStorage.getItem('accessToken')){
       const verifyData = await this.props.verifyTokenData;
+      const statusCurrentData = await this.props.statusCurrentReducer;
       await this.props.get_User_Infor_Is_Logined(verifyData.account_id);
       const user = await this.props.userIsLogined.user;
       await this.props.get_role_user_action(verifyData.role_id);
@@ -66,8 +68,7 @@ class App extends React.Component {
       if(role_user){
         const role_name = role_user.role_name;
         const roles = await this.props.roleReducer.roles;
-        
-        console.log(roles)
+
         if(roles.includes(role_name)){
             const menu = menuHeader.find(menu =>{
                 return menu.name === role_name;
@@ -77,7 +78,9 @@ class App extends React.Component {
               account_id:verifyData.account_id,
               isAuthenticated: true,
               role_name: translateRoleName(role_name),
-              menu: menu.menu
+              menu: menu.menu,
+              status_current : statusCurrentData,
+              user: user
             })
         }
       }
@@ -95,7 +98,8 @@ class App extends React.Component {
   handleLogin = () =>{
     this.componentDidMount();
     this.setState({
-      showFormLogin: !this.state.showFormLogin
+      showFormLogin: !this.state.showFormLogin,
+      isAuthenticated: true
     })
   }
 
@@ -138,9 +142,16 @@ class App extends React.Component {
       showFormForgotPassword: !this.state.showFormForgotPassword
     })
   }
-
+  handleUpdateStatusCurrent = async (status_current) => {
+    const statusCurrentData = await this.props.statusCurrentReducer;
+    this.setState({ 
+      status_current: statusCurrentData
+    })
+  }
   render(){
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
+    console.log(this.state)
+    // console.log(Object.keys(this.state.role_name).length? true: false)
     return (
       <Router>
         <Switch>
@@ -172,30 +183,41 @@ class App extends React.Component {
                   handleChangeShowFormForgotPassword = {this.handleChangeShowFormForgotPassword}
                   showFormForgotPassword = {this.state.showFormForgotPassword}
                   role_name={this.state.role_name}
+                  account_id={this.state.account_id}
+                  status_current={this.state.status_current}
+                  user = {this.state.user}
+                  handleUpdateStatusCurrent={this.handleUpdateStatusCurrent}
+                  
                 />
               </Route>
               {/*<Route path="/login" exact render={() =>{
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>
               }}>
               </Route>*/}
-              
-              <Route path="/admin">
+              { checkLocalStorage && Object.keys(this.state.role_name).length ?
+              <React.Fragment>
+                <Route path="/admin">
                   <Admin/>
                 </Route>
-
-              <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
-              {/*<Route path="/user/information" exact render={() =>{
-                return !localStorage.getItem('accessToken') ? <Redirect to="/login"/> : <UpdateUser/>}
-              }/>*/}
-
-              {/*<UpdateUser/>
-              </Route>*/}
-              
-              <Route path="/user/information/update" exact>
-                <UpdateUserInforForm handlUpdateFull_name={this.handlUpdateFull_name}/>
+                
+                <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
+                
+                <AuthenticatedCarTripRoute exact={false} path="/car_trip/transaction_management" component={Transaction_Management} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin, role_name: this.state.role_name.role_name, account_id: this.state.account_id, isAuthenticated: this.state.isAuthenticated}}/>
+                
+                <Route path="/user/information/update" exact>
+                  <UpdateUserInforForm handlUpdateFull_name={this.handlUpdateFull_name}/>
+                </Route>
+              </React.Fragment>
+              :
+              <Route path="*">
+                {!checkLocalStorage && !Object.keys(this.state.role_name).length && 
+                  <React.Fragment> 
+                    <Redirect to='/'/> 
+                  </React.Fragment>
+                }
               </Route>
+              }
             </React.Fragment>
-            
             
         </Switch>
       </Router>  
@@ -205,6 +227,7 @@ class App extends React.Component {
 //state này của redux không phải react
 const mapStateToProps = (state) =>{
   return {
+      statusCurrentReducer : state.statusCurrentReducer,
       verifyTokenData: state.verifyTokenReducer,
       roleReducer: state.roleReducer,
       isLogined: state.loginReducer.isLogined,

@@ -34,7 +34,7 @@ export const menuHeader =[
         menu: [
             {
                 name: "Quản lý giao dịch",
-                link: ''
+                link: '/car_trip/transaction_management'
             },
             {
                 name: "Quản lý số lượng",

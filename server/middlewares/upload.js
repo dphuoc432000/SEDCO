@@ -14,7 +14,13 @@ const fileFilter = (req, file, cb) =>{
             cb(null, false);
 }
 const  fileFilterVehicleCensorship = (req, file, cb) =>{
-    if (file.fieldname === "face_img") {
+    if (file.fieldname === "picture") {
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')
+            cb(null, true);
+        else
+            cb(null, false);
+    }
+    else if (file.fieldname === "face_img") {
         if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')
             cb(null, true);
         else
@@ -94,11 +100,13 @@ const uploadFileStatus = (directory) =>{
                 let direc = directory ;
                 // console.log(req.params.status_type_pr !== undefined);
                 // if(req.params.status_type_pr !== "undefine")
-                if(["SENDER", "RECEIVER", "CAR_TRIP"].includes(req.params.status_type_pr)){
-                    direc +=  "\\" + req.params.status_type_pr + "\\" + req.data._id;
-                }
-                else 
-                    direc += "\\"  + req.data._id;
+                
+                //24/10/2021
+                // if(["SENDER", "RECEIVER", "CAR_TRIP"].includes(req.params.status_type_pr)){
+                //     direc +=  "\\" + req.params.status_type_pr + "\\" + req.data._id;
+                // }
+                // else 
+                direc += "\\"  + req.data._id;
                 if(!fs.existsSync(direc))
                     fs.mkdirSync(direc)
                 cb(null, direc);
@@ -133,7 +141,12 @@ const uploadVehicleCensorship = (directory) =>{
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             let direc = directory ;
-            if (file.fieldname === "face_img") {
+            if (file.fieldname === "picture") {
+                const direcPicture =  "uploads\\status\\CAR_TRIP\\" + req.data._id;
+                createDirectory(direcPicture);
+                cb(null, direcPicture);
+            }
+            else if (file.fieldname === "face_img") {
                 direc +=  "\\" + req.data._id + "\\" + "face_img";
                 createDirectory(direc);
                 cb(null, direc);
@@ -176,7 +189,11 @@ const uploadVehicleCensorship = (directory) =>{
         },
 
         filename:(req,file,cb)=>{
-            if (file.fieldname === "face_img") {
+            if(file.fieldname === "picture"){
+                const date = new Date();
+                cb(null, date.getMonth()+1 +''+ date.getDate() + '' + date.getFullYear() + '' +  + Math.round(Math.random() * 1E9) +'-'+ file.originalname);
+            }
+            else if (file.fieldname === "face_img") {
                 const date = new Date();
                 cb(null, file.fieldname +  date.getMonth()+1 +''+ date.getDate() + '' + date.getFullYear() + '' +  + Math.round(Math.random() * 1E9) +'-'+path.extname(file.originalname));
             }

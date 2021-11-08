@@ -17,7 +17,7 @@ const Car_Status = new Schema({
     location_start: {type: String, required: true},
     location_finish:{type: String, required: true},
     note:{type: String},
-    picture:{type: String},
+    picture: {type: String, },
     receiving_status:{type: Boolean},
     shipping_status:{type: Boolean},
     censorship:{type: Boolean},

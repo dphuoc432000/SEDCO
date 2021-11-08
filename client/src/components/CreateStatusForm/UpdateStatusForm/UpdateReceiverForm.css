@@ -54,16 +54,19 @@
   color: rgb(52, 71, 243);
 }
 
-.input-1 {
+.input-UpdateStatusForm {
   margin-left: 10%;
 }
 
-.input-1 input {
+.input-UpdateStatusForm .input-item-update {
   width: 87%;
   padding: 3px;
+  height: 100%;
+  border:none;
+  border-right: 1px solid #333;
   outline: none;
 }
-.input-1 input:focus{
+.input-UpdateStatusForm input:focus{
   border-color: cornflowerblue;
 }
 .unit {
@@ -175,15 +178,17 @@
   animation: modalFadeIn ease 0.5s;
   /* khi thèn con vượt quá thèn cha thì ẩn đi */
 }
-.GhiChu{
-  height: 54px;
+.GhiChu-Update{
+  height: 110px;
+  width: 91%;
 }
 .input-title{
   margin-top: 9px;
   margin-bottom: 6px;
 }
-.input-item{  
+.input-item-Update{  
   width: 430px;
+  align-items: center;
     border-radius: 4px;
     display: flex;
     align-items: center;

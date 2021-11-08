@@ -27,7 +27,12 @@ function AuthenticatedReceiverRoute({ component: C, appProps, ...rest }) {
       <Route
         {...rest}
         render={props => appProps.isAuthenticated && appProps.role_name === "receiver" ? <C {...props} {...appProps} />
-            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`}/>
+            : 
+            <React.Fragment>
+              {notifyTost("Vui lòng đăng nhập!")}
+              {appProps.handleChangeShowFormLogin()}
+              <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+            </React.Fragment>
         }
       />
     );
@@ -38,17 +43,32 @@ function AuthenticatedSenderRoute({ component: C, appProps, ...rest }) {
       <Route
         {...rest}
         render={props => appProps.isAuthenticated && appProps.role_name === "sender" ? <C {...props} {...appProps} />
-            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`}/>
+            : 
+            <React.Fragment>
+              {notifyTost("Vui lòng đăng nhập!")}
+              {appProps.handleChangeShowFormLogin()}
+              <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+            </React.Fragment>
         }
       />
     );
 }
 function AuthenticatedCarTripRoute({ component: C, appProps, ...rest }) {
+  console.log(appProps)
     return (
       <Route
         {...rest}
-        render={props => appProps.isAuthenticated && appProps.role_name === "car trip" ? <C {...props} {...appProps} />
-            : <Redirect to={`/login?redirect=${props.location.pathname}${props.location.search}`}/>
+        render={props => appProps.checkLocalStorage && appProps.role_name === "car_trip" ? 
+            <React.Fragment>
+              <C {...props} {...appProps} />
+            </React.Fragment>
+            : 
+            <React.Fragment>
+            {console.log('render')}
+              {notifyTost("Vui lòng đăng nhập!")}
+              {appProps.handleChangeShowFormLogin()}
+              <Redirect to={`/?redirect=${props.location}`}/>
+            </React.Fragment>
         }
       />
     );

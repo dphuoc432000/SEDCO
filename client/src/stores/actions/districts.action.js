@@ -13,21 +13,26 @@ const districts = async (province_code) =>{
         type: DISTRICT_LOADING,
         payload:{}
     }
-
-    await axios.get(`${API_URL_PROVINCES}/p/${province_code}?depth=2`)
-        .then(data => {
-            action.type = DISTRICT_SUCCESS;
-            action.payload = data.data.districts;
-            // console.log(action.payload )
-        })
-        .catch(err => {
-            action.type = DISTRICT_ERROR;
-            action.payload = {
-                description: "API DISTRICTS ERROR",
-                message:err.message
-            };
-        });
-
+    if(province_code && province_code >= 0)
+        await axios.get(`${API_URL_PROVINCES}/p/${province_code}?depth=2`)
+            .then(data => {
+                action.type = DISTRICT_SUCCESS;
+                action.payload = data.data.districts;
+                // console.log(action.payload )
+            })
+            .catch(err => {
+                action.type = DISTRICT_ERROR;
+                action.payload = {
+                    description: "API DISTRICTS ERROR",
+                    message:err.message
+                };
+            });
+    else{
+        action.type = DISTRICT_ERROR;
+        action.payload = {
+            description: "province_code không hợp lệ ",
+        };
+    }
     return action;
 }
 

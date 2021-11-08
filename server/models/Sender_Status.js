@@ -14,6 +14,7 @@ const Sender_status = new Schema({
     note: {type: String},
     picture: {type: String, },
     weight_essential: {type: Number},
+    regis_status:{type: Boolean},//đã có xe đăng ký chưa
     essentials: [essential]
 },{
     timestamps: true

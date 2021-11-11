@@ -150,7 +150,7 @@ class App extends React.Component {
   }
   render(){
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
-    console.log(this.state)
+    // console.log(this.state)
     // console.log(Object.keys(this.state.role_name).length? true: false)
     return (
       <Router>
@@ -187,7 +187,7 @@ class App extends React.Component {
                   status_current={this.state.status_current}
                   user = {this.state.user}
                   handleUpdateStatusCurrent={this.handleUpdateStatusCurrent}
-                  
+                  isAuthenticated = {this.state.isAuthenticated}
                 />
               </Route>
               {/*<Route path="/login" exact render={() =>{
@@ -202,7 +202,18 @@ class App extends React.Component {
                 
                 <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
                 
-                <AuthenticatedCarTripRoute exact={false} path="/car_trip/transaction_management" component={Transaction_Management} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin, role_name: this.state.role_name.role_name, account_id: this.state.account_id, isAuthenticated: this.state.isAuthenticated}}/>
+                <AuthenticatedCarTripRoute 
+                    exact={false} path="/car_trip/transaction_management" 
+                    component={Transaction_Management} 
+                    appProps={{
+                                checkLocalStorage, 
+                                handleChangeShowFormLogin:this.handleChangeShowFormLogin,
+                                role_name: this.state.role_name.role_name, 
+                                account_id: this.state.account_id, 
+                                isAuthenticated: this.state.isAuthenticated,
+                                status_current: this.state.status_current
+                              }}
+                />
                 
                 <Route path="/user/information/update" exact>
                   <UpdateUserInforForm handlUpdateFull_name={this.handlUpdateFull_name}/>

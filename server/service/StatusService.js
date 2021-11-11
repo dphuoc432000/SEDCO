@@ -441,7 +441,51 @@ class StatusService {
         return status;
     }
 
-    
+    getRecentStatus = async (status_type) => {
+        let status_list;
+        if(status_type){
+            status_list = await  Status.find({status_type: status_type, status_completed: false})
+                .sort('-createdAt')
+                .then(data => multiplemongooseToObject(data))
+                .catch(err => err);
+        }
+        else
+            status_list = await Status.find({})
+                .sort('-createdAt')
+                .then(data => multiplemongooseToObject(data))
+                .catch(err => err);
+
+        const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
+            switch (obj.status_type) {
+                case "RECEIVER":
+                    await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        }))
+        .then(data => data);
+        return status_list_map;
+    }
 }
 
 module.exports = new StatusService();

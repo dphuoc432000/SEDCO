@@ -162,6 +162,10 @@ class Map extends Component {
     }
   }
 
+  handleGetStatus = (marker) =>{
+    this.props.handleChangeStatusMarker(marker);
+  }
+
   render() {
     const { viewport, markers, car_trip_status_list, receiver_status_list, sender_status_list, all_status_list } = this.state;
     // console.log(this.state)
@@ -184,16 +188,14 @@ class Map extends Component {
             return (
               <Marker
                 key={marker._id}
-                onClick={() => {
-                  console.log("click");
-                }}
+                onClick={() => (this.handleGetStatus(marker))}
                 longitude={marker.longitude}
                 latitude={marker.latitude}
               >
                 <div className="marker temporary-marker">
                   <span>
                     {
-                      <p
+                      <p 
                         style={{
                           width: "25px",
                           height: "25px",
@@ -216,10 +218,10 @@ class Map extends Component {
             <span >{all_status_list.length} Tất cả</span>
           </div>
           <div className="sender-status-action" onClick={() =>{this.handleChangeToSenderMarkers()}} >
-            <span >{receiver_status_list.length} Hỗ trợ</span>
+            <span >{sender_status_list.length} Hỗ trợ</span>
           </div>
           <div className="receiver-status-action" onClick={() =>{this.handleChangeToReceiverMarkers()}}>
-            <span>{sender_status_list.length} Cần hỗ trợ</span>
+            <span>{receiver_status_list.length} Cần hỗ trợ</span>
           </div>
           <div className="car_trip-status-action" onClick={() =>{this.handleChangeToCarTripMarkers()}}>
             <span>{car_trip_status_list.length} Chuyến xe</span>

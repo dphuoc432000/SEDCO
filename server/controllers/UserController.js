@@ -40,7 +40,7 @@ class UserController{
 
     getPathAllImageCar = (req, res, next) =>{
         const files = req.files;
-        console.log(files)
+        // console.log(files)
         const face_img =  files.face_img;
         const id_card_img_before = files.id_card_img_before;
         const id_card_img_after = files.id_card_img_after;

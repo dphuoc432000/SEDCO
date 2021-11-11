@@ -135,7 +135,7 @@ class StatusController{
                         .catch(err => res.status(400).json("Lỗi xóa status"));
                     await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user')
                         .catch(err => res.status(400).json("chuyển account role về user"));
-                    return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu con", null))
+                    return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu con", null));
                 }
                 return res.status(400).json(handleOther.errorHandling("Lỗi nhập dữ liệu", null))
             })
@@ -245,6 +245,19 @@ class StatusController{
                     return res.status(400).json(handleOther.errorHandling("account_id không chính xác", null));
             })
             .catch(error => next(error));
+    }
+
+    //Lấy về những trạng thái gần đây mà chưa hoàn thành
+    getRecentStatus = async(req, res, next) =>{
+        await statusService.getRecentStatus(req.query.status_type)
+            .then(status =>{
+                if(status){
+                    const datas = pagination(status, req.query._limit, req.query._page);
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi', null));
+            })
+            .catch(err => next(err));
     }
 }
 

@@ -7,7 +7,7 @@ import {
 const initState = {}
 
 const updateStatusReceiverReducer = (state = initState , action) => {
-  console.log(action)
+  // console.log(action)
   switch (action.type) {
     
     case UPDATE_STATUS_RECEIVER_SUCCESS:

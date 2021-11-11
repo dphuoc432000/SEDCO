@@ -5,128 +5,232 @@ import SenderForm from "../../CreateStatusForm/SenderForm";
 import ReceiverForm from "../../CreateStatusForm/ReceiverForm";
 import RecentList from "../../GanDay/RecentList";
 import "./Status.css";
-import _ from "lodash"
+import _ from "lodash";
 import { connect } from "react-redux";
-import {getUserInforIsLogined} from "../../../stores/actions/userIsLogin.action"
+import { getUserInforIsLogined } from "../../../stores/actions/userIsLogin.action";
+import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
+import ReceiverStatusDetail from "../../GoodsDetail/ReceiverStatusDetail/ReceiverStatusDetail";
+import StatusForStatusReceiver from "../../StatusForStatus/StatusForStatusReceiver";
+import SenderStatusDetail from "../../GoodsDetail/ReceiverStatusDetail/SenderStatusDetail";
+import StatusForStatusSender from "../../StatusForStatus/StatusForStatusSender";
 // import {btnShowFormReceiver , btnExitFormReceiver , modalReceiverContainer , modalReceiver ,showModalReceiverForm , exitModalReceiverForm} from './HandleFormStatus'
+
 class Status extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showReceiverForm: false,
-      showSenderForm: false,
-      showCarTripForm: false,
-      showUserStatus: false,
-      showSenderStatus: false,
-      showReceiverStatus: false,
-      showCarTripStatus: false,
-      account_id: this.props.account_id,
+    constructor(props) {
+        super(props);
+        this.state = {
+            showReceiverForm: false,
+            showSenderForm: false,
+            showCarTripForm: false,
+            showUserStatus: false,
+            showSenderStatus: false,
+            showReceiverStatus: false,
+            showCarTripStatus: false,
+        };
+    }
+
+    mapEssentialMarker = async (essentials_marker) => {
+        if (essentials_marker.length > 0) {
+        const essentials_map = await Promise.all(
+            essentials_marker.map(async (essential) => {
+            const essential_detail = await this.getEssentialsDetail(
+                essential.essential_id
+            );
+            return {
+                ...essential,
+                name: essential_detail.name,
+                code_name: essential_detail.code_name,
+                unit: essential_detail.unit,
+            };
+            })
+        );
+        this.props.status_marker.detail.essentials = essentials_map;
+        // this.setState({
+        //   essentials: essentials_map,
+        // });
+        }
     };
-  }
-  
 
+    handleShowHideFormReceiver = () => {
+        if(this.props.isAuthenticated)
+            this.setState({
+                showReceiverForm: !this.state.showReceiverForm,
+            });
+        else
+            this.props.handleChangeShowFormLogin()
+    };
+    handleShowHideFormSender = () => {
+        if(this.props.isAuthenticated)
+            this.setState({
+                showSenderForm: !this.state.showSenderForm,
+            });
+        else
+            this.props.handleChangeShowFormLogin()
+    };
 
-  handleShowHideFormReceiver = () => {
-    this.setState({
-      showReceiverForm: !this.state.showReceiverForm,
-    });
-  };
-  handleShowHideFormSender = () => {
-    this.setState({
-      showSenderForm: !this.state.showSenderForm,
-    });
-  };
+    getRoleName = () => {
+        if (this.props.role_name.name) {
+        switch (this.props.role_name.name) {
+            case "Người dùng":
+            return "user";
+            case "Người hỗ trợ":
+            return "sender";
+            case "Người cần hỗ trợ":
+            return "receiver";
+            case "Người vận chuyển":
+            return "car_trip";
+            default:
+            return;
+        }
+        } else return "";
+    };
+    render() {
+        // console.log(this.props);
+        const { showReceiverForm, showSenderForm } = this.state;
+        const checkReceiverForm =
+            (
+                showReceiverForm === true ? (
+                    <ReceiverForm
+                        exitModalReceiverForm={this.handleShowHideFormReceiver}
+                        account_id={this.props.account_id}
+                    />
+                ) : (
+                ""
+                )
+            )
+        const checkSenderForm = 
+            (
+                showSenderForm === true ? (
+                    <SenderForm
+                    exitModalSenderForm={this.handleShowHideFormSender}
+                    account_id={this.props.account_id}
+                    />
+                ) : (
+                    ""
+                )
+            )
+            
+        const getRoleName = this.getRoleName();
+        return (
+        <div className="Status">
+            {!this.props.showFormDetail ? 
+                <React.Fragment>
+                    {getRoleName === "user" || getRoleName === "" ?
+                        <div className="Status-Not-Role">
+                            <h2 className="Status-title">Tạo trạng thái</h2>
+                            <h3 className="Status-Who">Bạn là người</h3>
+                            <div className="Status-ListBTN">
+                            <button className="Status-BTN__item Status-BTN__Taixe">
+                                Vận chuyển
+                            </button>
+                            <button
+                                className="Status-BTN__item Status-BTN__Nguoicho"
+                                onClick={this.handleShowHideFormSender}
+                            >
+                                Hỗ trợ
+                            </button>
+                            <button
+                                className="Status-BTN__item Status-BTN__Nguoinhan"
+                                onClick={this.handleShowHideFormReceiver}
+                            >
+                                Cần hỗ trợ
+                            </button>
+                            </div>
+                        </div>
+                        :
+                        ""
+                    }
+                    {getRoleName === "receiver" ? (
+                        <NguoiNhan
+                            user={this.props.user}
+                            account_id={this.props.account_id}
+                            status_current={this.props.status_current}
+                            roleName={this.props.role_name}
+                            appProps={this.props.role_name.color}
+                            handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                        />
+                    ) : (
+                    ""
+                    )}
+                    {getRoleName === "sender" ? (
+                        <NguoiCho
+                            user={this.props.user}
+                            account_id={this.props.account_id}
+                            status_current={this.props.status_current}
+                            roleName={this.props.role_name}
+                            appProps={this.props.role_name.color}
+                            handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                        />
+                    ) : (
+                    ""
+                    )}
+                </React.Fragment>
+                :
+                <React.Fragment>
+                    {
+                        this.props.status_marker.status_type === "RECEIVER" &&
+                            <React.Fragment>
+                                <StatusForStatusReceiver
+                                    user={this.props.status_marker.user}
+                                    status_current={this.props.status_marker}
+                                />
+                                <ReceiverStatusDetail
+                                    isAuthenticated = {this.props.isAuthenticated}
+                                    handleChangeShowFormLogin = {this.props.handleChangeShowFormLogin}
+                                    user={this.props.status_marker.user}
+                                    status_current={this.props.status_marker}
+                                    status_current_current={this.props.status_current}
+                                    role_name_current={this.props.role_name}
+                                    essentials={this.props.status_marker.detail.essentials}
+                                    handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
+                                />
+                            </React.Fragment>
+                    }
+                    {
+                        this.props.status_marker.status_type === 'SENDER' &&
+                            <React.Fragment>
+                                <StatusForStatusSender
+                                    user={this.props.status_marker.user}
+                                    status_current={this.props.status_marker}
+                                />
+                                <SenderStatusDetail
+                                    isAuthenticated = {this.props.isAuthenticated}
+                                    handleChangeShowFormLogin = {this.props.handleChangeShowFormLogin}
+                                    user={this.props.status_marker.user}
+                                    status_current={this.props.status_marker}
+                                    status_current_current={this.props.status_current}
+                                    role_name_current={this.props.role_name}
+                                    essentials={this.props.status_marker.detail.essentials}
+                                    handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
+                                />
+                            </React.Fragment>
+                    }
+                </React.Fragment>
+            }
+            <RecentList handleChangeStatusMarker={this.props.handleChangeStatusMarker} recent_status_list={this.props.recent_status_list} />
 
-  getRoleName = () => {
-    if (this.props.role_name.name) {
-      switch (this.props.role_name.name) {
-        case "Người dùng":
-          return "user";
-        case "Người hỗ trợ":
-          return "sender";
-        case "Người cần hỗ trợ":
-          return "receiver";
-        case "Người vận chuyển":
-          return "car_trip";
-        default:
-          return;
-      }
-    } else return "";
-  };
-  render() {
-    console.log(this.props.user)
-    const { showReceiverForm, showSenderForm } = this.state;
-    const checkReceiverForm =
-      showReceiverForm === true ? (
-        <ReceiverForm
-          exitModalReceiverForm={this.handleShowHideFormReceiver}
-          account_id={this.props.account_id}
-        />
-      ) : (
-        ""
-      );
-    const checkSenderForm =
-      showSenderForm === true ? (
-        <SenderForm
-          exitModalSenderForm={this.handleShowHideFormSender}
-          account_id={this.props.account_id}
-        />
-      ) : (
-        ""
-      );
-    const getRoleName = this.getRoleName();
-    return (
-      <div className="Status">
-        {getRoleName === "user" || getRoleName === "" ? (
-          <div className="Status-Not-Role">
-            <h2 className="Status-title">Tạo trạng thái</h2>
-            <h3 className="Status-Who">Bạn là người</h3>
-            <div className="Status-ListBTN">
-              <button className="Status-BTN__item Status-BTN__Taixe">
-                Vận chuyển
-              </button>
-              <button
-                className="Status-BTN__item Status-BTN__Nguoicho"
-                onClick={this.handleShowHideFormSender}
-              >
-                Hỗ trợ
-              </button>
-              <button
-                className="Status-BTN__item Status-BTN__Nguoinhan"
-                onClick={this.handleShowHideFormReceiver}
-              >
-                Cần hỗ trợ
-              </button>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-        {getRoleName === "receiver" ? <NguoiNhan user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
-        {getRoleName === "sender" ? <NguoiCho user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
-
-        <RecentList />
-
-        {checkReceiverForm}
-        {checkSenderForm}
-      </div>
-    );
-  }
+            {checkReceiverForm}
+            {checkSenderForm}
+        </div>
+        );
+    }
 }
 const mapStateToProps = (state) => {
-  return {
-    userIsLoginReducer: state.userIsLoginReducer,
-  };
+    return {
+        userIsLoginReducer: state.userIsLoginReducer,
+        essentialsDetailReducer: state.essentialsDetailReducer,
+    };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {
-    getUserInforIsLogined: async (account_id) => {
-      const action = await getUserInforIsLogined(account_id);
-      return dispatch(action);
-    }
-  };
+    return {
+        getUserInforIsLogined: async (account_id) => {
+        const action = await getUserInforIsLogined(account_id);
+        return dispatch(action);
+        },
+        getEssentialsDetail: async (essential_id) => {
+        const action = await getEssentialsDetail(essential_id);
+        return dispatch(action);
+        },
+    };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Status);
+export default connect(mapStateToProps, mapDispatchToProps)(Status);

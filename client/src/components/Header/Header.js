@@ -94,17 +94,17 @@ class Header extends React.Component {
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
-        
+        const role_name = this.props.appProps.role_name.role_name;
         return (
             <header id="header">
                 <div className="header-navbar">
                     <div className="header-navbar-left">
-                        <Link to="/" className="navbar-logo" exact="true">
+                        <Link to={role_name!== 'admin'? '/':'/admin'} className="navbar-logo" exact="true">
                             <img src={logo} className="img-logo" alt="Logo chuyến xe tình nguyện" />
                         </Link>
                         <ul className="header-navbar__list">
                             <li className="header-navbar__item">
-                                <Link to="/" className="header-navbar__item--link home_link" exact="true">Trang Chủ</Link>
+                                <Link to={role_name!== 'admin'? '/':'/admin'} className="header-navbar__item--link home_link" exact="true">Trang Chủ</Link>
                             </li>
                             <li className="header-navbar__item">
                                 <Link to="" className="header-navbar__item--link">Giới thiệu</Link>

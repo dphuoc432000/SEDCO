@@ -103,6 +103,7 @@ class Register extends React.Component{
             }
             //Đăng ký thành công
             toast.success("Đăng ký tài khoản thành công. Mời bạn đăng nhập!");
+            this.prop.handleChangeShowFormLogin();
             this.props.history.push('/');
         }
     }

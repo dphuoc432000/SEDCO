@@ -5,7 +5,8 @@ const {multiplemongooseToObject, mongooseToObject} = require('../util/mongoose')
 const HistorySender = require('../models/History_Sender');
 const statusService = require('./StatusService');
 const senderStatusService = require('./SenderStatusService');
-
+const accountService = require('./AccountService');
+const userService = require('./UserService');
 class HistorySenderService{
 
     //kiểm tra có tồn tại và còn hoạt động hay không car_status hay không
@@ -43,7 +44,7 @@ class HistorySenderService{
 
     //kiểm tra có sender_status trong history: check confirm 2/2 và complete_status trong bảng status
     checkDataHistorySender = async(sender_status_id_pr) =>{
-        const check = await HistorySender.find({ender_status_id: sender_status_id_pr})
+        const check = await HistorySender.find({sender_status_id: sender_status_id_pr})
             .then(datas =>{
                 const history_senders = multiplemongooseToObject(datas);
                 const history_sender_1_2_no_confirm = history_senders.find(sender =>{
@@ -86,6 +87,8 @@ class HistorySenderService{
             const checkNoDataHistorySender = await this.checkNoDataHistorySender(sender_status_id_pr);
             const checkDataHistorySender = await this.checkDataHistorySender(sender_status_id_pr);
             const checkCompleteStatus = await this.checkCompleteStatus(sender_status_id_pr);
+        
+            // console.log(checkNoDataHistorySender, checkDataHistorySender, checkCompleteStatus)
             if(checkNoDataHistorySender ||  (checkDataHistorySender && !checkCompleteStatus)){
                 const date = new Date();
                 const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -125,14 +128,17 @@ class HistorySenderService{
             let statusList = Promise.all(regisSenderList.map(async regisSender =>{
                 const sender_status = await senderStatusService.getSenderStatusDetail(regisSender.sender_status_id)
                     .then(data => data)
-                    .catch(err => err);
-                return await Status.findById({_id: sender_status.status_id})
-                    .then(data =>{
-                        data = mongooseToObject(data);
-                        data.detail = sender_status;
-                        return data;
-                    })
-                    .catch(err => err)
+                    .catch(err => err); 
+                if(sender_status)
+                    return await Status.findOne({_id: sender_status.status_id, status_completed: false})
+                        .then(async data =>{
+                            data = mongooseToObject(data);
+                            data.detail = sender_status;
+                            const account = await accountService.getAccountDetails(data.account_id)
+                            data.user = await userService.getUserByID(account.user_id);
+                            return data;
+                        })
+                        .catch(err => err)
             }))
             return statusList;
         }

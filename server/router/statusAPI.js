@@ -18,6 +18,8 @@ router.post('/update/:status_id_pr', statusController.updateStatus);
 //xóa status bao gồm xóa status, status detail, đổi role user thành user và xóa hình 
 router.post('/:status_id_pr/delete', statusController.deleteStatus);//OK
 //Lấy status hiện có chưa hoàn thành của account
-router.get('/account_id/:account_id_pr/detail', statusController.getStatusDetailByAccountID)
+router.get('/account_id/:account_id_pr/detail', statusController.getStatusDetailByAccountID);
+//lấy status gần nhất
+router.get('/get/recent/list', statusController.getRecentStatus);
 
 module.exports = router;

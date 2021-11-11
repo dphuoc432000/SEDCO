@@ -1,0 +1,206 @@
+.content_Dashboard {
+
+    /* width                      : 78%; */
+    /* border-left             : 2.1px solid #4591e0a6; */
+    /* box-shadow              : rgb(99 99 99 / 20%) 0px 2px 8px 0px; */
+    position                      : absolute;
+    content                       : "";
+    /* top                        : 0%; */
+    min-height                    : 800px;
+    /* left                       : 22%; */
+    background-position-y         : -105px;
+}
+
+.content_Title {
+    margin-left   : 40px;
+    padding-top   : 30px;
+    padding-bottom: 20px;
+    padding       : auto;
+    color         : #000;
+    font-size     : 1.6rem;
+}
+
+.content_List_box {
+    width          : 91%;
+    display        : flex;
+    margin-left    : 40px;
+    justify-content: space-evenly;
+    flex-wrap      : wrap;
+    margin-top     : -20px;
+
+}
+
+.Box_item {
+    color              : white;
+    border-radius      : 15px;
+    /* background-color: aquamarine; */
+    /* padding         : 0 74px; */
+    text-align         : center;
+    width              : 230px;
+    margin-top         : 20px;
+    font-family        : sans-serif;
+}
+
+.Box_item__status {
+    font-weight  : unset;
+    font-size    : 1.4rem;
+    font-style   : italic;
+    margin-bottom: 6px;
+}
+
+.Box_item__number {
+    font-weight: unset;
+    font-size  : 3rem;
+    margin     : 25px 0px;
+}
+
+.Box_item__status {
+    font-weight: unset;
+    font-size  : 1.4rem;
+    font-style : italic;
+}
+
+.Box1_item {
+    color           : white;
+    border-radius   : 15px;
+    background-color: #fff;
+    /* padding      : 0 74px; */
+    text-align      : center;
+    width           : 230px;
+    margin-top      : 20px;
+    font-family     : sans-serif;
+}
+
+.content_form {
+    width  : 100%;
+    height : 80px;
+    display: flex;
+}
+
+.form_search {
+    display      : flex;
+    margin-top   : 30px;
+    align-content: center;
+    width        : 50%;
+}
+
+.form_search__lable {
+    margin-left : 72px;
+    margin-right: 20px;
+    margin-top  : 15px;
+    font-weight : 400;
+}
+
+.form_search__input {
+    border       : 1px solid #a5a5a5c7;
+    border-radius: 6px;
+    height       : 37px;
+    margin-top   : 6px;
+    width        : 200px;
+}
+
+.form_list {
+    display      : flex;
+    margin-top   : 30px;
+    align-content: center;
+    width        : 50%;
+    padding-left : 270px;
+
+}
+
+.form_list__lable {
+    margin-left : 60px;
+    margin-right: 20px;
+    margin-top  : 15px;
+    font-weight : 400;
+}
+
+.form_list__input {
+    border       : 1px solid #a5a5a5c7;
+    border-radius: 6px;
+    height       : 37px;
+    margin-top   : 6px;
+    width        : 200px;
+}
+
+#table_ListGoods_Giver_dashboard {
+    border-collapse: collapse;
+    width          : 86%;
+    margin         : 12px 72px;
+    font-size      : 1.2rem;
+    text-align     : center;
+}
+
+/* #table-ListGoods-Giver tr:last-child,
+tr:last-child td:last-child {
+    font-weight: bold;
+} */
+
+#table_ListGoods_Giver_dashboard td,
+#table_ListGoods_Giver_dashboard th {
+    border : 1px solid #ddd;
+    padding: 12px;
+    height : 45px;
+}
+
+#table_ListGoods_Giver_dashboard tr:nth-child(even) {
+    background-color: #fff;
+}
+
+/* #table-ListGoods-Giver tr:hover {
+    background-color: #fff;
+} */
+
+#table-ListGoods-Giver th {
+    padding-top     : 12px;
+    padding-bottom  : 12px;
+    text-align      : center;
+    background-color: #ccc;
+    color           : #000;
+}
+
+.pagination_dashboard {
+    display        : flex;
+    list-style     : none;
+    justify-content: center;
+    float          : right;
+    width          : 28%;
+}
+
+.pagination_dashboard-item {
+    border-radius: 6px;
+    padding      : 0;
+    margin       : 0 1px;
+}
+
+.pagination_dashboard-item--active,
+.pagination_dashboard-item--active .pagination_dashboard-item__link {
+    color: #485AFF;
+}
+
+.pagination_dashboard-item__link {
+    text-decoration: none;
+    color          : #485AFF;
+    font-size      : 1rem;
+}
+
+.filter_data_dashboard {
+    margin-left : 18px;
+    margin-right: 12px;
+    font-weight : 400;
+    margin-top  : 15px;
+}
+
+#box_filter {
+    border-radius: 6px;
+    margin-top   : 6px;
+    width        : 180px;
+    height       : 37px;
+    color        : #636363ad;
+    font-size    : 1.2rem;
+    margin-right : 40px;
+}
+
+.box_filter_item {
+    font-size: 1.2rem;
+}

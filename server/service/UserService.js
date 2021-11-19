@@ -2,8 +2,9 @@ const User = require("../models/User");
 const {multiplemongooseToObject, mongooseToObject} = require("../util/mongoose.js");
 const carStatusSevice = require('./CarStatusService');
 const carService = require('./CarService');
-const userService = require('./UserService');
-const vehicleCensorshipService = require('./VehicleCensorshipService')
+const vehicleCensorshipService = require('./VehicleCensorshipService');
+const Status = require('../models/Status');
+
 class UserService{
 
     getUserList = async () =>{
@@ -96,19 +97,49 @@ class UserService{
             .catch(err=>err);
     }
 
-    getAllUserDriverNoCensorship = async () => {
-        //lấy ra mảng car status chưa được kiểm duyệt
-        const carStatusNoCensorshipList = await carStatusSevice.getAllCarStatusNoCensorship()
+    //lấy ra tất cả thông tin một thông tin(car trip) essential cuả status
+    getEssentialOfStatus = async(status_id_param) =>{
+        const status =  await Status.findById({_id:status_id_param})
+            .then(status => mongooseToObject(status))
             .catch(err => err);
-        
+        let status_detail;
+        if(status)
+           status_detail = await carStatusSevice.getCarStatusDetail_status_id(status_id_param);
+        return status_detail;
+    }
+    //lấy chi tiết nhất của status
+    getStatusDetail = async(status_id_param)=>{
+        const status = await Status.findById({_id:status_id_param})
+            .then(status => mongooseToObject(status))
+            .catch(err=>err);
+        let status_detail;
+        let object;
+        if(status){
+            status_detail = await this.getEssentialOfStatus(status_id_param);
+            object = {...status, detail: {...status_detail}};
+        }
+        else
+            object = null; 
+        return object;
+    }
+
+    getAllUserDriverNoCensorship = async (_limit,_page) => {
+        //lấy ra mảng car status chưa được kiểm duyệt
+        const carStatusNoCensorshipList = await carStatusSevice.getAllCarStatusNoCensorship(_limit,_page)
+            .catch(err => err);
         //lấy mảng user[driver] chưa được kiểm duyệt bằng user_id trong CARINFOR 
-        const userDriverNoCensorship = Promise.all(carStatusNoCensorshipList.map(async carStatus => {
+        const userDriverNoCensorship = Promise.all(carStatusNoCensorshipList.car_status_list.map(async carStatus => {
             const car_infor = await carService.getCarbyID(carStatus.car_id);
             const user_id = car_infor.user_id.toString();
-            const userDriver = await this.getUserByID(user_id)
-                return userDriver;
+            const userDriver = await this.getUserByID(user_id);
+            userDriver.car_status = await this.getStatusDetail(carStatus.status_id);
+            userDriver.vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user_id);
+            return userDriver;
         }))
-        return await userDriverNoCensorship;
+        return {
+            user_driver_no_censorship: await userDriverNoCensorship,
+            pagination: carStatusNoCensorshipList.pagination
+        };
     }
 }
 

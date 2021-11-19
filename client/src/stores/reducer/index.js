@@ -11,15 +11,20 @@ import changePasswordReducer from './changePasswordReducer.js';
 import vehicleCensorshipReducer from './vehicleCensorshipReducer';
 import receiverFormReducer from './receiverFormReducer.js';
 import essentialsReducer from './essentialsReducer.js';
-import statusListReducer from './status_listReducer'
-import senderStatusListReducer from './sender_status_listReducer';
-import receiverStatusListReducer from './receiver_status_listReducer';
-import car_tripStatusListReducer from './car_trip_status_listReducer';
+import statusListNoCompeletedReducer from './status_list_no_completedReducer'
+import senderStatusListNoCompletedReducer from './sender_status_list_no_completedReducer';
+import receiverStatusListNoCompletedReducer from './receiver_status_list_no_completedReducer';
+import car_tripStatusListNoCompletedReducer from './car_trip_status_list_no_completedReducer';
 import statusCurrentReducer from './StatusCurrentReducer.js';
 import essentialsDetailReducer from './essentialsDetailReducer.js';
 import updateStatusReceiverReducer from './updateStatusReceiverReducer';
 import carRegisStatusReducer from './carRegisStatusReducer';
 import recentStatusReducer from './recentStatusReducer.js';
+import statusListReducer from './statusListReducer';
+import user_list_no_censorshipReducer from './user_list_no_censorshipReducer';
+import accountReducer from './accountReducer.js';
+import userReducer from './userReducer';
+import reportListReducer from './reportListReducer.js';
 
 export default combineReducers({
     roleReducer,
@@ -34,13 +39,19 @@ export default combineReducers({
     vehicleCensorshipReducer,
     receiverFormReducer,
     essentialsReducer,
-    statusListReducer,
-    senderStatusListReducer,
-    receiverStatusListReducer,
-    car_tripStatusListReducer,
+    statusListNoCompeletedReducer,
+    senderStatusListNoCompletedReducer,
+    receiverStatusListNoCompletedReducer,
+    car_tripStatusListNoCompletedReducer,
     statusCurrentReducer,
     essentialsDetailReducer,
     updateStatusReceiverReducer,
     carRegisStatusReducer,
-    recentStatusReducer
+    recentStatusReducer,
+    statusListReducer,
+    user_list_no_censorshipReducer,
+    accountReducer,
+    userReducer,
+    reportListReducer
+    
 });

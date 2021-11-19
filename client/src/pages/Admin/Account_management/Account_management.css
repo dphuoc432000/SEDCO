@@ -1,12 +1,28 @@
-#Account_manager_content {}
-
-.Account_manager_content-Title {
+#Account_manager_content {
+    width: 100%;
+    content: "";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 10px 30px;
+}
+.content_Title {
+    width: 100%;
+    padding: 30px 55px 30px;
+    color         : #000;
+    font-size     : 1.6rem;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+/* .Account_manager_content-Title {
     margin-left   : 40px;
     padding-top   : 30px;
     padding-bottom: 20px;
     color         : #000;
     font-size     : 1.6rem;
-}
+} */
 
 .Block-Search-Filter {
     margin-top     : -12px;

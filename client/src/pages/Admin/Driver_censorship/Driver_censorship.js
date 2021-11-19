@@ -3,175 +3,263 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import "./Driver_censorship.css";
 import logo from '../../../assets/images/logo.png';
+import {get_user_list_no_censorship_action} from '../../../stores/actions/user_list_driver_no_censorship.action';
+import BasicPagination from '../../../components/Pagination/Pagination';
+import {API_IMAGE_URL} from '../../../constants/api'
+
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
+function converJsonDateToDate(jsonDate){
+    const date = new Date(jsonDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0'+day:day}/${month < 10 ? '0'+month:month}/${year}`
+}
+
 class Driver_censorship extends React.Component {
+    state = {
+        user_driver_no_censorship: [],
+        pagination: {
+            _limit: 1,
+            _page:1,
+            totalRows:1
+        },
+        user_no_censorship: {}
+    }
+
+    componentDidMount = async () =>{
+        const user_list_no_censorship_action = await this.props.get_user_list_no_censorship_action(5,1);
+        const user_list_no_censorshipReducer = this.props.user_list_no_censorshipReducer;
+        if(user_list_no_censorship_action.type === 'GET_USER_LIST_NO_CENSORSHIP_SUCCESS')
+            this.setState({
+                user_driver_no_censorship: user_list_no_censorshipReducer.user_driver_no_censorship,
+                pagination: user_list_no_censorshipReducer.pagination,
+            })
+    }
+
+    handleChangeFormUserInfor = (user) => {
+        console.log(user)
+        this.setState({
+            user_no_censorship: user
+        })
+    }
+    handleChangePage = async (value) =>{
+        const user_list_no_censorship_action = await this.props.get_user_list_no_censorship_action(5,value);
+        const user_list_no_censorshipReducer = this.props.user_list_no_censorshipReducer;
+        if(user_list_no_censorship_action.type === 'GET_USER_LIST_NO_CENSORSHIP_SUCCESS')
+            this.setState({
+                user_driver_no_censorship: user_list_no_censorshipReducer.user_driver_no_censorship,
+                pagination: user_list_no_censorshipReducer.pagination,
+            })
+    }
     render() {
+        console.log(this.state)
+        const {user_driver_no_censorship, pagination, user_no_censorship} = this.state
         return (
-            <div className="content_Driver_censorship">
-                <h2 class="content-Title">Kiểm duyệt tài xế</h2>
-                <div class="Block-Search-Filter">
-                    <div class="content-search">
-                        <h3 class="content-search__lable">Tìm kiếm</h3>
-                        <input type="text" class="content-search__input" placeholder="Nhập để tìm kiếm" />
+            <React.Fragment>
+                <div class="content_Title">
+                    <h2 >Kiểm duyệt tài xế</h2>
+                </div>
+                <div className="content_Driver_censorship">
+                    <div class="block_search_filter">
+                        <div className="form_search">
+                        <h3 className="form_search__lable">Tìm kiếm</h3>
+                        <input type="text" className="form_search__input" placeholder="Nhập để tìm kiếm" />
                     </div>
-                    <div class="Filter_the_data_driver">
-                        <h3 class="Filter_the_data_driver_lable">Lọc</h3>
-                        <div>
-                            <select id="Filter_box_driver" placeholder="Mặc định - tăng dần">
-                                <option value="" class="Filter_box_driver__item">tăng dần</option>
-                                <option value="" class="Filter_box_driver__item">Giảm dần</option>
-                            </select>
+                    <div className="filter_form">
+                        <h3 className="filter_data_dashboard">Lọc</h3>
+                        <select id="box_filter" placeholder="tăng dần">
+                            <option value="" className="box_filter_item">tăng dần</option>
+                            <option value="" className="box_filter_item">Giảm dần</option>
+                        </select>
+                    </div>
+                </div>
+                    <div className="KiemDuyet-Container">
+                        <div id="Danhsach_kiemduyet">
+                            {/* <!-- Danh sách kiểm duyệt --> */}
+                            <h4 className="danh_sach">Danh sách kiểm duyệt</h4>
+                            <div id="List-Chuyen-Xe">
+                                {user_driver_no_censorship.map((user) => {
+                                    return (
+                                        <div class="Chuyen-Xe__item" key={user._id} onClick={() =>{this.handleChangeFormUserInfor(user)}}>
+                                            <h4 class="Chuyen-Xe__item--name">{user.full_name}</h4>
+                                            <div class="Chuyen-Xe__item--status">
+                                                <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
+                                                <h5 class="Chuyen-Xe__item--status-lable">
+                                                    {!user.car_status.detail.censorship && 'Chưa kiểm duyêt'}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            </div>
+                            <ul class="pagination_driver">
+                                <BasicPagination
+                                    count={Math.ceil(pagination.totalRows / pagination._limit)}
+                                    handleChangePage = {this.handleChangePage}
+                                />
+                            </ul>
+                        </div>
+                        {/* <!-- Thông tin tài xế --> */}
+                        <div id="Thong-tin-Chuyen-Xe">
+                            <h4 className="informations_driver">Thông tin tài xế</h4>
+                            <div class="Form-TTKD-Detail">
+                                {
+                                    !isEmpty(user_no_censorship) ? 
+                                    <React.Fragment>
+                                        <div class="Form-TTKD__header">
+                                            <h2 class="Form-TTKD__header--name">{user_no_censorship.full_name}</h2>
+                                            <h3 class="Form-TTKD__header--Date">Ngày đăng ký trạng thái: {converJsonDateToDate(user_no_censorship.car_status.createdAt)}</h3>
+                                        </div>
+                                        <div class="Form-TTKD__container">
+                                            <h3 class="Form-TTKD-Title-Major">Thông tin tài xế</h3>
+                                            <div className="information_user">
+                                                <ul class="List-Info-Taixe">
+                                                    <li class="Info-Taixe__item">Mã người dùng:</li>
+                                                    <li class="Info-Taixe__item">Tuổi:</li>
+                                                    <li class="Info-Taixe__item">Địa chỉ:</li>
+                                                    <li class="Info-Taixe__item">Số điện thoại:</li>
+                                                    <li class="Info-Taixe__item">Email:</li>
+                                                </ul>
+                                                <ul class="List-Info-Taixe">
+                                                    <li class="Info-Taixe__item">{user_no_censorship._id}</li>
+                                                    <li class="Info-Taixe__item">{user_no_censorship.age}</li>
+                                                    <li class="Info-Taixe__item">{user_no_censorship.address}</li>
+                                                    <li class="Info-Taixe__item">{user_no_censorship.phone_number}</li>
+                                                    <li class="Info-Taixe__item">{user_no_censorship.gmail}</li>
+                                                </ul>
+                                            </div>
+                                            <h3 class="Form-TTKD-Title-Major">Hình ảnh</h3>
+                                            {user_no_censorship.vehicle_censorship?
+                                                <React.Fragment> 
+                                                    <h3 class="Form-TTKD-Title-Major">Khuôn mặt</h3>
+                                                    <div class="List-IMG-FACE">
+                                                        <div class="IMG-FACE__item">
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.face_img ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.face_img}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="Form-TTKD-Title-Major">Căn cước công dân/CMND</h3>
+                                                    <div class="List-IMG-CCCD">
+                                                        <div class="IMG-CCCD__item">
+                                                            <h3 class="CCCD__item-title">Mặt trước</h3>
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.id_card_img_before ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_before}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="IMG-CCCD__item">
+                                                            <h3 class="CCCD__item-title">Mặt sau</h3>
+                                                            <div >
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.id_card_img_after ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_after}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="Form-TTKD-Title-Major">Giấy phép lái xe</h3>
+                                                    <div class="List-IMG-GPLX">
+                                                        <div class="IMG-GPLX__item">
+                                                            <h3 class="GPLX__item-title">Mặt trước</h3>
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.driving_license_img_before ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_before}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="IMG-GPLX__item">
+                                                            <h3 class="GPLX__item-title">Mặt sau</h3>
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.driving_license_img_after ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_after}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="Form-TTKD-Title-Major">Giấy xét nghiệm COVID19 / Xác nhận đã tim Vaccine</h3>
+                                                    <div class="List-IMG-GXN">
+                                                        <div class="IMG-GXN__item">
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.test_img_1 ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_1}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="IMG-GXN__item">
+                                                            <div>
+                                                                {
+                                                                    user_no_censorship.vehicle_censorship.test_img_2 ?
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_2}`} alt="" className="img_logo" />
+                                                                        :
+                                                                        <p>Chưa có hình ảnh</p>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                                :
+                                                <p>Chưa có hình ảnh </p>
+                                            }
+                                                
+                                        </div>
+                                        <div class="BTN_Accuracy">
+                                            <button class="BTN_Accuracy__item BTN_Accuracy_cancel">Hủy</button>
+                                            <button class="BTN_Accuracy__item BTN_Accuracy__Duyet">Duyệt</button>
+                                        </div>
+                                    </React.Fragment>
+                                    :
+                                    <p>Chưa có thông tin</p>
+                                }
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="KiemDuyet-Container">
-                    <div id="Danhsach_kiemduyet">
-                        {/* <!-- Danh sách kiểm duyệt --> */}
-                        <h4 className="danh_sach">Danh sách kiểm duyệt</h4>
-                        <div id="List-Chuyen-Xe">
-                            <div class="Chuyen-Xe__item">
-                                <h4 class="Chuyen-Xe__item--name">Đoàn Trần Minh Khôi</h4>
-                                <div class="Chuyen-Xe__item--status">
-                                    <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
-                                    <h5 class="Chuyen-Xe__item--status-lable">Chưa kiểm duyệt</h5>
-                                </div>
-                            </div>
-                            <div class="Chuyen-Xe__item">
-                                <h4 class="Chuyen-Xe__item--name">Trần Công Tứ</h4>
-                                <div class="Chuyen-Xe__item--status">
-                                    <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
-                                    <h5 class="Chuyen-Xe__item--status-lable">Chưa kiểm duyệt</h5>
-                                </div>
-                            </div>
-                            <div class="Chuyen-Xe__item">
-                                <h4 class="Chuyen-Xe__item--name">Phạm Minh Hiếu</h4>
-                                <div class="Chuyen-Xe__item--status">
-                                    <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
-                                    <h5 class="Chuyen-Xe__item--status-lable">Chưa kiểm duyệt</h5>
-                                </div>
-                            </div>
-                            <div class="Chuyen-Xe__item">
-                                <h4 class="Chuyen-Xe__item--name">Hà Đức Phước</h4>
-                                <div class="Chuyen-Xe__item--status">
-                                    <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
-                                    <h5 class="Chuyen-Xe__item--status-lable">Chưa kiểm duyệt</h5>
-                                </div>
-                            </div>
-                            <div class="Chuyen-Xe__item">
-                                <h4 class="Chuyen-Xe__item--name">Trần Văn Tiến</h4>
-                                <div class="Chuyen-Xe__item--status">
-                                    <i class="fas fa-circle Chuyen-Xe__item--status-ICON"></i>
-                                    <h5 class="Chuyen-Xe__item--status-lable">Chưa kiểm duyệt</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="pagination_driver">
-                            <li style={{ color: "#485AFF" }}>Trang</li>
-                            <li class="pagination_driver-item pagination_driver-item--active"><a href="" class="pagination_driver-item__link">1</a></li>
-                            <li class="pagination_driver-item"><a href="" class="pagination_driver-item__link">2</a></li>
-                            <li class="pagination_driver-item"><a href="" class="pagination_driver-item__link">3</a></li>
-                            <li class="pagination_driver-item"><a href="" class="pagination_driver-item__link">...</a></li>
-                            <li class="pagination_driver-item"><a href="" class="pagination_driver-item__link">99</a></li>
-                        </ul>
-                    </div>
-                    {/* <!-- Thông tin tài xế --> */}
-                    <div id="Thong-tin-Chuyen-Xe">
-                        <h4 className="informations_driver">Thông tin tài xế</h4>
-                        <div class="Form-TTKD-Detail">
-                            <div class="Form-TTKD__header">
-                                <h2 class="Form-TTKD__header--name">Đoàn Trần Minh Khôi</h2>
-                                <h3 class="Form-TTKD__header--Date">Ngày đăng ký:20/09/2021 4:20:00</h3>
-                            </div>
-                            <div class="Form-TTKD__container">
-                                <h3 class="Form-TTKD-Title-Major">Thông tin tài xế</h3>
-                                <div className="information_user">
-                                    <ul class="List-Info-Taixe">
-                                        <li class="Info-Taixe__item">Mã người dùng:</li>
-                                        <li class="Info-Taixe__item">Tuổi:</li>
-                                        <li class="Info-Taixe__item">Địa chỉ:</li>
-                                        <li class="Info-Taixe__item">Số điện thoại:</li>
-                                        <li class="Info-Taixe__item">Email:</li>
-                                    </ul>
-                                    <ul class="List-Info-Taixe">
-                                        <li class="Info-Taixe__item">asdj98-asd9</li>
-                                        <li class="Info-Taixe__item">24</li>
-                                        <li class="Info-Taixe__item">Quận Sơn Trà, Đà Nẵng</li>
-                                        <li class="Info-Taixe__item">1234567890</li>
-                                        <li class="Info-Taixe__item">doantranminhkhoi@gmail.com</li>
-                                    </ul>
-                                </div>
-                                <h3 class="Form-TTKD-Title-Major">Hình ảnh</h3>
-                                <h3 class="Form-TTKD-Title-Major">Căn cước công dân/CMND</h3>
-                                <div class="List-IMG-CCCD">
-                                    <div class="IMG-CCCD__item">
-                                        <h3 class="CCCD__item-title">Mặt trước</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                    <div class="IMG-CCCD__item">
-                                        <h3 class="CCCD__item-title">Mặt sau</h3>
-                                        <div >
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <h3 class="Form-TTKD-Title-Major">Giấy phép lái xe</h3>
-                                <div class="List-IMG-GPLX">
-                                    <div class="IMG-GPLX__item">
-                                        <h3 class="GPLX__item-title">Mặt trước</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                    <div class="IMG-GPLX__item">
-                                        <h3 class="GPLX__item-title">Mặt sau</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <h3 class="Form-TTKD-Title-Major">Giấy xét nghiệm COVID19 / Xác nhận đã tim Vaccine</h3>
-                                <div class="List-IMG-GXN">
-                                    <div class="IMG-GXN__item">
-                                        <h3 class="GPLX__item-title-1">Mặt sau</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                    <div class="IMG-GXN__item">
-                                        <h3 class="GPLX__item-title-1">Mặt sau</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                    <div class="IMG-GXN__item">
-                                        <h3 class="GPLX__item-title-1">Mặt sau</h3>
-                                        <div>
-                                            <img src={logo} alt="" className="img_logo" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="BTN_Accuracy">
-                                <button class="BTN_Accuracy__item BTN_Accuracy_cancel">Hủy</button>
-                                <button class="BTN_Accuracy__item BTN_Accuracy__Duyet">Duyệt</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </React.Fragment>
+            
         )
     }
 }
 //state này của redux không phải react
 const mapStateToProps = (state) => {
     return {
+        user_list_no_censorshipReducer: state.user_list_no_censorshipReducer
     }
 }
 
 //dispatch này của redux không phải react
 const mapDispatchToProps = (dispatch) => {
     return {
+        get_user_list_no_censorship_action : async (_limit,_page)=>{
+            const action = await get_user_list_no_censorship_action(_limit,_page);
+            return dispatch(action);
+        }
     }
 }
 

@@ -10,7 +10,7 @@ const initState ={
     status_list: []
 }
 
-const receiverStatusListReducer = (state = initState, action) =>{
+const receiverStatusListNoCompletedReducer = (state = initState, action) =>{
     switch(action.type){
         case RECEIVER_STATUS_LIST_NO_COMPLETE_SUCCESS:
             return {...state,receiver_status_list: action.payload.receiver_status_list};
@@ -23,4 +23,4 @@ const receiverStatusListReducer = (state = initState, action) =>{
     }
 }
 
-export default receiverStatusListReducer;
+export default receiverStatusListNoCompletedReducer;

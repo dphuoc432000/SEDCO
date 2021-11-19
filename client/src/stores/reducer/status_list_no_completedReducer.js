@@ -7,13 +7,14 @@ import {
 } from '../../constants/actions';
 
 const initState ={
-    status_list: []
+    status_list: [],
+    pagination: {}
 }
 
-const statusListReducer = (state = initState, action) =>{
+const statusListNoCompeletedReducer = (state = initState, action) =>{
     switch(action.type){
         case STATUS_LIST_NO_COMPLETE_SUCCESS:
-            return {...state,status_list: action.payload.status_list};
+            return {...state,status_list: action.payload.status_list, pagination: action.payload.pagination};
         case STATUS_LIST_NO_COMPLETE_ERROR:
             return {...state,error: action.payload};
         case STATUS_LIST_NO_COMPLETE_LOADING:
@@ -23,4 +24,4 @@ const statusListReducer = (state = initState, action) =>{
     }
 }
 
-export default statusListReducer;
+export default statusListNoCompeletedReducer;

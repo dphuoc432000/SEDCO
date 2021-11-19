@@ -8,7 +8,8 @@ const accountService = require('../service/AccountService');
 const multer = require('multer');
 const pagination = require("../middlewares/pagination");
 const path = require('path');
-
+const historyReceiverService = require('../service/HistoryReceiverService');
+const historySenderService = require('../service/HistorySenderService');
 
 class StatusController{
 
@@ -144,12 +145,12 @@ class StatusController{
     
     //[GET] /status/status_list
     getAllStatus = async (req, res, next) => {
-        await statusService.getStatusList()
+        await statusService.getStatusList(req.query._limit,req.query._page)
             .then((status) => {
                 if(status){
                     // console.log(req.query._limit, req.query._page)
-                    const datas = pagination(status, req.query._limit, req.query._page);
-                    return res.json(datas);
+                    // const datas = pagination(status, req.query._limit, req.query._page);
+                    return res.json(status);
                 }
                 return res.status(400).json(handleOther.errorHandling("Lỗi", null)); 
             })
@@ -176,6 +177,23 @@ class StatusController{
                 if(status){
                     const datas = pagination(status, req.query._limit, req.query._page)
                     return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
+            })
+            .catch(error => next(error));
+    }
+
+    getAllStatusByType_Filter = async(req, res, next)=>{
+        let filter = {}
+        for (const key in req.query) {
+            if(key === 'status_completed'){
+                filter = {...filter, [key]: req.query[key]};
+            }
+        }
+        await statusService.getStatusListByType_Filter(req.params.status_type_pr,filter, req.query._limit, req.query._page)
+            .then((status) => {
+                if(status){
+                    return res.json(status);
                 }
                 return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
             })
@@ -257,6 +275,28 @@ class StatusController{
                 }
                 return res.status(400).json(handleOther.errorHandling('Lỗi', null));
             })
+            .catch(err => next(err));
+    }
+    //lấy về tất cả lịch sử nhận nhu yếu phẩm của môt receiver status bằng receiver status id
+    getAllHistoryRegisterReceiverByReceiverStatusID = async(req, res, next) =>{
+        await historyReceiverService.getAllHistoryRegisterReceiverByReceiverStatusID(req.params.receiver_status_id_pr, req.query._limit, req.query._page)
+            .then(histories =>{
+                if(histories){
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            }) 
+            .catch(err => next(err));
+    }
+
+    getAllHistoryRegisterSenderBySenderStatusID  = async(req, res, next) =>{
+        await historySenderService.getAllHistoryRegisterSenderBySenderStatusID(req.params.sender_status_id_pr, req.query._limit, req.query._page)
+            .then(histories =>{
+                if(histories){
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            }) 
             .catch(err => next(err));
     }
 }

@@ -7,7 +7,7 @@ const statusService = require('./StatusService');
 const receiverStatusService = require('./ReceiverStatusService');
 const accountService = require('./AccountService');
 const userService = require('./UserService');
-
+const handlePagination = require('../middlewares/handlePagination')
 class HistoryReceiverService{
 
     //kiểm tra có tồn tại và còn hoạt động hay không car_status hay không
@@ -145,6 +145,22 @@ class HistoryReceiverService{
         }
         //nếu regisReceiverList = [] thì không tìm thấy chuyến xe
         return null;
+    }
+
+    getAllHistoryRegisterReceiverByReceiverStatusID =  async (receiver_status_id,_limit,_page) =>{
+        const totalRows = await HistoryReceiver.count({receiver_status_id: receiver_status_id});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_receiver_list  = await HistoryReceiver.find({receiver_status_id: receiver_status_id})
+            .skip(start)
+            .limit(pagination._limit)
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err);
+        return{
+            history_receiver_list: history_receiver_list,
+            pagination
+        }
     }
 }
 

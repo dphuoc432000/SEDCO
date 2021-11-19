@@ -1,16 +1,39 @@
+.main{
+    display: flex;
+    flex-direction: row;
+}
 /* The side navigation menu */
 .sidebar {
     margin          : 0;
     padding         : 0;
-    width           : 22%;
+    width           : 250px;
     background-color: #fff;
     height          : 100%;
     overflow        : auto;
-    top             : 60px;
+    /* top             : 60px; */
     content         : "";
-    position        : fixed;
+    /* position        : fixed; */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 10px;
 }
-
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.sidebar::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
 /* Sidebar links */
 
 .sidebar li a {
@@ -23,20 +46,23 @@
 }
 
 /* Active/current link */
-.sidebar li.active {
+li.active {
     background-color: #b1d8fb;
     color           : #fff;
+    border-top-right-radius: 10px;
 }
 
 .active {
     background-color: #b1d8fb;
+    border-radius: 5px;
+    color: #fff!important;
 }
 
 /* Links on mouse-over */
-.sidebar li:hover:not(.active) {
+/* .sidebar li:hover:not(.active) {
     background-color: #b1d8fb;
     color           : #fff;
-}
+} */
 
 .Sidebar_item {
     /* position    : absolute; */
@@ -61,36 +87,11 @@
 
 /* Page content_container. The value of the margin-left property should match the value of the sidebar's width property */
 .content_container {
-    width     : 78%;
-    padding   : 0px 0px;
-    height    : 730px;
-    margin-top: 0;
+    width     : calc(100% - 250px);
     content   : "";
-    left      : 22%;
-    position  : absolute;
+    /* left      : 250px; */
+    /* position  : absolute; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
-/* On screens that are less than 700px wide, make the sidebar into a topbar */
-/* @media screen and (max-width: 700px) {
-    .sidebar {
-        width   : 100%;
-        height  : auto;
-        position: relative;
-    }
-
-    .sidebar a {
-        float: left;
-    }
-
-    div.content {
-        margin-left: 0;
-    }
-} */
-
-/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-/* @media screen and (max-width: 400px) {
-    .sidebar a {
-        text-align: center;
-        float     : none;
-    }
-} */

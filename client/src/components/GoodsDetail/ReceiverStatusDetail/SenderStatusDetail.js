@@ -5,28 +5,45 @@ import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import "./ReceiverStatusDetail.css";
 import { connect } from "react-redux";
+import ModalDeleteStatus from "../../../components/ModalDeleteStatus/ModalDeleteStatus";
+import { API_IMAGE_URL } from "../../../constants/api";
 import getEssentialsDetail from '../../../stores/actions/essentialsDetail.action';
 import {toast } from 'react-toastify';
 
 class SenderStatusDetail extends Component {
   state = {
     showUpdateSenderForm: false,
-    essentials: this.props.essentials
+    essentials: this.props.essentials,
+    showModalDelete: false,
+  };
+  handleShowHideUpdateSender = () => {
+    this.setState({
+      showUpdateSenderForm: !this.state.showUpdateSenderForm,
+    });
+  };
+  handleShowHideModalDelete = () => {
+    this.setState({
+      showModalDelete: !this.state.showModalDelete,
+    });
   };
   componentDidMount = async () => {
-    if(this.state.essentials.length > 0){
-        const essentials_map =await Promise.all(this.state.essentials.map(async essential =>{
-          const essential_detail = await this.getEssentialsDetail(essential.essential_id);
+    if (this.state.essentials.length > 0) {
+      const essentials_map = await Promise.all(
+        this.state.essentials.map(async (essential) => {
+          const essential_detail = await this.getEssentialsDetail(
+            essential.essential_id
+          );
           return {
             ...essential,
             name: essential_detail.name,
             code_name: essential_detail.code_name,
             unit: essential_detail.unit,
-          }
-        }))
-        this.setState({
-          essentials: essentials_map
+          };
         })
+      );
+      this.setState({
+        essentials: essentials_map,
+      });
     }
   }
   componentDidUpdate = async (prevProps, prevState) =>{
@@ -60,6 +77,11 @@ class SenderStatusDetail extends Component {
   };
 
   handleUpdateEssentials = (essentials) => {
+    this.setState({
+      essentials: essentials,
+    });
+    this.props.handleUpdateEssentials(essentials);
+  };
      this.setState({
       essentials : essentials ,
 
@@ -87,19 +109,22 @@ class SenderStatusDetail extends Component {
     const note = status_current.detail.note;
     const weight_essential = status_current.detail.weight_essential;
     const essentials_state = this.state.essentials;
+    const picture = status_current.detail.picture;
+
     let { showUpdateSenderForm } = this.state;
     const checkUpdateSenderForm =
       showUpdateSenderForm === true ? (
         <UpdateSenderForm
-        sender_status_id = {this.props.status_current.detail._id}
-        handleShowHideUpdateSender={this.handleShowHideUpdateSender}
-        handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
-        handleUpdateEssentials={this.handleUpdateEssentials}
+          sender_status_id={this.props.status_current.detail._id}
+          handleShowHideUpdateSender={this.handleShowHideUpdateSender}
+          handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+          handleUpdateEssentials={this.handleUpdateEssentials}
+          status_current={this.props.status_current}
         />
       ) : (
         ""
       );
-      const user = this.props.user;
+    const user = this.props.user;
     return (
       <div>
         <div class="GoodDetail-container">
@@ -141,16 +166,17 @@ class SenderStatusDetail extends Component {
             </tr>
           </table>
           <div className="GoodDetail-Info-Img">
-            <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
+            <h3 className="data-container__title">Hình ảnh</h3>
             <img
-              src={ImgInfo}
-              alt="hình ảnh người dùng"
+              src={`${API_IMAGE_URL}/${picture}`}
+              alt={`Hình ảnh`}
               className="GoodDetail-Info-Img__src"
             />
           </div>
         </div>
 
         <div className="container-btn__ListBottom">
+
           {status_current._id === status_current_current._id ?
             <React.Fragment> 
               <button
@@ -167,7 +193,9 @@ class SenderStatusDetail extends Component {
               </button>
               {typeof this.props.handleHideSenderStatusDetail === 'function' && 
                 <React.Fragment>
-                  <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del">
+                  <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                    onClick={() => this.handleShowHideModalDelete()}
+                  >
                     Xóa
                   </button>
 
@@ -207,6 +235,15 @@ class SenderStatusDetail extends Component {
           }
         </div>
         {checkUpdateSenderForm}
+        {this.state.showModalDelete && (
+          <ModalDeleteStatus
+            showModalDelete={this.state.showModalDelete}
+            handleShowHideModalDelete={this.handleShowHideModalDelete}
+            status_id={this.props.status_current._id}
+            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+            
+          />
+        )}
       </div>
     );
   }
@@ -224,6 +261,7 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

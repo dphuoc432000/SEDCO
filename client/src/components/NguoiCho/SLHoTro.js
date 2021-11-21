@@ -70,18 +70,15 @@ class SLHoTro extends React.Component {
           <>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
-              <button
-                className="data-container__SeeDetail"
+              <a
+                className="data-container__SeeDetail-sender"
                 onClick={() => {
                   this.handleShowHide();
                 }}
               >
-                xem chi tiết{" "}
-                <i
-                  className="fas fa-arrow-right"
-                  style={{ fontSize: "12px" }}
-                />
-              </button>
+                Xem chi tiết{" "}
+                
+              </a>
             </div>
 
             <table className="List-Good">
@@ -118,6 +115,7 @@ class SLHoTro extends React.Component {
             handleHideSenderStatusDetail={this.handleShowHide}
             handleUpdateEssentials={this.handleUpdateEssentials}
             handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
           />
         )}
       </React.Fragment>

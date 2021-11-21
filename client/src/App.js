@@ -23,7 +23,8 @@ import Header from "./components/Header/Header";
 import {getUserInforIsLogined} from "./stores/actions/userIsLogin.action";
 import {get_role_user} from './stores/actions/role.action'
 import { menuHeader } from "./components/Header/menuHeader";
-
+import {get_status_current_action} from './stores/actions/status_current.action'
+import {  STATUS_CURRENT_SUCCESS} from './constants/actions'
 const translateRoleName = (role_name)=>{
   switch(role_name) {
       case "user":
@@ -60,7 +61,8 @@ class App extends React.Component {
   componentDidMount = async () =>{
     if(localStorage.getItem('accessToken')){
       const verifyData = await this.props.verifyTokenData;
-      const statusCurrentData = await this.props.statusCurrentReducer;
+    //   const statusCurrentData = await this.props.statusCurrentReducer;
+      let statusCurrentData = {};
       await this.props.get_User_Infor_Is_Logined(verifyData.account_id);
       const user = await this.props.userIsLogined.user;
       await this.props.get_role_user_action(verifyData.role_id);
@@ -73,6 +75,11 @@ class App extends React.Component {
             const menu = menuHeader.find(menu =>{
                 return menu.name === role_name;
             }) //-> menu{name:..., menu:[]} 
+            if (role_name !== 'admin' || role_name !== 'mod'){
+                const get_status_current_action = await this.props.get_status_current_action(verifyData.account_id);
+                if(get_status_current_action.type === STATUS_CURRENT_SUCCESS)
+                    statusCurrentData = await this.props.statusCurrentReducer;
+            }
             this.setState({
               full_name: user.full_name,
               account_id:verifyData.account_id,
@@ -143,12 +150,19 @@ class App extends React.Component {
     })
   }
   handleUpdateStatusCurrent = async (status_current) => {
+    await this.props.get_status_current_action(this.state.account_id)
     const statusCurrentData = await this.props.statusCurrentReducer;
     this.setState({ 
       status_current: statusCurrentData
     })
   }
+  handleLoadAgainWhenCreateStatus = async () =>{
+      await this.componentDidMount()
+  }
+ 
+
   render(){
+    
     const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
     // console.log(this.state)
     // console.log(Object.keys(this.state.role_name).length? true: false)
@@ -187,6 +201,7 @@ class App extends React.Component {
                   status_current={this.state.status_current}
                   user = {this.state.user}
                   handleUpdateStatusCurrent={this.handleUpdateStatusCurrent}
+                  handleLoadAgainWhenCreateStatus={this.handleLoadAgainWhenCreateStatus}
                   isAuthenticated = {this.state.isAuthenticated}
                 />
               </Route>
@@ -242,7 +257,7 @@ const mapStateToProps = (state) =>{
       verifyTokenData: state.verifyTokenReducer,
       roleReducer: state.roleReducer,
       isLogined: state.loginReducer.isLogined,
-      userIsLogined: state.userIsLoginReducer
+      userIsLogined: state.userIsLoginReducer,
   }
 }
 
@@ -256,6 +271,10 @@ const mapDispatchToProps =(dispatch)=>{
     get_User_Infor_Is_Logined: async (account_id) =>{
       const action = await getUserInforIsLogined(account_id);
       return dispatch(action);
+    },
+    get_status_current_action : async (account_id) => {
+        const action = await get_status_current_action(account_id);
+        return dispatch(action);
     }
   }
 }

@@ -16,16 +16,18 @@
   /* border: rgba(128, 128, 128, 0.719) 3px solid; */
 }
 
-.back {
+.back-update {
+  /* position: fixed; */
   position: fixed;
-    border-radius: 0px;
-    padding: 3px 14px;
-    background-color: #ee5253;
-    font-weight: bold;
-    font-size: 15px;
-    color: white;
-    border: 1px solid #fff9f9;
-    cursor: pointer;
+  border-radius: 0px;
+  transform: translateX(-100%);
+  padding: 3px 14px;
+  background-color: #ee5253;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  border: 1px solid #fff9f9;
+  cursor: pointer;
 }
 
 .content {

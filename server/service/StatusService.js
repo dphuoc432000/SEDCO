@@ -128,9 +128,9 @@ class StatusService {
                     const vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user_id)
                         .catch(err => err);
                     //nếu đã có hình ảnh của tài xế rồi thì cập nhật hình ảnh
-                    // console.log('vehicle_censorship', vehicle_censorship)
+                    console.log('vehicle_censorship', vehicle_censorship)
                     if(vehicle_censorship)
-                        status.vehicle_censorship = await vehicleCensorshipService.updateVehicleCensorshipByUserID(user_id, object.file_images)
+                        status.vehicle_censorship = await vehicleCensorshipService.updateVehicleCensorshipByUserIDForUserInfor(user_id, object.file_images)
                             .catch(err => err);
                     else
                         status.vehicle_censorship = await vehicleCensorshipService.addVehicleCensorship(user_id,object.file_images)

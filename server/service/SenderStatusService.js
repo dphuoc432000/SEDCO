@@ -69,6 +69,8 @@ class SenderStatusService {
     }
 
     updateSenderStatus = async(sender_status_id, object)=>{
+        if(object.picture === "")
+            delete object.picture;
         return await SenderStatus.findByIdAndUpdate({_id: sender_status_id}, object)
             .then(data =>{
                 if(data){

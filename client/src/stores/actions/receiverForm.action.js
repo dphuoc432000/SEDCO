@@ -14,18 +14,12 @@ const receiverFormCreate = async (account_id , receiver_status_data) => {
     type: "RECEIVER_FORM_CREATE_LOADING",
     payload: {},
   };
-  console.log(receiver_status_data)
-  const essentialsConvert = Object.keys(receiver_status_data.essentials).map(key => {
-    return receiver_status_data.essentials[key]
-    
-  }) 
-  const object = {
-    note : receiver_status_data.note,
-    number_per_of_family : receiver_status_data.number_per_of_family,
-    essentials : essentialsConvert,
-  };
   await axios
-    .post(`${API_URL}/api/receiver/${account_id}/create`, object)
+    .post(`${API_URL}/api/receiver/${account_id}/create`, receiver_status_data,{
+        headers : {
+          'Content-Type': 'multipart/form-data',
+        }
+    })
     .then((data) => {
       action.type = RECEIVER_FORM_CREATE_SUCCESS;
       action.payload = data.data;

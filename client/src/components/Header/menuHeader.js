@@ -12,7 +12,7 @@ export const menuHeader =[
             },
             {
                 name: "Thông báo",
-                link: ''
+                link: '/sender/notification'
             }
         ]        
     },
@@ -25,7 +25,7 @@ export const menuHeader =[
             },
             {
                 name: "Thông báo",
-                link: ''
+                link: '/receiver/notification'
             }
         ]        
     },
@@ -42,7 +42,7 @@ export const menuHeader =[
             },
             {
                 name: "Thông báo",
-                link: ''
+                link: '/car_trip/notification'
             }
         ]
     },

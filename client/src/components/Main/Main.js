@@ -60,18 +60,21 @@ class Main extends React.Component {
     render() {
         // console.log(this.state)
         return (
-            <React.Fragment>
+            <React.Fragment> 
                 <Map handleChangeStatusMarker={this.handleChangeStatusMarker} role_name={this.props.role_name}/>
                 <Status 
+                    handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} 
+                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent} 
                     recent_status_list={this.state.recent_status_list} 
                     handleChangeShowFormLogin={this.props.handleChangeShowFormLogin} 
                     isAuthenticated={this.props.isAuthenticated} 
                     showFormDetail={this.state.showFormDetail} 
                     status_marker={this.state.status_marker} 
                     handleHiddenShowFormDetail={this.handleHiddenShowFormDetail}
-                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent} 
-                    user={this.props.user} status_current={this.props.status_current} 
-                    role_name={this.props.role_name} account_id={this.props.account_id}
+                    user={this.props.user} 
+                    status_current={this.props.status_current} 
+                    role_name={this.props.role_name} 
+                    account_id={this.props.account_id}
                     handleChangeStatusMarker={this.handleChangeStatusMarker}
                 />
             </React.Fragment>

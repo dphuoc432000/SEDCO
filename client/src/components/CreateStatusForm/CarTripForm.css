@@ -1,0 +1,163 @@
+.Modal-body {
+  margin: auto;
+  position: relative;
+  z-index: 4;
+  width: 40%;
+
+  height: 100%;
+  /* overflow: hidden;
+  overflow-y: scroll; */
+  padding: 10px;
+  /* border: rgba(128, 128, 128, 0.719) 3px solid; */
+}
+
+.cartrip-title {
+  margin-top: 25px;
+  font-size: 26px;
+  text-align: center;
+}
+.cartrip-label {
+  font-size: 15px;
+  font-weight: 400;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.Wrapped {
+  display: flex;
+  justify-content: space-around;
+}
+.Wrapped + .Wrapped {
+  margin-top: 26px;
+}
+.Select {
+  width: 220px;
+  height: 37px;
+}
+option {
+  height: 30px;
+}
+input {
+  /* border-radius: 3px; */
+}
+form + form {
+  margin-bottom: 8px;
+}
+.Select-sizeL {
+}
+.input-cartrip {
+  width: 220px;
+  height: 37px;
+}
+.Option.Option-sizeL {
+}
+.note {
+  width: 88%;
+  margin-top: 20px;
+  height: 133px;
+  margin-left: 35px;
+  margin-bottom: 40px;
+}
+
+/* NEXT FORM */
+.cartrip-Row {
+  display: flex;
+  /* justify-content: space-around; */
+  margin-left: 35px;
+}
+.Wrapped-NextFrom-left {
+}
+.Wrapped-NextFrom-right {
+  transform: translateX(30%);
+}
+.addIMG__cartrip--nextForm {
+  padding: 7px 23px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  cursor: pointer;
+  background-color: #e7e7e759;
+}
+.cartrip-label {
+  margin-left: 35px;
+  margin-top: 10px;
+  margin-top: 10px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #ee5253;
+}
+.cartrip-label-child {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #a75909;
+  font-weight: 400;
+}
+.IMG-Driver {
+  width: 220px;
+  height: 130px;
+  object-fit: cover;
+  background-position: center;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+.Block-IMG {
+  /* height: 400px;
+  background-repeat: no-repeat;
+  object-fit: cover; */
+}
+.IMG {
+  margin-top: 16px;
+}
+.icon-item {
+  font-size: 15px;
+}
+/* input[type="file"] {
+  display: none;
+} */
+.lable-File {
+  color: black;
+  height: 60px;
+  padding: 5px 13px;
+  border-radius: 5px;
+  align-items: center;
+  width: 250px;
+  background-color: #ccc;
+  cursor: pointer;
+  /* position:  absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  font-size: 20px; */
+}
+
+.my_file {
+  position: absolute;
+  bottom: 0;
+  outline: none;
+  color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 120px;
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+}
+
+.img_item{
+  width:220px;
+  margin-top: 10px;
+
+}
+.Wrapped-NextFrom-left > .Block-IMG > label > p,
+.Wrapped-NextFrom-right > .Block-IMG > label > p {
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px black solid;
+    border-radius: 5px;
+    cursor: pointer;
+}

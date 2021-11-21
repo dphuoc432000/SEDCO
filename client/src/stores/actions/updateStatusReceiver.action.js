@@ -12,17 +12,13 @@ const updateReceiverStatus = async(receiver_status_id, receiver_status_data) =>{
     type: UPDATE_STATUS_RECEIVER_LOADING,
     payload: {}
   }
-  const essentialsConvert = Object.keys(receiver_status_data.essentials).map(key => {
-    return receiver_status_data.essentials[key]
-    
-  }) 
-  const object = {
-    note : receiver_status_data.note,
-    number_per_of_family : parseInt(receiver_status_data.number_per_of_family),
-    essentials : essentialsConvert,
-  };
+ 
 
-  await axios.post(`${API_URL}/api/receiver/${receiver_status_id}/update`, object)
+  await axios.post(`${API_URL}/api/receiver/${receiver_status_id}/update`, receiver_status_data,{
+    headers : {
+      'Content-Type': 'multipart/form-data',
+    }
+    })
     .then(res =>{
       action.type = UPDATE_STATUS_RECEIVER_SUCCESS;
       action.payload = res.data

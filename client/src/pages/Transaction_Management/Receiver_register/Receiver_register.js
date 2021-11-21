@@ -48,11 +48,22 @@ class Receiver_register extends Component {
         })
     }
 
+    handleRemoveStatusAfterCorfirmOrCancle_receiver_list = (receiver_status) => {
+        this.props.handleRemoveStatusAfterCorfirmOrCancle_receiver_list(receiver_status)
+        this.setState({
+            receiver_status_information:{},
+        })
+    }
+
     render() {
         return (
             <React.Fragment>
                 <StatusList handleInfomationStatusItem={this.handleInfomationStatusItem} status_list = {this.props.status_list}/>
-                <Receiver_content receiver_status_information={this.state.receiver_status_information} />
+                <Receiver_content 
+                    car_status = {this.props.car_status}
+                    handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list} 
+                    receiver_status_information={this.state.receiver_status_information} 
+                />
             </React.Fragment>
         )
     }

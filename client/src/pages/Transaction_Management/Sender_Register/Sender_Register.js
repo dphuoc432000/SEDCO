@@ -46,12 +46,21 @@ class Sender_Register extends Component {
             sender_status_information: sender_status_map
         })
     }
-
+    handleRemoveStatusAfterCorfirmOrCancle_sender_list = (sender_status) => {
+        this.props.handleRemoveStatusAfterCorfirmOrCancle_sender_list(sender_status)
+        this.setState({
+            sender_status_information:{},
+        })
+    }
     render() {
         return (
             <React.Fragment>
                 <StatusList handleInfomationStatusItem={this.handleInfomationStatusItem} status_list = {this.props.status_list}/>
-                <Sender_Content sender_status_information={this.state.sender_status_information} />
+                <Sender_Content 
+                    car_status = {this.props.car_status}
+                    handleRemoveStatusAfterCorfirmOrCancle_sender_list = {this.handleRemoveStatusAfterCorfirmOrCancle_sender_list} 
+                    sender_status_information={this.state.sender_status_information} 
+                />
             </React.Fragment>
         )
     }

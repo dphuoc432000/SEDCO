@@ -21,6 +21,8 @@ export default withRouter(
                             account_id={this.props.account_id}
                             status_current={this.props.status_current}
                             handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                           
                         />
                         {   this.props.showFormLogin &&
                             <div className="showform_auth">

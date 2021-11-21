@@ -16,9 +16,10 @@
   /* border: rgba(128, 128, 128, 0.719) 3px solid; */
 }
 
-.back {
+.back-receiver {
   position: fixed;
   border-radius: 0px;
+  transform: translateX(-100%);
   padding: 3px 14px;
   background-color: #ee5253;
   font-weight: bold;

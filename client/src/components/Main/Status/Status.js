@@ -4,10 +4,13 @@ import NguoiNhan from "../../NguoiNhan/NguoiNhan";
 import SenderForm from "../../CreateStatusForm/SenderForm";
 import ReceiverForm from "../../CreateStatusForm/ReceiverForm";
 import RecentList from "../../GanDay/RecentList";
+import CarTripForm from '../../CreateStatusForm/CarTripForm'
 import "./Status.css";
 import _ from "lodash"
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import {getUserInforIsLogined} from "../../../stores/actions/userIsLogin.action"
+import TaiXe from '../../Tai Xe/TaiXe'
 // import {btnShowFormReceiver , btnExitFormReceiver , modalReceiverContainer , modalReceiver ,showModalReceiverForm , exitModalReceiverForm} from './HandleFormStatus'
 class Status extends Component {
   constructor(props) {
@@ -36,7 +39,11 @@ class Status extends Component {
       showSenderForm: !this.state.showSenderForm,
     });
   };
-
+  handleShowHideFormCarTrip = () => {
+    this.setState({
+      showCarTripForm : !this.state.showCarTripForm,
+    })
+  }
   getRoleName = () => {
     if (this.props.role_name.name) {
       switch (this.props.role_name.name) {
@@ -54,13 +61,13 @@ class Status extends Component {
     } else return "";
   };
   render() {
-    console.log(this.props.user)
-    const { showReceiverForm, showSenderForm } = this.state;
+    const { showReceiverForm, showSenderForm , showCarTripForm} = this.state;
     const checkReceiverForm =
       showReceiverForm === true ? (
         <ReceiverForm
           exitModalReceiverForm={this.handleShowHideFormReceiver}
           account_id={this.props.account_id}
+          handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
         />
       ) : (
         ""
@@ -70,10 +77,20 @@ class Status extends Component {
         <SenderForm
           exitModalSenderForm={this.handleShowHideFormSender}
           account_id={this.props.account_id}
+          handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
         />
       ) : (
         ""
       );
+    const checkCarTripForm = showCarTripForm === true ? (
+      <CarTripForm
+        exitModalCarTripForm={this.handleShowHideFormCarTrip}
+        user={this.props.user}
+        account_id={this.props.account_id}
+        handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+      />
+
+    ) : ( "");
     const getRoleName = this.getRoleName();
     return (
       <div className="Status">
@@ -82,7 +99,9 @@ class Status extends Component {
             <h2 className="Status-title">Tạo trạng thái</h2>
             <h3 className="Status-Who">Bạn là người</h3>
             <div className="Status-ListBTN">
-              <button className="Status-BTN__item Status-BTN__Taixe">
+              <button className="Status-BTN__item Status-BTN__Taixe"
+              onClick={this.handleShowHideFormCarTrip}
+              >
                 Vận chuyển
               </button>
               <button
@@ -102,13 +121,14 @@ class Status extends Component {
         ) : (
           ""
         )}
-        {getRoleName === "receiver" ? <NguoiNhan user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
-        {getRoleName === "sender" ? <NguoiCho user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
-
+        {getRoleName === "receiver" ? <NguoiNhan  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
+        {getRoleName === "sender" ? <NguoiCho  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : ""}
+        {getRoleName === "car_trip" ? <TaiXe    handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} roleName={this.props.role_name} appProps={this.props.role_name.color} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/> : '' }
         <RecentList />
 
         {checkReceiverForm}
         {checkSenderForm}
+        {checkCarTripForm}
       </div>
     );
   }
@@ -126,7 +146,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   };
 };
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Status);
+)(Status));

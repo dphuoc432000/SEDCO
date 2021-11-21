@@ -136,7 +136,7 @@ class Register extends React.Component{
             this.handleDistricts(districts)
     }
 
-    onChangeDistrictSelect = (event) =>{
+    onChangeDistrictSelect = (event) => {
         this.setState({
             user_infor:{
                 ...this.state.user_infor,

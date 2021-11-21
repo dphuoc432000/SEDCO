@@ -45,9 +45,11 @@
 }
 .data-header__Date--title {
   /* nguoi cho */
-  color: var(--nguoicho);
-  margin-bottom: -7px;
-  font-size: 1.1rem;
+  color: #0000ffb8;
+  padding-left: 12px;
+  margin-top: 13px;
+  padding: 0 19px;
+  font-size: 14.8px;
   font-weight: 600;
 }
 .data-header__date {
@@ -72,17 +74,14 @@
   padding: 0 19px;
   font-size: 1.3rem;
 }
-.data-container__SeeDetail {
-  border-radius: 5px;
-    margin-top: 12px;
-    height: 21px;
-    cursor: pointer;
-    padding: 0px 8px;
-    border: 1px solid #333333;
-    background-color: orangered;
-    margin-right: 40px;
-    font-size: 1rem;
-    color: white;
+.data-container__SeeDetail-sender {
+  margin-top: 12px;
+  height: 21px;
+  cursor: pointer;
+  margin-right: 40px;
+  font-size: 13.8px;
+  text-decoration: underline;
+  color: black;
 }
 .data-container__ListItems {
   position: relative;
@@ -108,7 +107,7 @@
   width: 100%;
   /* margin-left: -1px; */
   /* margin-top: 6px; */
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .List-Good td,
@@ -118,7 +117,7 @@ td:last-child {
 }
 .List-Good tr:last-child {
   /* color: #f54d0f; */
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .List-Good tr td:last-child {
   text-align: right;

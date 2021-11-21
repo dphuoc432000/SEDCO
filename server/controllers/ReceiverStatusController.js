@@ -50,6 +50,7 @@ class RecriverStatusController{
     updateReceiverStatus = async(req, res, next) =>{
         const form_data = req.body;
         form_data.picture = req.file?req.file.path:"";
+        form_data.essentials = JSON.parse(form_data.essentials)
         await receiverStatusService.updateReceiverStatus(req.params.receiver_status_id_pr, req.body)
             .then(data =>  {
                 if(data)

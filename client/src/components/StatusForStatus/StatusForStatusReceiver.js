@@ -39,7 +39,7 @@ class StatusForStatusReceiver extends React.Component {
         </div>
         <div className="Status-header__DateUpPost">
           <i className="Status-header__Date--title" style={{color: '#EE5A24'}}>{status_receiver.status_type === 'RECEIVER' && 'Người cần hỗ trợ'}</i>
-          <h3 className="Status-header__date">{`${original_date} ${orginal_time}`}</h3>
+          <h3 className="Status-header__date">{`${original_date}`}</h3>
         </div>
       </div>
     );

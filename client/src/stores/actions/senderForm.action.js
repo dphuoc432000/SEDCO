@@ -14,19 +14,13 @@ const senderFormCreate = async (account_id, sender_status_data) => {
     type: SENDER_FORM_CREATE_LOADING,
     payload: {},
   };
-  console.log(sender_status_data);
-  const essentialsConvert = Object.keys(sender_status_data.essentials).map(
-    (key) => {
-      return sender_status_data.essentials[key];
-    }
-  );
-  const object = {
-    note: sender_status_data.note,
-    essentials: essentialsConvert,
-    weight_essential: parseFloat(sender_status_data.weight_essential),
-  };
+  
   await axios
-    .post(`${API_URL}/api/sender/${account_id}/create`, object)
+    .post(`${API_URL}/api/sender/${account_id}/create`, sender_status_data ,{
+        headers : {
+          'Content-Type': 'multipart/form-data',
+        }
+    })
     .then((data) => {
       action.type = SENDER_FORM_CREATE_SUCCESS;
       action.payload = data.data;

@@ -18,7 +18,8 @@ import car_tripStatusListReducer from './car_trip_status_listReducer';
 import statusCurrentReducer from './StatusCurrentReducer.js';
 import essentialsDetailReducer from './essentialsDetailReducer.js';
 import updateStatusReceiverReducer from './updateStatusReceiverReducer';
-
+import cartripFormReducer from './createStatusCarTripReducer'
+import updateStatusCartripReducer from './updateStatusCarTripReducer';
 export default combineReducers({
     roleReducer,
     loginReducer,
@@ -38,5 +39,7 @@ export default combineReducers({
     car_tripStatusListReducer,
     statusCurrentReducer,
     essentialsDetailReducer,
-    updateStatusReceiverReducer
+    updateStatusReceiverReducer,
+    cartripFormReducer,
+    updateStatusCartripReducer,
 });

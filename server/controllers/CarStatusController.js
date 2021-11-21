@@ -9,7 +9,9 @@ class CarStatusController{
     updateCarStatusInfor = async (req, res, next) =>{
         const form_data = req.body;
         form_data.picture = req.file?req.file.path:"";
-        // console.log(form_data)
+        // console.log(form_data)   
+        form_data.car = JSON.parse(form_data.car);
+        console.log('formdata',form_data)
         await carStatusService.updateCarStatusInfor(req.params.car_status_id_pr, form_data)
             .then(data =>{
                 if(data)

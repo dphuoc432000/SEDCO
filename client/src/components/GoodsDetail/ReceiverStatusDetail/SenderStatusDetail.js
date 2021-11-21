@@ -5,34 +5,46 @@ import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import "./ReceiverStatusDetail.css";
 import { connect } from "react-redux";
-import getEssentialsDetail from '../../../stores/actions/essentialsDetail.action'
+import ModalDeleteStatus from "../../../components/ModalDeleteStatus/ModalDeleteStatus";
+import { API_IMAGE_URL } from "../../../constants/api";
+import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
 
-class ReceiverStatusDetail extends Component {
+class SenderStatusDetail extends Component {
   state = {
     showUpdateSenderForm: false,
-    essentials: this.props.essentials
+    essentials: this.props.essentials,
+    showModalDelete: false,
   };
   handleShowHideUpdateSender = () => {
     this.setState({
       showUpdateSenderForm: !this.state.showUpdateSenderForm,
     });
   };
+  handleShowHideModalDelete = () => {
+    this.setState({
+      showModalDelete: !this.state.showModalDelete,
+    });
+  };
   componentDidMount = async () => {
-    if(this.state.essentials.length > 0){
-        const essentials_map =await Promise.all(this.state.essentials.map(async essential =>{
-          const essential_detail = await this.getEssentialsDetail(essential.essential_id);
+    if (this.state.essentials.length > 0) {
+      const essentials_map = await Promise.all(
+        this.state.essentials.map(async (essential) => {
+          const essential_detail = await this.getEssentialsDetail(
+            essential.essential_id
+          );
           return {
             ...essential,
             name: essential_detail.name,
             code_name: essential_detail.code_name,
             unit: essential_detail.unit,
-          }
-        }))
-        this.setState({
-          essentials: essentials_map
+          };
         })
+      );
+      this.setState({
+        essentials: essentials_map,
+      });
     }
-  }
+  };
   getEssentialsDetail = async (essential_id) => {
     await this.props.getEssentialsDetail(essential_id);
     const essentialsDetail = await this.props.essentialsDetailReducer;
@@ -41,31 +53,32 @@ class ReceiverStatusDetail extends Component {
   };
 
   handleUpdateEssentials = (essentials) => {
-     this.setState({
-      essentials : essentials ,
-
-     })
-     this.props.handleUpdateEssentials(essentials)
-  }
+    this.setState({
+      essentials: essentials,
+    });
+    this.props.handleUpdateEssentials(essentials);
+  };
   render() {
     const status_current = this.props.status_current;
-    // const essentials = status_current.detail.essentials;
     const note = status_current.detail.note;
     const weight_essential = status_current.detail.weight_essential;
     const essentials_state = this.state.essentials;
+    const picture = status_current.detail.picture;
+
     let { showUpdateSenderForm } = this.state;
     const checkUpdateSenderForm =
       showUpdateSenderForm === true ? (
         <UpdateSenderForm
-        sender_status_id = {this.props.status_current.detail._id}
-        handleShowHideUpdateSender={this.handleShowHideUpdateSender}
-        handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
-        handleUpdateEssentials={this.handleUpdateEssentials}
+          sender_status_id={this.props.status_current.detail._id}
+          handleShowHideUpdateSender={this.handleShowHideUpdateSender}
+          handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+          handleUpdateEssentials={this.handleUpdateEssentials}
+          status_current={this.props.status_current}
         />
       ) : (
         ""
       );
-      const user = this.props.user;
+    const user = this.props.user;
     return (
       <div>
         <div class="GoodDetail-container">
@@ -77,15 +90,16 @@ class ReceiverStatusDetail extends Component {
               essentials_state.map((essential) => {
                 return (
                   <>
-                    <tr key={essential.essential_id}>
-                      <td>{essential.name}</td>
-                      <td>{essential.quantity}</td>
-                      <td>{essential.unit}</td>
-                    </tr>
+                    {essential.quantity > 0 && (
+                      <tr key={essential.essential_id}>
+                        <td>{essential.name}</td>
+                        <td>{essential.quantity}</td>
+                        <td>{essential.unit}</td>
+                      </tr>
+                    )}
                   </>
                 );
               })}
-            
 
             <tr>
               <td>Tổng khối lượng</td>
@@ -109,10 +123,10 @@ class ReceiverStatusDetail extends Component {
             </tr>
           </table>
           <div className="GoodDetail-Info-Img">
-            <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
+            <h3 className="data-container__title">Hình ảnh</h3>
             <img
-              src={ImgInfo}
-              alt="hình ảnh người dùng"
+              src={`${API_IMAGE_URL}/${picture}`}
+              alt={`Hình ảnh`}
               className="GoodDetail-Info-Img__src"
             />
           </div>
@@ -126,19 +140,31 @@ class ReceiverStatusDetail extends Component {
             <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
             lại
           </button>
+          <div>
+            <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+            onClick={() => this.handleShowHideModalDelete()}
+            >
+              Xóa
+            </button>
 
-          <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del">
-            Xóa
-          </button>
-
-          <button
-            className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-            onClick={this.handleShowHideUpdateSender}
-          >
-            Cập nhật
-          </button>
+            <button
+              className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+              onClick={this.handleShowHideUpdateSender}
+            >
+              Cập nhật
+            </button>
+          </div>
         </div>
         {checkUpdateSenderForm}
+        {this.state.showModalDelete && (
+          <ModalDeleteStatus
+            showModalDelete={this.state.showModalDelete}
+            handleShowHideModalDelete={this.handleShowHideModalDelete}
+            status_id={this.props.status_current._id}
+            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+            
+          />
+        )}
       </div>
     );
   }
@@ -156,7 +182,4 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReceiverStatusDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(SenderStatusDetail);

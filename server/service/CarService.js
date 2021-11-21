@@ -25,6 +25,7 @@ class CarService {
     }
 
     updateCarById = async(id, object) =>{
+       
         //trả về dữ liệu củ
         await Car.findByIdAndUpdate({_id: id}, object)
             .then(data => mongooseToObject(data))

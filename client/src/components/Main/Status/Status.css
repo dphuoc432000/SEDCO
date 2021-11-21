@@ -1,52 +1,50 @@
-.Status{
+.Status {
   width: 32%;
-    border-left: 2.1px solid #4591e0a6;
-    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
-    /* position: absolute; */
-    content: "";
-    /* top: 8%;
+  border-left: 2.1px solid #4591e0a6;
+  box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+  /* position: absolute; */
+  content: "";
+  /* top: 8%;
     right: 0%; */
-    /* min-height: 800px; */
-    /* left: 68%; */
-    background-position-y: -105px;
+  /* min-height: 800px; */
+  /* left: 68%; */
+  background-position-y: -105px;
 }
-.Status-Not-Role{
+.Status-Not-Role {
   padding: 12px 18px;
-  
 }
-.Status-title{
+.Status-title {
   margin: 8px 0px;
+  font-weight: 500;
+  font-size: 16px;
 }
-.Status-Who{
+.Status-Who {
   margin: 8px 0px;
   font-weight: 500;
   color: #3434ffd6;
-  font-size: 1.25rem;
+  font-size: 15px;
 }
-.Status-BTN__item{
+.Status-BTN__item {
   color: white;
-  font-size: 14px;
-  
+  font-size: 13px;
+
   border-radius: 5px;
   margin: 0px 8px;
   padding: 10px 15px;
   border: none;
   cursor: pointer;
 }
-.Status-BTN__Taixe{
-background-color: var(--taixe)
+.Status-BTN__Taixe {
+  background-color: var(--taixe);
 }
-.Status-BTN__Nguoicho{
-  background-color: var(--nguoicho)
-
+.Status-BTN__Nguoicho {
+  background-color: var(--nguoicho);
 }
-.Status-BTN__Nguoinhan{
-  background-color: var(--nguoinhan)
-
+.Status-BTN__Nguoinhan {
+  background-color: var(--nguoinhan);
 }
-.Status-ListBTN{
+.Status-ListBTN {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   margin: 18px 6px;
-  
 }

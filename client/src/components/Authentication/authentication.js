@@ -54,7 +54,7 @@ function AuthenticatedSenderRoute({ component: C, appProps, ...rest }) {
     );
 }
 function AuthenticatedCarTripRoute({ component: C, appProps, ...rest }) {
-  console.log(appProps)
+  // console.log(appProps)
     return (
       <Route
         {...rest}

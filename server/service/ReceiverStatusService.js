@@ -43,10 +43,11 @@ class ReceiverStatusService {
     addReceiverStatus = async (status_id, object) => {
         object.status_id = status_id;
         object.regis_status = false;
+        console.log(object);
         const receiver_status = new ReceiverStatus(object);
         return await receiver_status.save()
             .then(data => mongooseToObject(data))
-            .catch(err => err);
+            .catch(err => {console.log(err)});
     }
 
     
@@ -70,10 +71,12 @@ class ReceiverStatusService {
 
 
     updateReceiverStatus = async(receiver_status_id, object)=>{
+        if(object.picture === "")
+            delete object.picture;
         return await ReceiverStatus.findByIdAndUpdate({_id: receiver_status_id}, object)
             .then(data =>{
                 if(data){
-                    if(object.picture="")
+                    if(object.picture )
                         fs.unlink(path.join('..\\server', data.picture), (err) => {
                             if (err) {
                                 console.log(err);

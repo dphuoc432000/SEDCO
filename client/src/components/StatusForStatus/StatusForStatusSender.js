@@ -1,6 +1,6 @@
 import React from "react";
 import './StatusForStatus.css'
-class StatusForStatusReceiver extends React.Component {
+class StatusForStatusSender extends React.Component {
   state = {
     statusNotConfirm : false,
     status_completed : false,
@@ -39,10 +39,10 @@ class StatusForStatusReceiver extends React.Component {
         </div>
         <div className="Status-header__DateUpPost">
           <i className="Status-header__Date--title" style={{ color: '#FED330'}}>{status_receiver.status_type === 'SENDER' && 'Người hỗ trợ'}</i>
-          <h3 className="Status-header__date">{`${original_date} ${orginal_time}`}</h3>
+          <h3 className="Status-header__date">{`${original_date}`}</h3>
         </div>
       </div>
     );
   }
 }
-export default StatusForStatusReceiver;
+export default StatusForStatusSender;

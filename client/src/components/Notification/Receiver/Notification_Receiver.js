@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import "./notification.css";
+import "../notification.css";
 class Notification_Receiver extends Component {
   render() {
     return (

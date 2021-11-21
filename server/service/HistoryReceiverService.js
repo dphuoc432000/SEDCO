@@ -5,6 +5,9 @@ const {multiplemongooseToObject, mongooseToObject} = require('../util/mongoose')
 const HistoryReceiver = require('../models/History_Receiver');
 const statusService = require('./StatusService');
 const receiverStatusService = require('./ReceiverStatusService');
+const accountService = require('./AccountService');
+const userService = require('./UserService');
+const handlePagination = require('../middlewares/handlePagination')
 class HistoryReceiverService{
 
     //kiểm tra có tồn tại và còn hoạt động hay không car_status hay không
@@ -120,23 +123,44 @@ class HistoryReceiverService{
             car_confirm: false
         }).then(datas => multiplemongooseToObject(datas))
           .catch(err => null);
+        //   console.log(regisReceiverList)
         if(regisReceiverList.length > 0) {
             let statusList = Promise.all(regisReceiverList.map(async regisReceiver =>{
                 const receiver_status = await receiverStatusService.getReceiverStatusDetail(regisReceiver.receiver_status_id)
                     .then(data => data)
                     .catch(err => err);
-                return await Status.findById({_id: receiver_status.status_id})
-                    .then(data =>{
-                        data = mongooseToObject(data);
-                        data.detail = receiver_status;
-                        return data;
-                    })
-                    .catch(err => err)
+                    // console.log(receiver_status)
+                if(receiver_status)
+                    return await Status.findOne({_id: receiver_status.status_id, status_completed: false})
+                        .then(async data =>{
+                            data = mongooseToObject(data);
+                            data.detail = receiver_status;
+                            const account = await accountService.getAccountDetails(data.account_id)
+                            data.user = await userService.getUserByID(account.user_id);
+                            return data;
+                        })
+                        .catch(err => err)
             }))
             return statusList;
         }
         //nếu regisReceiverList = [] thì không tìm thấy chuyến xe
         return null;
+    }
+
+    getAllHistoryRegisterReceiverByReceiverStatusID =  async (receiver_status_id,_limit,_page) =>{
+        const totalRows = await HistoryReceiver.count({receiver_status_id: receiver_status_id});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_receiver_list  = await HistoryReceiver.find({receiver_status_id: receiver_status_id})
+            .skip(start)
+            .limit(pagination._limit)
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err);
+        return{
+            history_receiver_list: history_receiver_list,
+            pagination
+        }
     }
 }
 

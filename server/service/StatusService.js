@@ -8,6 +8,7 @@ const carStatusService = require('./CarStatusService');
 const vehicleCensorshipService = require('../service/VehicleCensorshipService');
 const roleService = require('./RoleService')
 const { getSenderStatusDetail } = require('./SenderStatusService');
+const handlePagination = require('../middlewares/handlePagination')
 
 //update số lượng essential. Cho form nhập số lượng rồi bấm update sẽ chuyển body lên qua URL có các param status ID, loại STATUS. Lấy ra status với status_id. Từ status so sánh status_type với loại STATUS. Nếu đúng thì sửa đổi sai thì trả về null hoặc báo lỗi không đúng
 //update status_completed
@@ -198,12 +199,28 @@ class StatusService {
         return null;
     }
 
-    // OK
-    getStatusList = async() => {
+    // OK -- test
+    getStatusList = async(_limit, _page) => {
+        let limit = parseInt(_limit);
+        let page =  parseInt(_page)
+        let start;
+        if(limit && page){
+            if(page < 1 || typeof page !== 'number')
+                page = 1;
+            if(limit < 1 || typeof limit !== 'number')
+                limit = 1;
+        }
+        start = (page * limit) - limit;
+        //đếm số lượng dữ liệu
+        const totalRows = await Status.count({})
+
         const status_list = await Status.find({})
+            .skip(start)
+            .limit(limit)
             .then(list => {
                 return multiplemongooseToObject(list);
             });
+
         const status_list_map = await Promise.all(status_list.map(async(obj)=>{
             const account = await accountService.getAccountDetails(obj.account_id)
             const user = await userService.getUserByID(account.user_id);
@@ -233,7 +250,14 @@ class StatusService {
             return obj;
         }))
         .then(data => data);
-        return status_list_map;
+        return {
+            status_list: status_list_map,
+            pagination:{
+                _limit:limit,
+                _page:page,
+                totalRows
+            }
+        };
     }
     //Lấy StatusList Chưa hoàn thành completed = false
     getStatusListNoComplete = async() => {
@@ -273,9 +297,59 @@ class StatusService {
         return status_list_map;
     }
     //OK
+    // lấy danh sách status theo loại có filter
+    getStatusListByType_Filter = async (status_type_param, filter,_limit,_page) => {
+        const statusCondition = {status_type: status_type_param};
+        if(filter.status_completed && ['true','false'].includes(filter.status_completed) )
+            statusCondition['status_completed'] = filter.status_completed;
+
+        const totalRows = await Status.count(statusCondition);
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const status_list = await Status.find(statusCondition)
+            .skip(start)
+            .limit(pagination._limit)
+            .then(status => multiplemongooseToObject(status)); 
+        const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
+            switch (obj.status_type) {
+                case "RECEIVER":
+                    await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        }))
+        .then(data => data);
+        return {status_list: status_list_map,
+                pagination: pagination};   
+    }
+
     // lấy danh sách status theo loại
-    getStatusListByType = async (status_type_param) => {
-        const status_list = await Status.find({status_type: status_type_param})
+    getStatusListByType= async (status_type_param, filter,_limit,_page) => {
+        const statusCondition = {status_type: status_type_param};
+        // if(filter.status_completed && ['true','false'].includes(filter.status_completed) )
+        //     statusCondition['status_completed'] = filter.status_completed;
+        const status_list = await Status.find(statusCondition)
             .then(status => multiplemongooseToObject(status)); 
         const status_list_map = await Promise.all(status_list.map(async(obj)=>{
             const account = await accountService.getAccountDetails(obj.account_id)
@@ -308,6 +382,8 @@ class StatusService {
         .then(data => data);
         return status_list_map;   
     }
+
+
     // lấy danh sách status theo loại chưa hoàn thành
     getStatusListByTypeNoComplete = async (status_type_param) => {
         const status_list = await Status.find({status_type: status_type_param, status_completed: false})
@@ -441,7 +517,51 @@ class StatusService {
         return status;
     }
 
-    
+    getRecentStatus = async (status_type) => {
+        let status_list;
+        if(status_type){
+            status_list = await  Status.find({status_type: status_type, status_completed: false})
+                .sort('-createdAt')
+                .then(data => multiplemongooseToObject(data))
+                .catch(err => err);
+        }
+        else
+            status_list = await Status.find({})
+                .sort('-createdAt')
+                .then(data => multiplemongooseToObject(data))
+                .catch(err => err);
+
+        const status_list_map = await Promise.all(status_list.map(async(obj)=>{
+            const account = await accountService.getAccountDetails(obj.account_id)
+            const user = await userService.getUserByID(account.user_id);
+            obj.user = user;
+            switch (obj.status_type) {
+                case "RECEIVER":
+                    await receiverStatusService.getReceiverStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                case "SENDER":
+                    await senderStatusService.getSenderStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break
+                case "CAR_TRIP":
+                    await carStatusService.getCarStatusDetail_status_id(obj._id.toString())
+                        .then((data) =>{
+                            obj.detail = data;
+                        })
+                    break;
+                default:
+                    break;
+            }
+            return obj;
+        }))
+        .then(data => data);
+        return status_list_map;
+    }
 }
 
 module.exports = new StatusService();

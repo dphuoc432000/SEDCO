@@ -9,10 +9,10 @@ import ReactMapGL, {
 import { key } from "../../../constants/map";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import { get_status_list_no_complete } from "../../../stores/actions/status_list.action";
-import { get_sender_status_list_no_complete } from "../../../stores/actions/sender_status_list.action";
-import { get_receiver_status_list_no_complete } from "../../../stores/actions/receiver_status_list.action";
-import { get_car_trip_status_list_no_complete } from "../../../stores/actions/car_trip_status_list.action";
+import { get_status_list_no_complete } from "../../../stores/actions/status_list_no_completed.action";
+import { get_sender_status_list_no_complete } from "../../../stores/actions/sender_status_list_no_completed.action";
+import { get_receiver_status_list_no_complete } from "../../../stores/actions/receiver_status_list_no_completed.action";
+import { get_car_trip_status_list_no_complete } from "../../../stores/actions/car_trip_status_list_no_completed.action";
 
 // import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -95,16 +95,16 @@ class Map extends Component {
       });
 
     await this.props.get_status_list_no_complete();
-    const all_status_list = await this.props.statusListReducer.status_list;
+    const all_status_list = await this.props.statusListNoCompeletedReducer.status_list;
     
     await this.props.get_sender_status_list_no_complete();
-    const sender_status_list = await this.props.senderStatusListReducer.sender_status_list;
+    const sender_status_list = await this.props.senderStatusListNoCompletedReducer.sender_status_list;
 
     await this.props.get_receiver_status_list_no_complete();
-    const receiver_status_list = await this.props.receiverStatusListReducer.receiver_status_list;
+    const receiver_status_list = await this.props.receiverStatusListNoCompletedReducer.receiver_status_list;
 
     await this.props.get_car_trip_status_list_no_complete();
-    const car_trip_status_list = await this.props.car_tripStatusListReducer.car_trip_status_list;
+    const car_trip_status_list = await this.props.car_tripStatusListNoCompletedReducer.car_trip_status_list;
 
     const markers = await this.transStatusListToMarkers(all_status_list);
     this.setState({
@@ -162,6 +162,10 @@ class Map extends Component {
     }
   }
 
+  handleGetStatus = (marker) =>{
+    this.props.handleChangeStatusMarker(marker);
+  }
+
   render() {
     const { viewport, markers, car_trip_status_list, receiver_status_list, sender_status_list, all_status_list } = this.state;
     // console.log(this.state)
@@ -184,16 +188,14 @@ class Map extends Component {
             return (
               <Marker
                 key={marker._id}
-                onClick={() => {
-                  console.log("click");
-                }}
+                onClick={() => (this.handleGetStatus(marker))}
                 longitude={marker.longitude}
                 latitude={marker.latitude}
               >
                 <div className="marker temporary-marker">
                   <span>
                     {
-                      <p
+                      <p 
                         style={{
                           width: "25px",
                           height: "25px",
@@ -216,10 +218,10 @@ class Map extends Component {
             <span >{all_status_list.length} Tất cả</span>
           </div>
           <div className="sender-status-action" onClick={() =>{this.handleChangeToSenderMarkers()}} >
-            <span >{receiver_status_list.length} Hỗ trợ</span>
+            <span >{sender_status_list.length} Hỗ trợ</span>
           </div>
           <div className="receiver-status-action" onClick={() =>{this.handleChangeToReceiverMarkers()}}>
-            <span>{sender_status_list.length} Cần hỗ trợ</span>
+            <span>{receiver_status_list.length} Cần hỗ trợ</span>
           </div>
           <div className="car_trip-status-action" onClick={() =>{this.handleChangeToCarTripMarkers()}}>
             <span>{car_trip_status_list.length} Chuyến xe</span>
@@ -233,10 +235,10 @@ class Map extends Component {
 //state này của redux không phải react
 const mapStateToProps = (state) => {
   return {
-    car_tripStatusListReducer: state.car_tripStatusListReducer,
-    receiverStatusListReducer: state.receiverStatusListReducer,
-    senderStatusListReducer: state.senderStatusListReducer,
-    statusListReducer: state.statusListReducer,
+    car_tripStatusListNoCompletedReducer: state.car_tripStatusListNoCompletedReducer,
+    receiverStatusListNoCompletedReducer: state.receiverStatusListNoCompletedReducer,
+    senderStatusListNoCompletedReducer: state.senderStatusListNoCompletedReducer,
+    statusListNoCompeletedReducer: state.statusListNoCompeletedReducer,
   };
 };
 

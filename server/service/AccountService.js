@@ -5,6 +5,8 @@ const userService = require('./UserService');
 const roleService = require('./RoleService');
 const handleOther = require('../controllers/handleOther');
 const bcrypt = require('bcryptjs');
+const handlePagination = require('../middlewares/handlePagination');
+
 class AccountService{
     addAccount = async(user_id_param, role_id_param, object)=>{
         const user_objectId = await userService.getUserByID(user_id_param)
@@ -91,10 +93,19 @@ class AccountService{
         }
         return null;
     }
-    getAccountList = async()=>{
-        return await Account.find({})
+    getAccountList = async(_limit, _page)=>{
+        const totalRows = await Account.count({});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+        const account_list = await Account.find({})
+            .skip(start)
+            .limit(pagination._limit)
             .then(accounts => multiplemongooseToObject(accounts))// thêm catch nếu chạy lỗi thì bỏ
             .catch(err => err);
+        return {
+            account_list: account_list,
+            pagination: pagination
+        }
     }
 
     getAccountDetails = async(id)=>{

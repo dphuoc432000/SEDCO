@@ -67,7 +67,7 @@ class VehicleCensorshipService {
             //lọc imgae nào được update nào không được
         const Vehicle_censorship_update = await this.getVehicleCensorshipByUserId(user_id_param)
             .then(data => {
-                console
+                // console
                 return {
                     face_img: object.face_img?object.face_img:data.face_img,
                     id_card_img_before: object.id_card_img_before?object.id_card_img_before:data.id_card_img_before,

@@ -40,7 +40,7 @@ class UserController{
 
     getPathAllImageCar = (req, res, next) =>{
         const files = req.files;
-        console.log(files)
+        // console.log(files)
         const face_img =  files.face_img;
         const id_card_img_before = files.id_card_img_before;
         const id_card_img_after = files.id_card_img_after;
@@ -108,11 +108,11 @@ class UserController{
     }
 
     getAllUserDriverNoCensorship = async(req, res, next) =>{
-        await userService.getAllUserDriverNoCensorship()
+        await userService.getAllUserDriverNoCensorship(req.query._limit,req.query._page)
             .then(users =>{
                 if(users){
-                    const datas = pagination(users, req.query._limit, req.query._page);
-                    return res.json(datas);
+                    // const datas = pagination(users, req.query._limit, req.query._page);
+                    return res.json(users);
                 }
                 return res.status(400).json(handleOther.errorHandling("Lỗi", null)); 
             })

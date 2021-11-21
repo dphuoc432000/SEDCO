@@ -1,0 +1,97 @@
+.main{
+    display: flex;
+    flex-direction: row;
+}
+/* The side navigation menu */
+.sidebar {
+    margin          : 0;
+    padding         : 0;
+    width           : 250px;
+    background-color: #fff;
+    height          : 100%;
+    overflow        : auto;
+    /* top             : 60px; */
+    content         : "";
+    /* position        : fixed; */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 10px;
+}
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.sidebar::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Sidebar links */
+
+.sidebar li a {
+    display        : block;
+    color          : #000;
+    padding        : 16px;
+    text-decoration: none;
+    font-weight    : 600;
+    position       : relative;
+}
+
+/* Active/current link */
+li.active {
+    background-color: #b1d8fb;
+    color           : #fff;
+    border-top-right-radius: 10px;
+}
+
+.active {
+    background-color: #b1d8fb;
+    border-radius: 5px;
+    color: #fff!important;
+}
+
+/* Links on mouse-over */
+/* .sidebar li:hover:not(.active) {
+    background-color: #b1d8fb;
+    color           : #fff;
+} */
+
+.Sidebar_item {
+    /* position    : absolute; */
+    padding-left   : 36px;
+    list-style     : none;
+    /* display        : none; */
+    /* overflow    : hidden; */
+    /* z-index     : -1; */
+}
+
+.sub_sidebar {
+    position        : relative;
+    left            : 0;
+    background-color: #fff;
+    min-width       : 160px;
+    width           : 100%;
+    text-align      : left;
+    border          : none;
+    outline         : none;
+    transition      : 0.4s
+}
+
+/* Page content_container. The value of the margin-left property should match the value of the sidebar's width property */
+.content_container {
+    width     : calc(100% - 250px);
+    content   : "";
+    /* left      : 250px; */
+    /* position  : absolute; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -59,7 +59,7 @@ class SLCanNhan extends React.Component {
     // const note = status_current.detail.note;
     // const number_per_of_family = status_current.detail.number_per_of_family;
     const essentials_state = this.state.essentials;
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <React.Fragment>
         <div>
@@ -101,6 +101,7 @@ class SLCanNhan extends React.Component {
             <ReceiverStatusDetail
               user={this.props.user}
               status_current={this.props.status_current}
+              status_current_current = {this.props.status_current}
               essentials = {this.state.essentials}
               handleHideReceiverStatusDetail={this.handleShowHide}
               handleUpdateEssentials={this.handleUpdateEssentials}

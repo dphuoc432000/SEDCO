@@ -10,7 +10,7 @@ const initState ={
     status_list: []
 }
 
-const car_tripStatusListReducer = (state = initState, action) =>{
+const car_tripStatusListNoCompletedReducer = (state = initState, action) =>{
     switch(action.type){
         case CAR_TRIP_STATUS_LIST_NO_COMPLETE_SUCCESS:
             return {...state,car_trip_status_list: action.payload.car_trip_status_list};
@@ -23,4 +23,4 @@ const car_tripStatusListReducer = (state = initState, action) =>{
     }
 }
 
-export default car_tripStatusListReducer;
+export default car_tripStatusListNoCompletedReducer;

@@ -32,6 +32,7 @@ class SenderStatusController {
     updateSenderStatus = async(req, res, next) =>{
         const form_data = req.body;
         form_data.picture = req.file?req.file.path:"";
+        form_data.essentials = JSON.parse(form_data.essentials);
         await senderStatusService.updateSenderStatus(req.params.sender_status_id_pr, req.body)
             .then(data => {
                 if(!data)

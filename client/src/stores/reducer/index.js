@@ -18,6 +18,8 @@ import car_tripStatusListNoCompletedReducer from './car_trip_status_list_no_comp
 import statusCurrentReducer from './StatusCurrentReducer.js';
 import essentialsDetailReducer from './essentialsDetailReducer.js';
 import updateStatusReceiverReducer from './updateStatusReceiverReducer';
+import cartripFormReducer from './createStatusCarTripReducer'
+import updateStatusCartripReducer from './updateStatusCarTripReducer';
 import carRegisStatusReducer from './carRegisStatusReducer';
 import recentStatusReducer from './recentStatusReducer.js';
 import statusListReducer from './statusListReducer';
@@ -46,6 +48,8 @@ export default combineReducers({
     statusCurrentReducer,
     essentialsDetailReducer,
     updateStatusReceiverReducer,
+    cartripFormReducer,
+    updateStatusCartripReducer,
     carRegisStatusReducer,
     recentStatusReducer,
     statusListReducer,
@@ -53,5 +57,4 @@ export default combineReducers({
     accountReducer,
     userReducer,
     reportListReducer
-    
 });

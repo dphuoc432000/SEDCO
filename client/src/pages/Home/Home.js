@@ -21,6 +21,7 @@ class Home extends Component {
                         account_id={this.props.account_id}
                         status_current={this.props.status_current}
                         handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                        handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                         isAuthenticated={this.props.isAuthenticated}
                     />
                     {   this.props.showFormLogin &&

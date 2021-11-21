@@ -7,18 +7,19 @@ const Status = require('../models/Status');
 const accountService = require('./accountService');
 const { stat } = require('fs/promises');
 const essentialsService = require('./EssentialService')
+
 function isEmpty(path) {
-    return fs.readdirSync(path).length === 0;
+  return fs.readdirSync(path).length === 0;
 }
 
 class CarStatusService {
+  checkShippingStatus = (censorship, departure_time, current_time) => {
+    return censorship && current_time >= departure_time ? true : false;
+  };
+  checkReceivingStatus = (censorship, start_receiver_time, current_time) => {
+    return censorship && current_time >= start_receiver_time ? true : false;
+  };
 
-    checkShippingStatus = (censorship,departure_time, current_time) =>{
-        return censorship && current_time >= departure_time? true: false
-    }
-    checkReceivingStatus = (censorship,start_receiver_time, current_time) =>{
-        return censorship && current_time >= start_receiver_time? true: false
-    }
     //Lấy tất cả essential theo định dạng essential_id và quantity
     getEssentials = async () =>{
         const essentials = await essentialsService.getAllEssential()
@@ -54,77 +55,82 @@ class CarStatusService {
         const start_receive_time = Date.parse(object.start_receive_time);
         const departure_time = Date.parse(object.departure_time);
         const car_status_object = {
-            status_id: status_id,
-            start_receive_time: object.start_receive_time,
-            departure_time: object.departure_time,
-            location_start: object.location_start,
-            location_finish: object.location_finish,
-            note:object.note,
-            picture:object.picture,
-            censorship:false,
-            //Nếu mà tạo vào thì phải = false chờ admin kiểm duyệt rồi mới được cập nhật trạng thái. Khi được admin kiểm duyệt censorship = true thì 
-            //receiving_status, shipping_status được kiểm duyệt hàm dưới trong hàm cập nhật CarStatus
-            // receiving_status: this.checkReceivingStatus(censorship, start_receive_time, current_time),
-            // shipping_status:this.checkShippingStatus(censorship,departure_time, current_time),
-            receiving_status:false,
-            shipping_status: false,
-            car_id: car_id,
-            essentials: await this.getEssentials()
-        }
-        const car =  new CarStatus(car_status_object)
+          status_id: status_id,
+          start_receive_time: object.start_receive_time,
+          departure_time: object.departure_time,
+          location_start: object.location_start,
+          location_finish: object.location_finish,
+          note: object.note,
+          picture: object.picture,
+          censorship: false,
+          //Nếu mà tạo vào thì phải = false chờ admin kiểm duyệt rồi mới được cập nhật trạng thái. Khi được admin kiểm duyệt censorship = true thì
+          //receiving_status, shipping_status được kiểm duyệt hàm dưới trong hàm cập nhật CarStatus
+          // receiving_status: this.checkReceivingStatus(censorship, start_receive_time, current_time),
+          // shipping_status:this.checkShippingStatus(censorship,departure_time, current_time),
+          receiving_status: false,
+          shipping_status: false,
+          car_id: car_id,
+          essentials: await this.getEssentials()
+        };
+        const car = new CarStatus(car_status_object);
         return await car.save()
-            .then(data => mongooseToObject(data))
-            .catch(err => err);
-        
-    }
+            .then((data) => mongooseToObject(data))
+            .catch((err) => err);
+  };
 
-    // getCarStatusDetail_status_id = async(status_id) =>{
-    //     return await CarStatus.findOne({status_id: status_id})
-    //         .then(data => mongooseToObject(data))
-    //         .catch(err => err);
-    // }
+  // getCarStatusDetail_status_id = async(status_id) =>{
+  //     return await CarStatus.findOne({status_id: status_id})
+  //         .then(data => mongooseToObject(data))
+  //         .catch(err => err);
+  // }
 
+  deleteCarStatus = async (car_status_id_param) => {
+    //xóa car status
+    // console.log(receive_status_id_param);
+    const car_status = await CarStatus.findByIdAndRemove({
+      _id: car_status_id_param,
+    })
+      .then((data) => mongooseToObject(data))
+      .catch((err) => err);
+    // console.log(car_status)
+    //xóa status đi. Đồng thời trả về account id
+    const account_id = await Status.findByIdAndRemove({
+      _id: car_status.status_id,
+    })
+      .then((data) => data.account_id)
+      .catch((err) => err);
+    //update lại role account -> user
+    await accountService.accountUpdate_roleId_byRoleName(account_id, "user");
 
-    deleteCarStatus = async (car_status_id_param) => {
-        //xóa car status
-        // console.log(receive_status_id_param);
-        const car_status = await CarStatus.findByIdAndRemove({_id: car_status_id_param})
-            .then(data => mongooseToObject(data))
-            .catch(err=>err);
-        // console.log(car_status)
-        //xóa status đi. Đồng thời trả về account id
-        const account_id = await Status.findByIdAndRemove({_id: car_status.status_id})
-            .then(data => data.account_id)
-            .catch(err=>err);
-        //update lại role account -> user 
-        await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
-
-        //xoa file hinh uploaded
-        if(car_status.picture){
-            fs.unlink(path.join('..\\server', car_status.picture), (err) => {
-                if (err) {
-                    console.log(err);
-                    return ;
-                }
-            });
-
-        //xoa folder nếu trống
-            const path_folder = path.join('..\\server', "\\uploads\\status\\CAR_TRIP", account_id.toString());
-            if(isEmpty(path.join(path_folder)))
-            {   
-                try {
-                    fs.rmdirSync(path_folder, { recursive: true });
-                
-                    console.log(`${path_folder} is deleted!`);
-                } catch (err) {
-                    console.error(`Error while deleting ${dir}.`);
-                }
-            }
+    //xoa file hinh uploaded
+    if (car_status.picture) {
+      fs.unlink(path.join("..\\server", car_status.picture), (err) => {
+        if (err) {
+          console.log(err);
+          return;
         }
-        return car_status;
-    }
+      });
 
-    //Lấy các chuyến xe chưa được kiểm duyệt ->userService
+      //xoa folder nếu trống
+      const path_folder = path.join(
+        "..\\server",
+        "\\uploads\\status\\CAR_TRIP",
+        account_id.toString()
+      );
+      if (isEmpty(path.join(path_folder))) {
+        try {
+          fs.rmdirSync(path_folder, { recursive: true });
+
+          console.log(`${path_folder} is deleted!`);
+        } catch (err) {
+          console.error(`Error while deleting ${dir}.`);
+        }
+      }
+    }
+    return car_status;
+  };
+
+      //Lấy các chuyến xe chưa được kiểm duyệt ->userService
     getAllCarStatusNoCensorship = async (_limit, _page) =>{
         let limit = parseInt(_limit);
         let page =  parseInt(_page)
@@ -151,7 +157,7 @@ class CarStatusService {
         }
     }
 
-    //lấy tất cả các chuyến xe bao gồm chưa được kiểm duyệt và đã được kiểm duyệt
+  //lấy tất cả các chuyến xe bao gồm chưa được kiểm duyệt và đã được kiểm duyệt
     // getAllCarStatus
     getCarStatusDetail_status_id = async(status_id) =>{
         return await CarStatus.findOne({status_id: status_id})
@@ -163,33 +169,36 @@ class CarStatusService {
             })
             .catch(err => err);
     }
-    updateCarStatusInfor = async(car_status_id, object)=>{
-        const car = object.car;
-        const car_status =  {
-            start_receive_time: object.start_receive_time,
-            departure_time: object.departure_time,
-            location_start: object.location_start,
-            location_finish: object.location_finish,
-            note: object.note,
-            picture: object.picture,
-            // essentials: await this.getEssentials()
-        }
-        const car_status_update = await CarStatus.findByIdAndUpdate({_id: car_status_id},car_status)
-            .then(async data =>{
-                const update_data = mongooseToObject(data);
-
-                if(update_data.picture)
-                    fs.unlink(path.join('..\\server', update_data.picture), (err) => {
-                        if (err) {
-                            console.log(err);
-                            return ;
-                        }
-                    });
-                //trả về lại car_status với dữ liệu mới
-                const car_status_current = await CarStatus.findById({_id: update_data._id})
-                    .then(data => mongooseToObject(data))
-                    .catch(err => err)
-
+  updateCarStatusInfor = async (car_status_id, object) => {
+    const car = object.car;
+    const car_status = {
+      start_receive_time: object.start_receive_time,
+      departure_time: object.departure_time,
+      location_start: object.location_start,
+      location_finish: object.location_finish,
+      note: object.note,
+      picture: object.picture,
+    };
+    if (car_status.picture === "") delete car_status.picture;
+    const car_status_update = await CarStatus.findByIdAndUpdate(
+      { _id: car_status_id },
+      car_status
+    )
+      .then(async (data) => {
+              const update_data = mongooseToObject(data);
+              if ("picture" in car_status === true) {
+                if (update_data.picture)
+                  fs.unlink(path.join("..\\server", update_data.picture), (err) => {
+                    if (err) {
+                      console.log(err);
+                      return;
+                    }
+                  });
+              }
+              //trả về lại car_status với dữ liệu mới
+              const car_status_current = await CarStatus.findById({_id: update_data._id,})
+                .then((data) => mongooseToObject(data))
+                .catch((err) => err);
                 car_status_current.car = await carService.updateCarById(update_data.car_id,car)
                     .then(data => data)
                     .catch(err=> err);

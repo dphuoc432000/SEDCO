@@ -6,12 +6,15 @@ import "../GoodsDetail.css";
 import "./ReceiverStatusDetail.css";
 import { connect } from "react-redux";
 import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
+import ModalDeleteStatus from "../../ModalDeleteStatus/ModalDeleteStatus";
+import { API_IMAGE_URL } from "../../../constants/api";
 import {toast } from 'react-toastify';
 
 class ReceiverStatusDetail extends Component {
 	state = {
 		showUpdateReceiverForm: false,
 		essentials: this.props.essentials,
+    showModalDelete: false,
 	};
 
 	componentDidMount = async () => {
@@ -30,7 +33,7 @@ class ReceiverStatusDetail extends Component {
 			})
 		}
 	}
-	componentDidUpdate = async (prevProps, prevState) =>{
+  componentDidUpdate = async (prevProps, prevState) =>{
 		if(prevProps.status_current._id !== this.props.status_current._id){
 			if(this.props.essentials.length > 0){
 				const essentials_map =await Promise.all(this.props.essentials.map(async essential =>{
@@ -48,7 +51,13 @@ class ReceiverStatusDetail extends Component {
 			}
 		}
 	}
-	handleShowHideUpdateReceiver = () => {
+  
+  handleShowHideModalDelete = () => {
+    this.setState({
+      showModalDelete: !this.state.showModalDelete,
+    });
+  };
+  handleShowHideUpdateReceiver = () => {
 		this.setState({
 		showUpdateReceiverForm: !this.state.showUpdateReceiverForm,
 		});
@@ -62,7 +71,6 @@ class ReceiverStatusDetail extends Component {
 	handleUpdateEssentials = (essentials) => {
 		this.setState({
 		essentials : essentials ,
-
 		})
 		this.props.handleUpdateEssentials(essentials)
 	}
@@ -74,21 +82,21 @@ class ReceiverStatusDetail extends Component {
 		else
 			this.props.handleChangeShowFormLogin();
 	}
-	
-	render() {
+  render() {
 		const status_current = this.props.status_current;//2 loại: status truyền từ bản đồ qua hoặc status của người đang dùng
 		//status_current_current: status của người đang dùng đễ so sánh với status trên
 		//nếu mã 2 cái status giống nhau thì hiện 3 nút quay lại, cập nhật và xóa
 		//nếu mã 2 cái status khác nhau thì hiện 2 nút quay lại và nhắn tin
 		const status_current_current = this.props.status_current_current;
-		console.log(status_current, status_current_current)
+// 		console.log(status_current, status_current_current)
 		//role_name của người dùng hiện tại dùng để set nút đăng ký cho tài xế <- nếu là role car_trip
 		const role_name_current = this.props.role_name_current;
 		const note = status_current.detail.note;
 		const number_per_of_family = status_current.detail.number_per_of_family;
+    const picture = status_current.detail.picture;
 		const essentials_state = this.state.essentials;
 		let { showUpdateReceiverForm } = this.state;
-		console.log(this.state)
+// 		console.log(this.state)
 		const checkUpdateReceiverForm =
 		showUpdateReceiverForm === true ? (
 			<UpdateReceiverForm
@@ -96,64 +104,64 @@ class ReceiverStatusDetail extends Component {
 				handleShowHideUpdateReceiver={this.handleShowHideUpdateReceiver}
 				handleUpdateEssentials={this.handleUpdateEssentials}
 				handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+        status_current={this.props.status_current}
 			/>
 		) : (
 			""
 		);
 		const user = this.props.user;
-		return (
+    return (
 			<div>
 				<div className="GoodDetail-container">
-				{/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
-				<h3 className="data-container__title">Cần hỗ trợ</h3>
-				<table className="List-Good-Detail">
-					{essentials_state &&
-					essentials_state.map( (essential) => {
-						return (
-						<React.Fragment>
-						{
-							essential.quantity > 0 &&
-							<tr key={essential.essential_id}>
-								<td>{essential.name}</td>
-								<td>{essential.quantity}</td>
-								<td>{essential.unit}</td>
-							</tr>
-						}
-						</React.Fragment>
-						);
-					})
-					}
-					<tr>
-						<td>Số người trong hộ trong hộ gia đình</td>
-						<td>{number_per_of_family}</td>
-						<td>Người</td>
-					</tr>
-				</table>
-				<h3 className="data-container__title">Thông tin liên hệ</h3>
-				<table className="List-Good-Detail">
-					<tr>
-						<td>Số điện thoại</td>
-						<td>{user.phone_number}</td>
-					</tr>
-					<tr>
-						<td>Địa chỉ</td>
-						<td>{user.address}</td>
-					</tr>
-					<tr>
-						<td>Ghi chú</td>
-						<td>{note}</td>
-					</tr>
-				</table>
-				<div className="GoodDetail-Info-Img">
-					<h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
-					<img
-					src={ImgInfo}
-					alt="hình ảnh người dùng"
-					className="GoodDetail-Info-Img__src"
-					/>
-				</div>
-				</div>
-
+            {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
+            <h3 className="data-container__title">Cần hỗ trợ</h3>
+            <table className="List-Good-Detail">
+                {essentials_state &&
+                  essentials_state.map( (essential) => {
+                    return (
+                    <React.Fragment>
+                    {
+                      essential.quantity > 0 &&
+                      <tr key={essential.essential_id}>
+                        <td>{essential.name}</td>
+                        <td>{essential.quantity}</td>
+                        <td>{essential.unit}</td>
+                      </tr>
+                    }
+                    </React.Fragment>
+                    );
+                  })
+                }
+                <tr>
+                  <td>Số người trong hộ trong hộ gia đình</td>
+                  <td>{number_per_of_family}</td>
+                  <td>Người</td>
+                </tr>
+            </table>
+            <h3 className="data-container__title">Thông tin liên hệ</h3>
+            <table className="List-Good-Detail">
+              <tr>
+                <td>Số điện thoại</td>
+                <td>{user.phone_number}</td>
+              </tr>
+              <tr>
+                <td>Địa chỉ</td>
+                <td>{user.address}</td>
+              </tr>
+              <tr>
+                <td>Ghi chú</td>
+                <td>{note}</td>
+              </tr>
+            </table>
+            <div className="GoodDetail-Info-Img">
+                  <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
+                  <img
+                      src={ImgInfo}
+                      alt="hình ảnh người dùng"
+                      className="GoodDetail-Info-Img__src"
+                  />
+            </div>
+        </div>
 				<div className="container-btn__ListBottom">
 				{status_current._id === status_current_current._id ?
 					<React.Fragment>{/*Phần cho người dùng khi vào xem status của của mình */}
@@ -169,8 +177,12 @@ class ReceiverStatusDetail extends Component {
 							<i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay lại
 						</button>
 
-						<button className="GoodDetailContainer-btn-item GoodDetail-btn__Del">Xóa</button>
-
+						<button 
+                className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                onClick={() => this.handleShowHideModalDelete()}
+            >
+                Xóa
+            </button>
 						<button
 							className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
 							onClick={this.handleShowHideUpdateReceiver}
@@ -205,6 +217,16 @@ class ReceiverStatusDetail extends Component {
 				
 				</div>
 				{checkUpdateReceiverForm}
+        {this.state.showModalDelete && (
+          <ModalDeleteStatus
+            showModalDelete={this.state.showModalDelete}
+            handleShowHideModalDelete={this.handleShowHideModalDelete}
+            status_id={this.props.status_current._id}
+            handleLoadAgainWhenCreateStatus={
+              this.props.handleLoadAgainWhenCreateStatus
+            }
+          />
+        )}
 			</div>
 		);
 	}

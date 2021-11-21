@@ -1,5 +1,5 @@
 module.exports = {
     secret: "mk",
-    jwtExpiration: 3600,
+    jwtExpiration: 86400,
     jwtRefreshExpiration: 86400,
 }

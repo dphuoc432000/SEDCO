@@ -67,18 +67,15 @@ class SLCanNhan extends React.Component {
             <>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
-                <button
-                  className="data-container__SeeDetail"
+                <a
+                  className="data-container__SeeDetail-sender"
                   onClick={() => {
                     this.handleShowHide();
                   }}
                 >
                   xem chi tiết{" "}
-                  <i
-                    className="fas fa-arrow-right"
-                    style={{ fontSize: "12px" }}
-                  />
-                </button>
+                  
+                </a>
               </div>
 
               <table className="List-Good">
@@ -96,26 +93,7 @@ class SLCanNhan extends React.Component {
                       </>
                     );
                   })}
-                {/* <tr>
-                  <td>Trứng</td>
-                  <td>4 quả</td>
-                </tr>
-                <tr>
-                  <td>Gạo</td>
-                  <td>4 bao</td>
-                </tr>
-                <tr>
-                  <td>Rau củ</td>
-                  <td>6 thùng</td>
-                </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
-                <tr>
-                  <td>Tổng khối lượng</td>
-                  <td>600kg</td>
-                </tr> */}
+                
               </table>
               <h3 className="data-container__title">Gần đây</h3>
             </>
@@ -128,6 +106,7 @@ class SLCanNhan extends React.Component {
               handleHideReceiverStatusDetail={this.handleShowHide}
               handleUpdateEssentials={this.handleUpdateEssentials}
               handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+              handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
             />
           )}
         </div>

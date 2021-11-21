@@ -1,0 +1,124 @@
+.content-data {
+  width: 32%;
+  border-left: 2.1px solid #4591e0a6;
+  box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+  position: absolute;
+  content: "";
+  top: 0%;
+  min-height: 800px;
+  left: 68%;
+  background-position-y: -105px;
+}
+.data-header {
+  padding: 0px 11px 8px 11px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-bottom: 3px solid darkturquoise;
+  background-color: #cae5fc;
+}
+.data-header__giver {
+  display: flex;
+  margin-top: 8px;
+}
+.data-header__giverImg {
+  margin: auto;
+  height: 56px;
+  width: 56px;
+  border-radius: 63px;
+}
+.data-header__giverID {
+  padding-left: 8px;
+  margin-top: -4px;
+}
+.data-header__giverID--item {
+  margin-bottom: -15px;
+}
+.data-header__giverID--status {
+  /* người cho */
+  color: var(--nguoicho);
+}
+.data-header__DateUpPost {
+  padding-right: 24px;
+  text-align: center;
+}
+.data-header__Date--title {
+  /* nguoi cho */
+  color: var(--nguoicho);
+  margin-bottom: -7px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.data-header__date {
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-top: 5px;
+}
+/* .data-container-NGUOIDUNG {
+  width: 100%;
+  height: 570px;
+  overflow: hidden;
+  overflow-y: scroll;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
+    rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+  /* border-bottom: 3px solid darkturquoise; */
+/* background-color: aliceblue; */
+
+.data-container__title {
+  color: #0000ffb8;
+  padding-left: 12px;
+  margin-top: 13px;
+  padding: 0 19px;
+  font-size: 14.8px;
+  font-weight: 600;
+}
+.data-container__SeeDetail {
+  margin-top: 12px;
+  height: 21px;
+  cursor: pointer;
+  margin-right: 40px;
+  font-size: 13.8px;
+  text-decoration: underline;
+  color: black;
+}
+.data-container__ListItems {
+  position: relative;
+  list-style: none;
+  /* padding-left: 15px; */
+  padding: 0 19px;
+}
+.data-container__Items {
+  padding: 3.7px 0;
+  display: flex;
+  font-size: 1.1rem;
+}
+.data-container__Items:first-child {
+  margin-top: 4px;
+}
+.data-container__ItemQuantity {
+  margin: 0;
+  padding-left: 6px;
+}
+/* Table Good */
+.List-Good {
+  padding: 5px 38px 0px 16px;
+  width: 100%;
+  /* margin-left: -1px; */
+  /* margin-top: 6px; */
+  font-weight: 400;
+}
+
+.List-Good td,
+td:last-child {
+  font-size: 15px;
+  padding: 2.5px;
+}
+.List-Good tr:last-child {
+  /* color: #f54d0f; */
+  /* font-weight: bold; */
+}
+.List-Good tr td:last-child {
+  text-align: right;
+  width: 55px;
+}

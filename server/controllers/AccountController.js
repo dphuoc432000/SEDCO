@@ -16,7 +16,7 @@ class AccountController{
 
     //[GET] /api/account/account_list
     getAllAccount = async (req, res, next) => {
-        await accountService.getAccountList()
+        await accountService.getAccountList(req.query._limit, req.query._page)
             .then(accounts => {
                 if(accounts)
                     return res.json(accounts);

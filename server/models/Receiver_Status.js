@@ -14,7 +14,7 @@ const Receiver_Status = new Schema({
     note: {type: String},
     picture: {type: String, },
     number_per_of_family: {type: Number, min: 1, max: 20},
-    regis_status:{type: Boolean},//đã có xe đăng ký chưa
+    regis_status:{type: Boolean},//đã  có xe đăng ký chưa
     essentials: [essential]
 },{
     timestamps: true

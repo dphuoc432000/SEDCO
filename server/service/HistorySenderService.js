@@ -5,7 +5,9 @@ const {multiplemongooseToObject, mongooseToObject} = require('../util/mongoose')
 const HistorySender = require('../models/History_Sender');
 const statusService = require('./StatusService');
 const senderStatusService = require('./SenderStatusService');
-
+const accountService = require('./AccountService');
+const userService = require('./UserService');
+const handlePagination = require('../middlewares/handlePagination')
 class HistorySenderService{
 
     //kiểm tra có tồn tại và còn hoạt động hay không car_status hay không
@@ -43,7 +45,7 @@ class HistorySenderService{
 
     //kiểm tra có sender_status trong history: check confirm 2/2 và complete_status trong bảng status
     checkDataHistorySender = async(sender_status_id_pr) =>{
-        const check = await HistorySender.find({ender_status_id: sender_status_id_pr})
+        const check = await HistorySender.find({sender_status_id: sender_status_id_pr})
             .then(datas =>{
                 const history_senders = multiplemongooseToObject(datas);
                 const history_sender_1_2_no_confirm = history_senders.find(sender =>{
@@ -86,6 +88,8 @@ class HistorySenderService{
             const checkNoDataHistorySender = await this.checkNoDataHistorySender(sender_status_id_pr);
             const checkDataHistorySender = await this.checkDataHistorySender(sender_status_id_pr);
             const checkCompleteStatus = await this.checkCompleteStatus(sender_status_id_pr);
+        
+            // console.log(checkNoDataHistorySender, checkDataHistorySender, checkCompleteStatus)
             if(checkNoDataHistorySender ||  (checkDataHistorySender && !checkCompleteStatus)){
                 const date = new Date();
                 const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -125,19 +129,38 @@ class HistorySenderService{
             let statusList = Promise.all(regisSenderList.map(async regisSender =>{
                 const sender_status = await senderStatusService.getSenderStatusDetail(regisSender.sender_status_id)
                     .then(data => data)
-                    .catch(err => err);
-                return await Status.findById({_id: sender_status.status_id})
-                    .then(data =>{
-                        data = mongooseToObject(data);
-                        data.detail = sender_status;
-                        return data;
-                    })
-                    .catch(err => err)
+                    .catch(err => err); 
+                if(sender_status)
+                    return await Status.findOne({_id: sender_status.status_id, status_completed: false})
+                        .then(async data =>{
+                            data = mongooseToObject(data);
+                            data.detail = sender_status;
+                            const account = await accountService.getAccountDetails(data.account_id)
+                            data.user = await userService.getUserByID(account.user_id);
+                            return data;
+                        })
+                        .catch(err => err)
             }))
             return statusList;
         }
         //nếu regisSenderList = [] thì không tìm thấy chuyến xe
         return null;
+    }
+
+    getAllHistoryRegisterSenderBySenderStatusID =  async (sender_status_id,_limit,_page) =>{
+        const totalRows = await HistorySender.count({sender_status_id: sender_status_id});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_sender_list  = await HistorySender.find({sender_status_id: sender_status_id})
+            .skip(start)
+            .limit(pagination._limit)
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err);
+        return{
+            history_sender_list: history_sender_list,
+            pagination
+        }
     }
 }
 

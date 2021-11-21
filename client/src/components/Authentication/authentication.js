@@ -45,9 +45,18 @@ function AuthenticatedSenderRoute({ component: C, appProps, ...rest }) {
         render={props => appProps.isAuthenticated && appProps.role_name === "sender" ? <C {...props} {...appProps} />
             : 
             <React.Fragment>
-              {notifyTost("Vui lòng đăng nhập!")}
-              {appProps.handleChangeShowFormLogin()}
-              <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+              { !appProps.isAuthenticated ?
+                <React.Fragment> 
+                  {notifyTost("Vui lòng đăng nhập!")}
+                  {appProps.handleChangeShowFormLogin()}
+                  <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+                </React.Fragment>
+                :
+                <React.Fragment>
+                  <Redirect to={appProps.role_name !== 'admin' ? `/`:'/admin'}/>
+                </React.Fragment>
+              }
+              
             </React.Fragment>
         }
       />
@@ -64,10 +73,18 @@ function AuthenticatedCarTripRoute({ component: C, appProps, ...rest }) {
             </React.Fragment>
             : 
             <React.Fragment>
-            {console.log('render')}
-              {notifyTost("Vui lòng đăng nhập!")}
-              {appProps.handleChangeShowFormLogin()}
-              <Redirect to={`/?redirect=${props.location}`}/>
+              { !appProps.isAuthenticated ?
+                <React.Fragment> 
+                  {notifyTost("Vui lòng đăng nhập!")}
+                  {appProps.handleChangeShowFormLogin()}
+                  <Redirect to={`/?redirect=${props.location}`}/>
+                </React.Fragment>
+                :
+                <React.Fragment>
+                  <Redirect to={appProps.role_name !== 'admin' ? `/`:'/admin'}/>
+                </React.Fragment>
+              }
+              
             </React.Fragment>
         }
       />

@@ -12,7 +12,7 @@ import {
 } from "../../../constants/actions";
 import FormError from '../../../components/FormError/FormError';
 import CloseIcon from '@mui/icons-material/Close';
-
+import {get_role_user}  from '../../../stores/actions/role.action'
 class Login extends React.Component{
 
     state ={
@@ -92,10 +92,15 @@ class Login extends React.Component{
                 toast.error(`Đăng nhập thất bại. ${data_action.payload.description}!`);
                 return;
             }
-            // console.log(this.props.dataRedux)
+            const role_id = await this.props.dataRedux.loginReducer.account.role_id;
+            await this.props.get_role_user(role_id)
+            const role_name = await this.props.dataRedux.roleReducer.role_user.role_name;
             //Đăng ký thành công
             toast.success("Đăng nhập thành công!");
-            this.props.history.push('/');
+            if(role_name !== 'admin')
+                this.props.history.push('/');
+            else
+                this.props.history.push('/admin');
             this.props.handleLogin();
         }
         
@@ -229,6 +234,12 @@ const mapDispatchToProps =(dispatch)=>{
     return {
         login: async ({username, password}) => {
             const action = await loginAction({username, password})
+
+            // console.log(action)
+            return dispatch(action)
+        },
+        get_role_user: async (role_id) =>{
+            const action = await get_role_user(role_id)
 
             // console.log(action)
             return dispatch(action)

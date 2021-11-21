@@ -1,0 +1,443 @@
+.content_Driver_censorship {
+    width: 100%;
+    content: "";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 10px 30px;
+}
+.content_Driver_censorship::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.content_Driver_censorship::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.content_Driver_censorship::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+.content_Driver_censorship::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Sidebar links */
+
+.content_Title {
+    width: 100%;
+    padding: 30px 55px 30px;
+    color         : #000;
+    font-size     : 1.6rem;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+
+.block_search_filter {
+    width  : 100%;
+    display: flex;
+}
+.form_search {
+    display      : flex;
+    align-items: center;
+    width        : 50%;
+    justify-content: flex-start;
+}
+
+.form_search__lable {
+}
+
+.form_search__input {
+    border       : 1px solid #a5a5a5c7;
+    border-radius: 6px;
+    height: 40px;
+}
+
+.filter_form {
+    display      : flex;
+    align-items: center;
+    width        : 50%;
+    justify-content: flex-end;
+}
+
+.form_list__lable {
+    margin-left : 60px;
+    margin-right: 20px;
+    margin-top  : 15px;
+    font-weight : 400;
+}
+
+.form_list__input {
+    border       : 1px solid #a5a5a5c7;
+    border-radius: 6px;
+    height       : 37px;
+    margin-top   : 6px;
+    width        : 200px;
+}
+/* .content-search {
+    display      : flex;
+    margin-top   : 14px;
+    align-content: center;
+    margin-left  : 20px;
+}
+
+.content-search__lable {
+    margin-left : 18px;
+    margin-right: 12px;
+    font-weight : 400;
+    margin-top  : 13px;
+}
+
+.Filter_the_data_driver {
+    display: flex;
+}
+
+.Filter_the_data_driver_lable {
+    margin-left : 18px;
+    margin-right: 12px;
+    font-weight : 400;
+    margin-top  : 28px;
+}
+
+.content-search__input {
+    border-radius: 6px;
+    height       : 37px;
+    margin-top   : 6px;
+    width        : 180px;
+}
+
+#Filter_box_driver {
+    border-radius: 6px;
+    margin-top   : 20px;
+    width        : 180px;
+    height       : 37px;
+    font-size    : 1.2rem;
+    margin-right : 40px;
+}
+
+.Filter_box_driver__item {
+    font-size: 1.2rem;
+
+} */
+
+.KiemDuyet-Container {
+    width  : 100%;
+    display: flex;
+    height : auto;
+}
+
+#Danhsach_kiemduyet {
+    width: 28%;
+}
+
+.danh_sach {
+    font-size    : 1.45rem;
+    color        : #000;
+    margin: 20px 20px 0 20px
+}
+
+.List-Info-Taixe {
+    list-style    : none;
+    width         : 32%;
+    padding-top   : 0;
+    padding-bottom: 30px;
+    padding-left  : 17px;
+}
+
+.Info-Taixe__item {
+    font-size  : 1.16rem;
+    display    : flex;
+    align-items: center;
+    margin     : 10px 0;
+}
+
+.Info-Taixe__item h3 {
+    margin-left: 8px;
+    font-weight: 400;
+}
+
+#List-Chuyen-Xe {
+    margin: 0 15px 0 20px;
+    /* height     : 500px; */
+    overflow      : hidden;
+    /* overflow-y : scroll;
+    margin-top    : -8px;
+    border        : 1px solid black; */
+}
+
+.Chuyen-Xe__item {
+    margin: 10px 0;
+    padding               : 6px 8px;
+    /* display            : flex; */
+    background-color      : #F5F6FA;
+    justify-content       : space-between;
+    /* border             : 1px solid #818181b0; */
+    border-radius         : 6px;
+    align-items           : center;
+}
+
+.Chuyen-Xe__item--name {
+    font-size: 1.1rem;
+}
+
+.Chuyen-Xe__item--status {
+    display    : flex;
+    align-items: center;
+}
+
+.Chuyen-Xe__item--status-ICON {
+    color: #000;
+}
+
+.Chuyen-Xe__item--status-lable {
+    font-size  : 0.9rem;
+    margin-left: 3.1px;
+    color      : #000;
+    font-weight: 400;
+}
+
+#Thong-tin-Chuyen-Xe {
+    width: 72%;
+}
+
+.informations_driver {
+    margin-top   : 20px;
+    margin-bottom: 0px;
+    font-size    : 1.45rem;
+    margin-left  : 40px;
+    color        : #000;
+}
+
+.information_user {
+    width  : 100%;
+    display: flex;
+}
+
+.Form-TTKD__header {
+    margin-bottom      : 9px;
+    /* border          : 1px solid; */
+    margin-top         : -8px;
+    width              : 100%;
+    margin-left        : 0;
+    /* width           : 98%; */
+    display            : flex;
+    background-color   : #F5F6FA;
+    justify-content    : space-between;
+}
+
+.Form-TTKD__header--name {
+    margin: 15px 17px;
+}
+
+.Form-TTKD__header--Date {
+    margin-right: 20px;
+    margin-top  : 10px;
+    font-weight : 400;
+}
+
+.Form-TTKD-Detail {
+    margin-top            : 20px;
+    width                 : 92%;
+    margin-left           : 20px;
+    background-color      : #F5F6FA;
+    height                : 920px;
+    /* overflow-y         : scroll; */
+    /* border             : 1px solid black; */
+    /* overflow           : hidden;*/
+}
+
+.Form-TTKD__container {}
+
+.Form-TTKD-Title-Major {
+    /* color      : #3959f9; */
+    /* font-style : oblique;
+    font-size  : 1.33rem; */
+    margin: 10px 17px;
+}
+
+.List-IMG-CCCD {
+    display              : flex;
+    margin-left          : 17px;
+    /* justify-content   : center;
+    margin-right         : 240px; */
+    /* align-items       : center;
+    border               : 1px solid #727171ab; */
+}
+
+.IMG-CCCD__item {
+    width        : 130px;
+    /* text-align: center; */
+    /* margin    : 0; */
+    margin-right : 126px;
+}
+
+.CCCD__item-title {
+    margin-bottom: 10px;
+    /* margin    : 12px 0px; */
+    margin-top   : 12px;
+}
+
+.GPLX__item-title {
+    margin-bottom: 10px;
+    /* margin    : 12px 0px; */
+    margin-top   : 12px;
+}
+
+.GPLX__item-title-1 {
+    margin-bottom: 10px;
+    /* margin    : 12px 0px; */
+    margin-top   : 12px;
+    color        : #F5F6FA;
+}
+
+/* .BTN-CCCD-edit {
+    background-color: #fff;
+    padding         : 7px 32px;
+    margin-bottom   : 7px;
+    margin-top      : -8px;
+    border-radius   : 7px;
+    border          : 1px solid #79797987;
+} */
+
+.BTN-GPLX-edit {
+    background-color: #fff;
+    padding         : 7px 32px;
+    margin-bottom   : 7px;
+    margin-top      : -8px;
+    border-radius   : 7px;
+    border          : 1px solid #79797987;
+}
+
+.BTN-GXN-edit {
+    background-color   : #fff;
+    padding            : 7px 32px;
+    margin-bottom      : 7px;
+    margin-top         : 0;
+    border-radius      : 7px;
+    border             : 1px solid #79797987;
+    /* margin-left     : 15px; */
+}
+
+.img_logo {
+    width: 100%;
+}
+
+.List-IMG-GPLX {
+    display              : flex;
+    /* justify-content   : center; */
+    margin-left          : 17px;
+    /* margin-right      : 240px; */
+    /* align-items       : center;
+    border               : 1px solid #727171ab; */
+}
+
+.List-IMG-GXN {
+    display                    : inline-flex;
+    /* justify-content         : center; */
+    margin-top                 : -30px;
+    margin-left                : 17px;
+    /* margin-right            : 80px; */
+    /* padding                 : 10px 0; */
+    /* margin-bottom           : 10px; */
+    /* align-items             : center;
+    border                     : 1px solid #727171ab; */
+}
+
+.IMG-GPLX__item {
+    width        : 130px;
+    /* text-align: center; */
+    margin-right : 126px;
+}
+
+.IMG-GXN__item {
+    width           : 130px;
+    /* text-align   : center; */
+    margin-right    : 123px;
+    /* margin-left  : 20px; */
+}
+
+.CGPLX_item-title {
+    margin-bottom: 10px;
+    /* margin    : 12px 0px; */
+    margin-top   : 12px;
+}
+
+.IMG-GPLX {
+    width              : 100%;
+    background-position: center;
+    background-repeat  : no-repeat;
+    border-radius      : 6px;
+
+}
+
+.IMG-GPLX__mattruoc {}
+
+.IMG-GPLX__matsau {}
+
+.IMG-GPLX.IMG-GPLX__mattruoc {}
+
+.IMG-GPLX.IMG-GPLX__matsau {}
+
+/** Nút xác thực */
+.BTN_Accuracy {
+    display     : flex;
+    float       : right;
+    margin-right: 60px;
+    margin-top  : 40px;
+}
+
+.BTN_Accuracy__item {
+    padding      : 12px 34px;
+    color        : white;
+    font-size    : 1.2rem;
+    margin-right : 16px;
+    margin-top   : 10px;
+    border       : unset;
+    border-radius: 4px;
+}
+
+.BTN_Accuracy__item:hover {
+    cursor : pointer;
+    opacity: 0.8;
+}
+
+.BTN_Accuracy_cancel {
+    background-color: #E74C3C;
+
+
+}
+
+.BTN_Accuracy__Duyet {
+    background-color: #2ECC71;
+
+}
+
+.pagination_driver {
+    display        : flex;
+    list-style     : none;
+    justify-content: center;
+    float          : right;
+    width          : 40%;
+    margin-top     : 10px;
+}
+
+.pagination_driver-item {
+    border-radius: 6px;
+    padding      : 0;
+    margin       : 0 1px;
+}
+
+.pagination_driver-item--active,
+.pagination_driver-item--active .pagination_driver-item__link {
+    color: #485AFF;
+}
+
+.pagination_driver-item__link {
+    text-decoration: none;
+    color          : #485AFF;
+    font-size      : 1rem;
+}

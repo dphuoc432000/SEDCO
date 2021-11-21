@@ -407,8 +407,7 @@ class UpdateUserInforForm extends Component {
         const name = event.target.name;
         // console.log(output)
         if(file){
-            
-            console.log(URL.createObjectURL(file))
+            // console.log(URL.createObjectURL(file))
             output.src = URL.createObjectURL(file);
             output.onload = function() {
                 URL.revokeObjectURL(output.src) // free memory

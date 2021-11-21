@@ -11,7 +11,9 @@ const accountService = require("../service/AccountService");
 // const upload = require('../middlewares/upload');
 const multer = require("multer");
 const pagination = require("../middlewares/pagination");
-const path = require("path");
+const path = require('path');
+const historyReceiverService = require('../service/HistoryReceiverService');
+const historySenderService = require('../service/HistorySenderService');
 
 class StatusController {
   //[POST] /status/store/:account_id_pr
@@ -232,21 +234,20 @@ class StatusController {
       })
       .catch((error) => next(error));
   };
-
-  //[GET] /status/status_list
-  getAllStatus = async (req, res, next) => {
-    await statusService
-      .getStatusList()
-      .then((status) => {
-        if (status) {
-          // console.log(req.query._limit, req.query._page)
-          const datas = pagination(status, req.query._limit, req.query._page);
-          return res.json(datas);
-        }
-        return res.status(400).json(handleOther.errorHandling("Lỗi", null));
-      })
-      .catch((error) => next(error));
-  };
+    
+    //[GET] /status/status_list
+    getAllStatus = async (req, res, next) => {
+        await statusService.getStatusList(req.query._limit,req.query._page)
+            .then((status) => {
+                if(status){
+                    // console.log(req.query._limit, req.query._page)
+                    // const datas = pagination(status, req.query._limit, req.query._page);
+                    return res.json(status);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi", null)); 
+            })
+            .catch(error => next(error));
+    }
 
   getAllStatusNoComplete = async (req, res, next) => {
     await statusService
@@ -263,35 +264,46 @@ class StatusController {
   };
 
   //[GET] /status_list/:status_type_pr
-  getAllStatusByType = async (req, res, next) => {
-    await statusService
-      .getStatusListByType(req.params.status_type_pr)
-      .then((status) => {
-        if (status) {
-          const datas = pagination(status, req.query._limit, req.query._page);
-          return res.json(datas);
+    getAllStatusByType = async(req, res, next)=>{
+        await statusService.getStatusListByType(req.params.status_type_pr)
+            .then((status) => {
+                if(status){
+                    const datas = pagination(status, req.query._limit, req.query._page)
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
+            })
+            .catch(error => next(error));
+    }
+    getAllStatusByType_Filter = async(req, res, next)=>{
+        let filter = {}
+        for (const key in req.query) {
+            if(key === 'status_completed'){
+                filter = {...filter, [key]: req.query[key]};
+            }
         }
-        return res
-          .status(400)
-          .json(handleOther.errorHandling("Lỗi nhập status type", null));
-      })
-      .catch((error) => next(error));
-  };
+        await statusService.getStatusListByType_Filter(req.params.status_type_pr,filter, req.query._limit, req.query._page)
+            .then((status) => {
+                if(status){
+                    return res.json(status);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
+            })
+            .catch(error => next(error));
+    }
 
-  getAllStatusByTypeNoComplete = async (req, res, next) => {
-    await statusService
-      .getStatusListByTypeNoComplete(req.params.status_type_pr)
-      .then((status) => {
-        if (status) {
-          const datas = pagination(status, req.query._limit, req.query._page);
-          return res.json(datas);
-        }
-        return res
-          .status(400)
-          .json(handleOther.errorHandling("Lỗi nhập status type", null));
-      })
-      .catch((error) => next(error));
-  };
+    getAllStatusByTypeNoComplete = async(req, res, next)=>{
+        await statusService.getStatusListByTypeNoComplete(req.params.status_type_pr)
+            .then((status) => {
+                if(status){
+                    const datas = pagination(status, req.query._limit, req.query._page)
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập status type", null)); 
+            })
+            .catch(error => next(error));
+    }
+
 
   //[GET] /status/details/:status_id
   getStatusByID = async (req, res, next) => {
@@ -308,60 +320,57 @@ class StatusController {
       .catch((error) => next(error));
   };
 
-  //[POST] /status/update/:status_id_pr
-  updateStatus = async (req, res, next) => {
-    await statusService
-      .updateStatus(req.params.status_id_pr, req.body)
-      .then((status) => {
-        if (status) return res.json(status);
-        return res
-          .status(400)
-          .json(handleOther.errorHandling("Lỗi nhập status_id", null));
-      })
-      .catch((err) => next(err));
-  };
+    getEssentialOfStatus = async(req, res, next) =>{
+    }
+    
+    //Lấy về chi tiết status account chưa hoàn thành
+    getStatusDetailByAccountID = async (req, res, next)=>{
+        await statusService.getStatusDetailByAccountID(req.params.account_id_pr)
+            .then(status => {
+                if(status && status !== 'NO PERMISSION')
+                    return res.json(status);
+                else if(status === 'NO PERMISSION')
+                    return res.status(400).json(handleOther.errorHandling("Bạn là người dùng nên không có quyền truy cập status chi tiết", null));
+                else
+                    return res.status(400).json(handleOther.errorHandling("account_id không chính xác", null));
+            })
+            .catch(error => next(error));
+    }
 
-  //[POST] /status/:status_id_pr/delete
-  deleteStatus = async (req, res, next) => {
-    await statusService
-      .deleteStatus(req.params.status_id_pr)
-      .then((status) => {
-        if (status) return res.json(status);
-        return res
-          .status(400)
-          .json(
-            handleOther.errorHandling("Lỗi nhập không đúng status_id", null)
-          );
-      })
-      .catch((err) => next(err));
-  };
+    //Lấy về những trạng thái gần đây mà chưa hoàn thành
+    getRecentStatus = async(req, res, next) =>{
+        await statusService.getRecentStatus(req.query.status_type)
+            .then(status =>{
+                if(status){
+                    const datas = pagination(status, req.query._limit, req.query._page);
+                    return res.json(datas);
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi', null));
+            })
+            .catch(err => next(err));
+    }
+    //lấy về tất cả lịch sử nhận nhu yếu phẩm của môt receiver status bằng receiver status id
+    getAllHistoryRegisterReceiverByReceiverStatusID = async(req, res, next) =>{
+        await historyReceiverService.getAllHistoryRegisterReceiverByReceiverStatusID(req.params.receiver_status_id_pr, req.query._limit, req.query._page)
+            .then(histories =>{
+                if(histories){
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            }) 
+            .catch(err => next(err));
+    }
 
-  getEssentialOfStatus = async (req, res, next) => {};
-
-  //Lấy về chi tiết status account chưa hoàn thành
-  getStatusDetailByAccountID = async (req, res, next) => {
-    await statusService
-      .getStatusDetailByAccountID(req.params.account_id_pr)
-      .then((status) => {
-        if (status && status !== "NO PERMISSION") return res.json(status);
-        else if (status === "NO PERMISSION")
-          return res
-            .status(400)
-            .json(
-              handleOther.errorHandling(
-                "Bạn là người dùng nên không có quyền truy cập status chi tiết",
-                null
-              )
-            );
-        else
-          return res
-            .status(400)
-            .json(
-              handleOther.errorHandling("account_id không chính xác", null)
-            );
-      })
-      .catch((error) => next(error));
-  };
+    getAllHistoryRegisterSenderBySenderStatusID  = async(req, res, next) =>{
+        await historySenderService.getAllHistoryRegisterSenderBySenderStatusID(req.params.sender_status_id_pr, req.query._limit, req.query._page)
+            .then(histories =>{
+                if(histories){
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            }) 
+            .catch(err => next(err));
+    }
 }
 
 module.exports = new StatusController();

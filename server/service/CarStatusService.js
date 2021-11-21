@@ -125,27 +125,45 @@ class CarStatusService {
     return car_status;
   };
 
-  //Lấy các chuyến xe chưa được kiểm duyệt ->userService
-  getAllCarStatusNoCensorship = async () => {
-    return await CarStatus.find({ censorship: false }).then((data) =>
-      multiplemongooseToObject(data)
-    );
-  };
+      //Lấy các chuyến xe chưa được kiểm duyệt ->userService
+    getAllCarStatusNoCensorship = async (_limit, _page) =>{
+        let limit = parseInt(_limit);
+        let page =  parseInt(_page)
+        let start;
+        if(limit && page){
+            if(page < 1 || typeof page !== 'number')
+                page = 1;
+            if(limit < 1 || typeof limit !== 'number')
+                limit = 1;
+        }
+        start = (page * limit) - limit;
+        const totalRows = await CarStatus.count({})
+        const car_status_list = await CarStatus.find({censorship: false})
+            .skip(start)
+            .limit(limit)
+            .then(data => multiplemongooseToObject(data));
+        return {
+            car_status_list: car_status_list,
+            pagination: {
+                _limit:limit,
+                _page:page,
+                totalRows
+            }
+        }
+    }
 
   //lấy tất cả các chuyến xe bao gồm chưa được kiểm duyệt và đã được kiểm duyệt
-  // getAllCarStatus
-
-  getCarStatusDetail_status_id = async (status_id) => {
-    return await CarStatus.findOne({ status_id: status_id })
-      .then(async (data) => {
-        const carStatus = mongooseToObject(data);
-        carStatus.car = await carService
-          .getCarbyID(data.car_id)
-          .catch((err) => err);
-        return carStatus;
-      })
-      .catch((err) => err);
-  };
+    // getAllCarStatus
+    getCarStatusDetail_status_id = async(status_id) =>{
+        return await CarStatus.findOne({status_id: status_id})
+            .then(async data =>{ 
+                const carStatus = mongooseToObject(data);
+                carStatus.car = await carService.getCarbyID(data.car_id)
+                    .catch(err => err);
+                return carStatus;
+            })
+            .catch(err => err);
+    }
   updateCarStatusInfor = async (car_status_id, object) => {
     const car = object.car;
     const car_status = {
@@ -172,7 +190,6 @@ class CarStatusService {
               }
             });
         }
-
         //trả về lại car_status với dữ liệu mới
         const car_status_current = await CarStatus.findById({
           _id: update_data._id,

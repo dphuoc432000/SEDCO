@@ -19,15 +19,22 @@
 .status_content_container > .status_content > .content_container > .content > .status_infor_container{
     width: 100%;   
     height: 60vh;
-    overflow: hidden;
+    
     border-radius: 10px;
     margin: 10px 0;
 }
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container{
+    width: 100%!important;
+    height: 50vh!important;
+    overflow: hidden!important;
+}
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container:hover, 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container:active, 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container:focus {
-    overflow-y: auto;
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container::-webkit-scrollbar { width: 0 !important }
+
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container:hover, 
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container:active, 
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container:focus {
+    overflow-y: auto!important;
 }
 
 .status_content_container > .status_content > .content_container > .content > .status_infor_container::-webkit-scrollbar { width: 0 !important }
@@ -57,11 +64,11 @@
     right: 0;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .essentials_infor{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .essentials_infor{
     margin-bottom: 15px;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .essentials_infor input{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .essentials_infor input{
     width: 100px;
     height: 30px;
     border-radius: 4px;
@@ -72,45 +79,47 @@
     margin-bottom: 5px;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .contact_infor{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor{
     margin-bottom: 15px;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .contact_infor > .contact_content{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor > .contact_content{
+    width: 100%;
+}
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor > .contact_content > tbody{
+    width: 100%;
+}
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor > .contact_content > tbody > tr{
     width: 100%;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .contact_infor > .contact_content > tr{
-    width: 100%;
-}
-
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .contact_infor > .contact_content > tr > td:nth-child(1){
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor > .contact_content > tbody > tr > td:nth-child(1){
     width: 32%;
     text-align: left;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .contact_infor > .contact_content > tr > td:nth-child(2){
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .contact_infor > .contact_content > tbody > tr > td:nth-child(2){
     width: 68%;
     text-align: left;
     font-size: 13px;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .note_infor{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .note_infor{
     margin-bottom: 15px;
     width: 100%;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .note_infor > .note_content{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .note_infor > .note_content{
     text-align: left;
     width: 100%;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .picture_infor{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .picture_infor{
     margin-bottom: 15px;
     width: 100%;
 }
 
-.status_content_container > .status_content > .content_container > .content > .status_infor_container > .picture_infor > .img_content{
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .picture_infor > .img_content{
     width: 100%;
     text-align: left;
 }

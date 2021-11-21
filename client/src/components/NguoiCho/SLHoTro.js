@@ -110,6 +110,7 @@ class SLHoTro extends React.Component {
           <SenderStatusDetail
             user={this.props.user}
             status_current={this.props.status_current}
+            status_current_current = {this.props.status_current}
             essentials = {this.state.essentials}
             handleHideSenderStatusDetail={this.handleShowHide}
             handleUpdateEssentials={this.handleUpdateEssentials}

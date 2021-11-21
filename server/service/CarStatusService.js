@@ -6,7 +6,7 @@ const carService = require('./CarService');
 const Status = require('../models/Status');
 const accountService = require('./accountService');
 const { stat } = require('fs/promises');
-
+const essentialsService = require('./EssentialService')
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
 }
@@ -18,6 +18,17 @@ class CarStatusService {
     }
     checkReceivingStatus = (censorship,start_receiver_time, current_time) =>{
         return censorship && current_time >= start_receiver_time? true: false
+    }
+    //Lấy tất cả essential theo định dạng essential_id và quantity
+    getEssentials = async () =>{
+        const essentials = await essentialsService.getAllEssential()
+            .then(data => data);
+        return await essentials.map(essential =>{
+            return {
+                essential_id: essential._id,
+                quantity: 0
+            }
+        })
     }
 
     addCarStatus = async (status_id, user_id, object) => {
@@ -57,8 +68,8 @@ class CarStatusService {
             // shipping_status:this.checkShippingStatus(censorship,departure_time, current_time),
             receiving_status:false,
             shipping_status: false,
-            car_id: car_id
-            // essentials: [...object.essentials]
+            car_id: car_id,
+            essentials: await this.getEssentials()
         }
         const car =  new CarStatus(car_status_object)
         return await car.save()
@@ -161,8 +172,8 @@ class CarStatusService {
             location_finish: object.location_finish,
             note: object.note,
             picture: object.picture,
+            // essentials: await this.getEssentials()
         }
-        console.log(car_status.picture)
         const car_status_update = await CarStatus.findByIdAndUpdate({_id: car_status_id},car_status)
             .then(async data =>{
                 const update_data = mongooseToObject(data);
@@ -185,9 +196,20 @@ class CarStatusService {
                 return car_status_current;
             })
             .catch(err => err);
-            console.log('new car', car_status_update)
+            // console.log('new car', car_status_update)
         return car_status_update;
 
+    }
+
+    checkCensorship = async(car_status_id) =>{
+        return await CarStatus.findById({_id: car_status_id})
+            .then(data => {
+                data = mongooseToObject(data);
+                if(data.censorship)
+                    return true;
+                return false;
+            })
+            .catch(err => err);
     }
 }
 

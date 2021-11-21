@@ -7,7 +7,8 @@ const statusService = require('./StatusService');
 const receiverStatusService = require('./ReceiverStatusService');
 const accountService = require('./AccountService');
 const userService = require('./UserService');
-const handlePagination = require('../middlewares/handlePagination')
+const handlePagination = require('../middlewares/handlePagination');
+const carStatusService =require('../service/CarStatusService');
 class HistoryReceiverService{
 
     //kiểm tra có tồn tại và còn hoạt động hay không car_status hay không
@@ -38,14 +39,14 @@ class HistoryReceiverService{
     //kiểm không có data cho receiver_staus trong bảng history_receiver
     checkNoDataHistoryReceiver = async (receiver_status_id_pr) =>{
         const receiver_status = await HistoryReceiver.find({receiver_status_id: receiver_status_id_pr})
-            .then(datas => mongooseToObject(datas))
+            .then(datas => multiplemongooseToObject(datas))
             .catch(err => null);
-        return receiver_status?true:false ; 
+        return receiver_status.length > 0?true:false ; 
     }
 
     //kiểm tra có receiver_status trong history: check confirm 2/2 và complete_status trong bảng status
     checkDataHistoryReceiver = async(receiver_status_id_pr) =>{
-        const check = await HistoryReceiver.find({ender_status_id: receiver_status_id_pr})
+        const check = await HistoryReceiver.find({receiver_status_id: receiver_status_id_pr})
             .then(datas =>{
                 const history_receivers = multiplemongooseToObject(datas);
                 const history_receiver_1_2_no_confirm = history_receivers.find(receiver =>{
@@ -59,7 +60,6 @@ class HistoryReceiverService{
                 //true: đã hoàn thành. 2/2 confirm
                 //false: chưa hoàn thành. 0/0 hoặc 1/2 confirm
             })
-            console.log("check: ", check)
         return check;
     }
 
@@ -88,7 +88,8 @@ class HistoryReceiverService{
             const checkNoDataHistoryReceiver = await this.checkNoDataHistoryReceiver(receiver_status_id_pr);
             const checkDataHistoryReceiver = await this.checkDataHistoryReceiver(receiver_status_id_pr);
             const checkCompleteStatus = await this.checkCompleteStatus(receiver_status_id_pr);
-            if(checkNoDataHistoryReceiver ||  (checkDataHistoryReceiver && !checkCompleteStatus)){
+            console.log(checkNoDataHistoryReceiver,checkDataHistoryReceiver,checkCompleteStatus)
+            if(!checkNoDataHistoryReceiver ||  (checkDataHistoryReceiver && !checkCompleteStatus)){
                 const date = new Date();
                 const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
                 const history_receiver = new HistoryReceiver({
@@ -161,6 +162,173 @@ class HistoryReceiverService{
             history_receiver_list: history_receiver_list,
             pagination
         }
+    }
+
+    cancleRegisterReceiver = async (car_status_id, receiver_status_id) =>{
+        //kiêm tra có data hay không
+        const historyReceiverData = await HistoryReceiver.findOne({car_status_id: car_status_id, receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: false})
+            .then(async history =>{
+                if(!history)
+                    return 'NO DATA';
+                history = mongooseToObject(history);
+                //Kiểm tra đã comfirm 1/2 hoặc 2/2 hay chưa
+                //Nếu chưa là 0/2
+                if(!history.receiver_confirm && !history.car_confirm)
+                {
+                    //Xóa
+                    return await HistoryReceiver.findByIdAndRemove({_id: history._id})
+                        .then(async data => {
+                            data = mongooseToObject(data);
+                            //update lại trạng thái regis_status của receiver status: false
+                            await ReceiverStatus.findByIdAndUpdate({_id: data.receiver_status_id}, {regis_status: false})
+                            return data;
+                        })
+                        .catch(err => err);
+                }
+                //ngược lại là đã confirm 1/2, 2/2 là đã thực hiện giao dịch
+                return 'NOT CANCLE';
+            })
+        if(historyReceiverData)
+            return historyReceiverData
+        return null;
+    }
+    //xử lý status khi tất cả số lượng nhu yếu phẩm = 0
+    //- chuyển role car_trip về user
+    //- chuyển status_completed thành true
+    handleCarStatusWhenOutOfEssential = async (car_status_id) =>{
+        const car_status = await CarStatus.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data));
+        const essentials = car_status.essentials;
+        let check_quantity_essentials = false;
+        // nếu tất cả essential có số luwognj = 0 thì check sẽ bằng TRUE
+        check_quantity_essentials = essentials.every(essential =>{
+            return essential.quantity === 0
+        })
+        if(check_quantity_essentials){
+            //chuyển status_completed thành true;
+            const status = await Status.findByIdAndUpdate({_id: car_status.status_id},{status_completed: true})
+            //chuyển role car_trip về user
+            await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user');
+            //hoàn thành trả về true
+            return true;
+        }
+        //chưa hoàn thành trả về false;
+        return false;
+    }
+
+    //Giảm số lượng essential trong sender status, object={essentials:[]}
+    reduceQuantityEssentailOfReceiverStatus = async (receiver_status_id, object) =>{
+        const receiver_status = await ReceiverStatus.findById({_id: receiver_status_id})
+            .then(data => mongooseToObject(data));
+        const essentials = receiver_status.essentials;
+        let essentials_update = [];
+        if(essentials.length > 0){
+            essentials_update = essentials.map(essential =>{
+                const essential_id = essential.essential_id;
+                let quantity = essential.quantity;
+                //lấy ra đối tượng có trùng mã id với phần id phần tử essential
+                const object_essential = object.essentials.find(item =>{
+                    return item.essential_id.toString() === essential_id.toString()
+                });
+                quantity -= object_essential.quantity?object_essential.quantity:0
+                return {
+                    essential_id,
+                    quantity //cộng dồn số lươgnj
+                };
+            });
+        }
+        await ReceiverStatus.findByIdAndUpdate({_id: receiver_status_id},{essentials: essentials_update})
+    }
+
+    //Giảm số lượng nhu yếu phẩm của car_status, object={essentials:[]}
+    reduceQuantityEssentialInCarStatus = async (car_status_id, object)=>{
+        //Tìm kiếm data car status
+        const car_status = await CarStatus.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        //mảng dùng để giảm số lượng essential của car status
+        let essentials_update = [];
+        //lấy về số lượng mảng essential của status trước khi cập nhật số lượng essential
+        const car_status_essential_list = car_status.essentials;
+        //duyệt qua mảng essentials của car_status để giảm số lượng vào mảng essentials_update
+        // if(car_status_essential_list.length > 0){
+        //mảng essentials đã được update số lưognj
+        essentials_update = car_status_essential_list.map(essential =>{
+            const essential_id = essential.essential_id;
+            let quantity = essential.quantity;
+            //lấy ra đối tượng có trùng mã id với phần id phần tử essential
+            const object_essential = object.essentials.find(item =>{
+                return item.essential_id === essential_id.toString()
+            });
+            quantity -= object_essential?object_essential.quantity:0
+            return {
+                essential_id,
+                quantity  //giam số lươgnj
+            };
+        });
+        return essentials_update;
+        // }
+    }
+
+    confirmReceiverStatusOfCar = async (car_status_id, receiver_status_id, object) =>{
+        const historyReceiverData = await HistoryReceiver.findOne({car_status_id: car_status_id, receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: false})
+            .then(async history =>{
+                //kiểm tra có data hay không
+                if(!history)
+                    return 'NO DATA';
+                if(!history.receiver_confirm && !history.car_confirm)
+                {
+                    //Nếu có data => update history
+                    history = mongooseToObject(history);
+
+                    let essentials_update = [];
+                    essentials_update = await this.reduceQuantityEssentialInCarStatus(history.car_status_id, {essentials: object.essentials})
+                    
+                    //duyệt qua từng phần tử trong mảng xem có số lượng essential nào âm không:
+                    // - Nếu nhập quá số lượng hiện có trong car_status thì sau khi update essential trên thì sẽ trả về SỐ ÂM
+                    // - Nếu nhập = số lượng hoặc nhỏ hơn hiện có trong status thì sau khi update essential trên thì sẽ trả về số >= 0
+                    let check_quantity_essentials = false;
+                    if(essentials_update.length > 0){
+                        // nếu 1 essential có số luwognj nhỏ hơn 0 thì check sẽ bằng TRUE
+                        check_quantity_essentials = essentials_update.some(essential =>{
+                            return essential.quantity < 0
+                        })
+                    }
+                    let car_status_update =  null;
+                    if(!check_quantity_essentials)
+                        car_status_update = await CarStatus.findByIdAndUpdate({_id: history.car_status_id}, {essentials: essentials_update})
+                            .then(car_status_data => mongooseToObject(car_status_data));
+                    else
+                        return 'QUANTITY IS NOT ENOUGH'
+                    //nếu có data car status thì update tiếp
+                    if(car_status_update){
+                        object.car_confirm = true;
+                        object.receiver_time = Date.now();
+                        //Trả về giữ liệu cũ
+                        return await HistoryReceiver.findByIdAndUpdate({_id: history._id}, object)
+                            .then(async data => {
+                                data = mongooseToObject(data);
+                                //Giảm số lượng essential trong sender_status
+                                this.reduceQuantityEssentailOfReceiverStatus(data.receiver_status_id, {essentials: object.essentials})
+                                //Xử lý status khi nếu hết nhu yếu phẩm sao khi giao
+                                // const status_completed = await this.handleCarStatusWhenOutOfEssential(data.car_status_id);
+                                // if(status_completed)
+                                //     data.status_completed = status_completed;
+                                // else
+                                //     data.status_completed = status_completed;
+                                return data;
+                            })
+                        .catch(err => err);
+                    }
+                    return 'NO UPDATE CAR_STATUS';
+                }
+                //ngược lại là đã confirm 1/2, 2/2 là đã thực hiện giao dịch
+                return 'NOT CONFIRM';
+            })
+            .catch(err => err);
+        if(historyReceiverData)
+            return historyReceiverData
+        return null;
     }
 }
 

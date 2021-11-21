@@ -23,7 +23,7 @@ export default function Nav(props) {
         aria-label="Tabs where each tab needs to be selected manually"
       >
         <Tab label="Đăng ký nhận" style={{textTransform: 'none'}} onClick={() => {hanleChangeState('sender_register')}} component={Link} to={`/car_trip/transaction_management`}/>
-        <Tab label="Đăng ký gửi" style={{textTransform: 'none'}}onClick={() => {hanleChangeState('receiver_register')}}  component={Link} to={`/car_trip/transaction_management/receiver/register`}/>
+        <Tab label="Đăng ký hỗ trợ" style={{textTransform: 'none'}} onClick={() => {hanleChangeState('receiver_register')}}  component={Link} to={`/car_trip/transaction_management/receiver/register`}/>
         <Tab label="Lịch sử" style={{textTransform: 'none'}} component={Link} to={`/car_trip/transaction_management/3`}/>
       </Tabs>
     </Box>

@@ -5,6 +5,15 @@ import StatusItem from './StatusItem/StatusItem';
 import './StatusList.css';
 import BasicPagination from '../../../components/Pagination/Pagination';
 class StatusList extends Component {
+    // state={
+    //     status_list: []
+    // }
+    // componentDidUpdate = (prevProps) =>{
+    //     if(this.props.status_list !== prevProps.status_list)
+    //         this.setState({
+    //             status_list: this.props.status_list
+    //         })
+    // }
     render() {
         const status_list = this.props.status_list;
         return (
@@ -13,10 +22,12 @@ class StatusList extends Component {
                     <h2>Danh sách đăng ký</h2>
                 </div>
                 <div className="list">
-                    {
+                    {   status_list.length > 0 ?
                         status_list.map(status_item =>{
                             return <StatusItem handleInfomationStatusItem={this.props.handleInfomationStatusItem} key={status_item._id} status_item={status_item} />
                         })
+                        :
+                        <p>Danh sách trống</p>
                     }
                 </div>
                 <div className="pagination_container">

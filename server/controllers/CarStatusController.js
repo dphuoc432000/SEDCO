@@ -20,27 +20,39 @@ class CarStatusController{
     }
 
     registerSenderStatus = async (req, res, next) =>{
-        await historySenderService.carRegisterSender(req.params.car_status_id_pr, req.params.sender_status_id_pr)
-            .then(data =>{
-                if(data && data !== 'NOT COMPLETED')
-                    return res.json(data)
-                else if(data === 'NOT COMPLETED')
-                    return res.status(400).json(handleOther.errorHandling("Giao dịch của chuyến xe và người gửi chưa hoàn thành", null))
-                else
-                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy car_status hoặc sender_status. Hoặc car_status đã hoàn thành. ", null))
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data)
+                    return await historySenderService.carRegisterSender(req.params.car_status_id_pr, req.params.sender_status_id_pr)
+                        .then(data =>{
+                            if(data && data !== 'NOT COMPLETED')
+                                return res.json(data)
+                            else if(data === 'NOT COMPLETED')
+                                return res.status(400).json(handleOther.errorHandling("Giao dịch của chuyến xe và người gửi chưa hoàn thành", null))
+                            else
+                                return res.status(400).json(handleOther.errorHandling("Không tìm thấy car_status hoặc sender_status. Hoặc car_status đã hoàn thành. ", null))
+                        })
+                        .catch(err => next(err))
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
             })
             .catch(err => next(err))
     }
 
     registerReceiverStatus = async (req, res, next) =>{
-        await historyReceiverService.carRegisterReceiver(req.params.car_status_id_pr, req.params.receiver_status_id_pr)
-            .then(data =>{
-                if(data && data !== 'NOT COMPLETED')
-                    return res.json(data)
-                else if(data === 'NOT COMPLETED')
-                    return res.status(400).json(handleOther.errorHandling("Giao dịch của chuyến xe và người nhận chưa hoàn thành", null))
-                else
-                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy car_status hoặc receiver_status. Hoặc car_status đã hoàn thành. ", null))
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data)
+                    return await historyReceiverService.carRegisterReceiver(req.params.car_status_id_pr, req.params.receiver_status_id_pr)
+                        .then(data =>{
+                            if(data && data !== 'NOT COMPLETED')
+                                return res.json(data)
+                            else if(data === 'NOT COMPLETED')
+                                return res.status(400).json(handleOther.errorHandling("Giao dịch của chuyến xe và người nhận chưa hoàn thành", null))
+                            else
+                                return res.status(400).json(handleOther.errorHandling("Không tìm thấy car_status hoặc receiver_status. Hoặc car_status đã hoàn thành. ", null))
+                        })
+                        .catch(err => next(err))
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
             })
             .catch(err => next(err))
     }
@@ -73,6 +85,100 @@ class CarStatusController{
                     return res.json(datas);
                 }
                 return res.status(400).json(handleOther.errorHandling("Lỗi nhập car_status_id", null));
+            })
+            .catch(err => next(err))
+    }
+    //cancle regist of car trip for sender
+    cancleRegisterSender = async(req, res, next) =>{
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data)
+                    return await historySenderService.cancleRegisterSender(req.params.car_status_id_pr, req.params.sender_status_id_pr)
+                        .then(data =>{
+                            if(data){
+                                if(data === 'NO DATA')
+                                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy dữ liệu.", null));
+                                if(data === 'NOT CANCLE')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể hủy đăng ký vì chuyến xe đã thực hiện và xác nhận giao địch.", null));
+                                return res.json(data);
+                            }
+                            return res.status(400).json(handleOther.errorHandling("Lỗi", null));
+                        })
+                        .catch(err => next(err))
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
+            })
+            .catch(err => next(err))
+    }
+
+    cancleRegisterReceiver = async(req, res, next) =>{
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data)
+                    return await historyReceiverService.cancleRegisterReceiver(req.params.car_status_id_pr, req.params.receiver_status_id_pr)
+                        .then(data =>{
+                            if(data){
+                                if(data === 'NO DATA')
+                                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy dữ liệu.", null));
+                                if(data === 'NOT CANCLE')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể hủy đăng ký vì chuyến xe đã thực hiện và xác nhận giao địch.", null));
+                                return res.json(data);
+                            }
+                            return res.status(400).json(handleOther.errorHandling("Lỗi", null));
+                        })
+                        .catch(err => next(err));
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
+            })
+            .catch(err => next(err))
+    }
+
+    confirmSenderStatusOfCar = async(req, res, next) =>{
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data){
+                    const formData = req.body;
+                    return await historySenderService.confirmSenderStatusOfCar(req.params.car_status_id_pr, req.params.sender_status_id_pr, formData)
+                        .then(data =>{
+                            if(data){
+                                if(data === 'NO DATA')
+                                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy dữ liệu.", null));
+                                else if(data === 'NOT CONFIRM')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể xác thực vì người dùng đang trong quá trình giao dịch.", null));
+                                else if(data === 'NO UPDATE CAR_STATUS')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể cập nhật số lượng trong car_status", null));
+                                return res.json(data);
+                            }
+                            return res.status(400).json(handleOther.errorHandling("Lỗi", null));
+                        })
+                        .catch(err => next(err));
+                }       
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
+            })
+            .catch(err => next(err))
+    }
+
+    confirmReceiverStatusOfCar = async(req, res, next) =>{
+        await carStatusService.checkCensorship(req.params.car_status_id_pr)
+            .then(async data =>{
+                if(data){
+                    const formData = req.body;
+                    return await historyReceiverService.confirmReceiverStatusOfCar(req.params.car_status_id_pr, req.params.receiver_status_id_pr, formData)
+                        .then(data =>{
+                            if(data){
+                                if(data === 'NO DATA')
+                                    return res.status(400).json(handleOther.errorHandling("Không tìm thấy dữ liệu.", null));
+                                else if(data === 'NOT CONFIRM')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể xác thực vì người dùng đang trong quá trình giao dịch.", null));
+                                else if(data === 'QUANTITY IS NOT ENOUGH')
+                                    return res.status(400).json(handleOther.errorHandling("Không đủ số lượng.", null));
+                                else if(data === 'NO UPDATE CAR_STATUS')
+                                    return res.status(400).json(handleOther.errorHandling("Không thể cập nhật số lượng trong car_status", null));
+                                return res.json(data);
+                            }
+                            return res.status(400).json(handleOther.errorHandling("Lỗi", null));
+                        })
+                        .catch(err => next(err));
+                }       
+                return res.status(400).json(handleOther.errorHandling("Chuyến xe chưa được kiểm duyệt!", null));   
             })
             .catch(err => next(err))
     }

@@ -14,5 +14,5 @@ router.post('/:sender_status_id_pr/update', authmiddleware.check_login, uploadFi
 router.get('/:sender_status_id_pr/detail', senderStatusController.getSenderStatusDetail);
 //danh sách
 router.get('/list', senderStatusController.getAllSenderStatus);
-
+router.get('/:sender_status_id_pr/history/no_confirm/list', senderStatusController.getAllHistoryRegisterSenderNoConfirmBySenderStatusID);
 module.exports = router;

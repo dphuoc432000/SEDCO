@@ -82,7 +82,6 @@ class SenderStatusDetail extends Component {
     });
     this.props.handleUpdateEssentials(essentials);
   };
-    
   handleShowMessage = () =>{
 		//Nếu chưa đăng nhập thì show form đăng nhập
 		//ngược lại nếu đã đăng nhập thì hiện lên message
@@ -140,7 +139,6 @@ class SenderStatusDetail extends Component {
                             <td>{essential.unit}</td>
                         </tr>
                     }
-                   
                   </React.Fragment>
                 );
               })} 

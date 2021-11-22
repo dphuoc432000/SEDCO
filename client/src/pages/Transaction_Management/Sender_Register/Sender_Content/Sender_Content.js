@@ -12,6 +12,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {API_IMAGE_URL} from '../../../../constants/api';
 import getEssentials from '../../../../stores/actions/essentials.action';
+import {toast } from 'react-toastify';
+import ModalConfirm from '../../ModalConfirm/ModalConfirm';
+import {confirm_sender_status_of_car_action, cancle_register_sender_action} from '../../../../stores/actions/car_regis_status';
+import {CONFIRM_SENDER_STATUS_OF_CAR_SUCCESS, CANCEL_REGISTER_SENDER_FOR_CAR_SUCCESS} from '../../../../constants/actions';
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -24,8 +28,136 @@ function converJsonDateToDate(jsonDate){
     return `${day < 10 ? '0'+day:day}/${month < 10 ? '0'+month:month}/${year}`
 }
 class Sender_Content extends Component {
+    state ={
+        sender_status_information: {},
+        essentials: [],
+        essentials_car:{},
+        open_ModalConfirm: false
+    }
+    modifiedEssentailToEssentialsCar = (essentials) =>{
+        const essentials_object = {}
+        essentials.map(essential=>{
+            essentials_object[essential.code_name] = {
+                ...essential,
+                quantity: 0
+            }
+            return {
+                ...essential,
+                quantity: 0
+            }
+        });
+        return essentials_object;
+    }
+    componentDidMount = async () =>{
+        if(!isEmpty(this.props.sender_status_information)){
+            const essentials = this.props.sender_status_information.detail.essentials;
+            this.setState({
+                sender_status_information: this.props.sender_status_information,
+                essentials: essentials,
+                essentials_car: {...this.modifiedEssentailToEssentialsCar(essentials)}
+            })
+        }
+    }
+    componentDidUpdate = (prevProps) =>{
+        if(this.props.sender_status_information !== prevProps.sender_status_information){
+            if(!isEmpty(this.props.sender_status_information)){
+                const essentials = this.props.sender_status_information.detail.essentials;
+                this.setState({
+                    sender_status_information: this.props.sender_status_information,
+                    essentials: essentials,
+                    essentials_car: {...this.modifiedEssentailToEssentialsCar(essentials)}
+                })
+            }
+            else
+                this.setState({
+                    sender_status_information: {},
+                    essentials: [],
+                    essentials_car: {}
+                })  
+        }
+    }
+    checkInput = (value) =>{
+        const regex = /^[0-9]*$/
+        if(regex.test(value))
+            return true;
+        return false;
+    }
+    keyispressed = (e) =>{
+        var charValue= String.fromCharCode(e.keyCode);
+        if((isNaN(charValue)) && (e.which !== 8 ) || (e.which === 32)){ // BSP KB code is 8
+            e.preventDefault();
+        }
+        return true;
+    }
+    handChangeInputQuantityEssential_Car = (event) =>{
+        let value = event.target.value;
+        const name = event.target.name;
+        value = value===''?0:value;
+        if(this.checkInput(value)){
+            this.setState({
+                essentials_car: {
+                    ...this.state.essentials_car,
+                    [name]:{
+                        ...this.state.essentials_car[name],
+                        quantity: parseInt(value)
+                    }
+                }
+            })
+        }
+    }
+    checkingForm = () =>{
+        const essentials_car = this.state.essentials_car;
+        for(let [key, value] of Object.entries(essentials_car)){
+            if(value.quantity > 0)
+                return true;
+        }
+        return false
+    }
+    convertEssentialCarObjectToArray = (essentials_car) =>{
+        const essentials = []
+        for(let [key, value] of Object.entries(essentials_car)){
+            essentials.push({
+                essential_id: value.essential_id,
+                quantity: value.quantity
+            });
+        }
+        return essentials;
+    }
+    handleCarConfirm = async (sender_status) =>{
+        if(this.checkingForm()){
+            const essentials = this.convertEssentialCarObjectToArray(this.state.essentials_car);
+            const car_status_id = this.props.car_status.detail._id;
+            const sender_status_id = this.state.sender_status_information.detail._id
+            const confirm_sender_status_of_car_action = await this.props.confirm_sender_status_of_car_action(car_status_id, sender_status_id, {essentials})
+            if(confirm_sender_status_of_car_action.type === CONFIRM_SENDER_STATUS_OF_CAR_SUCCESS){
+                toast.success('Xác nhận đã nhận nhu yếu phẩm!');
+                this.props.handleRemoveStatusAfterCorfirmOrCancle_sender_list(sender_status);
+            }
+            else{
+                toast.error('Đã xãy ra lỗi trong quá trình xác thực!');
+            }
+        }
+        else
+            toast.warn('Vui lòng nhập số lượng nhận!');
+    }
+    handleCancleStatus = async (sender_status) =>{
+        const car_status_id = this.props.car_status.detail._id;
+        const sender_status_id = this.state.sender_status_information.detail._id
+        const cancle_register_sender_action = await this.props.cancle_register_sender_action(car_status_id,sender_status_id);
+        if(cancle_register_sender_action.type === CANCEL_REGISTER_SENDER_FOR_CAR_SUCCESS){
+            this.props.handleRemoveStatusAfterCorfirmOrCancle_sender_list(sender_status);
+            toast.success('Đã hủy đăng ký nhận nhu yếu phẩm!')
+        }
+        else
+            toast.error('Đã xảy ra lỗi trong quá trình hủy!')
+    }
+    handleOpenModalConfirm = () =>{
+        this.setState({
+            open_ModalConfirm: !this.state.open_ModalConfirm
+        })
+    }
     render() {
-        const sender_status_information = this.props.sender_status_information;
+        const {sender_status_information, essentials,essentials_car, open_ModalConfirm} = this.state;
         return (
             <div className="content_container">
                 <div className="title">
@@ -54,7 +186,7 @@ class Sender_Content extends Component {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                {sender_status_information.detail.essentials.map(essential =>
+                                                {essentials.map(essential =>
                                                     <TableRow
                                                         key={essential.essential_id}
                                                         // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -63,12 +195,17 @@ class Sender_Content extends Component {
                                                         <TableCell style={{fontSize: '12px'}} align="right">{essential.unit}</TableCell>
                                                         <TableCell style={{fontSize: '12px'}} align="right">{essential.quantity}</TableCell>
                                                         <TableCell style={{fontSize: '12px'}} align="center">
-                                                            <input type="text" name={essential.code_name} id={essential.essential_id} />
+                                                            <input 
+                                                                type="text" 
+                                                                name={essential.code_name} 
+                                                                id={essential.essential_id} 
+                                                                placeholder={0}
+                                                                onKeyDown={event => this.keyispressed(event)}
+                                                                onChange={(event)=>{this.handChangeInputQuantityEssential_Car(event)}} 
+                                                            />
                                                         </TableCell>
                                                     </TableRow>
-                                                )
-                                                    
-                                                }
+                                                )}
                                                 <TableRow
                                                     // key={row.name}
                                                     // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -76,9 +213,7 @@ class Sender_Content extends Component {
                                                     <TableCell style={{fontSize: '12px'}} component="th" scope="row">Tổng khối lượng</TableCell>
                                                     <TableCell style={{fontSize: '12px'}} align="right">Kg</TableCell>
                                                     <TableCell style={{fontSize: '12px'}} align="right">{sender_status_information.detail.weight_essential}</TableCell>
-                                                    <TableCell style={{fontSize: '12px'}} align="center">
-                                                        <input type="text" name="" id="" />
-                                                    </TableCell>
+                                                    <TableCell style={{fontSize: '12px'}} align="center"></TableCell>
                                                 </TableRow>
                                             </TableBody>
                                             </Table>
@@ -120,13 +255,23 @@ class Sender_Content extends Component {
                     <div className="btn_container">
                     { !isEmpty(sender_status_information) &&
                         <React.Fragment>
-                            <button className="btn_cancel">Hủy</button>
+                            <button onClick={()=>{this.handleOpenModalConfirm()}} className="btn_cancel">Hủy</button>
                             <button className="btn_chat">Liên hệ</button>
-                            <button className="btn_confirm">Xác nhận</button>
+                            <button onClick={()=>{this.handleCarConfirm(sender_status_information)}} className="btn_confirm">Xác nhận</button>
                         </React.Fragment>
                     }
                     </div>
                 </div>
+                {
+                    open_ModalConfirm &&
+                        <ModalConfirm 
+                            open={open_ModalConfirm} 
+                            status_information={sender_status_information}  
+                            content={'Bạn muốn hủy nhận nhu yếu phẩm từ người dùng này?'}
+                            handleCancleStatus={this.handleCancleStatus}
+                            handleOpenModalConfirm={this.handleOpenModalConfirm}
+                        />
+                }
             </div>
         )
     }
@@ -145,7 +290,15 @@ const mapDispatchToProps =(dispatch)=>{
         getEssentials: async() =>{
             const action = await getEssentials();
             return dispatch(action)
-        }
+        },
+        confirm_sender_status_of_car_action: async(car_status_id, sender_status_id, object) =>{
+            const action = await confirm_sender_status_of_car_action(car_status_id, sender_status_id, object);
+            return dispatch(action);
+        },
+        cancle_register_sender_action: async(car_status_id, sender_status_id) =>{
+            const action = await cancle_register_sender_action(car_status_id, sender_status_id);
+            return dispatch(action);
+        },
     }
 }
 

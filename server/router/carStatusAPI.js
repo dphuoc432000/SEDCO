@@ -33,4 +33,8 @@ router.get('/:car_status_id_pr/register/sender/02/list', carStatusController.get
 //- Có data trong history_receiver
 //- Chưa được 2/2 confirm (confirm 0/2)
 router.get('/:car_status_id_pr/register/receiver/02/list', carStatusController.getAllRegisterReceiverNoConfirm_0_2);//OK đã có pagination
+router.post('/:car_status_id_pr/:sender_status_id_pr/register/sender/cancle', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.cancleRegisterSender);
+router.post('/:car_status_id_pr/:receiver_status_id_pr/register/receiver/cancle', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.cancleRegisterReceiver);
+router.post('/:car_status_id_pr/:sender_status_id_pr/confirm/sender/car', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.confirmSenderStatusOfCar);
+router.post('/:car_status_id_pr/:receiver_status_id_pr/confirm/receiver/car', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.confirmReceiverStatusOfCar);
 module.exports = router;

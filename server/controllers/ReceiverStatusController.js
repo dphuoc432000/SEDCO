@@ -3,8 +3,8 @@ const handleOther = require('./handleOther');
 const authMiddleware = require('../middlewares/auth');
 const upload = require('../middlewares/upload');
 const multer = require('multer');
-
-class RecriverStatusController{
+const historyReceiverService = require('../service/HistoryReceiverService');
+class RecriverStatusController {
 
     //[POST] /api/receiver/create_receiver_status
     // addReceiverStatus = async (req, res, next)=>{
@@ -25,10 +25,10 @@ class RecriverStatusController{
     // }
 
     //[GET] /api/receiver/list
-    getAllReceiverStatus = async(req, res, next) =>{
+    getAllReceiverStatus = async (req, res, next) => {
         await receiverStatusService.getAllReceiverStatus()
             .then(data => {
-                if(data)
+                if (data)
                     return res.json(data);
                 return res.status(400).json(handleOther.errorHandling('Lỗi', null));
             })
@@ -36,26 +36,39 @@ class RecriverStatusController{
     }
 
     // [GET] /api/receiver/:receiver_status_id_pr/detail
-    getReceiverStatusDetail = async(req, res, next) =>{
+    getReceiverStatusDetail = async (req, res, next) => {
         await receiverStatusService.getReceiverStatusDetail(req.params.receiver_status_id_pr)
             .then(data => {
-                if(data)
+                if (data)
                     return res.json(data);
                 return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id', null));
             })
             .catch(err => next(err));
     }
-    
+
     //[POST] /api/receiver/:receiver_status_id_pr/update
-    updateReceiverStatus = async(req, res, next) =>{
+    updateReceiverStatus = async (req, res, next) => {
         const form_data = req.body;
-        form_data.picture = req.file?req.file.path:"";
+        form_data.picture = req.file ? req.file.path : "";
         form_data.essentials = JSON.parse(form_data.essentials)
         await receiverStatusService.updateReceiverStatus(req.params.receiver_status_id_pr, req.body)
-            .then(data =>  {
-                if(data)
+            .then(data => {
+                if (data)
                     return res.json(data);
                 return res.status(400).json(handleOther.errorHandling('Lỗi nhập dữ liệu', null));
+            })
+            .catch(err => next(err));
+    }
+
+    //lấy tất cả danh sách chưa được xác nhận từ người dùng nhưng đã được xác nhận từ chuyến xe
+    //Làm cho phần thông báo của receiver
+    getAllHistoryRegisterReceiverNoConfirmByReceiverStatusID = async (req, res, next) => {
+        await historyReceiverService.getAllHistoryRegisterReceiverNoConfirmByReceiverStatusID(req.params.receiver_status_id_pr, req.query._limit, req.query._page)
+            .then(histories => {
+                if (histories) {
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
             })
             .catch(err => next(err));
     }

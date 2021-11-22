@@ -170,7 +170,7 @@ class HistorySenderService{
     //cancle regist of car trip for sender
     cancleRegisterSender = async (car_status_id, sender_status_id) =>{
         //kiêm tra có data hay không
-        const historySenderData = await HistorySender.findOne({car_status_id: car_status_id, sender_status_id: sender_status_id, receiver_confirm: false, car_confirm: false})
+        const historySenderData = await HistorySender.findOne({car_status_id: car_status_id, sender_status_id: sender_status_id, sender_confirm: false, car_confirm: false})
             .then(async history =>{
                 if(!history)
                     return 'NO DATA';
@@ -253,6 +253,21 @@ class HistorySenderService{
         //vì khi tạo car_status rồi thì length mặc định sẽ > 0 nên không cần xét trường hợp <= 0
         // return []
     }
+    // lấy về mảng số lượng nhu yếu phẩm hiện tại của chuyến xe
+    getEssentialsCurrentOfCar = async(car_status_id) =>{
+        const car_status = await CarStatus.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        return car_status.essentials;
+    }
+
+    // lấy về mảng số lượng nhu yếu phẩm hiện tại của sender
+    getEssentialsCurrentOfSender = async(sender_status_id) =>{
+        const sender_status = await SenderStatus.findById({_id: sender_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        return sender_status.essentials;
+    }
 
     confirmSenderStatusOfCar = async (car_status_id, sender_status_id, object) =>{
         const historySenderData = await HistorySender.findOne({car_status_id: car_status_id, sender_status_id: sender_status_id, sender_confirm: false, car_confirm: false })
@@ -268,13 +283,14 @@ class HistorySenderService{
                     //tăng số lượng nhu yếu phẩm trong car status
                     let essentials_update = [];
                     essentials_update = await this.increseaQuantityEssentialInCarStatus(history.car_status_id,{essentials: object.essentials})
-
+                    object.essentials_current_car = await this.getEssentialsCurrentOfCar(car_status_id).then(data => data);
                     const car_status_update = await CarStatus.findByIdAndUpdate({_id: history.car_status_id}, {essentials: essentials_update})
                         .then(car_status_data => mongooseToObject(car_status_data));
                     //nếu có data car status thì update tiếp
                     if(car_status_update){
                         object.car_confirm = true;
                         object.sender_time = Date.now();
+                        object.essentials_current_sender = await this.getEssentialsCurrentOfSender(sender_status_id).then(data => data);
                         //Trả về giữ liệu cũ
                         return await HistorySender.findByIdAndUpdate({_id: history._id}, object)
                             .then(data =>{
@@ -298,6 +314,24 @@ class HistorySenderService{
 
     confirmSenderStatusOfSender = async (car_status_id, sender_statys_id) =>{
         
+    }
+
+    //lấy tất cả danh sách chưa được xác nhận từ người dùng nhưng đã được xác nhận từ chuyến xe
+    //Làm cho phần thông báo của sender
+    getAllHistoryRegisterSenderNoConfirmBySenderStatusID =  async (sender_status_id,_limit,_page) =>{
+        const totalRows = await HistorySender.count({sender_status_id: sender_status_id, sender_confirm: false, car_confirm: true});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_sender_list  = await HistorySender.find({sender_status_id: sender_status_id, sender_confirm: false, car_confirm: true})
+            .skip(start)
+            .limit(pagination._limit)
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err);
+        return{
+            history_sender_list: history_sender_list,
+            pagination
+        }
     }
 }
 

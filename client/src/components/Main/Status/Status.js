@@ -29,6 +29,7 @@ class Status extends Component {
             showSenderStatus: false,
             showReceiverStatus: false,
             showCarTripStatus: false,
+            account_id: this.props.account_id
         };
     }
     mapEssentialMarker = async (essentials_marker) => {

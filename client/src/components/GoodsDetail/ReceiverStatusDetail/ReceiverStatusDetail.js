@@ -93,6 +93,7 @@ class ReceiverStatusDetail extends Component {
 		const role_name_current = this.props.role_name_current;
 		const note = status_current.detail.note;
 		const number_per_of_family = status_current.detail.number_per_of_family;
+    const picture = status_current.detail.picture;
 		const picture = status_current.detail.picture;
 		const essentials_state = this.state.essentials;
 		let { showUpdateReceiverForm } = this.state;
@@ -113,55 +114,55 @@ class ReceiverStatusDetail extends Component {
 		return (
 			<div>
 				<div className="GoodDetail-container">
-					{/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
-					<h3 className="data-container__title">Cần hỗ trợ</h3>
-					<table className="List-Good-Detail">
-						{essentials_state &&
-							essentials_state.map((essential) => {
-								return (
-									<React.Fragment>
-										{
-											essential.quantity > 0 &&
-											<tr key={essential.essential_id}>
-												<td>{essential.name}</td>
-												<td>{essential.quantity}</td>
-												<td>{essential.unit}</td>
-											</tr>
-										}
-									</React.Fragment>
-								);
-							})
-						}
-						<tr>
-							<td>Số người trong hộ trong hộ gia đình</td>
-							<td>{number_per_of_family}</td>
-							<td>Người</td>
-						</tr>
-					</table>
-					<h3 className="data-container__title">Thông tin liên hệ</h3>
-					<table className="List-Good-Detail">
-						<tr>
-							<td>Số điện thoại</td>
-							<td>{user.phone_number}</td>
-						</tr>
-						<tr>
-							<td>Địa chỉ</td>
-							<td>{user.address}</td>
-						</tr>
-						<tr>
-							<td>Ghi chú</td>
-							<td>{note}</td>
-						</tr>
-					</table>
-					<div className="GoodDetail-Info-Img">
-						<h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
-						<img
-							src={`${API_IMAGE_URL}/${picture}`}
-							alt="hình ảnh người dùng"
-							className="GoodDetail-Info-Img__src"
-						/>
-					</div>
-				</div>
+            {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
+            <h3 className="data-container__title">Cần hỗ trợ</h3>
+            <table className="List-Good-Detail">
+                {essentials_state &&
+                  essentials_state.map( (essential) => {
+                    return (
+                    <React.Fragment>
+                    {
+                      essential.quantity > 0 &&
+                      <tr key={essential.essential_id}>
+                        <td>{essential.name}</td>
+                        <td>{essential.quantity}</td>
+                        <td>{essential.unit}</td>
+                      </tr>
+                    }
+                    </React.Fragment>
+                    );
+                  })
+                }
+                <tr>
+                  <td>Số người trong hộ trong hộ gia đình</td>
+                  <td>{number_per_of_family}</td>
+                  <td>Người</td>
+                </tr>
+            </table>
+            <h3 className="data-container__title">Thông tin liên hệ</h3>
+            <table className="List-Good-Detail">
+              <tr>
+                <td>Số điện thoại</td>
+                <td>{user.phone_number}</td>
+              </tr>
+              <tr>
+                <td>Địa chỉ</td>
+                <td>{user.address}</td>
+              </tr>
+              <tr>
+                <td>Ghi chú</td>
+                <td>{note}</td>
+              </tr>
+            </table>
+            <div className="GoodDetail-Info-Img">
+                  <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
+                  <img
+                      src={`${API_IMAGE_URL}/${picture}`}
+                      alt="hình ảnh người dùng"
+                      className="GoodDetail-Info-Img__src"
+                  />
+            </div>
+        </div>
 				<div className="container-btn__ListBottom">
 					{status_current._id === status_current_current._id ?
 						<React.Fragment>{/*Phần cho người dùng khi vào xem status của của mình */}

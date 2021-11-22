@@ -1,43 +1,92 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import "../notification.css";
+import Notification_item from "./Notification_item";
+import Notification_content from "./Notification_content_receiver";
+import "./notification_receiver.css";
+import "../../../styles/main.css";
 class Notification_Receiver extends Component {
-  render() {
+    state = {
+        seeNotificationDetail: false,
+      };
+      handleShowDetailNotification = () => {
+        this.setState({
+          seeNotificationDetail: !this.state.seeNotificationDetail,
+        });
+      };
+     
+  render()  {
+    let { seeNotificationDetail } = this.state;
+    const checkSeeDetailNotification =
+            (
+                seeNotificationDetail === true ? (
+                    <Notification_content
+                        
+                    />
+                ) : (
+                ""
+                )
+            )
     return (
-      <div className="header__notify">
-        <div className="notify-Comfirm">
-          <h3 className="notify-Comfirm-title">Thông báo xác nhận</h3>
-          <div>
-            <h4 className="notify-Comfirm-item">
-              CX01 xác nhận đã hỗ trợ nhu yếu phẩm đến bạn. Vui lòng xác nhận.
-              Vui lòng xác nhận.{"{"}" "{"}"}
-              <h3 href className="notify-Comfirm-item-link">
-                Bấm vào đây để xác nhận
-              </h3>
-            </h4>
-          </div>
-        </div>
-        <h3 className="notify-Comfirm-title">Thông báo vừa nhận</h3>
-        <ul className="notify-ListRecent">
-          <li className="notify-Recent-item">
-            <a href className="notify-Recent-item">
-              CX01 đã đăng ký nhận nhu yếu phẩm từ bạn.
-            </a>
-          </li>
-          <li className="notify-Recent-item">
-            <h3 href className="notify-Recent-item">
-              CX01 đã đăng ký nhận nhu yếu phẩm từ bạn.
-            </h3>
-          </li>
-          <li className="notify-Recent-item">
-            <h3 href className="notify-Recent-item">
-              CX01 đã đăng ký nhận nhu yếu phẩm từ bạn.
-            </h3>
-          </li>
-        </ul>
-      </div>
-    );
+        <main className="Main">
+            <div className="status_content_container_sender">
+                <div className="status_content">
+                    <div className="status_item">
+                        <h3
+                            style={{
+                            fontSize: "19.32px",
+                            fontWeight: "700",
+                            lineHeight: "20.608px",
+                            }}
+                        >
+                            Thông báo
+                        </h3>
+                    </div>
+                    <div className="status_item-per1">
+                        <div className="information_container">
+                            <div className="address">
+                                <p
+                                style={{
+                                    fontSize: "14px",
+                                    color: "#333",
+                                    fontWeight: "700",
+                                    marginLeft: "20px",
+                                    marginTop: "12px",
+                                }}
+                                >
+                                CX002 đã hỗ trợ nhu yếu phẩm đến bạn
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                marginTop: "25px",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <div>
+                                <button className="btn-notifi btn-notifi__confirm">
+                                Xác nhận
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                className="btn-notifi btn-notifi__seeInf"
+                                onClick={this.handleShowDetailNotification}
+                                >
+                                Xem thông tin
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            {checkSeeDetailNotification}
+        </main>
+    )
+  
   }
 }
-
 export default withRouter(Notification_Receiver);

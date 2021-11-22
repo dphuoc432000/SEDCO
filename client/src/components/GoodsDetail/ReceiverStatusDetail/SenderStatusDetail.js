@@ -129,15 +129,16 @@ class SenderStatusDetail extends Component {
             {essentials_state &&
               essentials_state.map((essential) => {
                 return (
+
                   <React.Fragment>
-                  {
-                    essential.quantity > 0 &&
-                    <tr key={essential.essential_id}>
-                      <td>{essential.name}</td>
-                      <td>{essential.quantity}</td>
-                      <td>{essential.unit}</td>
-                    </tr>
-                  }
+                    {   
+                        essential.quantity > 0 &&
+                        <tr key={essential.essential_id}>
+                            <td>{essential.name}</td>
+                            <td>{essential.quantity}</td>
+                            <td>{essential.unit}</td>
+                        </tr>
+                    }
                   </React.Fragment>
                 );
               })} 

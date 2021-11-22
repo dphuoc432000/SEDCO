@@ -16,6 +16,7 @@ function ModalDeleteStatus(props) {
   const deleteStatusCurrent = async () => {
     const status_id = props.status_id;
     const deleteaction = await props.deleteStatus(status_id);
+    console.log(deleteaction)
     if (deleteaction.type !== DELETE_STATUS__SUCCESS)
       toast.error("Xóa trạng thái không thành công!");
     else {

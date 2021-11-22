@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import "./notification_content.css";
+import "./notification_content_receiver.css";
 import CircleIcon from "@mui/icons-material/Circle";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,7 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-class Notification_content extends Component {
+class Notification_content_receiver extends Component {
   render() {
     return (
       <div className="content_container">
@@ -22,7 +22,7 @@ class Notification_content extends Component {
           <div className="status_infor_container">
             <div className="per_infor">
               <span className="username">
-                <h2>CX001</h2>
+                <h2>CX002</h2>
               </span>
               <span className="status" style={{ color: "#009432" }}>
                 <CircleIcon />
@@ -135,4 +135,4 @@ class Notification_content extends Component {
     );
   }
 }
-export default Notification_content;
+export default Notification_content_receiver;

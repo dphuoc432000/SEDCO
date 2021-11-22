@@ -11,12 +11,22 @@
   overflow: hidden;
 }
 .status_item-per1 {
-  width: 390px;
+  width: 420px;
   border : 1px solid #ccc;
   border-radius: 6px;
-  margin-top: 45px;
+  margin-top: 25px;
   height: 105px;
   margin-bottom: 10px;
+  background-color: #eff2ff;
+}
+.status_item-per1__success{
+    width: 420px;
+    border : 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 25px;
+    height: 80px;
+    margin-bottom: 10px;
+    background-color: #eff2ff;  
 }
 .status_content
   > .status_list_container

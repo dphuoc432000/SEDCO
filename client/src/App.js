@@ -26,7 +26,8 @@ import { menuHeader } from "./components/Header/menuHeader";
 import { get_status_current_action } from "./stores/actions/status_current.action";
 import { STATUS_CURRENT_SUCCESS } from "./constants/actions";
 import Notification_Sender from "./components/Notification/Sender/Notification_Sender";
-
+import Notification_Receiver from "./components/Notification/Receiver/Notification_Receiver";
+import Management_Quantity from "./components/Manage_Quantity/Management_Quantity";
 const translateRoleName = (role_name) => {
   switch (role_name) {
     case "user":
@@ -171,9 +172,10 @@ class App extends React.Component {
     await this.componentDidMount();
   };
 
-
-  render(){
-    const checkLocalStorage = localStorage.getItem('accessToken')?true:false;
+  render() {
+    const checkLocalStorage = localStorage.getItem("accessToken")
+      ? true
+      : false;
     // console.log(this.state)
     // console.log(Object.keys(this.state.role_name).length? true: false)
     return (
@@ -220,11 +222,16 @@ class App extends React.Component {
                 isAuthenticated={this.state.isAuthenticated}
               />
             </Route>
-
+            
             <Route path="/notification/sender" exact>
               <Notification_Sender />
             </Route>
-
+            <Route path="/notification/receiver" exact>
+              <Notification_Receiver />
+            </Route>
+            <Route path="/car_trip/quantity_management" exact>
+              <Management_Quantity />
+            </Route>
             {/*<Route path="/login" exact render={() =>{
               <Header 
                 handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
@@ -258,22 +265,31 @@ class App extends React.Component {
                 <Route path="/admin">
                   <Admin />
                 </Route>
-                
-                <AuthenticatedAllRoute exact path="/user/information" component={UpdateUser} appProps={{checkLocalStorage, handleChangeShowFormLogin:this.handleChangeShowFormLogin}}/>
-                
-                <AuthenticatedCarTripRoute 
-                    exact={false} path="/car_trip/transaction_management" 
-                    component={Transaction_Management} 
-                    appProps={{
-                                checkLocalStorage, 
-                                handleChangeShowFormLogin:this.handleChangeShowFormLogin,
-                                role_name: this.state.role_name.role_name, 
-                                account_id: this.state.account_id, 
-                                isAuthenticated: this.state.isAuthenticated,
-                                status_current: this.state.status_current
-                              }}
+
+                <AuthenticatedAllRoute
+                  exact
+                  path="/user/information"
+                  component={UpdateUser}
+                  appProps={{
+                    checkLocalStorage,
+                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                  }}
                 />
-                
+
+                <AuthenticatedCarTripRoute
+                  exact={false}
+                  path="/car_trip/transaction_management"
+                  component={Transaction_Management}
+                  appProps={{
+                    checkLocalStorage,
+                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                    role_name: this.state.role_name.role_name,
+                    account_id: this.state.account_id,
+                    isAuthenticated: this.state.isAuthenticated,
+                    status_current: this.state.status_current,
+                  }}
+                />
+
                 <Route path="/user/information/update" exact>
                   <UpdateUserInforForm
                     handlUpdateFull_name={this.handlUpdateFull_name}

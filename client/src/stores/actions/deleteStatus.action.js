@@ -28,9 +28,12 @@ const deleteStatus = async (status_id) => {
       action.payload = {
         description: "POST API ERROR",
         message: err.message,
+        err : err ,
       };
     });
+    console.log(action)
   return action;
+  
 };
 
 export default deleteStatus;

@@ -93,7 +93,6 @@ class ReceiverStatusDetail extends Component {
 		const role_name_current = this.props.role_name_current;
 		const note = status_current.detail.note;
 		const number_per_of_family = status_current.detail.number_per_of_family;
-    const picture = status_current.detail.picture;
 		const picture = status_current.detail.picture;
 		const essentials_state = this.state.essentials;
 		let { showUpdateReceiverForm } = this.state;

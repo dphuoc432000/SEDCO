@@ -217,6 +217,7 @@ class App extends React.Component {
                 handleLoadAgainWhenCreateStatus={
                   this.handleLoadAgainWhenCreateStatus
                 }
+                isAuthenticated={this.state.isAuthenticated}
               />
             </Route>
 

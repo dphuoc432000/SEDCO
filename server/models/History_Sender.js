@@ -14,6 +14,8 @@ const History_sender = new Schema({
     sender_time: {type: Date, required: true},
     sender_confirm: {type: Boolean},
     car_confirm: {type: Boolean},
+    essentials_current_car: [essential],
+    essentials_current_sender: [essential],
     //nhu yếu phẩm car nhận từ sender
     essentials: [essential]
 },{

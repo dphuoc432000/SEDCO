@@ -269,6 +269,21 @@ class HistoryReceiverService{
         return essentials_update;
         // }
     }
+    // lấy về mảng số lượng nhu yếu phẩm hiện tại của chuyến xe
+    getEssentialsCurrentOfCar = async(car_status_id) =>{
+        const car_status = await CarStatus.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        return car_status.essentials;
+    }
+
+    // lấy về mảng số lượng nhu yếu phẩm hiện tại của receiver
+    getEssentialsCurrentOfReceiver = async(receiver_status_id) =>{
+        const receiver_status = await ReceiverStatus.findById({_id: receiver_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        return receiver_status.essentials;
+    }
 
     confirmReceiverStatusOfCar = async (car_status_id, receiver_status_id, object) =>{
         const historyReceiverData = await HistoryReceiver.findOne({car_status_id: car_status_id, receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: false})
@@ -295,15 +310,18 @@ class HistoryReceiverService{
                         })
                     }
                     let car_status_update =  null;
-                    if(!check_quantity_essentials)
+                    if(!check_quantity_essentials){
+                        object.essentials_current_car = await this.getEssentialsCurrentOfCar(car_status_id).then(data => data);
                         car_status_update = await CarStatus.findByIdAndUpdate({_id: history.car_status_id}, {essentials: essentials_update})
                             .then(car_status_data => mongooseToObject(car_status_data));
+                    }    
                     else
                         return 'QUANTITY IS NOT ENOUGH'
                     //nếu có data car status thì update tiếp
                     if(car_status_update){
                         object.car_confirm = true;
                         object.receiver_time = Date.now();
+                        object.essentials_current_receiver = await this.getEssentialsCurrentOfReceiver(receiver_status_id).then(data => data);
                         //Trả về giữ liệu cũ
                         return await HistoryReceiver.findByIdAndUpdate({_id: history._id}, object)
                             .then(async data => {
@@ -329,6 +347,24 @@ class HistoryReceiverService{
         if(historyReceiverData)
             return historyReceiverData
         return null;
+    }
+
+    //lấy tất cả danh sách chưa được xác nhận từ người dùng nhưng đã được xác nhận từ chuyến xe
+    //Làm cho phần thông báo của receiver
+    getAllHistoryRegisterReceiverNoConfirmByReceiverStatusID =  async (receiver_status_id,_limit,_page) =>{
+        const totalRows = await HistoryReceiver.count({receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: true});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_receiver_list  = await HistoryReceiver.find({receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: true})
+            .skip(start)
+            .limit(pagination._limit)
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err);
+        return{
+            history_receiver_list: history_receiver_list,
+            pagination
+        }
     }
 }
 

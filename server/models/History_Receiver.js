@@ -14,6 +14,8 @@ const History_receiver = new Schema({
     receiver_time: {type: Date, required: true},
     receiver_confirm: {type: Boolean},
     car_confirm: {type: Boolean},
+    essentials_current_car: [essential],
+    essentials_current_receiver: [essential],
     essentials: [essential]
 }, {
     timestamps: true

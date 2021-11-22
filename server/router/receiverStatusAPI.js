@@ -15,4 +15,5 @@ router.get('/list', authmiddleware.check_login, receiverStatusController.getAllR
 router.get('/:receiver_status_id_pr/detail', authmiddleware.check_login, receiverStatusController.getReceiverStatusDetail);
 //cập nhật thông tin status
 router.post('/:receiver_status_id_pr/update', authmiddleware.check_login, uploadFile.uploadFileStatus("uploads/status/RECEIVER").single("picture"), receiverStatusController.updateReceiverStatus);
+router.get('/:receiver_status_id_pr/history/no_confirm/list', receiverStatusController.getAllHistoryRegisterReceiverNoConfirmByReceiverStatusID);
 module.exports = router;

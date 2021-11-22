@@ -93,7 +93,7 @@ class ReceiverStatusDetail extends Component {
 		const role_name_current = this.props.role_name_current;
 		const note = status_current.detail.note;
 		const number_per_of_family = status_current.detail.number_per_of_family;
-    const picture = status_current.detail.picture;
+        const picture = status_current.detail.picture;
 		const essentials_state = this.state.essentials;
 		let { showUpdateReceiverForm } = this.state;
 // 		console.log(this.state)
@@ -156,7 +156,7 @@ class ReceiverStatusDetail extends Component {
             <div className="GoodDetail-Info-Img">
                   <h3 className="GoodDetail-Info-Img__label>">Hình ảnh</h3>
                   <img
-                      src={ImgInfo}
+                      src={`${API_IMAGE_URL}/${picture}`}
                       alt="hình ảnh người dùng"
                       className="GoodDetail-Info-Img__src"
                   />

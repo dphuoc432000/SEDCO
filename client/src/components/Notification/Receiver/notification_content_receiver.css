@@ -1,0 +1,205 @@
+.content_container {
+    width: 37%;
+    padding: 10px 16px;
+  }
+  .content_container > .title {
+    margin-top: 15px;
+  }
+  
+  .content_container > .content {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin: 10px 0 0px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+      0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  }
+  
+  .content_container > .content > .status_infor_container {
+    width: 100%;
+    height: 66vh;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+  
+  .content_container > .content > .status_infor_container {
+    overflow-y: scroll;
+  }
+  
+  .content_container > .content > .status_infor_container::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  
+  .content_container > .content > .status_infor_container > .per_infor {
+    position: relative;
+    width: 100%;
+    height: 55px;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .per_infor
+    > span.username {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .per_infor
+    > span.status {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    display: flex;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .per_infor
+    > span.time {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .content_container > .content > .status_infor_container > .essentials_infor {
+    margin-bottom: 15px;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .essentials_infor
+    input {
+    width: 100px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px grey solid;
+  }
+  .content_container > .content > .status_infor_container h4 {
+    text-align: left;
+    margin-bottom: 5px;
+  }
+  
+  .content_container > .content > .status_infor_container > .contact_infor {
+    margin-bottom: 15px;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .contact_infor
+    > .contact_content {
+    width: 100%;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .contact_infor
+    > .contact_content
+    > tr {
+    width: 100%;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .contact_infor
+    > .contact_content
+    > tr
+    > td:nth-child(1) {
+    width: 32%;
+    text-align: left;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .contact_infor
+    > .contact_content
+    > tr
+    > td:nth-child(2) {
+    width: 68%;
+    text-align: left;
+    font-size: 13px;
+  }
+  
+  .content_container > .content > .status_infor_container > .note_infor {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .note_infor
+    > .note_content {
+    text-align: left;
+    width: 100%;
+  }
+  
+  .content_container > .content > .status_infor_container > .picture_infor {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .content_container
+    > .content
+    > .status_infor_container
+    > .picture_infor
+    > .img_content {
+    width: 100%;
+    text-align: left;
+  }
+  
+  .content_container > .content > .btn_container {
+    width: 100%;
+    /* text-align: right; */
+    justify-content: flex-end;
+    height: 35px;
+  }
+  
+  .content_container > .content > .btn_container > button {
+    padding: 10px 21px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-left: 15px;
+  }
+  
+  .content_container > .content > .btn_container > button.btn_cancel {
+    background-color: #ee5253;
+  }
+  
+  .content_container > .content > .btn_container > button.btn_chat {
+    background-color: #2e86de;
+  }
+  
+  .content_container > .content > .btn_container > button.btn_confirm {
+    background-color: #009432;
+  }
+  .btn-notifi_detail {
+      padding: 10px 28px;
+      border: none;
+      margin: 0px 8px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+  }
+  .btn_detail-chat{
+   background-color: #2e86de;
+   
+  }
+  .btn_detail-confirm{
+      background-color: #009432;
+  }
+  

@@ -319,7 +319,33 @@ class StatusController {
       })
       .catch((error) => next(error));
   };
-
+    //[POST] /status/update/:status_id_pr
+    updateStatus = async (req, res, next) => {
+        await statusService
+          .updateStatus(req.params.status_id_pr, req.body)
+          .then((status) => {
+            if (status) return res.json(status);
+            return res
+              .status(400)
+              .json(handleOther.errorHandling("Lỗi nhập status_id", null));
+          })
+          .catch((err) => next(err));
+      };
+  
+      //[POST] /status/:status_id_pr/delete
+      deleteStatus = async (req, res, next) => {
+        await statusService
+          .deleteStatus(req.params.status_id_pr)
+          .then((status) => {
+            if (status) return res.json(status);
+            return res
+              .status(400)
+              .json(
+                handleOther.errorHandling("Lỗi nhập không đúng status_id", null)
+              );
+          })
+          .catch((err) => next(err));
+      };
     getEssentialOfStatus = async(req, res, next) =>{
     }
     

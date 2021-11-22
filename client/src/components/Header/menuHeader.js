@@ -6,26 +6,20 @@ export const menuHeader =[
     {
         name: "sender",
         menu: [
-            {
-                name: "Quản lý giao dịch",
-                link: ''
-            },
+            
             {
                 name: "Thông báo",
-                link: '/sender/notification'
+                link: '/notification/sender'
             }
         ]        
     },
     {
         name: "receiver",
         menu: [
-            {
-                name: "Quản lý giao dịch",
-                link: ''
-            },
+           
             {
                 name: "Thông báo",
-                link: '/receiver/notification'
+                link: '/notification/receiver'
             }
         ]        
     },
@@ -38,12 +32,12 @@ export const menuHeader =[
             },
             {
                 name: "Quản lý số lượng",
-                link: ''
+                link: '/car_trip/quantity_management'
             },
-            {
-                name: "Thông báo",
-                link: '/car_trip/notification'
-            }
+            // {
+            //     name: "Thông báo",
+            //     link: '/car_trip/notification'
+            // }
         ]
     },
     {

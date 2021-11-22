@@ -82,12 +82,7 @@ class SenderStatusDetail extends Component {
     });
     this.props.handleUpdateEssentials(essentials);
   };
-     this.setState({
-      essentials : essentials ,
-
-     })
-     this.props.handleUpdateEssentials(essentials)
-  }
+    
   handleShowMessage = () =>{
 		//Nếu chưa đăng nhập thì show form đăng nhập
 		//ngược lại nếu đã đăng nhập thì hiện lên message
@@ -135,12 +130,17 @@ class SenderStatusDetail extends Component {
             {essentials_state &&
               essentials_state.map((essential) => {
                 return (
+
                   <React.Fragment>
-                    <tr key={essential.essential_id}>
-                      <td>{essential.name}</td>
-                      <td>{essential.quantity}</td>
-                      <td>{essential.unit}</td>
-                    </tr>
+                    {   
+                        essential.quantity > 0 &&
+                        <tr key={essential.essential_id}>
+                            <td>{essential.name}</td>
+                            <td>{essential.quantity}</td>
+                            <td>{essential.unit}</td>
+                        </tr>
+                    }
+                   
                   </React.Fragment>
                 );
               })} 

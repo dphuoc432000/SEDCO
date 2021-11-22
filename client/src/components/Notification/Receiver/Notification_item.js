@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./notification_item.css";
-import Notification_content from "./Notification_content";
+// import "./notification_item.css";
+import Notification_content from "./Notification_content_receiver";
 class Notification_item extends Component {
   state = {
     seeNotificationDetail: false,

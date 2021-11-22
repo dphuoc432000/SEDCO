@@ -29,6 +29,7 @@ class Status extends Component {
             showSenderStatus: false,
             showReceiverStatus: false,
             showCarTripStatus: false,
+            account_id : this.props.account_id,
         };
     }
     mapEssentialMarker = async (essentials_marker) => {
@@ -70,9 +71,12 @@ class Status extends Component {
   };
   
   handleShowHideFormCarTrip = () => {
-    this.setState({
-      showCarTripForm : !this.state.showCarTripForm,
-    })
+    if(this.props.isAuthenticated)
+        this.setState({
+        showCarTripForm : !this.state.showCarTripForm,
+        })
+    else 
+        this.props.handleChangeShowFormLogin()
   }
   getRoleName = () => {
     if (this.props.role_name.name) {

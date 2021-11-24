@@ -403,9 +403,7 @@ class CarTripForm extends Component {
   };
   submitFormCartrip = async () => {
     if (this.checkingForm() || this.checkingFormImg()) {
-    //   console.log(this.checkingFormImg());
         toast.warn("Vui lòng nhập đầy đủ thông tin (bắt buộc*)");
-      
     } else {
       let formData = new FormData();
       formData.append("type_car", this.state.car.type_car.value);
@@ -455,9 +453,9 @@ class CarTripForm extends Component {
   };
   render() {
     let { isNextPage } = this.state;
-    console.log("check state", this.state);
+    console.log("check state", this.checkingFormImg());
     const vehicle_censorship = this.state.vehicle_censorship;
-
+    
     return (
       <div className="Modal-Reveiver__CreatStatus ">
         <div className="Modal-overlay"></div>
@@ -475,177 +473,195 @@ class CarTripForm extends Component {
             {isNextPage === false ? (
               <>
                 <h1 className="cartrip-title">Tạo chuyến xe</h1>
-                <h3 className="cartrip-label">Thông tin xe</h3>
-                <div className="Wrapped">
-                  <select
-                    className="Select Select-sizeL"
-                    value={this.state.car.type_car.value}
-                    name="type_car"
-                    onChange={(event) => {
-                      this.handleOnChangeCar(event);
-                    }}
-                  >
-                    <option value="">--Chọn loại xe--</option>
-                    <option value="Xe tải hạng nhẹ">Xe tải hạng nhẹ</option>
-                    <option value="Xe tải hạng trung">
-                      Xe tải hạng trung{" "}
-                    </option>
-                    <option value="Xe tải hạng nặng">Xe tải hạng nặng </option>
-                    <option value="Xe đông lạnh">Xe đông lạnh </option>
-                    <option value="Xe máy">Xe máy </option>
-                  </select>
-                  <FormError
-                    type="type_car"
-                    isHidden={this.state.car.type_car.isInputValue}
-                    errorMessage={this.state.car.type_car.errorMessage}
-                  />
-                  <input
-                    type="text"
-                    className="input-cartrip"
-                    placeholder="Số lượng người"
-                    name="many_people"
-                    value={this.state.car.many_people.value}
-                    onChange={(event) => {
-                      this.handleOnChangeCar(event);
-                    }}
-                  />
-                  <FormError
-                    type="many_people"
-                    isHidden={this.state.car.many_people.isInputValue}
-                    errorMessage={this.state.car.many_people.errorMessage}
-                  />
+                <div className="wrapped_large" style={{marginLeft: '34px',overflow: 'hidden',}}>
+                        <h3 className="cartrip-label" style={{marginLeft: '0px'}}>Thông tin xe</h3>
+                        <div className="Wrapped" >
+                                <select
+                                    className="Select Select-sizeL"
+                                    value={this.state.car.type_car.value}
+                                    name="type_car"
+                                    onChange={(event) => {
+                                    this.handleOnChangeCar(event);
+                                    }}
+                                    style={{marginLeft: '-32px'}}
+                                >
+                                    <option value="">--Chọn loại xe--</option>
+                                    <option value="Xe tải hạng nhẹ">Xe tải hạng nhẹ</option>
+                                    <option value="Xe tải hạng trung">
+                                    Xe tải hạng trung{" "}
+                                    </option>
+                                    <option value="Xe tải hạng nặng">Xe tải hạng nặng </option>
+                                    <option value="Xe đông lạnh">Xe đông lạnh </option>
+                                    <option value="Xe máy">Xe máy </option>
+                                </select>
+                                
+                                <input
+                                    type="text"
+                                    className="input-cartrip"
+                                    placeholder="Số lượng người"
+                                    name="many_people"
+                                    value={this.state.car.many_people.value}
+                                    onChange={(event) => {
+                                    this.handleOnChangeCar(event);
+                                    }}
+                                />
+                                
+                        </div>
+                        <div style={{display: 'flex'}}>
+                            <FormError
+                                type="type_car"
+                                isHidden={this.state.car.type_car.isInputValue}
+                                errorMessage={this.state.car.type_car.errorMessage}
+                            />
+                            <FormError
+                                type="many_people"
+                                isHidden={this.state.car.many_people.isInputValue}
+                                errorMessage={this.state.car.many_people.errorMessage}
+                            />
+                        </div>
+                        <div className="Wrapped" style={{marginTop: '27px'}}>
+                        <input
+                            style={{marginLeft: '-31px',}}
+                            type="text"
+                            className="input-cartrip"
+                            placeholder="Biển số xe(Bắt buộc)*"
+                            name="license_plate"
+                            value={this.state.car.license_plate.value}
+                            onChange={(event) => {
+                            this.handleOnChangeCar(event);
+                            }}
+                        />
+                        
+                        <div
+                            style={{
+                            width: "220px",
+                            display: "flex",
+                            border: "1px solid black",
+                            }}
+                        >
+                            <input
+                            type="text"
+                            className="input-cartrip"
+                            placeholder="Trọng tải"
+                            name="tonnage"
+                            style={{ border: "none", outline: "none" }}
+                            value={this.state.car.tonnage.value}
+                            onChange={(event) => {
+                                this.handleOnChangeCar(event);
+                            }}
+                            />
+
+                            <label
+                            htmlFor=""
+                            style={{
+                                marginRight: "30px",
+                                fontWeight: "700",
+                                lineHeight: "33px",
+                            }}
+                            >
+                            Tấn
+                            </label>
+                        </div>
+                        
+                        </div>
+                        <div style={{display: "flex"}}>
+                            <FormError
+                                type="license_plate"
+                                isHidden={this.state.car.license_plate.isInputValue}
+                                errorMessage={this.state.car.license_plate.errorMessage}
+                            />
+                            <FormError
+                            type="tonnage"
+                            isHidden={this.state.car.tonnage.isInputValue}
+                            errorMessage={this.state.car.tonnage.errorMessage}
+                            />
+                        </div>
+                        <h3 className="cartrip-label" style={{marginLeft: '0px'}}>Thông tin chuyến xe</h3>
+
+                        <div style={{ display: "flex", marginBottom: "20px",marginLeft: '20px', }}>
+                            <h3 className="cartrip-label" style={{ color: "#767474" }}>
+                                Bắt đầu nhận hàng
+                            </h3>
+
+                            <input
+                                type="date"
+                                name="start_receive_time"
+                                className="start_receive_time_class"
+                                style={{ width: "336px", marginLeft: "30px" }}
+                                value={getFullDate(this.state.start_receive_time.value)}
+                                onChange={(event) => {
+                                this.handleOnChange(event);
+                                }}
+                            />
+                        </div>
+                        <FormError
+                        type="start_receive_time"
+                        isHidden={this.state.start_receive_time.isInputValue}
+                        errorMessage={this.state.start_receive_time.errorMessage}
+                        />
+
+                        <div style={{ display: "flex" ,marginLeft: '20px'}}>
+                            <h3 className="cartrip-label" style={{ color: "#767474" }}>
+                                Bắt đầu khởi hành
+                            </h3>
+
+                            <input
+                                type="date"
+                                name="departure_time"
+                                className="departure_time_class"
+                                style={{ width: "336px", marginLeft: "34px" }}
+                                value={this.state.departure_time.value}
+                                onChange={(event) => {
+                                this.handleOnChange(event);
+                                }}
+                            />
+                        </div>
+                        <FormError
+                        type="departure_time"
+                        isHidden={this.state.departure_time.isInputValue}
+                        errorMessage={this.state.departure_time.errorMessage}
+                        />
+
+                        <h3 className="cartrip-label" style={{marginLeft: '0px'}}>Lộ trình</h3>
+                        <div className="Wrapped">
+                            <input
+                                type="text"
+                                className="input-cartrip"
+                                placeholder="Địa điểm khởi hành(Bắt buộc)*"
+                                name="location_start"
+                                value={this.state.location_start.value}
+                                onChange={(event) => {
+                                this.handleOnChange(event);
+                                }}
+                                style={{marginLeft: '-33px'}}
+                            />
+                            
+                            <input
+                                type="text"
+                                className="input-cartrip"
+                                placeholder="Địa điểm đến(Bắt buộc)*"
+                                value={this.state.location_finish.value}
+                                name="location_finish"
+                                onChange={(event) => {
+                                this.handleOnChange(event);
+                                }}
+                            />
+                            
+                        </div>
+                        <div style={{ display: "flex"}}>
+                            <FormError
+                                    type="location_start"
+                                    isHidden={this.state.location_start.isInputValue}
+                                    errorMessage={this.state.location_start.errorMessage}
+                            />
+                            <FormError
+                                type="location_finish"
+                                isHidden={this.state.location_finish.isInputValue}
+                                errorMessage={this.state.location_finish.errorMessage}
+                            />
+                        </div>
                 </div>
-                <div className="Wrapped">
-                  <input
-                    type="text"
-                    className="input-cartrip"
-                    placeholder="Biển số xe(Bắt buộc)*"
-                    name="license_plate"
-                    value={this.state.car.license_plate.value}
-                    onChange={(event) => {
-                      this.handleOnChangeCar(event);
-                    }}
-                  />
-                  <FormError
-                    type="license_plate"
-                    isHidden={this.state.car.license_plate.isInputValue}
-                    errorMessage={this.state.car.license_plate.errorMessage}
-                  />
-                  <div
-                    style={{
-                      width: "220px",
-                      display: "flex",
-                      border: "1px solid black",
-                    }}
-                  >
-                    <input
-                      type="text"
-                      className="input-cartrip"
-                      placeholder="Trọng tải"
-                      name="tonnage"
-                      style={{ border: "none", outline: "none" }}
-                      value={this.state.car.tonnage.value}
-                      onChange={(event) => {
-                        this.handleOnChangeCar(event);
-                      }}
-                    />
-
-                    <label
-                      htmlFor=""
-                      style={{
-                        marginRight: "30px",
-                        fontWeight: "700",
-                        lineHeight: "33px",
-                      }}
-                    >
-                      Tấn
-                    </label>
-                  </div>
-                  <FormError
-                    type="tonnage"
-                    isHidden={this.state.car.tonnage.isInputValue}
-                    errorMessage={this.state.car.tonnage.errorMessage}
-                  />
-                </div>
-                <h3 className="cartrip-label">Thông tin chuyến xe</h3>
-
-                <div style={{ display: "flex", marginBottom: "20px" }}>
-                  <h3 className="cartrip-label" style={{ color: "#767474" }}>
-                    Bắt đầu nhận hàng
-                  </h3>
-
-                  <input
-                    type="date"
-                    name="start_receive_time"
-                    className="start_receive_time_class"
-                    style={{ width: "336px", marginLeft: "30px" }}
-                    value={getFullDate(this.state.start_receive_time.value)}
-                    onChange={(event) => {
-                      this.handleOnChange(event);
-                    }}
-                  />
-                </div>
-                <FormError
-                  type="start_receive_time"
-                  isHidden={this.state.start_receive_time.isInputValue}
-                  errorMessage={this.state.start_receive_time.errorMessage}
-                />
-
-                <div style={{ display: "flex" }}>
-                  <h3 className="cartrip-label" style={{ color: "#767474" }}>
-                    Bắt đầu khởi hành
-                  </h3>
-
-                  <input
-                    type="date"
-                    name="departure_time"
-                    className="departure_time_class"
-                    style={{ width: "336px", marginLeft: "34px" }}
-                    value={this.state.departure_time.value}
-                    onChange={(event) => {
-                      this.handleOnChange(event);
-                    }}
-                  />
-                </div>
-                <FormError
-                  type="departure_time"
-                  isHidden={this.state.departure_time.isInputValue}
-                  errorMessage={this.state.departure_time.errorMessage}
-                />
-
-                <h3 className="cartrip-label">Lộ trình</h3>
-                <div className="Wrapped">
-                  <input
-                    type="text"
-                    className="input-cartrip"
-                    placeholder="Địa điểm khởi hành(Bắt buộc)*"
-                    name="location_start"
-                    value={this.state.location_start.value}
-                    onChange={(event) => {
-                      this.handleOnChange(event);
-                    }}
-                  />
-                  <FormError
-                    type="location_start"
-                    isHidden={this.state.location_start.isInputValue}
-                    errorMessage={this.state.location_start.errorMessage}
-                  />
-                  <input
-                    type="text"
-                    className="input-cartrip"
-                    placeholder="Địa điểm đến(Bắt buộc)*"
-                    value={this.state.location_finish.value}
-                    name="location_finish"
-                    onChange={(event) => {
-                      this.handleOnChange(event);
-                    }}
-                  />
-                  <FormError
-                    type="location_finish"
-                    isHidden={this.state.location_finish.isInputValue}
-                    errorMessage={this.state.location_finish.errorMessage}
-                  />
-                </div>
+                
 
                 <input
                   type="text"
@@ -657,8 +673,9 @@ class CarTripForm extends Component {
                     this.handleOnChange(event);
                   }}
                 />
+
                 <div>
-                  <h3 className="cartrip-label">Hình ảnh</h3>
+                  <h3 className="cartrip-label" style={{marginLeft: '35px'}}>Hình ảnh</h3>
                   <div
                     className="Wrapped-NextFrom-left"
                     style={{ marginLeft: "34px", paddingBottom: "30px" }}
@@ -684,6 +701,7 @@ class CarTripForm extends Component {
                           src=""
                           id="picture_data"
                           alt=""
+                          
                         />
                       </React.Fragment>
                     </div>

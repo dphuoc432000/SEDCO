@@ -176,7 +176,7 @@ class CarTripDetail extends Component {
             </tr>
           </table>
           <div className="GoodDetail-Info-Img">
-            <h3 className="data-container__title">Hình ảnh</h3>
+            <h3 className="data-container__title" style={{ marginLeft : '-19px'}}>Hình ảnh</h3>
             <img
               src={`${API_IMAGE_URL}/${picture_state}`}
               alt="hình ảnh tài xế"

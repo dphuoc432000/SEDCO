@@ -69,6 +69,7 @@
   display: flex;
   justify-content: right;
   font-size: 13px;
+  position: relative;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar__btn_login{
   width: 150px;

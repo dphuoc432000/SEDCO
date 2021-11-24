@@ -22,7 +22,7 @@ class Notification_content_receiver extends Component {
           <div className="status_infor_container">
             <div className="per_infor">
               <span className="username">
-                <h2>CX002</h2>
+                <h2>Nguyen Phuong Hang</h2>
               </span>
               <span className="status" style={{ color: "#009432" }}>
                 <CircleIcon />

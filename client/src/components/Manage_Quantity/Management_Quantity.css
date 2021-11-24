@@ -9,18 +9,20 @@
 #manage_quantity th {
   border: 1.5px solid #ddd;
   padding: 8px;
+  font-size: 13px;
 }
 
 #management_Quantity_wrapped {
-  margin-top: 20px;
+    background-color: #f5faff;
+    border-radius: 12px;
+    position: absolute;
+    top: calc(100% + 6px );
+    /* left: 0; */
+    /* left: calc(100% - 42%); */
+    right: 16%;
+    padding: 20px;
 }
 
-#manage_quantity tr:hover {
-  background-color: #ddd;
-}
-#manage_quantity tr:last-child {
-  font-weight: 600;
-}
 
 #manage_quantity th {
   padding-top: 12px;

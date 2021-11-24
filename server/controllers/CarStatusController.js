@@ -184,6 +184,20 @@ class CarStatusController{
             })
             .catch(err => next(err))
     }
+
+    //Admin kiểm duyệt tài xế 
+    censorshipCarStatus = async (req, res, next) =>{
+        await carStatusService.censorshipCarStatus(req.params.car_status_id_pr)
+            .then(data =>{
+                if(data){
+                    if(data === 'CENSORED')
+                        return res.status(400).json(handleOther.errorHandling("Chuyến xe đã được kiểm duyệt trước đó", null));
+                    return res.json(data);
+                }
+                return res.status(400).json(handleOther.errorHandling("Không tìm thấy data", null));
+            })
+            .catch(err => next(err))
+    }
 }
 
 module.exports = new CarStatusController();

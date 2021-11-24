@@ -129,7 +129,6 @@ class ReceiverStatusService {
         return receiver_status;
     }
 
-
 }
 
 module.exports = new ReceiverStatusService();

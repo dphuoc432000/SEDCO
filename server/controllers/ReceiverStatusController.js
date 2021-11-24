@@ -72,6 +72,36 @@ class RecriverStatusController {
             })
             .catch(err => next(err));
     }
+    //Notification
+    //Lấy ra những status vừa được chuyến xe đăng ký.
+    //+ regis_status: true;
+    //+ receiver_confirm: false;
+    //+ car_confirm: false;
+    getAllRegisterReceiverNoConfirm_0_2ByReceiverStatusID = async (req, res, next) => {
+        await historyReceiverService.getAllRegisterReceiverNoConfirm_0_2ByReceiverStatusID(req.params.receiver_status_id_pr, req.query._limit, req.query._page)
+            .then(histories => {
+                if (histories) {
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            })
+            .catch(err => next(err));
+    }
+    confirmReceiverStatusOfReceiver = async(req, res, next) =>{
+        await historyReceiverService.confirmReceiverStatusOfReceiver(req.params.car_status_id_pr, req.params.receiver_status_id_pr)
+            .then(history =>{
+                if (history) {
+                    if(history === 'NO DATA')
+                        return res.status(400).json(handleOther.errorHandling('Không tìm thấy data', null));
+                    else if(history === 'NO CONFIRM')
+                        return res.status(400).json(handleOther.errorHandling('Không thể xác nhận giao dịch', null));
+                    else if(history === 'NO REGISTER')
+                        return res.status(400).json(handleOther.errorHandling('Nguời nhận chưa được đăng ký', null));
+                    return res.json(history)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            })
+    }
 }
 
 module.exports = new RecriverStatusController;

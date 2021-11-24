@@ -37,4 +37,5 @@ router.post('/:car_status_id_pr/:sender_status_id_pr/register/sender/cancle', au
 router.post('/:car_status_id_pr/:receiver_status_id_pr/register/receiver/cancle', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.cancleRegisterReceiver);
 router.post('/:car_status_id_pr/:sender_status_id_pr/confirm/sender/car', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.confirmSenderStatusOfCar);
 router.post('/:car_status_id_pr/:receiver_status_id_pr/confirm/receiver/car', authmiddleware.check_login, authmiddleware.checkRole(['car_trip']), carStatusController.confirmReceiverStatusOfCar);
+router.post('/:car_status_id_pr/censorship', authmiddleware.check_login, authmiddleware.checkRole(['admin']), carStatusController.censorshipCarStatus);
 module.exports = router;

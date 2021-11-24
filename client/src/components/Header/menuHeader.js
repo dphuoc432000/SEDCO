@@ -8,6 +8,7 @@ export const menuHeader =[
         menu: [
             
             {
+                className : [],
                 name: "Thông báo",
                 link: '/notification/sender'
             }
@@ -18,26 +19,29 @@ export const menuHeader =[
         menu: [
            
             {
+                className : [],
                 name: "Thông báo",
                 link: '/notification/receiver'
             }
         ]        
     },
     {
+        
         name: "car_trip",
         menu: [
             {
+                className : [],
                 name: "Quản lý giao dịch",
                 link: '/car_trip/transaction_management'
             },
             {
+                className : [
+                    'btn__quantity_management'
+                ],
                 name: "Quản lý số lượng",
-                link: '/car_trip/quantity_management'
+                link: '#'
             },
-            // {
-            //     name: "Thông báo",
-            //     link: '/car_trip/notification'
-            // }
+           
         ]
     },
     {

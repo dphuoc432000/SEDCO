@@ -199,6 +199,7 @@ class App extends React.Component {
               handleLogin={this.handleLogin}
               appProps={this.state}
               handleLogout={this.handleLogout}
+              status_current={this.state.status_current}
             />
             <Route path="/" exact>
               <Home

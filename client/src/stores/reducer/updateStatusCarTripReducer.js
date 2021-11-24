@@ -7,9 +7,7 @@ import {
 const initState = {}
 
 const updateStatusCartripReducer = (state = initState , action) => {
-  console.log(action)
   switch (action.type) {
-    
     case UPDATE_STATUS_CARTRIP_SUCCESS:
       console.log("UPDATE CARTRIP SUCCESS", action);
       let CARTRIPstatus = {};

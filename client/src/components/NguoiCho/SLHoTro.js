@@ -89,7 +89,7 @@ class SLHoTro extends React.Component {
                       {essential.quantity > 0 && (
                         <tr key={essential.essential_id}>
                           <td>{essential.name}</td>
-                          <td>{essential.quantity}</td>
+                          <td style={{textAlign : 'right'}}>{essential.quantity}</td>
                           <td>{essential.unit}</td>
                         </tr>
                       )}

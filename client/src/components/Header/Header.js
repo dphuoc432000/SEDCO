@@ -11,7 +11,7 @@ import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 // import { menuHeader } from "./menuHeader";
 import CustomizedMenus from './subMenu';
 import CircleIcon from '@mui/icons-material/Circle';
-
+import Management_Quantity from '../../components/Manage_Quantity/Management_Quantity'
 // const translateRoleName = (role_name)=>{
 //     switch(role_name) {
 //         case "user":
@@ -87,10 +87,26 @@ class Header extends React.Component {
     //             full_name: this.props.full_name
     //         })
     // }
+    state = {
+        showManageQuantity : false ,
+    }
     handleChangeShowFormLogin = ()=>{
         this.props.handleChangeShowFormLogin();
     }
-    
+    handleOnclickShowManageQuantity = (event) => {
+        // const btn_showManageQuantity = document.getElementsByClassName('btn__quantity_management');
+        const className = event.target.className;
+        if(className === 'btn__quantity_management')
+        // btn_showManageQuantity[0].onclick = () => {
+            this.setState({
+                showManageQuantity : !this.state.showManageQuantity
+            })
+        else
+            this.setState({
+                showManageQuantity : false
+            }) 
+        // }
+    }
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
@@ -116,7 +132,7 @@ class Header extends React.Component {
                             <React.Fragment>
                                 <ul className="header-navbar-right__menu_user">
                                     {menu.map((item,index)=>{
-                                        return <li className="header-navbar__item" key={index}><Link to={item.link}>{item.name}</Link></li> 
+                                        return <li className="header-navbar__item" key={index}><Link onClick={(event) =>{this.handleOnclickShowManageQuantity(event)}}  className={item.className} to={item.link}>{item.name}</Link></li> 
                                     })}
                                 </ul>
                                 <div className="header-navbar-right__infor_user">
@@ -142,6 +158,11 @@ class Header extends React.Component {
                     </div>
                     
                 </div>
+                {role_name === 'car_trip' && this.state.showManageQuantity &&
+                    <Management_Quantity 
+                    status_current={this.props.status_current}
+                    />
+                }
             </header>
         );
     }

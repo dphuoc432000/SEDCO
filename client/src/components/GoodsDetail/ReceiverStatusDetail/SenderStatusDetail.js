@@ -9,7 +9,8 @@ import ModalDeleteStatus from "../../../components/ModalDeleteStatus/ModalDelete
 import { API_IMAGE_URL } from "../../../constants/api";
 import getEssentialsDetail from '../../../stores/actions/essentialsDetail.action';
 import {toast } from 'react-toastify';
-
+import {register_sender_status_of_car} from '../../../stores/actions/car_regis_status'
+import {REGISTER_SENDER_STATUS_OF_CAR_SUCCESS} from '../../../constants/actions'
 class SenderStatusDetail extends Component {
   state = {
     showUpdateSenderForm: false,
@@ -90,6 +91,19 @@ class SenderStatusDetail extends Component {
 		else
 			this.props.handleChangeShowFormLogin();
 	}
+    handleRegisSenderStatus = async() => {
+        const register_action = await this.props.register_sender_status_of_car(
+            this.props.status_current_current.detail._id, 
+            this.props.status_current.detail._id)
+           console.log(this.props.status_current_current.detail._id, 
+            this.props.status_current.detail._id) 
+        if(register_action.type !== REGISTER_SENDER_STATUS_OF_CAR_SUCCESS)
+            toast.error("Đăng ký không thành công")
+        else {
+            toast.success("Đăng ký nhận hàng thành công")
+        }
+        
+    }
   render() {
     console.log(this.props.essentials)
     const status_current = this.props.status_current;
@@ -118,6 +132,7 @@ class SenderStatusDetail extends Component {
       ) : (
         ""
       );
+     
     const user = this.props.user;
     return (
       <div>
@@ -164,11 +179,12 @@ class SenderStatusDetail extends Component {
             </tr>
           </table>
           <div className="GoodDetail-Info-Img">
-            <h3 className="data-container__title">Hình ảnh</h3>
+            <h3 className="data-container__title" style={{marginLeft : "-17px"}}>Hình ảnh</h3>
             <img
               src={`${API_IMAGE_URL}/${picture}`}
               alt={`Hình ảnh`}
               className="GoodDetail-Info-Img__src"
+            //   style={{marginLeft: "-21px"}}
             />
           </div>
         </div>
@@ -189,22 +205,25 @@ class SenderStatusDetail extends Component {
                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
                 lại
               </button>
-              {typeof this.props.handleHideSenderStatusDetail === 'function' && 
-                <React.Fragment>
-                  <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-                    onClick={() => this.handleShowHideModalDelete()}
-                  >
-                    Xóa
-                  </button>
+                <div>
+                        {typeof this.props.handleHideSenderStatusDetail === 'function' && 
+                        <React.Fragment>
+                        <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                            onClick={() => this.handleShowHideModalDelete()}
+                        >
+                            Xóa
+                        </button>
 
-                  <button
-                    className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                    onClick={this.handleShowHideUpdateSender}
-                  >
-                    Cập nhật
-                  </button>
-                </React.Fragment>
-              }
+                        <button
+                            className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                            onClick={this.handleShowHideUpdateSender}
+                        >
+                            Cập nhật
+                        </button>
+                        </React.Fragment>
+                    }
+                </div>
+              
             </React.Fragment>
             :
             <React.Fragment> {/*Phần cho người dùng khi vào xem status của người khác */}
@@ -217,16 +236,29 @@ class SenderStatusDetail extends Component {
               <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del" onClick={() =>{this.handleShowMessage()}}>
                 Nhắn tin
               </button>
+              {console.log(status_current)}
               {role_name_current.role_name ==='car_trip' && 
+                status_current.detail.regis_status === false ?
+                <button
+                //CHƯA XONG
+                //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
+                //nếu chưa thì viết hàm xử lý (CHƯA XONG)
+                className="GoodDetailContainer-btn-item GoodDetail-btn__Update" 
+                onClick={() =>{this.handleRegisSenderStatus()}}
+            
+                >
+                    Đăng ký
+                </button>
+                :
                 <button
                   //CHƯA XONG
                   //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                   //nếu chưa thì viết hàm xử lý (CHƯA XONG)
                   className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                  disabled={status_current.detail.regis_status?false:true}
-                  onClick={() => {status_current.detail.regis_status ? toast.info("Đã có chuyến xe đăng ký!"): alert("CHƯA XONG. Nơi viết hàm xử lý")}}
+                //   disabled={true}
+                  onClick={() => {status_current.detail.regis_status === true ? toast.info("Đã có chuyến xe đăng ký!"): alert("CHƯA XONG. Nơi viết hàm xử lý")}}
                 >
-                  Đăng ký
+                  Đã đăng ký
                 </button>
               }
             </React.Fragment>
@@ -257,6 +289,10 @@ const mapDispatchToProps = (dispatch) => {
       const action = await getEssentialsDetail(essential_id);
       return dispatch(action);
     },
+    register_sender_status_of_car : async (car_status_id , sender_status_id) => {
+        const action = await register_sender_status_of_car(car_status_id, sender_status_id);
+        return dispatch(action);
+    }
   };
 };
 

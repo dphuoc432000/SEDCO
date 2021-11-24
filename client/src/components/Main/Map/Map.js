@@ -13,7 +13,7 @@ import { get_status_list_no_complete } from "../../../stores/actions/status_list
 import { get_sender_status_list_no_complete } from "../../../stores/actions/sender_status_list_no_completed.action";
 import { get_receiver_status_list_no_complete } from "../../../stores/actions/receiver_status_list_no_completed.action";
 import { get_car_trip_status_list_no_complete } from "../../../stores/actions/car_trip_status_list_no_completed.action";
-
+import SearchArea from "./SearchArea/SearchArea";
 // import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
@@ -21,6 +21,7 @@ import axios from "axios";
 const navControlStyle = {
   right: 10,
   top: 10,
+  boxShadow: 'rgb(0 0 0 / 7%) 0px 1px 1px, rgb(0 0 0 / 7%) 0px 2px 2px, rgb(0 0 0 / 7%) 0px 4px 4px, rgb(0 0 0 / 7%) 0px 8px 8px, rgb(0 0 0 / 7%) 0px 16px 16px',
 };
 
 const geolocateControlStyle = {
@@ -71,8 +72,8 @@ class Map extends Component {
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${status.user.address}+việt+nam.json?access_token=${key}`
           )
           .then((res) => {
-            const lng = res.data.features[0].center[0];
-            const lat = res.data.features[0].center[1];
+            const lng = parseFloat(`${res.data.features[0].center[0]}${ Math.random() * 10000000000000000}`);
+            const lat = parseFloat(`${res.data.features[0].center[1]}${ Math.random() * 10000000000000000}`);
             markers.push({
               ...status,
               longitude: lng,
@@ -166,6 +167,18 @@ class Map extends Component {
     this.props.handleChangeStatusMarker(marker);
   }
 
+  handleChangeLocationAfterSearch = (item) =>{
+    const lng = parseFloat(`${item.center[0]}${ Math.random() * 10000000000000000}`);
+    const lat = parseFloat(`${item.center[1]}${ Math.random() * 10000000000000000}`);
+    this.setState({
+      viewport:{
+        ...this.state.viewport,
+        latitude: lat,
+        longitude: lng,
+        zoom: 11,
+      }
+    })
+  }
   render() {
     const { viewport, markers, car_trip_status_list, receiver_status_list, sender_status_list, all_status_list } = this.state;
     // console.log(this.state)
@@ -227,6 +240,7 @@ class Map extends Component {
             <span>{car_trip_status_list.length} Chuyến xe</span>
           </div>
         </div>
+        <SearchArea handleChangeLocationAfterSearch = {this.handleChangeLocationAfterSearch}/>
       </div>
     );
   }

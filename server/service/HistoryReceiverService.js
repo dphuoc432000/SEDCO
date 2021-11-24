@@ -349,6 +349,142 @@ class HistoryReceiverService{
         return null;
     }
 
+    //kiểm tra số lượng essential: + nếu như số lượng essential tất cả < hoặc = 0 thì TRUE
+    //                          + nếu như số lượng essential tất cả có 1 số lượng  > 0 thì FALSE
+    checkEssentialsQuantityInReceiver = (essentials) =>{
+        if(essentials.length > 0){
+            return essentials.some(essential =>{
+                return essential.quantity > 0;
+            })
+        }
+        return false;
+    }
+    checkRegisStatusOfReceiverStatus = async (receiver_status_id) =>{
+        return await ReceiverStatus.findById({_id: receiver_status_id})
+            .then(data =>{
+                data = mongooseToObject(data);
+                if(data && data.regis_status === true)
+                    return true;
+                return false;
+            })
+            .catch(err => err);
+    }
+
+    confirmReceiverStatusOfReceiver = async  (car_status_id, receiver_status_id) => {
+        const historyReceiverData = await HistoryReceiver.findOne({car_status_id: car_status_id, receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: true})
+            .then(async history =>{
+                history = mongooseToObject(history);
+                if(!history)
+                    return 'NO DATA';
+                if(!history.receiver_confirm && history.car_confirm){
+                    //Nếu có data => update history
+                    //kiểm tra status có được đăng ký không
+                    if(await this.checkRegisStatusOfReceiverStatus(history.receiver_status_id)){
+                        //update history: {receiver_confirm: true};
+                        const history_update_data = await HistoryReceiver.findOneAndUpdate({
+                                car_status_id: car_status_id, 
+                                receiver_status_id: receiver_status_id,
+                                receiver_confirm: false, 
+                                car_confirm: true
+                            },
+                            {
+                                receiver_confirm: true
+                            })
+                            .then(data => mongooseToObject(data))
+                            .catch(err => err);
+                        let receiver_status_data = null;
+                        //update regis_status: false trong receiver_status
+                        if(history_update_data){
+                            if(history_update_data.receiver_status_id){
+                                receiver_status_data =  await ReceiverStatus.findOneAndUpdate({_id:history_update_data.receiver_status_id, regis_status: true},{regis_status: false})
+                                    .then(data => mongooseToObject(data))
+                                    .catch(err => err)
+                            }
+                        }
+                        //update status_completed: + nếu như số lượng essential tất cả < hoặc = 0 thì TRUE
+                        //                          + nếu như số lượng essential tất cả có 1 số lượng  > 0 thì FALSE
+                        if(receiver_status_data){
+                            //kiểm tra số lượng essentials
+                            const checkQuantity = this.checkEssentialsQuantityInReceiver(receiver_status_data.essentials);
+                            //nếu checkQuantity = true thì update lại statuss_completed: true
+                            if(!checkQuantity)
+                                await Status.findByIdAndUpdate({_id: receiver_status_data.status_id}, {status_completed: true})
+                                    .then(data => mongooseToObject(data))
+                            return history;
+                        }
+                        return 'NO CONFIRM';
+                    }
+                }
+                return 'NO REGISTER'
+            })
+            .catch(err => err)
+        if(historyReceiverData)
+            return historyReceiverData
+        return null;
+    }
+    //Notification
+    //Lấy ra những status vừa được chuyến xe đăng ký.
+    //+ regis_status: true;
+    //+ receiver_confirm: false;
+    //+ car_confirm: false;
+    getAllRegisterReceiverNoConfirm_0_2ByReceiverStatusID = async(receiver_status_id,_limit,_page) =>{
+        const totalRows = await HistoryReceiver.count({receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: false});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+        const history_receiver_list  = await HistoryReceiver.find({receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: false})
+            .skip(start)
+            .limit(pagination._limit)
+            .sort('-createdAt')
+            .then(async data =>{
+                let histories_return = multiplemongooseToObject(data);
+                
+                histories_return = await Promise.all(histories_return.map( async history => {
+                    const object = {};
+                    const car_infor = {};
+                    object.history = history;
+                    const carStatus_data = await carStatusService.getCarStatusDetail_car_status_id(history.car_status_id)
+                        .then(data => data);
+                    
+                    if(carStatus_data){
+                        await statusService.getStatusDetail(carStatus_data.status_id)
+                            .then(status =>{
+                                car_infor.status = status;
+                                return status;
+                            })
+                            .then(async status =>{
+                                const account = await accountService.getAccountDetails(status.account_id)
+                                    .then(data => data);
+                                car_infor.account = account;
+                                return account;
+                            })
+                            .then(async account =>{
+                                const user = await userService.getUserByID(account.user_id)
+                                    .then(data => data);
+                                car_infor.user = user;
+                                object.car_infor = car_infor;
+                                return history;
+                            })
+                            .catch(err => err)
+                    }
+                    else{
+                        car_infor.status = null;
+                        car_infor.account = null;
+                        car_infor.user = null;
+                        object.car_infor = car_infor
+                    }
+                    return object;
+                }))
+                return histories_return;
+            })
+            .catch(err => err);
+        return{
+            history_receiver_list: history_receiver_list,
+            pagination
+        }
+    }
+
+
+    //Notification
     //lấy tất cả danh sách chưa được xác nhận từ người dùng nhưng đã được xác nhận từ chuyến xe
     //Làm cho phần thông báo của receiver
     getAllHistoryRegisterReceiverNoConfirmByReceiverStatusID =  async (receiver_status_id,_limit,_page) =>{
@@ -359,7 +495,48 @@ class HistoryReceiverService{
         const history_receiver_list  = await HistoryReceiver.find({receiver_status_id: receiver_status_id, receiver_confirm: false, car_confirm: true})
             .skip(start)
             .limit(pagination._limit)
-            .then(data => multiplemongooseToObject(data))
+            .sort('-createdAt')
+            .then(async data =>{
+                let histories_return = multiplemongooseToObject(data);
+                
+                histories_return = await Promise.all(histories_return.map( async history => {
+                    const object = {};
+                    const car_infor = {};
+                    object.history = history;
+                    const carStatus_data = await carStatusService.getCarStatusDetail_car_status_id(history.car_status_id)
+                        .then(data => data);
+                    
+                    if(carStatus_data){
+                        await statusService.getStatusDetail(carStatus_data.status_id)
+                            .then(status =>{
+                                car_infor.status = status;
+                                return status;
+                            })
+                            .then(async status =>{
+                                const account = await accountService.getAccountDetails(status.account_id)
+                                    .then(data => data);
+                                car_infor.account = account;
+                                return account;
+                            })
+                            .then(async account =>{
+                                const user = await userService.getUserByID(account.user_id)
+                                    .then(data => data);
+                                car_infor.user = user;
+                                object.car_infor = car_infor;
+                                return history;
+                            })
+                            .catch(err => err)
+                    }
+                    else{
+                        car_infor.status = null;
+                        car_infor.account = null;
+                        car_infor.user = null;
+                        object.car_infor = car_infor
+                    }
+                    return object;
+                }))
+                return histories_return;
+            })
             .catch(err => err);
         return{
             history_receiver_list: history_receiver_list,

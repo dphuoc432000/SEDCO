@@ -402,11 +402,8 @@ class CarTripForm extends Component {
     }
   };
   submitFormCartrip = async () => {
-    
     if (this.checkingForm() || this.checkingFormImg()) {
-   
         toast.warn("Vui lòng nhập đầy đủ thông tin (bắt buộc*)");
-      
     } else {
       let formData = new FormData();
       formData.append("type_car", this.state.car.type_car.value);

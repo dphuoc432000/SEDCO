@@ -6,6 +6,10 @@ import logo from '../../../assets/images/logo.png';
 import {get_user_list_no_censorship_action} from '../../../stores/actions/user_list_driver_no_censorship.action';
 import BasicPagination from '../../../components/Pagination/Pagination';
 import {API_IMAGE_URL} from '../../../constants/api'
+import {confirm_driver_censorship_action, cancle_driver_censorship_action}  from '../../../stores/actions/car_trip.action';
+import {CONFIRM_DRIVER_CENSORSHIP_SUCCESS, CANCLE_DRIVER_CENSORSHIP_SUCCESS} from '../../../constants/actions';
+import {toast } from 'react-toastify';
+import ModalConfirm from "./ModalConfirm/ModalConfirm";
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -27,7 +31,8 @@ class Driver_censorship extends React.Component {
             _page:1,
             totalRows:1
         },
-        user_no_censorship: {}
+        user_no_censorship: {},
+        open_ModalConfirm: false
     }
 
     componentDidMount = async () =>{
@@ -54,6 +59,45 @@ class Driver_censorship extends React.Component {
                 user_driver_no_censorship: user_list_no_censorshipReducer.user_driver_no_censorship,
                 pagination: user_list_no_censorshipReducer.pagination,
             })
+    }
+    handleCensorhipAction = async() =>{
+        const confirm_driver_censorship_action = await this.props.confirm_driver_censorship_action(this.state.user_no_censorship.car_status.detail._id)
+        if(confirm_driver_censorship_action.type === CONFIRM_DRIVER_CENSORSHIP_SUCCESS){
+            toast.success('Kiểm duyệt thành công!');
+            const user_list_no_censorship_action = await this.props.get_user_list_no_censorship_action(5,1);
+            const user_list_no_censorshipReducer = this.props.user_list_no_censorshipReducer;
+            if(user_list_no_censorship_action.type === 'GET_USER_LIST_NO_CENSORSHIP_SUCCESS')
+                this.setState({
+                    user_driver_no_censorship: user_list_no_censorshipReducer.user_driver_no_censorship,
+                    pagination: user_list_no_censorshipReducer.pagination,
+                    user_no_censorship: {}
+                })
+        }
+        else{
+            toast.error('Đã xảy ra lỗi trong quá trình kiểm duyệt!')
+        }
+    }
+    handleCancleCensorshipAction = async(car_status) =>{
+        const cancle_driver_censorship_action = await this.props.cancle_driver_censorship_action(car_status._id)
+        if(cancle_driver_censorship_action.type === CANCLE_DRIVER_CENSORSHIP_SUCCESS){
+            toast.success('Hủy chuyến xe thành công!');
+            const user_list_no_censorship_action = await this.props.get_user_list_no_censorship_action(5,1);
+            const user_list_no_censorshipReducer = this.props.user_list_no_censorshipReducer;
+            if(user_list_no_censorship_action.type === 'GET_USER_LIST_NO_CENSORSHIP_SUCCESS')
+                this.setState({
+                    user_driver_no_censorship: user_list_no_censorshipReducer.user_driver_no_censorship,
+                    pagination: user_list_no_censorshipReducer.pagination,
+                    user_no_censorship: {}
+                })
+        }
+        else{
+            toast.error('Đã xảy ra lỗi trong quá trình hủy chuyến xe !')
+        }
+    }
+    handleOpenModalConfirm = () =>{
+        this.setState({
+            open_ModalConfirm: !this.state.open_ModalConfirm
+        })
     }
     render() {
         console.log(this.state)
@@ -130,7 +174,7 @@ class Driver_censorship extends React.Component {
                                                     <li class="Info-Taixe__item">{user_no_censorship.age}</li>
                                                     <li class="Info-Taixe__item">{user_no_censorship.address}</li>
                                                     <li class="Info-Taixe__item">{user_no_censorship.phone_number}</li>
-                                                    <li class="Info-Taixe__item">{user_no_censorship.gmail}</li>
+                                                    <li class="Info-Taixe__item">{user_no_censorship.email}</li>
                                                 </ul>
                                             </div>
                                             <h3 class="Form-TTKD-Title-Major">Hình ảnh</h3>
@@ -229,8 +273,8 @@ class Driver_censorship extends React.Component {
                                                 
                                         </div>
                                         <div class="BTN_Accuracy">
-                                            <button class="BTN_Accuracy__item BTN_Accuracy_cancel">Hủy</button>
-                                            <button class="BTN_Accuracy__item BTN_Accuracy__Duyet">Duyệt</button>
+                                            <button onClick={()=>{this.handleOpenModalConfirm()}} class="BTN_Accuracy__item BTN_Accuracy_cancel">Hủy</button>
+                                            <button onClick={()=>{this.handleCensorhipAction()}} class="BTN_Accuracy__item BTN_Accuracy__Duyet">Duyệt</button>
                                         </div>
                                     </React.Fragment>
                                     :
@@ -241,6 +285,17 @@ class Driver_censorship extends React.Component {
                         </div>
                     </div>
                 </div>
+                {
+                    this.state.open_ModalConfirm &&
+                    <ModalConfirm
+                        open={this.state.open_ModalConfirm} 
+                        car_status={this.state.user_no_censorship.car_status}
+                        content={'Bạn muốn hủy nhận nhu yếu phẩm từ người dùng này?'}
+                        handleCancleCensorshipAction={this.handleCancleCensorshipAction}
+                        handleOpenModalConfirm={this.handleOpenModalConfirm}
+                    />
+                }
+                
             </React.Fragment>
             
         )
@@ -249,7 +304,8 @@ class Driver_censorship extends React.Component {
 //state này của redux không phải react
 const mapStateToProps = (state) => {
     return {
-        user_list_no_censorshipReducer: state.user_list_no_censorshipReducer
+        user_list_no_censorshipReducer: state.user_list_no_censorshipReducer,
+        carTripReducer: state.carTripReducer
     }
 }
 
@@ -258,6 +314,14 @@ const mapDispatchToProps = (dispatch) => {
     return {
         get_user_list_no_censorship_action : async (_limit,_page)=>{
             const action = await get_user_list_no_censorship_action(_limit,_page);
+            return dispatch(action);
+        },
+        confirm_driver_censorship_action: async(car_status_id) =>{
+            const action = await confirm_driver_censorship_action(car_status_id);
+            return dispatch(action);
+        },
+        cancle_driver_censorship_action: async(status_id) =>{
+            const action = await cancle_driver_censorship_action(status_id);
             return dispatch(action);
         }
     }

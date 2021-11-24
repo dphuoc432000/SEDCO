@@ -27,7 +27,6 @@ const ChangePasswordAction = async (account_id, password_old, password_new) =>{
                 errdata: err.response.data
             };
         });
-    console.log(action)
     return action;
 }
 

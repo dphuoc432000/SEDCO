@@ -27,6 +27,7 @@ import user_list_no_censorshipReducer from './user_list_no_censorshipReducer';
 import accountReducer from './accountReducer.js';
 import userReducer from './userReducer';
 import reportListReducer from './reportListReducer.js';
+import carTripReducer from './carTripReducer.js';
 
 export default combineReducers({
     roleReducer,
@@ -56,5 +57,6 @@ export default combineReducers({
     user_list_no_censorshipReducer,
     accountReducer,
     userReducer,
-    reportListReducer
+    reportListReducer,
+    carTripReducer
 });

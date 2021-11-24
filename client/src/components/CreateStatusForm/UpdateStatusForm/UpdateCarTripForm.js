@@ -629,7 +629,7 @@ class UpdateCarTripForm extends Component {
                                 onChange={(event) => {
                                 this.handleOnChange(event);
                                 }}
-                                style={{marginLeft: '-33px'}}
+                                style={{marginLeft: '-30px'}}
                             />
                             
                             <input

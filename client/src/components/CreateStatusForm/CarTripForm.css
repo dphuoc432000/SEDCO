@@ -103,6 +103,7 @@ form + form {
   /* height: 400px;
   background-repeat: no-repeat;
   object-fit: cover; */
+  overflow : hidden;
 }
 .IMG {
   margin-top: 16px;
@@ -138,6 +139,7 @@ form + form {
   color: transparent;
   width: 100%;
   box-sizing: border-box;
+  transform: translateY(100%);
   padding: 15px 120px;
   cursor: pointer;
   transition: 0.5s;
@@ -148,6 +150,7 @@ form + form {
 .img_item{
   width:220px;
   margin-top: 10px;
+  /* margin-left: -25px; */
 
 }
 .Wrapped-NextFrom-left > .Block-IMG > label > p,

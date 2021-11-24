@@ -258,20 +258,23 @@ class UpdateSenderForm extends Component {
               <button
                 className="back js-btn-ReceiverBack"
                 onClick={() => this.props.handleShowHideUpdateSender()}
+                style={{backgroundColor: 'red',
+                padding: '4px 16px',
+                border: 'none',
+                position: 'fixed',
+                color: 'white',
+                transform: 'translateX(-100%)'}}
               >
                 X
               </button>
             </div>
-
+            
             <div className="content">
               <p className="heading">Cập nhật hỗ trợ</p>
-              <p className="heading-2">
-                (Chỉ nhận giúp đở khi thật sự cần vì còn nhiều người khó khăn
-                hơn)
-              </p>
+             
             </div>
             <div className="input-UpdateStatusForm">
-              <form action="#">
+              <form action="#" style={{marginTop : '18px'}}>
                 <p className="heading-3 total">Nhu yếu phẩm</p>
                 {essentials.map((essential) => {
                   return (
@@ -346,7 +349,7 @@ class UpdateSenderForm extends Component {
                 <h3 className="input-title">Hình ảnh</h3>
                 <div
                   className="Wrapped-NextFrom-left"
-                  style={{ marginLeft: "34px", paddingBottom: "30px" }}
+                  style={{  paddingBottom: "30px" }}
                 >
                   <div className="Block-IMG">
                     <input
@@ -375,7 +378,12 @@ class UpdateSenderForm extends Component {
                 </div>
               </form>
             </div>
-
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <p className="heading-2">Chúng tôi cảm ơn bạn rất nhiều</p>
+              <p className="heading-2">
+                Cùng chung tay hỗ trợ những người khó khăn
+              </p>
+            </div>
             <div
               style={{
                 textAlign: "center",

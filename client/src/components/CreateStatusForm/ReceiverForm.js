@@ -302,7 +302,7 @@ class ReceiverForm extends Component {
                   <h3 className="cartrip-label">Hình ảnh</h3>
                   <div
                     className="Wrapped-NextFrom-left"
-                    style={{ marginLeft: "34px", paddingBottom: "30px" }}
+                    style={{  paddingBottom: "30px" }}
                   >
                     <div className="Block-IMG">
                       <input

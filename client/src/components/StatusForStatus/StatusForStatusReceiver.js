@@ -9,7 +9,6 @@ class StatusForStatusReceiver extends React.Component {
     render() {
         const status_receiver = this.props.status_current;
         let {statusNotConfirm} = this.state;
-        console.log(this.props.role_name)
         const user = this.props.user
 
 

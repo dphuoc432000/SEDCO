@@ -86,6 +86,7 @@ class Transaction_Management extends Component {
                                     handleInfomationStatusItem = {this.handleInfomationStatusItem}
                                     // sender_status_information = {this.state.sender_status_information}
                                     handleRemoveStatusAfterCorfirmOrCancle_sender_list = {this.handleRemoveStatusAfterCorfirmOrCancle_sender_list}
+                                    handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                                 />
                             </Route>
                             <Route exact path={`/car_trip/transaction_management/receiver/register`}>
@@ -94,6 +95,7 @@ class Transaction_Management extends Component {
                                     status_list={this.state.status_list}
                                     handleInfomationStatusItem = {this.handleInfomationStatusItem} 
                                     handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list}
+                                    handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                                 />
                             </Route>
                         </Switch>

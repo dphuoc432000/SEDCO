@@ -9,7 +9,6 @@ class StatusForStatusSender extends React.Component {
   render() {
     const status_sender = this.props.status_current;
     let {statusNotConfirm} = this.state;
-    // console.log(this.props.role_name)
     const user = this.props.user
 
     const todate = new Date(status_sender.createdAt).getDate();

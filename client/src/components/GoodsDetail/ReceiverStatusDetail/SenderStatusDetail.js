@@ -95,17 +95,17 @@ class SenderStatusDetail extends Component {
         const register_action = await this.props.register_sender_status_of_car(
             this.props.status_current_current.detail._id, 
             this.props.status_current.detail._id)
-           console.log(this.props.status_current_current.detail._id, 
-            this.props.status_current.detail._id) 
-        if(register_action.type !== REGISTER_SENDER_STATUS_OF_CAR_SUCCESS)
-            toast.error("Đăng ký không thành công")
+        if(register_action.type !== REGISTER_SENDER_STATUS_OF_CAR_SUCCESS){
+            toast.error("Đăng ký không thành công. ");
+          }
         else {
-            toast.success("Đăng ký nhận hàng thành công")
+            toast.success("Đăng ký nhận hàng thành công. Đã được thêm vào quản lý giao dịch.")
+            this.props.handleHiddenShowFormDetail()
+            this.props.handleUpdateRecentListWhenRegisStatus()
         }
         
     }
   render() {
-    console.log(this.props.essentials)
     const status_current = this.props.status_current;
     //status_current_current: status của người đang dùng đễ so sánh với status trên
     //nếu mã 2 cái status giống nhau thì hiện 3 nút quay lại, cập nhật và xóa
@@ -136,7 +136,7 @@ class SenderStatusDetail extends Component {
     const user = this.props.user;
     return (
       <div>
-        <div class="GoodDetail-container">
+        <div className="GoodDetail-container">
           {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
           <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>
 
@@ -236,15 +236,14 @@ class SenderStatusDetail extends Component {
               <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del" onClick={() =>{this.handleShowMessage()}}>
                 Nhắn tin
               </button>
-              {console.log(status_current)}
               {role_name_current.role_name ==='car_trip' && 
                 status_current.detail.regis_status === false ?
                 <button
                 //CHƯA XONG
                 //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                 //nếu chưa thì viết hàm xử lý (CHƯA XONG)
-                className="GoodDetailContainer-btn-item GoodDetail-btn__Update" 
-                onClick={() =>{this.handleRegisSenderStatus()}}
+                  className="GoodDetailContainer-btn-item GoodDetail-btn__Update" 
+                  onClick={() =>{this.handleRegisSenderStatus()}}
             
                 >
                     Đăng ký

@@ -63,6 +63,7 @@ class Receiver_register extends Component {
                     car_status = {this.props.car_status}
                     handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list} 
                     receiver_status_information={this.state.receiver_status_information} 
+                    handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                 />
             </React.Fragment>
         )

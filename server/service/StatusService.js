@@ -452,7 +452,14 @@ class StatusService {
         let object;
         if(status){
             status_detail = await this.getEssentialOfStatus(status_id_param);
-            object = {...status, detail: {...status_detail}};
+            const user = await accountService.getAccountDetails(status.account_id)
+                .then( account => account)
+                .then(async account =>{
+                    return await userService.getUserByID(account.user_id)
+                        .then(user => user);
+                })
+                .catch(err => err)
+            object = {...status, detail: {...status_detail}, user: user};
         }
         else
             object = null; 
@@ -526,7 +533,7 @@ class StatusService {
                 .catch(err => err);
         }
         else
-            status_list = await Status.find({})
+            status_list = await Status.find({status_completed: false})
                 .sort('-createdAt')
                 .then(data => multiplemongooseToObject(data))
                 .catch(err => err);

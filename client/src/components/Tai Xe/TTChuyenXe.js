@@ -101,6 +101,7 @@ class TTChuyenXe extends Component {
               user={this.props.user}
               handleShowHideCarTripDetail={this.handleShowHideCarTripDetail}
               status_current={this.props.status_current}
+              status_current_current = {this.props.status_current}
               handleUpdateCarTrips={this.handleUpdateCarTrips}
               handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
               handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}

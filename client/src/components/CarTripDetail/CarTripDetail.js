@@ -14,37 +14,37 @@ class CarTripDetail extends Component {
     state = {
     showUpdateCarTripForm: false,
     showModalDelete: false,
-    start_receive_time: this.props.status_current.detail.start_receive_time,
-    departure_time: this.props.status_current.detail.departure_time,
-    location_start: this.props.status_current.detail.location_start,
-    location_finish: this.props.status_current.detail.location_finish,
-    license_plate: this.props.status_current.detail.car.license_plate,
-    many_people: this.props.status_current.detail.car.many_people,
-    tonnage: this.props.status_current.detail.car.tonnage,
-    type_car: this.props.status_current.detail.car.type_car,
-    note: this.props.status_current.detail.note,
-    status_current: this.props.status_current,
-    picture : this.props.status_current.detail.picture,
+    // start_receive_time: this.props.status_current.detail.start_receive_time,
+    // departure_time: this.props.status_current.detail.departure_time,
+    // location_start: this.props.status_current.detail.location_start,
+    // location_finish: this.props.status_current.detail.location_finish,
+    // license_plate: this.props.status_current.detail.car.license_plate,
+    // many_people: this.props.status_current.detail.car.many_people,
+    // tonnage: this.props.status_current.detail.car.tonnage,
+    // type_car: this.props.status_current.detail.car.type_car,
+    // note: this.props.status_current.detail.note,
+    // status_current: this.props.status_current,
+    // picture : this.props.status_current.detail.picture,
   };
     
   
-  componentDidUpdate = (prevProps) => {
-    if (this.props.status_current !== prevProps.status_current) {
-      this.setState({
-        start_receive_time: this.props.status_current.detail.start_receive_time,
-        departure_time: this.props.status_current.detail.departure_time,
-        location_start: this.props.status_current.detail.location_start,
-        location_finish: this.props.status_current.detail.location_finish,
-        license_plate: this.props.status_current.detail.car.license_plate,
-        many_people: this.props.status_current.detail.car.many_people,
-        tonnage: this.props.status_current.detail.car.tonnage,
-        type_car: this.props.status_current.detail.car.type_car,
-        note: this.props.status_current.detail.note,
-        picture : this.props.status_current.detail.picture,
-        status_current: this.props.status_current,
-      });
-    }
-  };
+  // componentDidUpdate = (prevProps) => {
+  //   if (this.props.status_current !== prevProps.status_current) {
+  //     this.setState({
+  //       start_receive_time: this.props.status_current.detail.start_receive_time,
+  //       departure_time: this.props.status_current.detail.departure_time,
+  //       location_start: this.props.status_current.detail.location_start,
+  //       location_finish: this.props.status_current.detail.location_finish,
+  //       license_plate: this.props.status_current.detail.car.license_plate,
+  //       many_people: this.props.status_current.detail.car.many_people,
+  //       tonnage: this.props.status_current.detail.car.tonnage,
+  //       type_car: this.props.status_current.detail.car.type_car,
+  //       note: this.props.status_current.detail.note,
+  //       picture : this.props.status_current.detail.picture,
+  //       status_current: this.props.status_current,
+  //     });
+  //   }
+  // };
 
   handleShowHideUpdateCarTrip = () => {
     this.setState({
@@ -73,22 +73,29 @@ class CarTripDetail extends Component {
   render() {
     let { showUpdateCarTripForm } = this.state;
     const user = this.props.user;
-
-    const start_receive_time_state = this.state.start_receive_time;
-    const departure_time_state = this.state.departure_time;
-    const location_start_state = this.state.location_start;
-    const location_finish_state = this.state.location_finish;
-    const license_plate_state = this.state.license_plate;
-    const many_people_state = this.state.many_people;
-    const tonnage_state = this.state.tonnage;
-    const type_car_state = this.state.type_car;
-    const note_state = this.state.note;
-    const picture_state = this.state.picture;
-    const todate_start_receive = new Date(start_receive_time_state).getDate();
+    
+    const status_current = this.props.status_current;
+    //status_current_current: status của người đang dùng đễ so sánh với status trên
+    //nếu mã 2 cái status giống nhau thì hiện 3 nút quay lại, cập nhật và xóa
+    //nếu mã 2 cái status khác nhau thì hiện 2 nút quay lại và nhắn tin
+    const status_current_current = this.props.status_current_current;
+    //role_name của người dùng hiện tại dùng để set nút đăng ký cho tài xế <- nếu là role car_trip
+    const role_name_current = this.props.role_name_current;
+    const start_receive_time = status_current.detail.start_receive_time;
+    const departure_time = status_current.detail.departure_time;
+    const location_start = status_current.detail.location_start;
+    const location_finish = status_current.detail.location_finish;
+    const license_plate = status_current.detail.car.license_plate;
+    const many_people = status_current.detail.car.many_people;
+    const tonnage = status_current.detail.car.tonnage;
+    const type_car = status_current.detail.car.type_car;
+    const note = status_current.detail.note;
+    const picture = status_current.detail.picture;
+    const todate_start_receive = new Date(start_receive_time).getDate();
     const tomonth_start_receive =
-      new Date(start_receive_time_state).getMonth() + 1;
+      new Date(start_receive_time).getMonth() + 1;
     const toyear_start_receive = new Date(
-      start_receive_time_state
+      start_receive_time
     ).getFullYear();
     const original_start_receive_time =
       tomonth_start_receive +
@@ -97,10 +104,10 @@ class CarTripDetail extends Component {
       "/" +
       toyear_start_receive;
 
-    const todate_departure_time = new Date(departure_time_state).getDate();
+    const todate_departure_time = new Date(departure_time).getDate();
     const tomonth_departure_time =
-      new Date(departure_time_state).getMonth() + 1;
-    const toyear_departure_time = new Date(departure_time_state).getFullYear();
+      new Date(departure_time).getMonth() + 1;
+    const toyear_departure_time = new Date(departure_time).getFullYear();
     const original_departure_time =
       tomonth_departure_time +
       "/" +
@@ -123,7 +130,7 @@ class CarTripDetail extends Component {
       );
     return (
       <div>
-        <div class="GoodDetail-container">
+        <div className="GoodDetail-container">
           <h3 className="data-container__title">Thông tin chuyến xe</h3>
           <table className="List-Good-Detail">
             <tr>
@@ -136,11 +143,11 @@ class CarTripDetail extends Component {
             </tr>
             <tr>
               <td>Từ:</td>
-              <td>{location_start_state}</td>
+              <td>{location_start}</td>
             </tr>
             <tr>
               <td>Đến:</td>
-              <td>{location_finish_state}</td>
+              <td>{location_finish}</td>
             </tr>
           </table>
 
@@ -148,19 +155,19 @@ class CarTripDetail extends Component {
           <table className="List-Good-Detail">
             <tr>
               <td>Biển số:</td>
-              <td>{license_plate_state}</td>
+              <td>{license_plate}</td>
             </tr>
             <tr>
               <td>Loại xe:</td>
-              <td>{type_car_state}</td>
+              <td>{type_car}</td>
             </tr>
             <tr>
               <td>Trọng tải:</td>
-              <td>{tonnage_state}</td>
+              <td>{tonnage}</td>
             </tr>
             <tr>
               <td>Số người:</td>
-              <td>{many_people_state}</td>
+              <td>{many_people}</td>
             </tr>
             <tr>
               <td>Số điện thoại:</td>
@@ -172,13 +179,13 @@ class CarTripDetail extends Component {
             </tr>
             <tr>
               <td>Ghi chú</td>
-              <td>{note_state}</td>
+              <td>{note}</td>
             </tr>
           </table>
           <div className="GoodDetail-Info-Img">
             <h3 className="data-container__title" style={{ marginLeft : '-19px'}}>Hình ảnh</h3>
             <img
-              src={`${API_IMAGE_URL}/${picture_state}`}
+              src={`${API_IMAGE_URL}/${picture}`}
               alt="hình ảnh tài xế"
               className="GoodDetail-Info-Img__src"
 
@@ -186,28 +193,74 @@ class CarTripDetail extends Component {
           </div>
         </div>
         <div className="container-btn__ListBottom">
-          <button
-            className="GoodDetail-btn-back"
-            onClick={() => this.props.handleShowHideCarTripDetail()}
-          >
-            <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
-            lại
-          </button>
-          <div>
-            <button
-              className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-              onClick={() => this.handleShowHideModalDelete()}
-            >
-              Xóa
-            </button>
+          {status_current._id === status_current_current._id ?
+            <React.Fragment>
+              <button
+                className="GoodDetail-btn-back"
+                onClick={() => {
+                  if(typeof this.props.handleShowHideCarTripDetail === 'function')
+                    this.props.handleShowHideCarTripDetail();
+                  else
+                    this.props.handleHiddenShowFormDetail();
+                }}
+              >
+                <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
+                lại
+              </button>
+              <div>
+                <button
+                  className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                  onClick={() => this.handleShowHideModalDelete()}
+                >
+                  Xóa
+                </button>
 
-            <button
-              className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-              onClick={this.handleShowHideUpdateCarTrip}
-            >
-              Cập nhật
-            </button>
-          </div>
+                <button
+                  className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                  onClick={this.handleShowHideUpdateCarTrip}
+                >
+                  Cập nhật
+                </button>
+              </div>
+            </React.Fragment>
+            :
+            <React.Fragment> {/*Phần cho người dùng khi vào xem status của người khác */}
+              <button
+                className="GoodDetail-btn-back"
+                onClick={() => this.props.handleHiddenShowFormDetail()}
+              >
+                <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay lại
+              </button>
+              <button className="GoodDetailContainer-btn-item GoodDetail-btn__Del" onClick={() =>{this.handleShowMessage()}}>
+                Nhắn tin
+              </button>
+              {/*role_name_current.role_name ==='car_trip' && 
+                status_current.detail.regis_status === false ?
+                <button
+                //CHƯA XONG
+                //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
+                //nếu chưa thì viết hàm xử lý (CHƯA XONG)
+                className="GoodDetailContainer-btn-item GoodDetail-btn__Update" 
+                onClick={() =>{this.handleRegisSenderStatus()}}
+            
+                >
+                    Đăng ký
+                </button>
+                :
+                <button
+                  //CHƯA XONG
+                  //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
+                  //nếu chưa thì viết hàm xử lý (CHƯA XONG)
+                  className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                //   disabled={true}
+                  onClick={() => {status_current.detail.regis_status === true ? toast.info("Đã có chuyến xe đăng ký!"): alert("CHƯA XONG. Nơi viết hàm xử lý")}}
+                >
+                  Đã đăng ký
+                </button>
+              */}
+            </React.Fragment>
+          }
+         
         </div>
         {checkUpdateCarTripForm}
         {this.state.showModalDelete && (

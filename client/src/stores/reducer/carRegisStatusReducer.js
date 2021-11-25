@@ -23,6 +23,9 @@ import {
     REGISTER_SENDER_STATUS_OF_CAR_LOADING,
     REGISTER_SENDER_STATUS_OF_CAR_SUCCESS,
     REGISTER_SENDER_STATUS_OF_CAR_ERROR,
+    REGISTER_RECEIVER_STATUS_OF_CAR_LOADING,
+    REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS,
+    REGISTER_RECEIVER_STATUS_OF_CAR_ERROR,   
 
 } from '../../constants/actions';
 
@@ -92,6 +95,12 @@ const carRegisStatusReducer = (state = initState, action)=>{
         case REGISTER_SENDER_STATUS_OF_CAR_ERROR:
             return {...state, err: action.payload};
         case REGISTER_SENDER_STATUS_OF_CAR_LOADING:
+            return {...state}
+        case REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS:
+            return {...state}
+        case REGISTER_RECEIVER_STATUS_OF_CAR_ERROR:
+            return {...state, err: action.payload};
+        case REGISTER_RECEIVER_STATUS_OF_CAR_LOADING:
             return {...state}
         default :
             return {...state};

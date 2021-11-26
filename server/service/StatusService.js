@@ -499,22 +499,28 @@ class StatusService {
     
     //OK
     deleteStatus = async (status_id_param) =>{
-        const status = await this.getStatusDetail(status_id_param);
+        let status = await this.getStatusDetail(status_id_param);
         if(status){
             const status_type = status.status_type;
             // console.log("status", status)
             switch (status_type) {
                 case "SENDER":
-                    await senderStatusService.deleteSenderStatus(status.detail._id);// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
+                    const data_sender_delete = await senderStatusService.deleteSenderStatus(status.detail._id);// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
+                    if(data_sender_delete === 'NO DELETE')
+                        status= 'NO DELETE'
                     break;
                 case "RECEIVER":
                     // status.detail._id.toString() chuyển new ObjectID(".....") về ......
                     // console.log("receiver_status: ", status.detail._id.toString());
                     // await receiverStatusService.deleteReceiverStatus(status.detail._id.toString());// hàm này sẽ xóa status, receiver_status, picture, chuyển account thành user
-                    await receiverStatusService.deleteReceiverStatus(status.detail._id);
+                    const data_receiver_delete = await receiverStatusService.deleteReceiverStatus(status.detail._id);
+                    if(data_receiver_delete === 'NO DELETE')
+                        status= 'NO DELETE'
                     break;
                 case "CAR_TRIP":
-                    await carStatusService.deleteCarStatus(status.detail._id);
+                    const data_car_delete = await carStatusService.deleteCarStatus(status.detail._id);
+                    // console.log(data_car_delete) 
+                    status = data_car_delete
                         break;
                 default:
                     break;

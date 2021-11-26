@@ -175,6 +175,7 @@ class Status extends Component {
                                 appProps={this.props.role_name.color}
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                             />
                         ) : (
                             ""
@@ -188,6 +189,7 @@ class Status extends Component {
                                 appProps={this.props.role_name.color}
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                             />
                         ) : (
                             ""
@@ -201,6 +203,7 @@ class Status extends Component {
                                 roleName={this.props.role_name}
                                 appProps={this.props.role_name.color}
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                                handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                             />
                             :
                             ''
@@ -214,6 +217,7 @@ class Status extends Component {
                                 <StatusForStatusReceiver
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                 />
                                 <ReceiverStatusDetail
                                     isAuthenticated={this.props.isAuthenticated}
@@ -225,6 +229,7 @@ class Status extends Component {
                                     essentials={this.props.status_marker.detail.essentials}
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 />
                             </React.Fragment>
                         }
@@ -234,6 +239,7 @@ class Status extends Component {
                                 <StatusForStatusSender
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                 />
                                 <SenderStatusDetail
                                     isAuthenticated={this.props.isAuthenticated}
@@ -245,6 +251,7 @@ class Status extends Component {
                                     essentials={this.props.status_marker.detail.essentials}
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 />
                             </React.Fragment>
                         }
@@ -254,6 +261,7 @@ class Status extends Component {
                                 <StatusForStatusCarTrip
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                 />
                                 <CarTripDetail
                                     isAuthenticated={this.props.isAuthenticated}
@@ -264,7 +272,8 @@ class Status extends Component {
                                     role_name_current={this.props.role_name}
                                     essentials={this.props.status_marker.detail.essentials}
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
-                                    handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus()}
+                                    handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 />
                             </React.Fragment>
                         }

@@ -8,7 +8,7 @@ class SLCanNhan extends React.Component {
     showUpdateReceiverForm: false,
     showUpdateSenderForm: false,
     essentials: this.props.status_current.detail.essentials,
-
+    update_form: true
   };
   componentDidMount = async () => {
     if (this.state.essentials.length > 0) {
@@ -107,6 +107,8 @@ class SLCanNhan extends React.Component {
               handleUpdateEssentials={this.handleUpdateEssentials}
               handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
               handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+              update_form={this.state.update_form}
+              handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
             />
           )}
         </div>

@@ -8,7 +8,7 @@ class NguoiNhan extends React.Component {
     return (
       <div className="NguoiNhan">
         <StatusForStatusReceiver user={this.props.user} roleName={this.props.role_name} status_current={this.props.status_current}/>
-        <SLCanNhan  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
+        <SLCanNhan handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
       </div>
     );
   }

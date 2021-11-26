@@ -7,6 +7,7 @@ const accountService = require('../service/AccountService');
 const fs = require('fs');
 const path = require('path');
 const { stat } = require('fs/promises');
+const HistoryReceiver = require('../models/History_Receiver');
 
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
@@ -89,44 +90,61 @@ class ReceiverStatusService {
             .catch(err => err);
     }
 
+    checkCarConfirmHistoryReceiver = async (receiver_status_id_param)  =>{
+        const histories_receiver = await HistoryReceiver.find({receiver_status_id: receiver_status_id_param, car_confirm: true, receiver_confirm: false})
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err)
+        return histories_receiver;
+    }
 
     deleteReceiverStatus = async (receive_status_id_param) => {
         //xóa receiver status
         // console.log(receive_status_id_param);
-        const receiver_status = await ReceiverStatus.findByIdAndRemove({_id: receive_status_id_param})
-            .then(data => mongooseToObject(data))
-            .catch(err=>err);
+        const checkCarConfirmHistoryReceiver = await this.checkCarConfirmHistoryReceiver(receive_status_id_param);
+        if(checkCarConfirmHistoryReceiver.length === 0){
+            const receiver_status = await ReceiverStatus.findByIdAndRemove({_id: receive_status_id_param})
+                .then(data => mongooseToObject(data))
+                .catch(err=>err);
 
-        //xóa status đi. Đồng thời trả về account id
-        const account_id = await Status.findByIdAndRemove({_id: receiver_status.status_id})
-            .then(data => data.account_id)
-            .catch(err=>err);
-        //update lại role account -> user 
-        await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
+            //xóa status đi. Đồng thời trả về account id
+            const account_id = await Status.findByIdAndRemove({_id: receiver_status.status_id})
+                .then(data => data.account_id)
+                .catch(err=>err);
+            //update lại role account -> user 
+            await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
 
-        if(receiver_status.picture){
-            //xoa file hinh uploaded
-            fs.unlink(path.join('..\\server', receiver_status.picture), (err) => {
-                if (err) {
-                    console.log(err);
-                    return ;
-                }
-            });
-
-            //xoa folder nếu trống
-            const path_folder = path.join('..\\server', "\\uploads\\status\\RECEIVER", account_id.toString());
-            if(isEmpty(path.join(path_folder)))
-            {   
-                try {
-                    fs.rmdirSync(path_folder, { recursive: true });
+            //xóa trong history sender những dữ liệu chưa được confirm của cả hai.
+            //receiver_confirm: false,
+            //car_confirm: false
+            await HistoryReceiver.findOneAndRemove({receiver_status_id: receive_status_id_param, receiver_confirm: false, car_confirm: false})
+                .then(data => data)
                 
-                    console.log(`${path_folder} is deleted!`);
-                } catch (err) {
-                    console.error(`Error while deleting ${dir}.`);
+            if(receiver_status.picture){
+                //xoa file hinh uploaded
+                fs.unlink(path.join('..\\server', receiver_status.picture), (err) => {
+                    if (err) {
+                        console.log(err);
+                        return ;
+                    }
+                });
+
+                //xoa folder nếu trống
+                const path_folder = path.join('..\\server', "\\uploads\\status\\RECEIVER", account_id.toString());
+                if(isEmpty(path.join(path_folder)))
+                {   
+                    try {
+                        fs.rmdirSync(path_folder, { recursive: true });
+                    
+                        console.log(`${path_folder} is deleted!`);
+                    } catch (err) {
+                        console.error(`Error while deleting ${dir}.`);
+                    }
                 }
             }
+            return receiver_status;
         }
-        return receiver_status;
+        else
+            return 'NO DELETE'
     }
 
 }

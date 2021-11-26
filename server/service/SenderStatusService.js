@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { stat } = require('fs/promises');
 const mongoose = require('../util/mongoose.js');
-
+const HistorySender = require('../models/History_Sender');
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
 }
@@ -86,45 +86,64 @@ class SenderStatusService {
             })
             .catch(err => err);
     }
+    // check status đã đưuọc car confirm trong history sender hay chưa
+    //car_confirm: true,
+    //sender_confirm: false,
+    checkCarConfirmHistorySender = async (sender_status_id_param)  =>{
+        const histories_sender = await HistorySender.find({sender_status_id: sender_status_id_param, car_confirm: true, sender_confirm: false})
+            .then(data => multiplemongooseToObject(data))
+            .catch(err => err)
+        return histories_sender;
+    }
 
     deleteSenderStatus = async (sender_status_id_param) => {
-        //xóa sender status
-        console.log(sender_status_id_param);
-        const sender_status = await SenderStatus.findByIdAndRemove({_id: sender_status_id_param})
-            .then(data => mongooseToObject(data))
-            .catch(err=>err);
+        const checkCarConfirmHistorySender = await this.checkCarConfirmHistorySender(sender_status_id_param)
+        if(checkCarConfirmHistorySender.length === 0){
+            //xóa sender status
+            const sender_status = await SenderStatus.findByIdAndRemove({_id: sender_status_id_param})
+                .then(data => mongooseToObject(data))
+                .catch(err=>err);
 
-        //xóa status đi. Đồng thời trả về account id
-        const account_id = await Status.findByIdAndRemove({_id: sender_status.status_id})
-            .then(data => data.account_id)
-            .catch(err=>err);
-        //update lại role account -> user 
-        await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
+            //xóa status đi. Đồng thời trả về account id
+            const account_id = await Status.findByIdAndRemove({_id: sender_status.status_id})
+                .then(data => data.account_id)
+                .catch(err=>err);
+            //update lại role account -> user 
+            await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
 
-        if(sender_status.picture){
-            //xoa file hinh uploaded
-            fs.unlink(path.join('..\\server', sender_status.picture), (err) => {
-                if (err) {
-                    console.log(err);
-                    return ;
-                }
-            })
-
-            //xóa folder nếu trống
-            const path_folder = path.join('..\\server', "\\uploads\\status\\SENDER", account_id.toString());
-            console.log(path_folder, isEmpty(path.join(path_folder)))
-            if(isEmpty(path.join(path_folder)))
-            {   
-                try {
-                    fs.rmdirSync(path_folder, { recursive: true });
+            //xóa trong history sender những dữ liệu chưa được confirm của cả hai.
+            //sender_confirm: false,
+            //car_confirm: false
+            await HistorySender.findOneAndRemove({sender_status_id: sender_status_id_param, sender_confirm: false, car_confirm: false})
+                .then(data => data)
                 
-                    console.log(`${path_folder} is deleted!`);
-                } catch (err) {
-                    console.error(`Error while deleting ${dir}.`);
+            if(sender_status.picture){
+                //xoa file hinh uploaded
+                fs.unlink(path.join('..\\server', sender_status.picture), (err) => {
+                    if (err) {
+                        console.log(err);
+                        return ;
+                    }
+                })
+
+                //xóa folder nếu trống
+                const path_folder = path.join('..\\server', "\\uploads\\status\\SENDER", account_id.toString());
+                console.log(path_folder, isEmpty(path.join(path_folder)))
+                if(isEmpty(path.join(path_folder)))
+                {   
+                    try {
+                        fs.rmdirSync(path_folder, { recursive: true });
+                    
+                        console.log(`${path_folder} is deleted!`);
+                    } catch (err) {
+                        console.error(`Error while deleting ${dir}.`);
+                    }
                 }
             }
+            return sender_status;
         }
-        return sender_status;
+        else
+            return 'NO DELETE'
     }
 
 

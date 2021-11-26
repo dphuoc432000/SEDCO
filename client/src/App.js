@@ -129,6 +129,8 @@ class App extends React.Component {
       role_name: "",
       menu: [],
       isAuthenticated: false,
+      status_current: {},
+      user: {},
     });
   };
 

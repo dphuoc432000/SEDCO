@@ -419,7 +419,6 @@ class HistorySenderService{
                             .then(async status =>{
                                 const account = await accountService.getAccountDetails(status.account_id)
                                     .then(data => data);
-                                car_infor.account = account;
                                 return account;
                             })
                             .then(async account =>{
@@ -477,7 +476,63 @@ class HistorySenderService{
                             .then(async status =>{
                                 const account = await accountService.getAccountDetails(status.account_id)
                                     .then(data => data);
-                                car_infor.account = account;
+                                return account;
+                            })
+                            .then(async account =>{
+                                const user = await userService.getUserByID(account.user_id)
+                                    .then(data => data);
+                                car_infor.user = user;
+                                object.car_infor = car_infor;
+                                return history
+                            })
+                            .catch(err => err)
+                    }
+                    else{
+                        car_infor.status = null;
+                        car_infor.account = null;
+                        car_infor.user = null;
+                        object.car_infor = car_infor
+                    }
+                    return object;
+                }))
+                return histories_return;
+            })
+            .catch(err => err);
+        return{
+            history_sender_list: history_sender_list,
+            pagination
+        }
+    }
+    //lấy tất cả danh sách được xác nhận từ người dùng và từ chuyến xe
+    //Làm cho phần thông báo của sender
+    getAllHistoryRegisterSenderConfirmBySenderStatusID =  async (sender_status_id,_limit,_page) =>{
+        const totalRows = await HistorySender.count({sender_status_id: sender_status_id, sender_confirm: true, car_confirm: true});
+        const pagination = handlePagination(_limit,_page,totalRows);
+        const start = (pagination._page * pagination._limit) - pagination._limit;
+
+        const history_sender_list  = await HistorySender.find({sender_status_id: sender_status_id, sender_confirm: true, car_confirm: true})
+            .skip(start)
+            .limit(pagination._limit)
+            .sort('-createdAt')
+            .then(async data => {
+                let histories_return = multiplemongooseToObject(data);
+                
+                histories_return = await Promise.all(histories_return.map( async history => {
+                    const object = {};
+                    const car_infor = {};
+                    object.history = history;
+                    const carStatus_data = await carStatusService.getCarStatusDetail_car_status_id(history.car_status_id)
+                        .then(data => data);
+                    if(carStatus_data){
+                        await statusService.getStatusDetail(carStatus_data.status_id)
+                            .then(status =>{
+                                car_infor.status = status;
+                                
+                                return status;
+                            })
+                            .then(async status =>{
+                                const account = await accountService.getAccountDetails(status.account_id)
+                                    .then(data => data);
                                 return account;
                             })
                             .then(async account =>{

@@ -66,6 +66,16 @@ class SenderStatusController {
             })
             .catch(err => next(err));
     }
+    getAllHistoryRegisterSenderConfirmBySenderStatusID = async (req, res, next) => {
+        await historySenderService.getAllHistoryRegisterSenderConfirmBySenderStatusID(req.params.sender_status_id_pr, req.query._limit, req.query._page)
+            .then(histories => {
+                if (histories) {
+                    return res.json(histories)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập sender_status_id_pr', null));
+            })
+            .catch(err => next(err));
+    }
 
     confirmSenderStatusOfSender = async(req, res, next) =>{
         await historySenderService.confirmSenderStatusOfSender(req.params.car_status_id_pr, req.params.sender_status_id_pr)

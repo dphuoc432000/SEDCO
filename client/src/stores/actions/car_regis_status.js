@@ -85,7 +85,7 @@ const confirm_sender_status_of_car_action = async(car_status_id, sender_status_i
             action.type = CONFIRM_SENDER_STATUS_OF_CAR_ERROR;
             action.payload = {
                 description: 'API loi',
-                message: err.response.data.errors.description,
+                message: err.response.data.errors,
                 errdata: err
             }
         })
@@ -106,7 +106,7 @@ const confirm_receiver_status_of_car_action = async(car_status_id, receiver_stat
             action.type = CONFIRM_RECEIVER_STATUS_OF_CAR_ERROR;
             action.payload = {
                 description: 'API loi',
-                message: err.response.data.errors.description,
+                message: err.response.data.errors,
                 errdata: err
             }
         })

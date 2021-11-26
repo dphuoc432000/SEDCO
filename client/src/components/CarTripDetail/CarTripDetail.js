@@ -198,36 +198,42 @@ class CarTripDetail extends Component {
               <button
                 className="GoodDetail-btn-back"
                 onClick={() => {
-                  if(typeof this.props.handleShowHideCarTripDetail === 'function')
+                  if(typeof this.props.handleShowHideCarTripDetail === 'function'){
                     this.props.handleShowHideCarTripDetail();
-                  else
+                    this.props.handleUpdateRecentListWhenRegisStatus()
+                  }
+                  else{
                     this.props.handleHiddenShowFormDetail();
+                    this.props.handleUpdateRecentListWhenRegisStatus()
+                  }
                 }}
               >
                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay
                 lại
               </button>
-              <div>
-                <button
-                  className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-                  onClick={() => this.handleShowHideModalDelete()}
-                >
-                  Xóa
-                </button>
+              {this.props.update_form &&
+                <div>
+                  <button
+                    className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                    onClick={() => {this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                  >
+                    Xóa
+                  </button>
 
-                <button
-                  className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                  onClick={this.handleShowHideUpdateCarTrip}
-                >
-                  Cập nhật
-                </button>
-              </div>
+                  <button
+                    className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                    onClick={()=>{this.handleShowHideUpdateCarTrip()}}
+                  >
+                    Cập nhật
+                  </button>
+                </div>
+              }
             </React.Fragment>
             :
             <React.Fragment> {/*Phần cho người dùng khi vào xem status của người khác */}
               <button
                 className="GoodDetail-btn-back"
-                onClick={() => this.props.handleHiddenShowFormDetail()}
+                onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
               >
                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i> Quay lại
               </button>

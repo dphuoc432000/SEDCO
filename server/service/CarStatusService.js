@@ -7,6 +7,10 @@ const Status = require('../models/Status');
 const accountService = require('./accountService');
 const { stat } = require('fs/promises');
 const essentialsService = require('./EssentialService')
+const HistorySender = require('../models/History_Sender');
+const HistoryReceiver = require('../models/History_Receiver');
+const SenderStatus = require('../models/Sender_Status');
+const ReceiverStatus = require('../models/Receiver_Status');
 
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
@@ -84,50 +88,125 @@ class CarStatusService {
     //         .catch(err => err);
     // }
 
+    //kiểm tra tất cả regis đã được confirm 2/2 trong history sender
+    checkAllCarRegisStatusComfirmInHistorySender = async (car_status_id_param) =>{
+        //lấy tất cả các phàn tử có trong history sender
+        const car_regis_list = await HistorySender.find({car_status_id: car_status_id_param})
+            .then(data => multiplemongooseToObject(data));
+        //lấy tất cả các phần tử đã được conform 2/2 trong history sender
+        const car_regis_confirm_2_2_list = await HistorySender.find({car_status_id: car_status_id_param, car_confirm: true, sender_confirm: true})
+            .then(data => multiplemongooseToObject(data))
+        const car_regis_confirm_0_2_list = await HistorySender.find({car_status_id: car_status_id_param, car_confirm: false, sender_confirm: false})
+            .then(data => multiplemongooseToObject(data))
+        if(car_regis_list.length === car_regis_confirm_2_2_list.length + car_regis_confirm_0_2_list.length)
+            return true;
+        return false;
+    }
+
+    //kiểm tra tất cả regis đã được confirm 2/2 trong history receiver
+    checkAllCarRegisStatusComfirmInHistoryReceiver = async (car_status_id_param) =>{
+        //lấy tất cả các phàn tử có trong history receiver
+        const car_regis_list = await HistoryReceiver.find({car_status_id: car_status_id_param})
+            .then(data => multiplemongooseToObject(data));
+        //lấy tất cả các phần tử đã được conform 2/2 trong history receiver
+        const car_regis_confirm_2_2_list = await HistoryReceiver.find({car_status_id: car_status_id_param, car_confirm: true, receiver_confirm: true})
+            .then(data => multiplemongooseToObject(data))
+        const car_regis_confirm_0_2_list = await HistoryReceiver.find({car_status_id: car_status_id_param, car_confirm: false, receiver_confirm: false})
+            .then(data => multiplemongooseToObject(data))
+        if(car_regis_list.length === car_regis_confirm_2_2_list.length + car_regis_confirm_0_2_list.length)
+            return true;
+        return false;
+    }
+
     deleteCarStatus = async (car_status_id_param) => {
-        //xóa car status
-        // console.log(receive_status_id_param);
-        const car_status = await CarStatus.findByIdAndRemove({
-            _id: car_status_id_param,
-        })
-            .then((data) => mongooseToObject(data))
-            .catch((err) => err);
-        // console.log(car_status)
-        //xóa status đi. Đồng thời trả về account id
-        const account_id = await Status.findByIdAndRemove({
-            _id: car_status.status_id,
-        })
-            .then((data) => data.account_id)
-            .catch((err) => err);
-        //update lại role account -> user
-        await accountService.accountUpdate_roleId_byRoleName(account_id, "user");
+        //nếu cả 2 đã đưuọc confirm 2/2 hết thì cho xóa
+        console.log(await this.checkAllCarRegisStatusComfirmInHistorySender(car_status_id_param) , await this.checkAllCarRegisStatusComfirmInHistoryReceiver(car_status_id_param))
+        if(await this.checkAllCarRegisStatusComfirmInHistorySender(car_status_id_param) &&  await this.checkAllCarRegisStatusComfirmInHistoryReceiver(car_status_id_param)){
 
-        //xoa file hinh uploaded
-        if (car_status.picture) {
-            fs.unlink(path.join("..\\server", car_status.picture), (err) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-            });
+            //xóa car status
+            // console.log(receive_status_id_param);
+            const car_status = await CarStatus.findByIdAndRemove({
+                _id: car_status_id_param,
+            })
+                .then((data) => mongooseToObject(data))
+                .catch((err) => err);
+            // console.log(car_status)
+            //xóa status đi. Đồng thời trả về account id
+            const account_id = await Status.findByIdAndRemove({
+                _id: car_status.status_id,
+            })
+                .then((data) => data.account_id)
+                .catch((err) => err);
+            //update lại role account -> user
+            await accountService.accountUpdate_roleId_byRoleName(account_id, "user");
+            //xóa data trong history sender
+            //car_confim: false
+            //sender_confirm: false
+            await HistorySender.find({car_status_id: car_status_id_param, car_confirm: false, sender_confirm: false})
+                .then(async data =>{
+                    data = multiplemongooseToObject(data);
+                    const id_list = data.map(item =>{
+                        return item._id
+                    })
+                    const sender_status_id_list = data.map(item =>{
+                        return item.sender_status_id
+                    })
+                    const data_delete = await HistorySender.deleteMany({_id: {$in: [...id_list]}})
+                        .then(data => data)
+                    console.log('data_delete', data_delete)
+                    const data_update = await SenderStatus.updateMany({_id: {$in: [...sender_status_id_list]}},{regis_status: false})
+                        .then(data => data)
+                    console.log('data_update', data_update)
+                })
+            //xóa data trong history sender
+            //car_confim: false
+            //receiver_confirm: false
+            //Không cần 2 điều kiên trên nữa vì nó đã được lọc trên 2 lần check trên
+            await HistoryReceiver.find({car_status_id: car_status_id_param, car_confirm: false, receiver_confirm: false})
+                .then(async data =>{
+                    data = multiplemongooseToObject(data);
+                    const id_list = data.map(item =>{
+                        return item._id
+                    })
+                    const receiver_status_id_list = data.map(item =>{
+                        return item.receiver_status_id
+                    })
+                    const data_delete = await HistoryReceiver.deleteMany({_id: {$in: [...id_list]}})
+                        .then(data => data)
+                    console.log('data_delete', data_delete)
+                    const data_update = await ReceiverStatus.updateMany({_id: {$in: [...receiver_status_id_list]}},{regis_status: false})
+                        .then(data => data)
+                    console.log('data_update', data_update)
+                })
+            //xoa file hinh uploaded
+            if (car_status.picture) {
+                fs.unlink(path.join("..\\server", car_status.picture), (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                });
 
-            //xoa folder nếu trống
-            const path_folder = path.join(
-                "..\\server",
-                "\\uploads\\status\\CAR_TRIP",
-                account_id.toString()
-            );
-            if (isEmpty(path.join(path_folder))) {
-                try {
-                    fs.rmdirSync(path_folder, { recursive: true });
+                //xoa folder nếu trống
+                const path_folder = path.join(
+                    "..\\server",
+                    "\\uploads\\status\\CAR_TRIP",
+                    account_id.toString()
+                );
+                if (isEmpty(path.join(path_folder))) {
+                    try {
+                        fs.rmdirSync(path_folder, { recursive: true });
 
-                    console.log(`${path_folder} is deleted!`);
-                } catch (err) {
-                    console.error(`Error while deleting ${dir}.`);
+                        console.log(`${path_folder} is deleted!`);
+                    } catch (err) {
+                        console.error(`Error while deleting ${dir}.`);
+                    }
                 }
             }
+            return car_status;            
         }
-        return car_status;
+        else
+            return 'NO DELETE';
     };
 
     //Lấy các chuyến xe chưa được kiểm duyệt ->userService

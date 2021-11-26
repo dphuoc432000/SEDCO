@@ -193,36 +193,42 @@ class ReceiverStatusDetail extends Component {
                                     if (
                                         typeof this.props.handleHideReceiverStatusDetail ===
                                         "function"
-                                    )
+                                    ){
                                         this.props.handleHideReceiverStatusDetail();
-                                    else this.props.handleHiddenShowFormDetail();
+                                        this.props.handleUpdateRecentListWhenRegisStatus()
+                                    }
+                                    else {
+                                        this.props.handleHiddenShowFormDetail();
+                                        this.props.handleUpdateRecentListWhenRegisStatus()
+                                    }
                                 }}
                             >
                                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
                                 Quay lại
                             </button>
-                            <div>
-                                <button
-                                    className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-                                    onClick={() => this.handleShowHideModalDelete()}
-                                >
-                                    Xóa
-                                </button>
-                                <button
-                                    className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                                    onClick={this.handleShowHideUpdateReceiver}
-                                >
-                                    Cập nhật
-                                </button>
-                            </div>
-                            
+                            {this.state.update_form &&
+                                <div>
+                                    <button
+                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                                        onClick={() => {this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                                    >
+                                        Xóa
+                                    </button>
+                                    <button
+                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                        onClick={() => {this.handleShowHideUpdateReceiver()}}
+                                    >
+                                        Cập nhật
+                                    </button>
+                                </div>
+                            }
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
                             {/*Phần cho người dùng khi vào xem status của người khác */}
                             <button
                                 className="GoodDetail-btn-back"
-                                onClick={() => {this.props.handleHiddenShowFormDetail()}}
+                                onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
                             >
                                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i>
                                 Quay lại

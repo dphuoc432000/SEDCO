@@ -48,7 +48,6 @@ class Main extends React.Component {
 
     handleChangeStatusMarker = async (status_marker) =>{
         //thêm role của status_marker
-        console.log(status_marker)
         //viết action lấy lại thông tin status details
         const getStatusDetailAction = await this.props.getStatusDetail(status_marker._id)
         if(getStatusDetailAction.type === STATUS_DETAIL_SUCCESS){

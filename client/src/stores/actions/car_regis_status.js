@@ -21,6 +21,9 @@ import {
     REGISTER_SENDER_STATUS_OF_CAR_LOADING,
     REGISTER_SENDER_STATUS_OF_CAR_SUCCESS,
     REGISTER_SENDER_STATUS_OF_CAR_ERROR,
+    REGISTER_RECEIVER_STATUS_OF_CAR_LOADING,
+    REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS,
+    REGISTER_RECEIVER_STATUS_OF_CAR_ERROR,   
 } from '../../constants/actions';
 import axios from 'axios';
 import {API_URL} from '../../constants/api';
@@ -82,7 +85,7 @@ const confirm_sender_status_of_car_action = async(car_status_id, sender_status_i
             action.type = CONFIRM_SENDER_STATUS_OF_CAR_ERROR;
             action.payload = {
                 description: 'API loi',
-                message: err.response.data.errors.description,
+                message: err.response.data.errors,
                 errdata: err
             }
         })
@@ -103,7 +106,7 @@ const confirm_receiver_status_of_car_action = async(car_status_id, receiver_stat
             action.type = CONFIRM_RECEIVER_STATUS_OF_CAR_ERROR;
             action.payload = {
                 description: 'API loi',
-                message: err.response.data.errors.description,
+                message: err.response.data.errors,
                 errdata: err
             }
         })
@@ -171,6 +174,27 @@ const register_sender_status_of_car = async(car_status_id , sender_status_id) =>
     })
     return action;
 }
+const register_receiver_status_of_car = async(car_status_id , receiver_status_id) => {
+    const action = {
+        type: REGISTER_RECEIVER_STATUS_OF_CAR_LOADING,
+        payload: {}
+    };
+    await axios.post(`${API_URL}/api/car_trip/${car_status_id}/${receiver_status_id}/register/receiver`)
+    .then(res => {
+        action.type = REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS ;
+        action.payload = res.data;
+    })
+    .catch(err => {
+        action.type = REGISTER_RECEIVER_STATUS_OF_CAR_ERROR ;
+        action.payload = {
+            description: 'API loi',
+            message : err.response,
+            errdata : err
+        }
+
+    })
+    return action;
+}
 export {
     get_sender_status_list_no_complete,
     get_receiver_status_list_no_complete, 
@@ -179,4 +203,5 @@ export {
     cancle_register_sender_action,
     cancle_register_receiver_action,
     register_sender_status_of_car,
+    register_receiver_status_of_car
 }

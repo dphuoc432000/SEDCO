@@ -9,8 +9,8 @@ class TaiXe extends Component {
     return (
       <div className="TaiXe">
         
-        <StatusForStatusCarTrip user={this.props.user} roleName={this.props.role_name} status_current={this.props.status_current}/>
-        <TTChuyenXe handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}  user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
+        <StatusForStatusCarTrip  user={this.props.user} roleName={this.props.role_name} status_current={this.props.status_current}/>
+        <TTChuyenXe handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus} handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}  user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
 
       </div>
     );

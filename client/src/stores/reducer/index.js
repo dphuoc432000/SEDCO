@@ -30,6 +30,8 @@ import reportListReducer from './reportListReducer.js';
 import carTripReducer from './carTripReducer.js';
 import sender_statusReducer from './sender_statusReducer'
 import receiver_statusReducer from './receiver_statusReducer'
+import statusDetailReducer from './statusDetailReducer';
+
 export default combineReducers({
     roleReducer,
     loginReducer,
@@ -62,4 +64,5 @@ export default combineReducers({
     carTripReducer,
     sender_statusReducer,
     receiver_statusReducer,
+    statusDetailReducer
 });

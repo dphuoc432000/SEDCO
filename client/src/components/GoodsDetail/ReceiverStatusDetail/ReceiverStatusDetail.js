@@ -9,7 +9,8 @@ import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action
 import ModalDeleteStatus from "../../ModalDeleteStatus/ModalDeleteStatus";
 import { API_IMAGE_URL } from "../../../constants/api";
 import { toast } from "react-toastify";
-
+import {REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS} from '../../../constants/actions'
+import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status'
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
@@ -88,6 +89,20 @@ class ReceiverStatusDetail extends Component {
         if (this.props.isAuthenticated) alert("xử lý hiện lên message");
         else this.props.handleChangeShowFormLogin();
     };
+    handleRegisReceiverStatus = async() => {
+        const register_action = await this.props.register_receiver_status_of_car(
+            this.props.status_current_current.detail._id, 
+            this.props.status_current.detail._id)
+        if(register_action.type !== REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS){
+            toast.error("Đăng ký không thành công.");
+        }
+        else {
+            toast.success("Đăng ký nhận hàng thành công. Đã được thêm vào quản lý giao dịch.")
+            this.props.handleHiddenShowFormDetail()
+            this.props.handleUpdateRecentListWhenRegisStatus()
+        }
+        
+    }
     render() {
         const status_current = this.props.status_current; //2 loại: status truyền từ bản đồ qua hoặc status của người đang dùng
         //status_current_current: status của người đang dùng đễ so sánh với status trên
@@ -178,38 +193,44 @@ class ReceiverStatusDetail extends Component {
                                     if (
                                         typeof this.props.handleHideReceiverStatusDetail ===
                                         "function"
-                                    )
+                                    ){
                                         this.props.handleHideReceiverStatusDetail();
-                                    else this.props.handleHiddenShowFormDetail();
+                                        this.props.handleUpdateRecentListWhenRegisStatus()
+                                    }
+                                    else {
+                                        this.props.handleHiddenShowFormDetail();
+                                        this.props.handleUpdateRecentListWhenRegisStatus()
+                                    }
                                 }}
                             >
                                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
                                 Quay lại
                             </button>
-                            <div>
-                                <button
-                                    className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-                                    onClick={() => this.handleShowHideModalDelete()}
-                                >
-                                    Xóa
-                                </button>
-                                <button
-                                    className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                                    onClick={this.handleShowHideUpdateReceiver}
-                                >
-                                    Cập nhật
-                                </button>
-                            </div>
-                            
+                            {this.state.update_form &&
+                                <div>
+                                    <button
+                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                                        onClick={() => {this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                                    >
+                                        Xóa
+                                    </button>
+                                    <button
+                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                        onClick={() => {this.handleShowHideUpdateReceiver()}}
+                                    >
+                                        Cập nhật
+                                    </button>
+                                </div>
+                            }
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
                             {/*Phần cho người dùng khi vào xem status của người khác */}
                             <button
                                 className="GoodDetail-btn-back"
-                                onClick={() => this.props.handleHiddenShowFormDetail()}
+                                onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
                             >
-                                <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
+                                <i className="fas fa-chevron-left GoodDetail-icon-back"></i>
                                 Quay lại
                             </button>
 
@@ -221,16 +242,15 @@ class ReceiverStatusDetail extends Component {
                             >
                                 Nhắn tin
                             </button>
-                           { console.log(status_current)}
                             {role_name_current.role_name === "car_trip" && (
                                 
-                                status_current.detail.regis_status ?
+                                status_current.detail.regis_status === false ?
                                     <button
                                     //CHƯA XONG
                                     //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                     //nếu chưa thì viết hàm xử lý (CHƯA XONG)
-                                    className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                                
+                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                        onClick={() =>{this.handleRegisReceiverStatus()}}
                                     >
                                         Đăng ký
                                     </button>
@@ -240,9 +260,8 @@ class ReceiverStatusDetail extends Component {
                                         //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                         //nếu chưa thì viết hàm xử lý (CHƯA XONG)
                                         className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
-                                        disabled={status_current.detail.regis_status ? false : true}
                                         onClick={() => {
-                                            status_current.detail.regis_status
+                                            status_current.detail.regis_status === true
                                                 ? toast.info("Đã có chuyến xe đăng ký!")
                                                 : alert("CHƯA XONG. Nơi viết hàm xử lý");
                                         }}
@@ -280,6 +299,10 @@ const mapDispatchToProps = (dispatch) => {
             const action = await getEssentialsDetail(essential_id);
             return dispatch(action);
         },
+        register_receiver_status_of_car: async (car_status_id , receiver_status_id) =>{
+            const action = await register_receiver_status_of_car(car_status_id, receiver_status_id);
+            return dispatch(action);
+        }
     };
 };
 export default connect(

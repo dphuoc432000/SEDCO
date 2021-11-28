@@ -9,7 +9,10 @@ import '../../styles/main.css';
 import { connect } from "react-redux";
 import {get_role_user} from '../../stores/actions/role.action';
 import {get_recent_status} from '../../stores/actions/recent_status.action';
-
+import getStatusDetail from '../../stores/actions/statusDetail.action'
+import {
+    STATUS_DETAIL_SUCCESS,
+} from "../../constants/actions";
 const translateRoleName = (role_name)=>{
     switch(role_name) {
         case "user":
@@ -43,18 +46,29 @@ class Main extends React.Component {
         })
     }
 
-    handleChangeStatusMarker = (status_marker) =>{
+    handleChangeStatusMarker = async (status_marker) =>{
         //thêm role của status_marker
-        // console.log(status_marker)
-        this.setState({
-            status_marker: status_marker,
-            showFormDetail: true
-        })
+        //viết action lấy lại thông tin status details
+        const getStatusDetailAction = await this.props.getStatusDetail(status_marker._id)
+        if(getStatusDetailAction.type === STATUS_DETAIL_SUCCESS){
+            const statusDetailReducer = await this.props.statusDetailReducer;
+            this.setState({
+                status_marker: statusDetailReducer.status,
+                showFormDetail: true
+            })
+        }
     }
     handleHiddenShowFormDetail = () =>{
         this.setState({
             status_marker: {},
             showFormDetail: false
+        })
+    }
+    handleUpdateRecentListWhenRegisStatus = async ()=>{
+        await this.props.get_recent_status();
+        const recentStatusReducer = await this.props.recentStatusReducer;
+        this.setState({
+            recent_status_list: recentStatusReducer.recent_status_list
         })
     }
     render() {
@@ -76,6 +90,7 @@ class Main extends React.Component {
                     role_name={this.props.role_name} 
                     account_id={this.props.account_id}
                     handleChangeStatusMarker={this.handleChangeStatusMarker}
+                    handleUpdateRecentListWhenRegisStatus={this.handleUpdateRecentListWhenRegisStatus}
                 />
             </React.Fragment>
         )
@@ -86,6 +101,7 @@ const mapStateToProps = (state) =>{
     return {
         roleReducer: state.roleReducer,
         recentStatusReducer: state.recentStatusReducer,
+        statusDetailReducer: state.statusDetailReducer
     }
   }
   
@@ -98,6 +114,10 @@ const mapStateToProps = (state) =>{
         },
         get_recent_status: async () =>{
             const action = await get_recent_status();
+            return dispatch(action)
+        },
+        getStatusDetail: async (status_id) =>{
+            const action = await getStatusDetail(status_id);
             return dispatch(action)
         }
     }

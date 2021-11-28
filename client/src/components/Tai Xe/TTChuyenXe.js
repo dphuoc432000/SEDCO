@@ -10,7 +10,18 @@ class TTChuyenXe extends Component {
     departure_time: this.props.status_current.detail.departure_time,
     location_start: this.props.status_current.detail.location_start,
     location_finish: this.props.status_current.detail.location_finish,
+    update_form: true
   };
+  componentDidUpdate = async (prevProps) =>{
+    if(this.props.status_current !== prevProps.status_current){
+      this.setState({
+        start_receive_time: this.props.status_current.detail.start_receive_time,
+        departure_time: this.props.status_current.detail.departure_time,
+        location_start: this.props.status_current.detail.location_start,
+        location_finish: this.props.status_current.detail.location_finish,
+      })
+    }
+  }
   handleShowHideCarTripDetail = () => {
     this.setState({ showCarTripDetail: !this.state.showCarTripDetail });
   };
@@ -101,9 +112,12 @@ class TTChuyenXe extends Component {
               user={this.props.user}
               handleShowHideCarTripDetail={this.handleShowHideCarTripDetail}
               status_current={this.props.status_current}
+              status_current_current = {this.props.status_current}
               handleUpdateCarTrips={this.handleUpdateCarTrips}
               handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
               handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+              update_form={this.state.update_form}
+              handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
             />
           )}
         </div>

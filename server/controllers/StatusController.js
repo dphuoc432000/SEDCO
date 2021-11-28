@@ -337,7 +337,14 @@ class StatusController {
       await statusService
         .deleteStatus(req.params.status_id_pr)
         .then((status) => {
-          if (status) return res.json(status);
+          // console.log(status)
+          if (status){ 
+            if(status === 'NO DELETE')
+              return res.status(400).json(
+                  handleOther.errorHandling("Chưa xác thực các giao dịch!", null)
+                );
+            return res.json(status);
+          }
           return res
             .status(400)
             .json(

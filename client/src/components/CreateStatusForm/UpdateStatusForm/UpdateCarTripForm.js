@@ -684,7 +684,7 @@ class UpdateCarTripForm extends Component {
                         name="picture"
                         className="my_file"
                         onChange={(event) =>
-                          this.displayLoadPicture(event, "picture_data")
+                          {this.displayLoadPicture(event, "picture_data")}
                         }
                       />
 
@@ -706,7 +706,7 @@ class UpdateCarTripForm extends Component {
             <div style={{ textAlign: "center" }}>
               <button
                 className="button-2"
-                onClick={() => this.updateFormCartrip()}
+                onClick={() => {this.updateFormCartrip()}}
               >
                 Cập nhật
               </button>

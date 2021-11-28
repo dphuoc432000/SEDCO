@@ -129,6 +129,8 @@ class App extends React.Component {
       role_name: "",
       menu: [],
       isAuthenticated: false,
+      status_current: {},
+      user: {},
     });
   };
 
@@ -171,6 +173,14 @@ class App extends React.Component {
   handleLoadAgainWhenCreateStatus = async () => {
     await this.componentDidMount();
   };
+  handleChangeQuantityCarAfterConfirm = async () =>{
+    await this.props.get_status_current_action(this.state.account_id);
+    const statusCurrentData = await this.props.statusCurrentReducer;
+    console.log(statusCurrentData)
+    this.setState({
+      status_current: statusCurrentData,
+    });
+  }
 
   render() {
     const checkLocalStorage = localStorage.getItem("accessToken")
@@ -315,6 +325,7 @@ class App extends React.Component {
                     account_id: this.state.account_id,
                     isAuthenticated: this.state.isAuthenticated,
                     status_current: this.state.status_current,
+                    handleChangeQuantityCarAfterConfirm: this.handleChangeQuantityCarAfterConfirm
                   }}
                 />
 

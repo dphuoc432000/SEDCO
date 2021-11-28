@@ -33,6 +33,7 @@ const updateCartripStatus = async(cartrip_status_id, cartrip_status_data) =>{
         errdata: err
       }
     })
+    console.log(action)
   return action;
 }
 

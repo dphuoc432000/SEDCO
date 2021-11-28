@@ -29,9 +29,18 @@ function AuthenticatedReceiverRoute({ component: C, appProps, ...rest }) {
         render={props => appProps.isAuthenticated && appProps.role_name === "receiver" ? <C {...props} {...appProps} />
             : 
             <React.Fragment>
-              {notifyTost("Vui lòng đăng nhập!")}
-              {appProps.handleChangeShowFormLogin()}
-              <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+                {   !appProps.isAuthenticated ? 
+                    <React.Fragment>
+                        {notifyTost("Vui lòng đăng nhập!")}
+                        {appProps.handleChangeShowFormLogin()}
+                        <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <Redirect to={appProps.role_name !== 'admin' ? `/`:'/admin'}/>
+                    </React.Fragment>
+                }
+              
             </React.Fragment>
         }
       />
@@ -42,7 +51,7 @@ function AuthenticatedSenderRoute({ component: C, appProps, ...rest }) {
     return (
       <Route
         {...rest}
-        render={props => appProps.isAuthenticated && appProps.role_name === "sender" ? <C {...props} {...appProps} />
+        render={props => appProps.checkLocalStorage && appProps.role_name === "sender" ? <C {...props} {...appProps} />
             : 
             <React.Fragment>
               { !appProps.isAuthenticated ?

@@ -4,8 +4,8 @@ import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUs
 import UpdateUser from "./pages/UpdateUser/UpdateUser";
 import Transaction_Management from "./pages/Transaction_Management/Transaction_Management";
 import {
-  // AuthenticatedSenderRoute,
-  // AuthenticatedReceiverRoute,
+  AuthenticatedSenderRoute,
+  AuthenticatedReceiverRoute,
   AuthenticatedCarTripRoute,
   AuthenticatedAllRoute,
 } from "./components/Authentication/authentication";
@@ -223,13 +223,40 @@ class App extends React.Component {
                 isAuthenticated={this.state.isAuthenticated}
               />
             </Route>
+            {this.state.role_name && this.state.role_name.role_name === "sender"&& this.state.status_current && 
+                <AuthenticatedSenderRoute
+                path="/notification/sender" 
+                exact={true}
+                component={Notification_Sender}
+                appProps={{
+                checkLocalStorage,
+                handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                role_name: this.state.role_name.role_name,
+                account_id: this.state.account_id,
+                isAuthenticated: this.state.isAuthenticated,
+                status_current: this.state.status_current,
+                
+                }}
+                />
+            }
+            {this.state.role_name && this.state.role_name.role_name === "receiver"&& this.state.status_current && 
+                <AuthenticatedReceiverRoute
+                path="/notification/receiver" 
+                exact={true}
+                component={Notification_Receiver}
+                appProps={{
+                checkLocalStorage,
+                handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                role_name: this.state.role_name.role_name,
+                account_id: this.state.account_id,
+                isAuthenticated: this.state.isAuthenticated,
+                status_current: this.state.status_current,
+                
+                }}
+                />
+
+            }
             
-            <Route path="/notification/sender" exact>
-              <Notification_Sender />
-            </Route>
-            <Route path="/notification/receiver" exact>
-              <Notification_Receiver />
-            </Route>
             <Route path="/car_trip/quantity_management" exact>
               <Management_Quantity />
             </Route>

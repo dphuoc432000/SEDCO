@@ -10,6 +10,7 @@ class Management_Quantity extends Component {
         await this.props.getEssentials();
         const essentialsReducer = this.props.essentialsReducer.essentials;
         const essentials_car = this.props.status_current.detail.essentials;
+        
         const essentials_map = essentials_car.map((essential) =>{
             const object = {};
             essentialsReducer.find(item => {

@@ -3,10 +3,49 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import "./Sender/notification_content.css";
 import CircleIcon from "@mui/icons-material/Circle";
+import {API_IMAGE_URL} from '../../constants/api'
 
-
-class SeeInforCarTrip extends Component {
+class Notification_Register_RECEIVER extends Component {
+   
   render() {
+    console.log(this.props.history_data , this.props.car_infor_data_regis);
+    const name = this.props.car_infor_data_regis.user.full_name;
+    const bienso = this.props.car_infor_data_regis.status.detail.car.license_plate;
+    const trongtai = this.props.car_infor_data_regis.status.detail.car.tonnage;
+    const ngaynhan = this.props.car_infor_data_regis.status.detail.start_receive_time;
+    const ngaykh = this.props.car_infor_data_regis.status.detail.departure_time;
+    const diemkh = this.props.car_infor_data_regis.status.detail.location_start;
+    const diemden = this.props.car_infor_data_regis.status.detail.location_finish;
+    const note =  this.props.car_infor_data_regis.status.detail.note;
+    const loaixe = this.props.car_infor_data_regis.status.detail.car.type_car;
+    const songuoi = this.props.car_infor_data_regis.status.detail.car.many_people;
+    const sdt = this.props.car_infor_data_regis.user.phone_number;
+    const diachi = this.props.car_infor_data_regis.user.address;
+    const picture = this.props.car_infor_data_regis.status.detail.picture;
+
+    const todate_start_receive = new Date(ngaynhan).getDate();
+    const tomonth_start_receive =
+      new Date(ngaynhan).getMonth() + 1;
+    const toyear_start_receive = new Date(
+        ngaynhan
+    ).getFullYear();
+    const original_start_receive_time =
+      tomonth_start_receive +
+      "/" +
+      todate_start_receive +
+      "/" +
+      toyear_start_receive;
+
+    const todate_departure_time = new Date(ngaykh).getDate();
+    const tomonth_departure_time =
+      new Date(ngaykh).getMonth() + 1;
+    const toyear_departure_time = new Date(ngaykh).getFullYear();
+    const original_departure_time =
+      tomonth_departure_time +
+      "/" +
+      todate_departure_time +
+      "/" +
+      toyear_departure_time;
     return (
       <div className="content_container">
         <div className="title">
@@ -16,7 +55,7 @@ class SeeInforCarTrip extends Component {
           <div className="status_infor_container">
             <div className="per_infor">
               <span className="username">
-                <h2>Nguen Phuong Hang</h2>
+                <h2>{name}</h2>
               </span>
               <span className="status" style={{ color: "#009432" }}>
                 <CircleIcon />
@@ -32,54 +71,54 @@ class SeeInforCarTrip extends Component {
               <table className="contact_content">
                 <tr>
                   <td>Biển số: </td>
-                  <td>93d1 22032</td>
+                  <td>{bienso}</td>
                 </tr>
                 <tr>
                   <td>Loại xe: </td>
-                  <td> Thi Sách Đà Nẵng</td>
+                  <td>{loaixe}</td>
                 </tr>
                 <tr>
                   <td>Trọng tải: </td>
-                  <td>92 tấn</td>
+                  <td>{trongtai}</td>
                 </tr>
                 <tr>
                   <td>Số người: </td>
-                  <td>9</td>
+                  <td>{songuoi}</td>
                 </tr>
                 <tr>
                   <td>Số điện thoại: </td>
-                  <td>09616224649</td>
+                  <td>{sdt}</td>
                 </tr>
                 <tr>
                   <td>Địa chỉ: </td>
-                  <td>Thi Sách Đà Nẵng</td>
+                  <td>{diachi}</td>
                 </tr>
                 <tr>
                   <td>Bắt đầu nhận hàng : </td>
-                  <td>00/00/2021</td>
+                  <td>{original_start_receive_time}</td>
                 </tr>
                 <tr>
                   <td>Bắt đầu khởi hành : </td>
-                  <td>00/00/2021</td>
+                  <td>{original_departure_time}</td>
                 </tr>
                 <tr>
                   <td>Địa điểm khởi hành : </td>
-                  <td>aaaaaaaaaaaaaaaaaaa</td>
+                  <td>{diemkh}</td>
                 </tr>
                 <tr>
                   <td>Địa điểm đến : </td>
-                  <td>aaaaaaaaaaaaaaaaaaa</td>
+                  <td>{diemden}</td>
                 </tr>
               </table>
             </div>
             <div className="note_infor">
               <h4>Ghi chú</h4>
-              <p className="note_content">ádasifyauiyfiasas</p>
+              <p className="note_content">{note}</p>
             </div>
             <div className="picture_infor">
               <h4>Hình ảnh</h4>
               <div className="img_content">
-                <img src="https://via.placeholder.com/150" alt="" />
+                <img src={`${API_IMAGE_URL}/${picture}`} alt="" />
               </div>
             </div>
           </div>
@@ -96,4 +135,4 @@ class SeeInforCarTrip extends Component {
     );
   }
 }
-export default SeeInforCarTrip;
+export default Notification_Register_RECEIVER;

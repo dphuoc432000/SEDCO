@@ -28,6 +28,8 @@ import accountReducer from './accountReducer.js';
 import userReducer from './userReducer';
 import reportListReducer from './reportListReducer.js';
 import carTripReducer from './carTripReducer.js';
+import sender_statusReducer from './sender_statusReducer'
+import receiver_statusReducer from './receiver_statusReducer'
 import statusDetailReducer from './statusDetailReducer';
 
 export default combineReducers({
@@ -60,5 +62,7 @@ export default combineReducers({
     userReducer,
     reportListReducer,
     carTripReducer,
+    sender_statusReducer,
+    receiver_statusReducer,
     statusDetailReducer
 });

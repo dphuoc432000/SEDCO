@@ -4,10 +4,10 @@ import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUs
 import UpdateUser from "./pages/UpdateUser/UpdateUser";
 import Transaction_Management from "./pages/Transaction_Management/Transaction_Management";
 import {
-    // AuthenticatedSenderRoute,
-    // AuthenticatedReceiverRoute,
-    AuthenticatedCarTripRoute,
-    AuthenticatedAllRoute,
+  AuthenticatedSenderRoute,
+  AuthenticatedReceiverRoute,
+  AuthenticatedCarTripRoute,
+  AuthenticatedAllRoute,
 } from "./components/Authentication/authentication";
 import "./App.css";
 import { connect } from "react-redux";
@@ -275,7 +275,7 @@ class App extends React.Component {
                         <Route path="/car_trip/quantity_management" exact>
                             <Management_Quantity />
                         </Route>
-                        {/*<Route path="/login" exact render={() =>{
+            {/*<Route path="/login" exact render={() =>{
               <Header 
                 handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
                 handleLogin={this.handleLogin} 

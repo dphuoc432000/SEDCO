@@ -29,7 +29,8 @@ import userReducer from './userReducer';
 import reportListReducer from './reportListReducer.js';
 import carTripReducer from './carTripReducer.js';
 import statusDetailReducer from './statusDetailReducer';
-
+import conversationReducer from './conversationReducer.js';
+import messageReducer from './messageReducer.js';
 export default combineReducers({
     roleReducer,
     loginReducer,
@@ -60,5 +61,7 @@ export default combineReducers({
     userReducer,
     reportListReducer,
     carTripReducer,
-    statusDetailReducer
+    statusDetailReducer,
+    conversationReducer,
+    messageReducer
 });

@@ -1,0 +1,37 @@
+.conversation_container{
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 247px;
+    top: calc(100% + 6px);
+    background-color: white;
+    border-radius: 5px;
+    min-height: 80px;
+    max-height: 350px;
+}
+.conversation_container > .layer{
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+.conversation_container > .layer::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.conversation_container > .layer::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.conversation_container > .layer::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+.conversation_container > .layer::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Sidebar links */

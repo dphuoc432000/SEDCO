@@ -11,7 +11,8 @@ import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 // import { menuHeader } from "./menuHeader";
 import CustomizedMenus from './subMenu';
 import CircleIcon from '@mui/icons-material/Circle';
-import Management_Quantity from '../../components/Manage_Quantity/Management_Quantity'
+import Management_Quantity from '../../components/Manage_Quantity/Management_Quantity';
+import ConversationList from '../Message/ConversationList/ConversationList'
 // const translateRoleName = (role_name)=>{
 //     switch(role_name) {
 //         case "user":
@@ -89,6 +90,7 @@ class Header extends React.Component {
     // }
     state = {
         showManageQuantity : false ,
+        showConversationList: false,
     }
     handleChangeShowFormLogin = ()=>{
         this.props.handleChangeShowFormLogin();
@@ -99,18 +101,31 @@ class Header extends React.Component {
         if(className === 'btn__quantity_management')
         // btn_showManageQuantity[0].onclick = () => {
             this.setState({
-                showManageQuantity : !this.state.showManageQuantity
+                showManageQuantity : !this.state.showManageQuantity,
+                showConversationList: false
+            })
+        else if(className === 'button_message')
+            this.setState({
+                showManageQuantity : false,
+                showConversationList: !this.state.showConversationList,
             })
         else
             this.setState({
-                showManageQuantity : false
+                showManageQuantity : false,
+                showConversationList: false
             }) 
         // }
+    }
+    handleShowConversationList = () =>{
+        this.setState({
+            showConversationList: !this.state.showConversationList,
+        })
     }
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
         const role_name = this.props.appProps.role_name.role_name;
+        const {showConversationList} = this.state;
         return (
             <header id="header">
                 <div className="header-navbar">
@@ -161,6 +176,14 @@ class Header extends React.Component {
                 {role_name === 'car_trip' && this.state.showManageQuantity &&
                     <Management_Quantity 
                     status_current={this.props.status_current}
+                    />
+                }
+                {showConversationList &&
+                    <ConversationList 
+                        handleShowConversationList={this.handleShowConversationList}
+                        handleShowMessageWhenClickConversation = {this.props.handleShowMessageWhenClickConversation}
+                        account_id={this.props.account_id}
+                        socket={this.props.socket}
                     />
                 }
             </header>

@@ -1,0 +1,14 @@
+.item_container{
+    width: 250px;
+    min-height: 50px;
+    margin: 5px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+.item_container:hover{
+    background-color: #f5faff;
+}

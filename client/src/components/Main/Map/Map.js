@@ -17,6 +17,7 @@ import SearchArea from "./SearchArea/SearchArea";
 // import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
+import LazyLoad from 'react-lazyload';
 
 const navControlStyle = {
   right: 10,
@@ -184,48 +185,51 @@ class Map extends Component {
     // console.log(this.state)
     return (
       <div className="Map">
-        <ReactMapGL
-          mapStyle="mapbox://styles/mapbox/streets-v11"
-          {...viewport}
-          onViewportChange={(viewport) => this.setState({ viewport })}
-          mapboxApiAccessToken={key}
-        >
-          <NavigationControl showCompass={false} style={navControlStyle} />
-          <GeolocateControl
-            style={geolocateControlStyle}
-            positionOptions={{ enableHighAccuracy: true }}
-            trackUserLocation={true}
-            auto
-          />
-          {markers.map((marker) => {
-            return (
-              <Marker
-                key={marker._id}
-                onClick={() => (this.handleGetStatus(marker))}
-                longitude={marker.longitude}
-                latitude={marker.latitude}
-              >
-                <div className="marker temporary-marker">
-                  <span>
-                    {
-                      <p 
-                        style={{
-                          width: "25px",
-                          height: "25px",
-                          background: `${translateStatusType_Color(
-                            marker.status_type,
-                            marker.detail.regis_status
-                          )}`,
-                          borderRadius: "50%",
-                        }}
-                      ></p>
-                    }
-                  </span>
-                </div>
-              </Marker>
-            );
-          })}
-        </ReactMapGL>
+        <LazyLoad placeholder="Đang tải bản đồ"> 
+          <ReactMapGL
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+            {...viewport}
+            onViewportChange={(viewport) => this.setState({ viewport })}
+            mapboxApiAccessToken={key}
+          >
+            <NavigationControl showCompass={false} style={navControlStyle} />
+            <GeolocateControl
+              style={geolocateControlStyle}
+              positionOptions={{ enableHighAccuracy: true }}
+              trackUserLocation={true}
+              auto
+            />
+            {markers.map((marker) => {
+              return (
+                <Marker
+                  key={marker._id}
+                  onClick={() => (this.handleGetStatus(marker))}
+                  longitude={marker.longitude}
+                  latitude={marker.latitude}
+                >
+                  <div className="marker temporary-marker">
+                    <span>
+                      {
+                        <p 
+                          style={{
+                            width: "25px",
+                            height: "25px",
+                            background: `${translateStatusType_Color(
+                              marker.status_type,
+                              marker.detail.regis_status
+                            )}`,
+                            borderRadius: "50%",
+                          }}
+                        ></p>
+                      }
+                    </span>
+                  </div>
+                </Marker>
+              );
+            })}
+          </ReactMapGL>
+        </LazyLoad>
+        
         <div className="display-status-action-container">
           <div className="all-status-action" onClick={() =>{this.handleChangeToAllMarkers()}}>
             <span >{all_status_list.length} Tất cả</span>

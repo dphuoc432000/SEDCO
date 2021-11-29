@@ -1,0 +1,27 @@
+.block_container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.message_content{
+    padding: 5px 10px;
+    max-width: 200px;
+    background-color: blue;
+    margin: 15px 10px 0 10px;
+    overflow-wrap: anywhere;
+    box-shadow: rgb(0 0 0 / 7%) 0px 1px 1px, rgb(0 0 0 / 7%) 0px 2px 2px, rgb(0 0 0 / 7%) 0px 4px 4px, rgb(0 0 0 / 7%) 0px 8px 8px, rgb(0 0 0 / 7%) 0px 16px 16px;
+    border-radius: 5px;
+}
+.own{
+    justify-content: flex-end;
+    align-items: flex-end!important;
+}
+
+.own > div > .message_content{
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 7%) 0px 1px 1px, rgb(0 0 0 / 7%) 0px 2px 2px, rgb(0 0 0 / 7%) 0px 4px 4px, rgb(0 0 0 / 7%) 0px 8px 8px, rgb(0 0 0 / 7%) 0px 16px 16px;
+    border-radius: 5px;
+}
+.timeline{
+    padding: 0 10px;
+}

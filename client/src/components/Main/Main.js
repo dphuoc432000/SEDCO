@@ -91,6 +91,7 @@ class Main extends React.Component {
                     account_id={this.props.account_id}
                     handleChangeStatusMarker={this.handleChangeStatusMarker}
                     handleUpdateRecentListWhenRegisStatus={this.handleUpdateRecentListWhenRegisStatus}
+                    handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
                 />
             </React.Fragment>
         )

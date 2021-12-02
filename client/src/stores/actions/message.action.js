@@ -6,6 +6,9 @@ import {
     ADD_MESSAGE_SUCCESS,
     ADD_MESSAGE_LOADING,
     ADD_MESSAGE_ERROR,
+    WATCHED_MESSSAGES_CONVERSATION_SUCCESS,
+    WATCHED_MESSSAGES_CONVERSATION_ERROR,
+    WATCHED_MESSSAGES_CONVERSATION_LOADING,
 } from '../../constants/actions';
 import axios from 'axios';
 import {API_URL} from '../../constants/api';
@@ -54,4 +57,26 @@ const add_message_action = async(object) =>{
         console.log(action)
     return action;
 }
-export {get_message_list_action, add_message_action};
+const watched_messages_conversation_action = async(conversation_id, account_id) =>{
+    const action = {
+        type: WATCHED_MESSSAGES_CONVERSATION_LOADING,
+        payload:{}
+    }
+    // console.log(account_id)
+    await axios.post(`${API_URL}/api/message/${conversation_id}/${account_id}/watched/messages`)
+        .then(res =>{
+            action.type = WATCHED_MESSSAGES_CONVERSATION_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err =>{
+            action.type = WATCHED_MESSSAGES_CONVERSATION_ERROR;
+            action.payload = {
+                description: "Lỗi API",
+                message: err.message,
+                errdata: err.response.data
+            }
+        })
+        // console.log(action)
+    return action;
+}
+export {get_message_list_action, add_message_action, watched_messages_conversation_action};

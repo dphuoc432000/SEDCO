@@ -51,6 +51,23 @@ class MessageService{
             pagination,
         }
     }
+
+    //update những message đã đưuọc xem của account trong một conversation
+    watchedMessagesOfConversation = async (conversation_id, account_id) =>{
+        //kiểm tra conversation
+        const check_conversation = await Conversation.findOne({_id: conversation_id})
+            .then(data => data?true:false)
+            .catch(err => err);
+        //kiểm tra account
+        const check_account = await Account.findOne({_id: account_id})
+            .then(data => data?true:false)
+            .catch(err => err);
+        if(check_conversation && check_account)
+            return await Message.updateMany({conversation_id: conversation_id, account_id: {$nin: [account_id]},watched: false}, {watched: true})
+                .then(data => data)
+                .catch(err => err);
+        return null;
+    }
     
 }
 module.exports = new MessageService();

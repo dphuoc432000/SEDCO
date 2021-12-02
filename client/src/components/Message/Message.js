@@ -9,7 +9,7 @@ import {get_message_list_action} from '../../stores/actions/message.action';
 import {GET_MESSAGE_LIST_BY_CONVERSATION_ID_SUCCESS,ADD_MESSAGE_SUCCESS} from '../../constants/actions'
 import SendMessageCss from './SendMessage/SendMessage.module.css';
 import SendIcon from '@mui/icons-material/Send';
-import {add_message_action} from '../../stores/actions/message.action';
+import {add_message_action, watched_messages_conversation_action} from '../../stores/actions/message.action';
 import {toast} from 'react-toastify'
 
 import {io} from 'socket.io-client';
@@ -67,8 +67,9 @@ class Message extends React.PureComponent {
             const get_message_list_action = await this.props.get_message_list_action(conversation._id);
             if(get_message_list_action.type === GET_MESSAGE_LIST_BY_CONVERSATION_ID_SUCCESS){
                 const messageReducer = await this.props.messageReducer;
-                console.log(messageReducer)
+                // console.log(messageReducer)
                 this.setState({
+                    conversation,
                     messages: messageReducer.message_list
                 })
             }
@@ -128,10 +129,15 @@ class Message extends React.PureComponent {
                 toast.error('Đã xãy ra lỗi trong quá trình gửi tin nhắn!')
         }
     }
+    handleWatchedMessage = async () =>{
+        const {conversation, account_id} = this.props;
+        await this.props.watched_messages_conversation_action(conversation._id, account_id);
+    }
     render() {
+        // console.log(this.state.conversation)
         const{input_message,messages} = this.state;
         return (
-            <div className={MessageCss.message_container}>
+            <div className={MessageCss.message_container} onClick={() =>{this.handleWatchedMessage()}}>
                 <Title
                     handleShowMessage={this.props.handleShowMessage}
                     conversation={this.props.conversation}
@@ -176,6 +182,10 @@ const mapDispatchToProps = (dispatch) =>{
         },
         add_message_action: async (object) =>{
             const action = await add_message_action(object);
+            return dispatch(action);
+        },
+        watched_messages_conversation_action: async(conversation_id, account_id) =>{
+            const action = await watched_messages_conversation_action(conversation_id, account_id);
             return dispatch(action);
         }
     };

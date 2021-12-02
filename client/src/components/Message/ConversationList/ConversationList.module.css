@@ -9,10 +9,14 @@
     border-radius: 5px;
     min-height: 80px;
     max-height: 350px;
+    box-shadow: rgb(0 0 0 / 7%) 0px 1px 1px, rgb(0 0 0 / 7%) 0px 2px 2px, rgb(0 0 0 / 7%) 0px 4px 4px, rgb(0 0 0 / 7%) 0px 8px 8px, rgb(0 0 0 / 7%) 0px 16px 16px;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
 }
 .conversation_container > .layer{
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 

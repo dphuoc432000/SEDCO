@@ -28,8 +28,16 @@ class ConversationController {
             })
             .catch(err => next(err));
     }
-    
-
+    //lấy conversation của mình và người dùng khác
+    getConversationByAccountIDAndReceiverID = async(req, res, next) =>{
+        await conversationService.getConversationByAccountIDAndReceiverID(req.params.account_id_pr, req.params.receiver_id_pr)
+            .then(data =>{
+                if(data)
+                    return res.json(data);
+                return res.status(400).json(handleOther.errorHandling("ID không đúng!", null));
+            })
+            .catch(err => next(err));
+    }
 }
 
 module.exports = new ConversationController();

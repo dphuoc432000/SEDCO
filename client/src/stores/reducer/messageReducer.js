@@ -6,6 +6,9 @@ import {
     ADD_MESSAGE_SUCCESS,
     ADD_MESSAGE_LOADING,
     ADD_MESSAGE_ERROR,
+    WATCHED_MESSSAGES_CONVERSATION_SUCCESS,
+    WATCHED_MESSSAGES_CONVERSATION_ERROR,
+    WATCHED_MESSSAGES_CONVERSATION_LOADING,
 } from '../../constants/actions';
 
 const initState = {
@@ -26,6 +29,12 @@ const messageReducer = (state = initState, action) =>{
         case ADD_MESSAGE_ERROR:
             return {...state, error: action.payload};
         case ADD_MESSAGE_LOADING:
+            return {...state};
+        case WATCHED_MESSSAGES_CONVERSATION_SUCCESS:
+            return {...state};
+        case WATCHED_MESSSAGES_CONVERSATION_ERROR:
+            return {...state, error: action.payload};
+        case WATCHED_MESSSAGES_CONVERSATION_LOADING:
             return {...state};
         default:
             return {...state};

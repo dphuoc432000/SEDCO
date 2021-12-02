@@ -230,6 +230,8 @@ class Status extends Component {
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                     handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                                    account_id={this.props.account_id}
+                                    handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
                                 />
                             </React.Fragment>
                         }
@@ -252,6 +254,8 @@ class Status extends Component {
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                     handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                                    account_id={this.props.account_id}
+                                    handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
                                 />
                             </React.Fragment>
                         }
@@ -274,6 +278,8 @@ class Status extends Component {
                                     handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                     handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                                    account_id={this.props.account_id}
+                                    handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
                                 />
                             </React.Fragment>
                         }

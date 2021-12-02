@@ -23,11 +23,19 @@ class MessageController {
             .then(data =>{
                 if(data)
                     return res.json(data);
-                return res.status(400).json(handleOther.errorHandling("ID conversation không đúng!", null));
+                return res.status(400).json(handleOther.errorHandling("Conversation id không đúng!", null));
             })
             .catch(err => next(err));
     }
-    
+    watchedMessagesOfConversation = async(req, res, next) =>{
+        await messageService.watchedMessagesOfConversation(req.params.conversation_id_pr, req.params.account_id_pr)
+            .then(data =>{
+                if(data)
+                    return res.json(data);
+                return res.status(400).json(handleOther.errorHandling("Conversation hoặc account id không đúng!", null));
+            })
+            .catch(err => next(err));
+    }
 
 }
 

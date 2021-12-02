@@ -74,6 +74,7 @@ class App extends React.Component {
             user: {},
             showMessage: false,
             conversation: {},
+            watchNewMessage: false,
         };
     }
     componentWillMount = () => {
@@ -211,7 +212,17 @@ class App extends React.Component {
     handleShowMessageWhenClickConversation = (conversation) => {
         this.setState({
             showMessage: true,
-            conversation: conversation
+            conversation: conversation,
+        })
+    }
+    handleWatchedNewMessage = (conversation_list) =>{
+        this.setState({
+            watchNewMessage: !conversation_list.some(conversation => conversation.watched===false)
+        })
+    }
+    handleUpdateWatchedNewMessage = () =>{
+        this.setState({
+            watchNewMessage: true
         })
     }
     render() {
@@ -242,6 +253,10 @@ class App extends React.Component {
                             handleShowMessageWhenClickConversation={this.handleShowMessageWhenClickConversation}
                             account_id={this.state.account_id}
                             socket={socket}
+                            newMessage={this.state.newMessage}
+                            handleWatchedNewMessage={this.handleWatchedNewMessage}
+                            watchNewMessage={this.state.watchNewMessage}
+                            handleUpdateWatchedNewMessage={this.handleUpdateWatchedNewMessage}
                         />
                         <Route path="/" exact>
                             <Home
@@ -263,6 +278,7 @@ class App extends React.Component {
                                     this.handleLoadAgainWhenCreateStatus
                                 }
                                 isAuthenticated={this.state.isAuthenticated}
+                                handleShowMessageWhenClickConversation={this.handleShowMessageWhenClickConversation}
                             />
                         </Route>
 

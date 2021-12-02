@@ -10,23 +10,24 @@ import LazyLoad from 'react-lazyload';
 
 class ConversationList extends Component {
     state={
-        conversation_list:[],
+        conversation_list: this.props.conversation_list,
     }
-    componentDidMount = async () =>{
-        const account_id = this.props.account_id;
-        const get_conversation_list_action = await this.props.get_conversation_list_action(account_id);
-        const conversationReducer = await this.props.conversationReducer;
-        if(get_conversation_list_action.type === GET_CONVERSATION_LIST_SUCCESS)
-            this.setState({
-                conversation_list: conversationReducer.conversation_list
-            })
-    }
+    // componentDidMount = async () =>{
+    //     const account_id = this.props.account_id;
+    //     const get_conversation_list_action = await this.props.get_conversation_list_action(account_id);
+    //     const conversationReducer = await this.props.conversationReducer;
+    //     if(get_conversation_list_action.type === GET_CONVERSATION_LIST_SUCCESS)
+    //         this.setState({
+    //             conversation_list: conversationReducer.conversation_list
+    //         })
+    // }
     render() {
         const {conversation_list} = this.state;
         return (
-            <div className={ConversationListCss.conversation_container}>
+            <div className={ConversationListCss.conversation_container} >
                 <div className={ConversationListCss.layer}>
                     {
+                        conversation_list.length > 0 ?
                         conversation_list.map(conversation =>{
                             return (
                                 // <LazyLoad key={conversation._id} placeholder={'Đang tải'}>
@@ -40,6 +41,8 @@ class ConversationList extends Component {
                                 // </LazyLoad>
                             )
                         })
+                        :
+                        <p>Chưa có tin nhắn</p>
                     }
                 </div>
             </div>

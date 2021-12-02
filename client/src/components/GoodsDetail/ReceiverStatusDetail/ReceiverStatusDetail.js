@@ -9,8 +9,17 @@ import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action
 import ModalDeleteStatus from "../../ModalDeleteStatus/ModalDeleteStatus";
 import { API_IMAGE_URL } from "../../../constants/api";
 import { toast } from "react-toastify";
-import {REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS} from '../../../constants/actions'
-import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status'
+import {
+    REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS, 
+    GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+    CREATE_CONVERSATION_SUCCESS
+} from '../../../constants/actions';
+import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status';
+import {
+    create_conversation_action,
+    get_conversation_by_account_id_receiver_id_action
+} from '../../../stores/actions/conversation.action';
+
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
@@ -83,10 +92,26 @@ class ReceiverStatusDetail extends Component {
         });
         this.props.handleUpdateEssentials(essentials);
     };
-    handleShowMessage = () => {
+    handleShowMessage = async () => {
         //Nếu chưa đăng nhập thì show form đăng nhập
         //ngược lại nếu đã đăng nhập thì hiện lên message
-        if (this.props.isAuthenticated) alert("xử lý hiện lên message");
+        if (this.props.isAuthenticated){
+            const {account_id, status_current} = this.props;
+            const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, status_current.account_id);
+            if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+                const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                this.props.handleShowMessageWhenClickConversation(conversation);
+            }
+            else{
+                const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: status_current.account_id} )
+                if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+                    const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                    this.props.handleShowMessageWhenClickConversation(conversation);
+                }
+            }
+            // console.log(this.props.status_current)
+            // await this.props.create_conversation_action(this.props.account_id, )
+        }
         else this.props.handleChangeShowFormLogin();
     };
     handleRegisReceiverStatus = async() => {
@@ -291,6 +316,7 @@ class ReceiverStatusDetail extends Component {
 const mapStateToProps = (state) => {
     return {
         essentialsDetailReducer: state.essentialsDetailReducer,
+        conversationReducer: state.conversationReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -301,6 +327,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         register_receiver_status_of_car: async (car_status_id , receiver_status_id) =>{
             const action = await register_receiver_status_of_car(car_status_id, receiver_status_id);
+            return dispatch(action);
+        },
+        create_conversation_action: async(object) =>{
+            const action = await create_conversation_action(object);
+            return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
             return dispatch(action);
         }
     };

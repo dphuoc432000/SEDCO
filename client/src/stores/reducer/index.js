@@ -65,7 +65,7 @@ export default combineReducers({
     carTripReducer,
     statusDetailReducer,
     conversationReducer,
-    messageReducer
+    messageReducer,
     sender_statusReducer,
     receiver_statusReducer,
 });

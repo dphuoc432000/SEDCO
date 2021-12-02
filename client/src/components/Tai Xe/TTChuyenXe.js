@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CarTripDetail from "../CarTripDetail/CarTripDetail";
+import TTChuyenXeCss from './TTChuyebXe.module.css';
 import { connect } from "react-redux";
 
 class TTChuyenXe extends Component {
@@ -56,56 +57,57 @@ class TTChuyenXe extends Component {
       start_receive_time_state
     ).getFullYear();
     const original_start_receive_time =
-      tomonth_start_receive +
-      "/" +
-      todate_start_receive +
-      "/" +
-      toyear_start_receive;
+    (todate_start_receive < 10 ? '0' + todate_start_receive:todate_start_receive )
+    + "/" + (tomonth_start_receive < 10 ?'0' + tomonth_start_receive:tomonth_start_receive)
+    +"/" + toyear_start_receive;
 
     const todate_departure_time = new Date(departure_time_state).getDate();
     const tomonth_departure_time =
       new Date(departure_time_state).getMonth() + 1;
     const toyear_departure_time = new Date(departure_time_state).getFullYear();
     const original_departure_time =
-      tomonth_departure_time +
-      "/" +
-      todate_departure_time +
-      "/" +
-      toyear_departure_time;
+    (todate_departure_time < 10 ? '0' + todate_departure_time:todate_departure_time)  
+    + "/" + (tomonth_departure_time < 10 ? '0' + tomonth_departure_time:tomonth_departure_time)
+    + "/" + toyear_departure_time;
     return (
       <React.Fragment>
-        <div>
           {this.state.showCarTripDetail === false ? (
             <>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
-                <a
-                  className="data-container__SeeDetail"
-                  onClick={() => {
-                    this.handleShowHideCarTripDetail();
-                  }}
-                >
-                  xem chi tiết{" "}
-                </a>
+              <div className={TTChuyenXeCss.my_status_container}>
+                <table className={TTChuyenXeCss.List_Good}>
+                  <tbody>
+                    <tr>
+                      <th><h3 className={TTChuyenXeCss.data_container__title}>Thông tin chuyến xe</h3></th>
+                      <td>
+                        <p
+                          className={TTChuyenXeCss.data_container__SeeDetail}
+                          onClick={() => {
+                            this.handleShowHideCarTripDetail();
+                          }}
+                        >
+                          Chi tiết
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Bắt đầu nhận hàng:</td>
+                      <td>{original_start_receive_time}</td>
+                    </tr>
+                    <tr>
+                      <td>Bắt đầu vận chuyển:</td>
+                      <td>{original_departure_time}</td>
+                    </tr>
+                    <tr>
+                      <td>Từ:</td>
+                      <td>{location_start_state}</td>
+                    </tr>
+                    <tr>
+                      <td>Đến:</td>
+                      <td>{location_finish_state}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <table className="List-Good">
-                <tr>
-                  <td>Bắt đầu nhận hàng:</td>
-                  <td>{original_start_receive_time}</td>
-                </tr>
-                <tr>
-                  <td>Bắt đầu vận chuyển:</td>
-                  <td>{original_departure_time}</td>
-                </tr>
-                <tr>
-                  <td>Từ:</td>
-                  <td>{location_start_state}</td>
-                </tr>
-                <tr>
-                  <td>Đến:</td>
-                  <td>{location_finish_state}</td>
-                </tr>
-              </table>
             </>
           ) : (
             <CarTripDetail
@@ -120,7 +122,6 @@ class TTChuyenXe extends Component {
               handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
             />
           )}
-        </div>
       </React.Fragment>
     );
   }

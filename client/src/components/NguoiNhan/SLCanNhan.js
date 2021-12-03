@@ -2,6 +2,7 @@ import React from "react";
 import ReceiverStatusDetail from "../../components/GoodsDetail/ReceiverStatusDetail/ReceiverStatusDetail";
 import { connect } from "react-redux";
 import getEssentialsDetail from "../../stores/actions/essentialsDetail.action"
+import SLCanNhanCss from './SLCanNhan.module.css'
 class SLCanNhan extends React.Component {
   state = {
     showGoodsDetail: false,
@@ -31,8 +32,8 @@ class SLCanNhan extends React.Component {
     }
   };
   handleShowHide = () => {
-    console.log("1");
     this.setState({ showGoodsDetail: !this.state.showGoodsDetail });
+    this.props.handleShowHideRecentList();
   };
   handleShowHideUpdateReceiver = () => {
     this.setState({
@@ -62,41 +63,43 @@ class SLCanNhan extends React.Component {
     // console.log(this.state)
     return (
       <React.Fragment>
-        <div>
           {this.state.showGoodsDetail === false ? (
-            <>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
-                <a
-                  className="data-container__SeeDetail-sender"
-                  onClick={() => {
-                    this.handleShowHide();
-                  }}
-                >
-                  xem chi tiết{" "}
-                  
-                </a>
+            <React.Fragment>
+              <div className={SLCanNhanCss.my_status_container}>
+                <table className={SLCanNhanCss.List_Good}>
+                  <tbody>
+                      <tr>
+                        <th colSpan={2}><h3 className={SLCanNhanCss.data_container__title}>Cần hỗ trợ nhu yếu phẩm </h3></th>
+                      <td>
+                        <p
+                            className={SLCanNhanCss.data_container__SeeDetail}
+                            onClick={() => {
+                              this.handleShowHide();
+                            }}
+                        >
+                          Chi tiết
+                        </p>
+                      </td>
+                    </tr>
+                    {essentials_state &&
+                      essentials_state.map((essential) => {
+                        return (
+                          <React.Fragment>
+                            {essential.quantity > 0 && (
+                              <tr key={essential.essential_id}>
+                                <td>{essential.name}</td>
+                                <td style={{textAlign : 'right'}}>{essential.quantity}</td>
+                                <td>{essential.unit}</td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        );
+                      })
+                    }
+                  </tbody>
+                </table>
               </div>
-
-              <table className="List-Good">
-                {essentials_state &&
-                  essentials_state.map((essential) => {
-                    return (
-                      <>
-                        {essential.quantity > 0 && (
-                          <tr key={essential.essential_id}>
-                            <td>{essential.name}</td>
-                            <td style={{textAlign : 'right'}}>{essential.quantity}</td>
-                            <td>{essential.unit}</td>
-                          </tr>
-                        )}
-                      </>
-                    );
-                  })}
-                
-              </table>
-              <h3 className="data-container__title">Gần đây</h3>
-            </>
+            </React.Fragment>
           ) : (
             <ReceiverStatusDetail
               user={this.props.user}
@@ -111,7 +114,6 @@ class SLCanNhan extends React.Component {
               handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
             />
           )}
-        </div>
       </React.Fragment>
     );
   }

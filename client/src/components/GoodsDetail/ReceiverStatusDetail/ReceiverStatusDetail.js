@@ -3,14 +3,23 @@ import UpdateReceiverForm from "../../CreateStatusForm/UpdateStatusForm/UpdateRe
 // import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
 import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
-import "./ReceiverStatusDetail.css";
+import ReceiverStatusDetailCss from  "./ReceiverStatusDetail.module.css";
 import { connect } from "react-redux";
 import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
 import ModalDeleteStatus from "../../ModalDeleteStatus/ModalDeleteStatus";
 import { API_IMAGE_URL } from "../../../constants/api";
 import { toast } from "react-toastify";
-import {REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS} from '../../../constants/actions'
-import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status'
+import {
+    REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS, 
+    GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+    CREATE_CONVERSATION_SUCCESS
+} from '../../../constants/actions';
+import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status';
+import {
+    create_conversation_action,
+    get_conversation_by_account_id_receiver_id_action
+} from '../../../stores/actions/conversation.action';
+
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
@@ -83,10 +92,26 @@ class ReceiverStatusDetail extends Component {
         });
         this.props.handleUpdateEssentials(essentials);
     };
-    handleShowMessage = () => {
+    handleShowMessage = async () => {
         //Nếu chưa đăng nhập thì show form đăng nhập
         //ngược lại nếu đã đăng nhập thì hiện lên message
-        if (this.props.isAuthenticated) alert("xử lý hiện lên message");
+        if (this.props.isAuthenticated){
+            const {account_id, status_current} = this.props;
+            const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, status_current.account_id);
+            if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+                const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                this.props.handleShowMessageWhenClickConversation(conversation);
+            }
+            else{
+                const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: status_current.account_id} )
+                if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+                    const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                    this.props.handleShowMessageWhenClickConversation(conversation);
+                }
+            }
+            // console.log(this.props.status_current)
+            // await this.props.create_conversation_action(this.props.account_id, )
+        }
         else this.props.handleChangeShowFormLogin();
     };
     handleRegisReceiverStatus = async() => {
@@ -133,89 +158,98 @@ class ReceiverStatusDetail extends Component {
         const user = this.props.user;
         return (
             <div>
-                <div className="GoodDetail-container">
+                <div className={ReceiverStatusDetailCss.GoodDetail_container}>
                     {/* <h3 class="GoodDetail-container__title">Tôi muốn hỗ trợ :</h3> */}
-                    <h3 className="data-container__title">Cần hỗ trợ</h3>
-                    <table className="List-Good-Detail">
-                        {essentials_state &&
-                            essentials_state.map((essential) => {
-                                return (
-                                    <React.Fragment>
-                                        {essential.quantity > 0 && (
-                                            <tr key={essential.essential_id}>
-                                                <td>{essential.name}</td>
-                                                <td>{essential.quantity}</td>
-                                                <td>{essential.unit}</td>
-                                            </tr>
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
-                        <tr>
-                            <td>Số người trong hộ trong hộ gia đình</td>
-                            <td>{number_per_of_family}</td>
-                            <td>Người</td>
-                        </tr>
+                    <table className={ReceiverStatusDetailCss.List_Good_Detail}>
+                        <tbody>
+                            <tr>
+                                <th colSpan={3}><h3 className={ReceiverStatusDetailCss.data_container__title}>Cần hỗ trợ nhu yếu phẩm</h3></th>
+                            </tr>
+                            {essentials_state &&
+                                essentials_state.map((essential) => {
+                                    return (
+                                        <React.Fragment>
+                                            {essential.quantity > 0 && (
+                                                <tr key={essential.essential_id}>
+                                                    <td>{essential.name}</td>
+                                                    <td>{essential.quantity}</td>
+                                                    <td>{essential.unit}</td>
+                                                </tr>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            <tr>
+                                <td>Số người trong hộ trong hộ gia đình</td>
+                                <td>{number_per_of_family}</td>
+                                <td>Người</td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <h3 className="data-container__title">Thông tin liên hệ</h3>
-                    <table className="List-Good-Detail">
-                        <tr>
-                            <td>Số điện thoại</td>
-                            <td>{user.phone_number}</td>
-                        </tr>
-                        <tr>
-                            <td>Địa chỉ</td>
-                            <td>{user.address}</td>
-                        </tr>
-                        <tr>
-                            <td>Ghi chú</td>
-                            <td>{note}</td>
-                        </tr>
+                    <table className={ReceiverStatusDetailCss.infor_Detail}>
+                        <tbody>
+                            <tr>
+                                <th colSpan={2}><h3 className={ReceiverStatusDetailCss.data_container__title}>Thông tin liên hệ</h3></th>
+                            </tr>
+                            <tr>
+                                <td>Số điện thoại</td>
+                                <td>{user.phone_number}</td>
+                            </tr>
+                            <tr>
+                                <td>Địa chỉ</td>
+                                <td>{user.address}</td>
+                            </tr>
+                            <tr>
+                                <td>Ghi chú</td>
+                                <td>{note}</td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <div className="GoodDetail-Info-Img">
-                        <h3 className="GoodDetail-Info-Img__label>" style={{    fontWeight: '500',
-                         color: '#4b50ff'}}>Hình ảnh</h3>
+                    <div className={ReceiverStatusDetailCss.GoodDetail_Info_Img}>
+                        <h3 className={ReceiverStatusDetailCss.data_container__title}>Hình ảnh</h3>
                         <img
                             src={`${API_IMAGE_URL}/${picture}`}
-                            alt="hình ảnh người dùng"
-                            className="GoodDetail-Info-Img__src"
+                            alt="Hình ảnh"
+                            className={ReceiverStatusDetailCss.GoodDetail_Info_Img__src}
                             // style={{marginLeft : '-24px'}}
                         />
                     </div>
                 </div>
-                <div className="container-btn__ListBottom">
+                <div className={ReceiverStatusDetailCss.container_btn__ListBottom}>
                     {status_current._id === status_current_current._id ? (
                         <React.Fragment>
+                            <div className={ReceiverStatusDetailCss.button_left}>
                             {/*Phần cho người dùng khi vào xem status của của mình */}
-                            <button
-                                className="GoodDetail-btn-back"
-                                onClick={() => {
-                                    if (
-                                        typeof this.props.handleHideReceiverStatusDetail ===
-                                        "function"
-                                    ){
-                                        this.props.handleHideReceiverStatusDetail();
-                                        this.props.handleUpdateRecentListWhenRegisStatus()
-                                    }
-                                    else {
-                                        this.props.handleHiddenShowFormDetail();
-                                        this.props.handleUpdateRecentListWhenRegisStatus()
-                                    }
-                                }}
-                            >
-                                <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
-                                Quay lại
-                            </button>
+                                <button
+                                    className={ReceiverStatusDetailCss.GoodDetail_btn_back}
+                                    onClick={() => {
+                                        if (
+                                            typeof this.props.handleHideReceiverStatusDetail ===
+                                            "function"
+                                        ){
+                                            this.props.handleHideReceiverStatusDetail();
+                                            this.props.handleUpdateRecentListWhenRegisStatus()
+                                        }
+                                        else {
+                                            this.props.handleHiddenShowFormDetail();
+                                            this.props.handleUpdateRecentListWhenRegisStatus()
+                                        }
+                                    }}
+                                >
+                                    <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
+                                    Quay lại
+                                </button>
+                            </div>
                             {this.props.update_form &&
-                                <div>
+                                <div className={ReceiverStatusDetailCss.button_right}>
                                     <button
-                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
+                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Del}`}
                                         onClick={() => {this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus()}}
                                     >
                                         Xóa
                                     </button>
                                     <button
-                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                        className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Update}`}
                                         onClick={() => {this.handleShowHideUpdateReceiver()}}
                                     >
                                         Cập nhật
@@ -225,23 +259,31 @@ class ReceiverStatusDetail extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
+                            <div className={ReceiverStatusDetailCss.button_left}>
                             {/*Phần cho người dùng khi vào xem status của người khác */}
-                            <button
-                                className="GoodDetail-btn-back"
-                                onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
-                            >
-                                <i className="fas fa-chevron-left GoodDetail-icon-back"></i>
-                                Quay lại
-                            </button>
-
-                            <button
-                                className="GoodDetailContainer-btn-item GoodDetail-btn__Del"
-                                onClick={() => {
-                                    this.handleShowMessage();
-                                }}
-                            >
-                                Nhắn tin
-                            </button>
+                                <button
+                                    className={ReceiverStatusDetailCss.GoodDetail_btn_back}
+                                    onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                                >
+                                    <i className="fas fa-chevron-left GoodDetail-icon-back"></i>
+                                    Quay lại
+                                </button>
+                            </div>
+                            <div className={ReceiverStatusDetailCss.button_right}>
+                                <button
+                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Report}`}
+                                    onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                                >
+                                    Báo cáo
+                                </button>
+                                <button
+                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Message}`}
+                                    onClick={() => {
+                                        this.handleShowMessage();
+                                    }}
+                                >
+                                    Nhắn tin
+                                </button>
                             {role_name_current.role_name === "car_trip" && (
                                 
                                 status_current.detail.regis_status === false ?
@@ -249,7 +291,7 @@ class ReceiverStatusDetail extends Component {
                                     //CHƯA XONG
                                     //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                     //nếu chưa thì viết hàm xử lý (CHƯA XONG)
-                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Register}`}
                                         onClick={() =>{this.handleRegisReceiverStatus()}}
                                     >
                                         Đăng ký
@@ -259,7 +301,7 @@ class ReceiverStatusDetail extends Component {
                                         //CHƯA XONG
                                         //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                         //nếu chưa thì viết hàm xử lý (CHƯA XONG)
-                                        className="GoodDetailContainer-btn-item GoodDetail-btn__Update"
+                                        className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Registered}`}
                                         onClick={() => {
                                             status_current.detail.regis_status === true
                                                 ? toast.info("Đã có chuyến xe đăng ký!")
@@ -269,6 +311,7 @@ class ReceiverStatusDetail extends Component {
                                         Đã đăng ký
                                     </button>
                             )}
+                            </div>
                         </React.Fragment>
                     )}
                 </div>
@@ -291,6 +334,7 @@ class ReceiverStatusDetail extends Component {
 const mapStateToProps = (state) => {
     return {
         essentialsDetailReducer: state.essentialsDetailReducer,
+        conversationReducer: state.conversationReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -301,6 +345,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         register_receiver_status_of_car: async (car_status_id , receiver_status_id) =>{
             const action = await register_receiver_status_of_car(car_status_id, receiver_status_id);
+            return dispatch(action);
+        },
+        create_conversation_action: async(object) =>{
+            const action = await create_conversation_action(object);
+            return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
             return dispatch(action);
         }
     };

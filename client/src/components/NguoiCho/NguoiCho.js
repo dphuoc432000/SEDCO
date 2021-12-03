@@ -11,7 +11,7 @@ class NguoiCho extends React.Component {
      return (
       <div className="NguoiCho">
         <StatusForStatusSender user={this.props.user} roleName={this.props.role_name} status_current={this.props.status_current} />
-        <SLHoTro handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
+        <SLHoTro  handleShowHideRecentList={this.props.handleShowHideRecentList} handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}  handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus} user={this.props.user} account_id={this.props.account_id} status_current={this.props.status_current} handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}/>
         
       </div>
   );

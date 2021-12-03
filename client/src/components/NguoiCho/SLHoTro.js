@@ -4,6 +4,7 @@ import React from "react";
 import getEssentialsDetail from "../../stores/actions/essentialsDetail.action";
 import { connect } from "react-redux";
 import SenderStatusDetail from "../GoodsDetail/ReceiverStatusDetail/SenderStatusDetail";
+import SLHoTroCss from './SLHoTro.module.css';
 
 class SLHoTro extends React.Component {
   state = {
@@ -35,6 +36,7 @@ class SLHoTro extends React.Component {
   };
   handleShowHide = () => {
     this.setState({ showGoodsDetail: !this.state.showGoodsDetail });
+    this.props.handleShowHideRecentList();
   };
   handleShowHideUpdateReceiver = () => {
     this.setState({
@@ -60,67 +62,57 @@ class SLHoTro extends React.Component {
     const essentials_state = this.state.essentials;
     return (
       <React.Fragment>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        ></div>
-        {this.state.showGoodsDetail === false ? (
-          <>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h3 className="data-container__title">Hỗ trợ nhu yếu phẩm </h3>{" "}
-              <a
-                className="data-container__SeeDetail-sender"
-                onClick={() => {
-                  this.handleShowHide();
-                }}
-              >
-                Xem chi tiết{" "}
-                
-              </a>
-            </div>
-
-            <table className="List-Good">
-              {essentials_state &&
-                essentials_state.map((essential) => {
-                  return (
-                    <>
-                      {essential.quantity > 0 && (
-                        <tr key={essential.essential_id}>
-                          <td>{essential.name}</td>
-                          <td style={{textAlign : 'right'}}>{essential.quantity}</td>
-                          <td>{essential.unit}</td>
-                        </tr>
-                      )}
-                    </>
-                  );
-                })}
-              {/* 
-              <tr>
-                <td>Tổng khối lượng</td>
-                <td>600kg</td>
-              </tr> */}
-            </table>
-
-            <h3 className="data-container__title">Gần đây</h3>
-            {/* <RecentList /> */}
-          </>
-        ) : (
-          <SenderStatusDetail
-            user={this.props.user}
-            status_current={this.props.status_current}
-            status_current_current = {this.props.status_current}
-            essentials = {this.state.essentials}
-            handleHideSenderStatusDetail={this.handleShowHide}
-            handleUpdateEssentials={this.handleUpdateEssentials}
-            handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
-            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
-            update_form={this.state.update_form}
-            handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
-          />
-        )}
+          {this.state.showGoodsDetail === false ? (
+            <React.Fragment>
+              <div className={SLHoTroCss.my_status_container}>
+                <table className={SLHoTroCss.List_Good}>
+                  <tbody>
+                    <tr>
+                      <th colSpan={2}><h3 className={SLHoTroCss.data_container__title}>Hỗ trợ nhu yếu phẩm </h3></th>
+                      <td>
+                        <p
+                            className={SLHoTroCss.data_container__SeeDetail}
+                            onClick={() => {
+                              this.handleShowHide();
+                            }}
+                        >
+                          Chi tiết
+                        </p>
+                      </td>
+                    </tr>
+                    {essentials_state &&
+                      essentials_state.map((essential) => {
+                        return (
+                          <React.Fragment>
+                            {essential.quantity > 0 && (
+                              <tr key={essential.essential_id}>
+                                <td>{essential.name}</td>
+                                <td style={{textAlign : 'right'}}>{essential.quantity}</td>
+                                <td>{essential.unit}</td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        );
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </React.Fragment>
+          ) : (
+            <SenderStatusDetail
+              user={this.props.user}
+              status_current={this.props.status_current}
+              status_current_current = {this.props.status_current}
+              essentials = {this.state.essentials}
+              handleHideSenderStatusDetail={this.handleShowHide}
+              handleUpdateEssentials={this.handleUpdateEssentials}
+              handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+              handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+              update_form={this.state.update_form}
+              handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+            />
+          )}
       </React.Fragment>
     );
   }

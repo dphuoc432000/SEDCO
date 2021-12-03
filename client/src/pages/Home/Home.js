@@ -23,6 +23,7 @@ class Home extends Component {
                         handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                         handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                         isAuthenticated={this.props.isAuthenticated}
+                        handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
                     />
                     {   this.props.showFormLogin &&
                         <div className="showform_auth">

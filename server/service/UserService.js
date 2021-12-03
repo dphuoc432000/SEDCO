@@ -4,7 +4,7 @@ const carStatusSevice = require('./CarStatusService');
 const carService = require('./CarService');
 const vehicleCensorshipService = require('./VehicleCensorshipService');
 const Status = require('../models/Status');
-
+const Account = require('../models/Account');
 class UserService{
 
     getUserList = async () =>{
@@ -140,6 +140,17 @@ class UserService{
             user_driver_no_censorship: await userDriverNoCensorship,
             pagination: carStatusNoCensorshipList.pagination
         };
+    }
+
+    getUserByAccountId = async(account_id) =>{
+        const account = await Account.findById({_id: account_id})
+            .then(data => mongooseToObject(data));
+        if(account){
+            return await User.findById({_id: account.user_id})
+                .then(data => mongooseToObject(data))
+                .catch(err => err);  
+        }
+        return null;
     }
 }
 

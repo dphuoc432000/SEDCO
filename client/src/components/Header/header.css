@@ -115,12 +115,20 @@
   align-items: center;
   justify-content: center;
   list-style: none;
+  position:relative;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__menu_user > li > a{
   padding: 10px;
   text-decoration: none;
   color: black;
   font-size: 13px;
+}
+
+#header> .header-navbar > .header-navbar-right > .header-navbar-right__menu_user > li > .icon_new_message{
+  position: absolute;
+      top: 12px;
+      right: 0px;
+      width: 10px;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__infor_user{
   display: flex;

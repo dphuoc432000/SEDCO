@@ -1,7 +1,25 @@
-.ListRecent{
-  padding: 0 18px;
-  height: 340px;
-  margin-top:18px;
-    overflow: hidden;
-    overflow-y: scroll;
+.ListRecent {
+  padding: 0 20px;
+  margin-top: 10px;
+  height: 50%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.ListRecent::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.ListRecent::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.ListRecent::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.ListRecent::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

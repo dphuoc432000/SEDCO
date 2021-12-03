@@ -11,15 +11,10 @@ class StatusForStatusReceiver extends React.Component {
         let {statusNotConfirm} = this.state;
         const user = this.props.user
 
-
         const todate = new Date(status_receiver.createdAt).getDate();
         const tomonth = new Date(status_receiver.createdAt).getMonth()+1;
         const toyear=new Date(status_receiver.createdAt).getFullYear();
-        const original_date=tomonth+'/'+todate+'/'+toyear;
-        const hours = new Date(status_receiver.createdAt).getHours();
-        const minutes = new Date(status_receiver.createdAt).getMinutes();
-        
-        const orginal_time = hours + ':'+ minutes ;
+        const original_date=(todate<10?'0'+todate:todate)+'/'+(tomonth<10?'0'+tomonth:tomonth)+'/'+toyear;
         return (
             <div className="Status-header">
                 <div className="Status-header__left">
@@ -36,8 +31,8 @@ class StatusForStatusReceiver extends React.Component {
                     </div>
                 </div>
                 <div className="Status-header__DateUpPost">
-                    <i className="Status-header__Date--title" style={{color: '#EE5A24'}}>{status_receiver.status_type === 'RECEIVER' && 'Người cần hỗ trợ'}</i>
                     <h3 className="Status-header__date">{`${original_date} `}</h3>
+                    <p className="Status-header__Date--title" style={{color: '#EE5A24'}}>{status_receiver.status_type === 'RECEIVER' && 'Người cần hỗ trợ'}</p>
                 </div>
             </div>
         );

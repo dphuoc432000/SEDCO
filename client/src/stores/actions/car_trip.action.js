@@ -5,7 +5,11 @@ import {
     CONFIRM_DRIVER_CENSORSHIP_LOADING,
     CANCLE_DRIVER_CENSORSHIP_SUCCESS,
     CANCLE_DRIVER_CENSORSHIP_ERROR,
-    CANCLE_DRIVER_CENSORSHIP_LOADING
+    CANCLE_DRIVER_CENSORSHIP_LOADING,
+    GET_LIST_ROLE_IS_CARTRIP_LOADING,
+    GET_LIST_ROLE_IS_CARTRIP_SUCCESS,
+    GET_LIST_ROLE_IS_CARTRIP_ERROR ,
+
 } from '../../constants/actions';
 import axios from 'axios';
 import {API_URL} from '../../constants/api';
@@ -54,5 +58,26 @@ const cancle_driver_censorship_action = async (status_id) =>{
         });
     return action;
 }
+const get_list_role_is_cartrip = async( limit , page) => {
+    const action = {
+        type: GET_LIST_ROLE_IS_CARTRIP_LOADING,
+        payload: {},
+    }
 
-export {confirm_driver_censorship_action, cancle_driver_censorship_action};
+    await axios.get(`${API_URL}/api/status/CAR_TRIP/list`)
+        .then(res =>{
+            action.type = GET_LIST_ROLE_IS_CARTRIP_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err => {
+            action.type = GET_LIST_ROLE_IS_CARTRIP_ERROR;
+            action.payload = {
+                description: "API Loi!",
+                message:err.message,
+                errdata: err.response.data
+            };
+        });
+    console.log(action);
+    return action;
+}
+export {confirm_driver_censorship_action , cancle_driver_censorship_action, get_list_role_is_cartrip};

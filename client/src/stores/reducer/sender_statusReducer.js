@@ -60,7 +60,7 @@ const sender_statusReducer = (state = initState , action) => {
         return {...state};
 
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_SUCCESS:
-        state.notification_both_confirm_of_sender =action.payload.history_sender_list;
+        state.notification_both_confirm_of_sender = action.payload.history_sender_list;
         state.pagination_notification_both_confirm_of_sender = action.payload.pagination;
         return {...state};
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR:

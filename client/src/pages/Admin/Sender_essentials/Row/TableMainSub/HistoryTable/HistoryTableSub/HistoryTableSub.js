@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import HistoryTableSubCss from './HistoryTableSub.module.css';
 
+
+import getEssentials from './../../../../../../../stores/actions/essentials.action';
+
 function converJsonDateToDate(jsonDate){
     const date = new Date(jsonDate);
     const day = date.getDate();
@@ -14,9 +17,37 @@ function converJsonDateToDate(jsonDate){
 class HistoryTableSub extends Component {
     state={
         history_sender: this.props.history_sender,
+        essentials : [],
+       
     }
+    componentDidMount = async () => {
+       
+        await this.props.getEssentials();
+        const essentialsReducer = this.props.essentialsReducer.essentials;
+        const essentials_history_sender = this.props.history_sender.essentials;
+        console.log(essentials_history_sender);
+        const essentials_map = essentials_history_sender.map((essential) =>{
+            const object = {};
+            essentialsReducer.find(item => {
+                if(item._id === essential.essential_id ){
+                    object.quantity = essential.quantity;
+                    object.essential_id = essential.essential_id;
+                    object.name = item.name;
+                    object.unit = item.unit;
+                }
+                return item._id === essential.essential_id;
+                
+            })
+            return object;
+        })
+        this.setState({
+            essentials : essentials_map ,
+        })
+    }
+   
     render() {
-        const {history_sender} = this.state;
+        let { history_sender , essentials } = this.state;
+        console.log('check essential', essentials )
         return (
             <table className={HistoryTableSubCss.history_table__sub}>
                 <tbody>
@@ -28,14 +59,39 @@ class HistoryTableSub extends Component {
                         <th className={HistoryTableSubCss.ht_tb_sub_column_title}>Xác nhận <br/> chuyến xe</th>
                         <th className={HistoryTableSubCss.ht_tb_sub_column_title}>Xác nhận <br/> người dùng</th>
                     </tr>
-                    <tr>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>Chưa làm essential list</td>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>Chưa làm essential list</td>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>Chưa làm essential list</td>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{converJsonDateToDate(history_sender.sender_time)}</td>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.car_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
-                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.sender_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
-                    </tr>
+                    
+                        {
+                            essentials.length > 0  ?  (essentials.map(essential => {
+                                
+                                return(
+                                    <tr key={essential.essential_id}>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{essential.name}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{essential.unit}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{essential.quantity}</td>
+
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{converJsonDateToDate(history_sender.sender_time)}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.car_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.sender_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
+                                    </tr>
+                                    
+                                )
+                            }))
+                            : 
+                            (
+                                <tr>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>chưa xác nhận</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>chưa xác nhận</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>chưa xác nhận</td>
+
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{converJsonDateToDate(history_sender.sender_time)}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.car_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
+                                        <td className={HistoryTableSubCss.ht_tb_sub_column_data}>{history_sender.sender_confirm?'Đã xác nhận':'Chưa xác nhận'}</td>
+                                </tr>
+                            )
+                        }
+
+                        
+                    
                 </tbody>
             </table>
         )
@@ -45,12 +101,19 @@ class HistoryTableSub extends Component {
 //state này của redux không phải react
 const mapStateToProps = (state) => {
     return {
+        essentialsReducer : state.essentialsReducer,
     }
 }
 
 //dispatch này của redux không phải react
 const mapDispatchToProps = (dispatch) => {
     return {
+        getEssentials : async () => {
+            const action = await getEssentials()
+            return dispatch(action);
+        },
+       
+
     }
 }
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(HistoryTableSub))

@@ -8,20 +8,21 @@ import {API_IMAGE_URL} from '../../constants/api'
 class Notification_Register_SENDER extends Component {
    
   render() {
-    console.log(this.props.history_data , this.props.car_infor_data_regis);
-    const name = this.props.car_infor_data_regis.user.full_name;
-    const bienso = this.props.car_infor_data_regis.status.detail.car.license_plate;
-    const trongtai = this.props.car_infor_data_regis.status.detail.car.tonnage;
-    const ngaynhan = this.props.car_infor_data_regis.status.detail.start_receive_time;
-    const ngaykh = this.props.car_infor_data_regis.status.detail.departure_time;
-    const diemkh = this.props.car_infor_data_regis.status.detail.location_start;
-    const diemden = this.props.car_infor_data_regis.status.detail.location_finish;
-    const note =  this.props.car_infor_data_regis.status.detail.note;
-    const loaixe = this.props.car_infor_data_regis.status.detail.car.type_car;
-    const songuoi = this.props.car_infor_data_regis.status.detail.car.many_people;
-    const sdt = this.props.car_infor_data_regis.user.phone_number;
-    const diachi = this.props.car_infor_data_regis.user.address;
-    const picture = this.props.car_infor_data_regis.status.detail.picture;
+    console.log(this.props.history_data , this.props.car_infor_data);
+
+    const name = this.props.car_infor_data.user.full_name;
+    const bienso = this.props.car_infor_data.status.detail.car.license_plate;
+    const trongtai = this.props.car_infor_data.status.detail.car.tonnage;
+    const ngaynhan = this.props.car_infor_data.status.detail.start_receive_time;
+    const ngaykh = this.props.car_infor_data.status.detail.departure_time;
+    const diemkh = this.props.car_infor_data.status.detail.location_start;
+    const diemden = this.props.car_infor_data.status.detail.location_finish;
+    const note =  this.props.car_infor_data.status.detail.note;
+    const loaixe = this.props.car_infor_data.status.detail.car.type_car;
+    const songuoi = this.props.car_infor_data.status.detail.car.many_people;
+    const sdt = this.props.car_infor_data.user.phone_number;
+    const diachi = this.props.car_infor_data.user.address;
+    const picture = this.props.car_infor_data.status.detail.picture;
 
     const todate_start_receive = new Date(ngaynhan).getDate();
     const tomonth_start_receive =

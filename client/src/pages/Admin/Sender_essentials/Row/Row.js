@@ -33,7 +33,7 @@ class Row extends Component {
                     <td>{status.status_completed ?'Đã hoàn thành':'Chưa hoàn Thành'}</td>
                     <td><p className={SenderEssentialsCss.btn_information} onClick={()=>{this.handleShowTableMainSub()}}>{showTableMainSub?'Đóng':'Chi tiết'}</p></td>
                 </tr>
-                {
+                {   
                     showTableMainSub &&
                     <tr className={SenderEssentialsCss.table_main_row__table_sub}>
                         <td  colSpan='5'>

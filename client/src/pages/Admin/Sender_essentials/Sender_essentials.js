@@ -86,7 +86,7 @@ class Sender_essentials extends React.Component {
                             </tr>
                             {
                                 status_list.map(status =>{
-                                    return <Row status={status} key={status._id}/>
+                                    return <Row status={status} key={status._id} />
                                 })
                             }
                         </tbody>

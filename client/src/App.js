@@ -170,7 +170,6 @@ class App extends React.Component {
             showFormForgotPassword: false,
         });
     };
-
     handleChangeShowFormRegister = () => {
         this.setState({
             showFormRegister: !this.state.showFormRegister,
@@ -186,16 +185,20 @@ class App extends React.Component {
             showFormForgotPassword: !this.state.showFormForgotPassword,
         });
     };
-    handleUpdateStatusCurrent = async (status_current) => {
-        await this.props.get_status_current_action(this.state.account_id);
-        const statusCurrentData = await this.props.statusCurrentReducer;
-        this.setState({
-            status_current: statusCurrentData,
-        });
-    };
+     handleUpdateStatusCurrent = async (status_current) => {
+          await this.props.get_status_current_action(this.state.account_id);
+          const statusCurrentData = await this.props.statusCurrentReducer;
+          this.setState({
+              status_current: statusCurrentData,
+          });
+      };
     handleLoadAgainWhenCreateStatus = async () => {
-        await this.componentDidMount();
-    };
+          await this.componentDidMount();
+      };
+  
+    handleLoadAgainWhenConfirmNotify = async () => {
+      await this.componentDidMount();
+    }
     handleChangeQuantityCarAfterConfirm = async () => {
         await this.props.get_status_current_action(this.state.account_id);
         const statusCurrentData = await this.props.statusCurrentReducer;
@@ -225,6 +228,9 @@ class App extends React.Component {
             watchNewMessage: true
         })
     }
+   
+   
+    
     render() {
         const checkLocalStorage = localStorage.getItem("accessToken") ? true : false;
         // console.log(Object.keys(this.state.role_name).length? true: false)
@@ -282,12 +288,38 @@ class App extends React.Component {
                             />
                         </Route>
 
-                        <Route path="/notification/sender" exact>
-                            <Notification_Sender />
-                        </Route>
-                        <Route path="/notification/receiver" exact>
-                            <Notification_Receiver />
-                        </Route>
+                        {this.state.role_name && this.state.role_name.role_name === "sender" && this.state.status_current && 
+                <AuthenticatedSenderRoute
+                path="/notification/sender" 
+                exact={true}
+                component={Notification_Sender}
+                appProps={{
+                    checkLocalStorage,
+                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                    role_name: this.state.role_name.role_name,
+                    account_id: this.state.account_id,
+                    isAuthenticated: this.state.isAuthenticated,
+                    status_current: this.state.status_current,
+                    
+                }}
+                />
+            }
+            {this.state.role_name && this.state.role_name.role_name === "receiver" && this.state.status_current && 
+                <AuthenticatedReceiverRoute
+                path="/notification/receiver" 
+                exact={true}
+                component={Notification_Receiver}
+                appProps={{
+                    checkLocalStorage,
+                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                    role_name: this.state.role_name.role_name,
+                    account_id: this.state.account_id,
+                    isAuthenticated: this.state.isAuthenticated,
+                    status_current: this.state.status_current,
+                    handleLoadAgainWhenConfirmNotify : this.handleLoadAgainWhenConfirmNotify,
+                }}
+                
+                />
                         <Route path="/car_trip/quantity_management" exact>
                             <Management_Quantity />
                         </Route>
@@ -319,11 +351,14 @@ class App extends React.Component {
                 return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>
               }}>
               </Route>*/}
-                        {checkLocalStorage && Object.keys(this.state.role_name).length ? (
-                            <React.Fragment>
-                                <Route path="/admin">
-                                    <Admin />
-                                </Route>
+
+            {checkLocalStorage && Object.keys(this.state.role_name).length ? (
+              <React.Fragment>
+                <Route path="/admin">
+                  <Admin 
+                    status_current={this.state.status_current}    
+                  />
+                </Route>
 
                                 <AuthenticatedAllRoute
                                     exact

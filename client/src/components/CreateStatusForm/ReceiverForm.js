@@ -164,7 +164,7 @@ class ReceiverForm extends Component {
         const receiverFormCreate =  await this.props.receiverFormCreate(this.props.account_id, formData)
         if (receiverFormCreate.type === RECEIVER_FORM_CREATE_SUCCESS){
             this.props.exitModalReceiverForm();
-            this.props.handleLoadAgainWhenCreateStatus()
+            this.props.handleLoadAgainWhenCreateStatus();
             toast.success("Tạo trạng thái thành công!");
         }
         else {

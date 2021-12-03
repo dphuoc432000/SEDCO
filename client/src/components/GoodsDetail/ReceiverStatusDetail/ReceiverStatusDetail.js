@@ -174,7 +174,7 @@ class ReceiverStatusDetail extends Component {
                     </table>
                     <div className="GoodDetail-Info-Img">
                         <h3 className="GoodDetail-Info-Img__label>" style={{    fontWeight: '500',
-    color: '#4b50ff'}}>Hình ảnh</h3>
+                         color: '#4b50ff'}}>Hình ảnh</h3>
                         <img
                             src={`${API_IMAGE_URL}/${picture}`}
                             alt="hình ảnh người dùng"
@@ -206,7 +206,7 @@ class ReceiverStatusDetail extends Component {
                                 <i className="fas fa-chevron-left GoodDetail-icon-back"></i>{" "}
                                 Quay lại
                             </button>
-                            {this.state.update_form &&
+                            {this.props.update_form &&
                                 <div>
                                     <button
                                         className="GoodDetailContainer-btn-item GoodDetail-btn__Del"

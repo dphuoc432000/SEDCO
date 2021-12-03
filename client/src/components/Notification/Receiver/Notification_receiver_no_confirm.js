@@ -12,7 +12,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {API_IMAGE_URL} from '../../../constants/api';
 import getEssentials from '../../../stores/actions/essentials.action';
-
+import {confirm_notification_send_to_cartrip_of_receiver} from '../../../stores/actions/receiver_status.action';
+import { toast } from "react-toastify";
+import {CONFIRM_NOTIFICATION_CARTRIP_OF_RECEIVER_SUCCESS} from '../../../constants/actions'
 class Notification_receiver_no_comfirm extends Component {
     state = {
         essentials : [],
@@ -74,6 +76,20 @@ class Notification_receiver_no_comfirm extends Component {
            
         })
     };
+    
+    handleConfirmNotification = async () => {
+        const confirm_action = await this.props.confirm_notification_send_to_cartrip_of_receiver(
+            this.props.history_data.car_status_id,
+            this.props.history_data.receiver_status_id,
+        )
+        if(confirm_action.type !== CONFIRM_NOTIFICATION_CARTRIP_OF_RECEIVER_SUCCESS)
+            toast.error("Xác nhận không thành công!");
+        else {
+            this.props.handleUpdateNotifiWhenConfirm();
+            toast.success("Xác nhận thành công!");
+            
+        }
+    }
   render() {
     let {essentials  } = this.state;
     console.log(essentials)
@@ -203,16 +219,33 @@ class Notification_receiver_no_comfirm extends Component {
             </div>
           </div>
           <div className="btn_container" style={{ display: "flex" }}>
-            <div>
-              <button className="btn-notifi_detail btn_detail-chat">
-                Nhắn tin
-              </button>
-            </div>
-            <div>
-              <button className="btn-notifi_detail btn_detail-confirm">
-                Xác nhận
-              </button>
-            </div>
+            {this.props.history_data.receiver_confirm === false ?
+            (
+                <>
+                    <div>
+                        <button className="btn-notifi_detail btn_detail-chat">
+                            Nhắn tin
+                        </button>
+                    </div>
+                    <div>
+                        <button className="btn-notifi_detail btn_detail-confirm"
+                        onClick={() => {this.handleConfirmNotification()}}
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </>
+                
+            ) : 
+            (
+                <div>
+                        <button className="btn-notifi_detail btn_detail-chat">
+                            Nhắn tin
+                        </button>
+                    </div>
+            )
+            }
+            
           </div>
         </div>
       </div>
@@ -231,6 +264,10 @@ const mapDispatchToProps = (dispatch) => {
             const action = await getEssentials();
             return dispatch(action);
         },
+        confirm_notification_send_to_cartrip_of_receiver : async (car_status_id ,receiver_status_id) => {
+            const action = await confirm_notification_send_to_cartrip_of_receiver(car_status_id ,receiver_status_id);
+            return dispatch(action);
+        }
     };
 };
 export default connect(

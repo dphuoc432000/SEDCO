@@ -61,8 +61,8 @@ const receiver_statusReducer = (state = initState , action) => {
         return {...state};
 
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_SUCCESS:
-        state.notification_both_confirm_of_sender =action.payload.history_sender_list;
-        state.pagination_notification_both_confirm_of_sender = action.payload.pagination;
+        state.notification_both_confirm_of_receiver = action.payload.history_receiver_list;
+        state.pagination_notification_both_confirm_of_receiver = action.payload.pagination;
         return {...state};
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_ERROR:
         return {...state, err: action.payload};

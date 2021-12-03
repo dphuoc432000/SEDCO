@@ -25,12 +25,12 @@ class Notification_sender_no_confirm extends Component {
         const essentialsReducer = this.props.essentialsReducer.essentials;
         const essentials_car = this.props.history_data.essentials;
         const essential_of_sender = this.props.history_data.essentials_current_sender;
-        console.log(essential_of_sender)
+        // console.log(essential_of_sender)
         const essentials_map = essential_of_sender.map((essential) =>{
             const object = {};
             essentialsReducer.find(item => {
                 if(item._id === essential.essential_id ){
-                    object.quantity = essential.quantity;
+                    object.sender_quantity = essential.quantity;
                     object.essential_id = essential.essential_id;
                     object.name = item.name;
                     object.unit = item.unit;
@@ -40,37 +40,45 @@ class Notification_sender_no_confirm extends Component {
             })
             return object;
         })
-        
+        console.log('sender',essentials_map)
+
         let essentials_content_map = essentials_map.map( item => {
-            const object = {};
-            essentials_car.find(essential => {
-                if(item.essential_id === essential.essential_id){
-                    object.essential_id =item.essential_id;
-                    object.name = item.name;
-                    object.car_quantity = essential.quantity;
-                }else{
-                    object.essential_id =item.essential_id;
-                    object.name = item.name;
-                    object.car_quantity = 0;
-                }
-                return essential;
-            })
+            const object = item;
+            const essential = ( essentials_car.find(essential => {
+
+                // console.log(item.essential_id , essential.essential_id);
+
+                // if(item.essential_id === essential.essential_id){
+                //     object.essential_id =item.essential_id;
+                //     object.name = item.name;
+                //     object.car_quantity = essential.quantity;
+                // }
+                // else{
+                //     object.essential_id =item.essential_id;
+                //     object.name = item.name;
+                //     object.car_quantity = 0;
+                // }
+                return item.essential_id === essential.essential_id;
+            }))
+            object.car_quantity = essential.quantity;
             return object;
         })
-        console.log(essentials_content_map)
-        essentials_content_map = essentials_content_map.map( item => {
-            const object = {...item};
-            essential_of_sender.find(essential => {
-                if(item.essential_id === essential.essential_id){
-                    object.sender_quantity = essential.quantity;
-                }else{
-                    object.sender_quantity = essential.quantity;
-                }
-                return essential;
-            })
-            return object;
-        })
-        console.log(essentials_content_map)
+        console.log('chuyen xe',essentials_content_map)
+        
+        // essentials_content_map = essentials_content_map.map( item => {
+        //     const object = {...item};
+        //     essential_of_sender.find(essential => {
+        //         if(item.essential_id === essential.essential_id){
+        //             object.sender_quantity = essential.quantity;
+        //         }else{
+        //             object.sender_quantity = essential.quantity;
+        //         }
+        //         return essential;
+        //     })
+        //     return object;
+        // })
+        // console.log(essentials_content_map)
+        
         this.setState({
             essentials: essentials_content_map ,
            
@@ -81,19 +89,20 @@ class Notification_sender_no_confirm extends Component {
             this.props.history_data.car_status_id,
             this.props.history_data.sender_status_id,
         )
-           
-        
         if(confirm_action.type !== CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS)
             toast.error("Xác nhận không thành công!");
         else {
+
+            this.props.handleUpdateNotifiWhenConfirm();
             toast.success("Xác nhận thành công!");
         }
     }
   render() {
       let {essentials  } = this.state;
-      console.log(essentials)
-      console.log(this.props.history_data);
-      console.log(this.props.car_infor_data);
+    //   console.log(essentials)
+    //   console.log(this.props.history_data);
+    //   console.log(this.props.car_infor_data);
+    
     const name = this.props.car_infor_data.user.full_name;
     const bienso = this.props.car_infor_data.status.detail.car.license_plate;
     const trongtai = this.props.car_infor_data.status.detail.car.tonnage;
@@ -217,18 +226,33 @@ class Notification_sender_no_confirm extends Component {
             </div>
           </div>
           <div className="btn_container" style={{ display: "flex" }}>
-            <div>
-              <button className="btn-notifi_detail btn_detail-chat">
-                Nhắn tin
-              </button>
-            </div>
-            <div>
-              <button className="btn-notifi_detail btn_detail-confirm" 
-                onClick={()=>{this.handleConfirmNotification()}}
-              >
-                Xác nhận
-              </button>
-            </div>
+            {this.props.history_data.sender_confirm === false ?
+            (
+                <>
+                    <div>
+                        <button className="btn-notifi_detail btn_detail-chat">
+                            Nhắn tin
+                        </button>
+                    </div>
+                    <div>
+                        <button className="btn-notifi_detail btn_detail-confirm" 
+                            onClick={()=>{this.handleConfirmNotification()}}
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </>
+            )
+                : (
+                    <div>
+                        <button className="btn-notifi_detail btn_detail-chat">
+                            Nhắn tin
+                        </button>
+                    </div>
+                )
+            
+            }
+            
           </div>
         </div>
       </div>

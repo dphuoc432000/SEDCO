@@ -65,7 +65,7 @@
 
 .Car_trips_item {
     margin                : 0 6px;
-    padding               : 6px 8px;
+    padding               : 12px 8px;
     margin-top            : 12px;
     /* display            : flex; */
     background-color      : #F5F6FA;
@@ -73,6 +73,7 @@
     /* border             : 1px solid #818181b0; */
     border-radius         : 6px;
     align-items           : center;
+    display         : flex;
 }
 
 .Car_trips_item--name {

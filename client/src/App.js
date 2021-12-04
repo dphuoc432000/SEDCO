@@ -381,7 +381,8 @@ class App extends React.Component {
                                         account_id: this.state.account_id,
                                         isAuthenticated: this.state.isAuthenticated,
                                         status_current: this.state.status_current,
-                                        handleChangeQuantityCarAfterConfirm: this.handleChangeQuantityCarAfterConfirm
+                                        handleChangeQuantityCarAfterConfirm: this.handleChangeQuantityCarAfterConfirm,
+                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation
                                     }}
                                 />
 

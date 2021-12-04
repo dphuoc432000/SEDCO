@@ -16,6 +16,7 @@ import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../stores/actions/conversation.action';
+import ReportForm from "../ReportForm/ReportForm";
 
 class CarTripDetail extends Component {
 
@@ -23,6 +24,7 @@ class CarTripDetail extends Component {
     state = {
         showUpdateCarTripForm: false,
         showModalDelete: false,
+        showReportForm: false,
         // start_receive_time: this.props.status_current.detail.start_receive_time,
         // departure_time: this.props.status_current.detail.departure_time,
         // location_start: this.props.status_current.detail.location_start,
@@ -100,9 +102,14 @@ class CarTripDetail extends Component {
         }
         else this.props.handleChangeShowFormLogin();
     };
+    handleShowReportForm = () =>{
+        this.setState({
+            showReportForm: !this.state.showReportForm,
+        })
+    }
 
     render() {
-        let { showUpdateCarTripForm } = this.state;
+        let { showUpdateCarTripForm, showReportForm } = this.state;
         const user = this.props.user;
 
         const status_current = this.props.status_current;
@@ -279,7 +286,7 @@ class CarTripDetail extends Component {
                             <div className="button_right">
                                 <button
                                     className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Report}`}
-                                    onClick={() => { this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus() }}
+                                    onClick={() => { this.handleShowReportForm() }}
                                 >
                                     Báo cáo
                                 </button>
@@ -299,6 +306,14 @@ class CarTripDetail extends Component {
                         handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                     />
                 )}
+                {
+                    showReportForm &&
+                    <ReportForm 
+                        handleShowReportForm={this.handleShowReportForm} 
+                        status_current={status_current}
+                        account_id={this.props.account_id}
+                    />
+                }
             </div>
         );
     }

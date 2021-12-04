@@ -3,7 +3,10 @@ import axios from 'axios';
 import {
     GET_REPORT_LIST_HAVE_FILTER_SUCCESS,
     GET_REPORT_LIST_HAVE_FILTER_LOADING,
-    GET_REPORT_LIST_HAVE_FILTER_ERROR
+    GET_REPORT_LIST_HAVE_FILTER_ERROR,
+    CREATE_REPORT_SUCCESS,
+    CREATE_REPORT_ERROR,
+    CREATE_REPORT_LOADING,
 } from '../../constants/actions';
 import {API_URL} from '../../constants/api';
 
@@ -29,4 +32,26 @@ const get_report_list_have_filter_action = async (sort, _limit,_page) =>{
     return action;
 }
 
-export {get_report_list_have_filter_action};
+const create_report_action = async (account_id,status_id, object) =>{
+    const action = {
+        type: CREATE_REPORT_LOADING,
+        payload: {}
+    };
+
+    await axios.post(`${API_URL}/api/report/${account_id}/${status_id}/create`, object)
+        .then(res =>{
+            action.type = CREATE_REPORT_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch((err) => {
+            action.type = CREATE_REPORT_ERROR;
+            action.payload = {
+                description: "Lỗi API",
+                message: err.message,
+                errdata: err.response.data
+            };
+        })
+    return action;
+}
+
+export {get_report_list_have_filter_action, create_report_action};

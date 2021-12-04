@@ -325,6 +325,17 @@ class CarStatusService {
         }
         return null;
     }
+
+    countNumberOfStatusRegis = async (car_status_id) =>{
+        const number_of_receiver_regis = await HistoryReceiver.count({car_status_id: car_status_id, receiver_confirm: false})
+            .then(data => data);
+        const number_of_sender_regis = await HistorySender.count({car_status_id: car_status_id, sender_confirm: false})
+            .then(data => data);
+        return {
+            number_of_receiver_regis,
+            number_of_sender_regis
+        }
+    }
 }
 
 module.exports = new CarStatusService();

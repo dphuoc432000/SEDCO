@@ -81,21 +81,25 @@ class Transaction_Management extends Component {
                         <Switch>
                             <Route exact path={'/car_trip/transaction_management'}>
                                 <Sender_Register
+                                    account_id={this.props.account_id}
                                     car_status={this.state.car_status}
                                     status_list={this.state.status_list}
                                     handleInfomationStatusItem = {this.handleInfomationStatusItem}
                                     // sender_status_information = {this.state.sender_status_information}
                                     handleRemoveStatusAfterCorfirmOrCancle_sender_list = {this.handleRemoveStatusAfterCorfirmOrCancle_sender_list}
                                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
+                                    handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
                                 />
                             </Route>
                             <Route exact path={`/car_trip/transaction_management/receiver/register`}>
                                 <Receiver_register  
+                                    account_id={this.props.account_id}
                                     car_status={this.state.car_status}
                                     status_list={this.state.status_list}
                                     handleInfomationStatusItem = {this.handleInfomationStatusItem} 
                                     handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list}
                                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
+                                    handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
                                 />
                             </Route>
                         </Switch>

@@ -1,6 +1,6 @@
 const Role = require("../models/Role");
 const {multiplemongooseToObject, mongooseToObject} = require("../util/mongoose.js")
-
+const Account = require("../models/Account");
 class RoleService{
 
     getRoleList = async () =>{
@@ -51,7 +51,13 @@ class RoleService{
             })
             .catch(err => err);
     }
-    
+    getRoleByAccountID = async(account_id) =>{
+        const account = await Account.findById({_id: account_id})
+            .then(data => mongooseToObject(data));
+        return await this.getRoleByID(account.role_id)
+            .then(data => data)
+            .catch(err => err);
+    }
 }
 
 module.exports = new RoleService();

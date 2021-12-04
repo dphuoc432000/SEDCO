@@ -198,6 +198,16 @@ class CarStatusController{
             })
             .catch(err => next(err))
     }
+    countNumberOfStatusRegis =async (req, res, next) =>{
+        await carStatusService.countNumberOfStatusRegis(req.params.car_status_id_pr)
+            .then(data =>{
+                if(data){
+                    return res.json(data);
+                }
+                return res.status(400).json(handleOther.errorHandling("Không tìm thấy data", null));
+            })
+            .catch(err => next(err))
+    }
 }
 
 module.exports = new CarStatusController();

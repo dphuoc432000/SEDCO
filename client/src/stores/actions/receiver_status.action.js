@@ -87,7 +87,7 @@ const get_notications_both_confirm_transaction_of_receiver = async (receiver_sta
         payload : {}
     }
     await axios
-    .post(`${API_URL}/api/receiver/${receiver_status_id}/history/confirm/list`)
+    .get(`${API_URL}/api/receiver/${receiver_status_id}/history/confirm/list`)
     .then((data) => {
         action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_SUCCESS;
         action.payload = data.data;
@@ -97,6 +97,7 @@ const get_notications_both_confirm_transaction_of_receiver = async (receiver_sta
         action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_ERROR;
         console.log("check: ", err.response.data);
       });
+    console.log(action);
     return action;
 } 
 export  { get_notification_register_of_receiver , get_notification_not_confirm_of_receiver, confirm_notification_send_to_cartrip_of_receiver,get_notications_both_confirm_transaction_of_receiver};

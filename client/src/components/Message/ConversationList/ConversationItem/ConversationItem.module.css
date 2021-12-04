@@ -12,3 +12,8 @@
 .item_container:hover{
     background-color: #f5faff;
 }
+
+.item_container > .name_container > p{
+    font-size: 13px;
+    font-weight: 500;
+}

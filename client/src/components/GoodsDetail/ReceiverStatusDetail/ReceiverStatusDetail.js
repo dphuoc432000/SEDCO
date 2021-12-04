@@ -19,12 +19,14 @@ import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../../stores/actions/conversation.action';
+import ReportForm from "../../ReportForm/ReportForm";
 
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
         essentials: this.props.essentials,
         showModalDelete: false,
+        showReportForm: false,
     };
 
     componentDidMount = async () => {
@@ -127,6 +129,11 @@ class ReceiverStatusDetail extends Component {
             this.props.handleUpdateRecentListWhenRegisStatus()
         }
         
+    }
+    handleShowReportForm = () =>{
+        this.setState({
+            showReportForm: !this.state.showReportForm,
+        })
     }
     render() {
         const status_current = this.props.status_current; //2 loại: status truyền từ bản đồ qua hoặc status của người đang dùng
@@ -272,7 +279,7 @@ class ReceiverStatusDetail extends Component {
                             <div className={ReceiverStatusDetailCss.button_right}>
                                 <button
                                     className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Report}`}
-                                    onClick={() => {this.props.handleHiddenShowFormDetail(); this.props.handleUpdateRecentListWhenRegisStatus()}}
+                                    onClick={() => {this.handleShowReportForm() }}
                                 >
                                     Báo cáo
                                 </button>
@@ -326,6 +333,14 @@ class ReceiverStatusDetail extends Component {
                         }
                     />
                 )}
+                {
+                    this.state.showReportForm &&
+                    <ReportForm 
+                        handleShowReportForm={this.handleShowReportForm} 
+                        status_current={status_current}
+                        account_id={this.props.account_id}
+                    />
+                }
             </div>
         );
     }

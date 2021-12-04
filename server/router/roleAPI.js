@@ -12,4 +12,5 @@ router.post('/:id/update', roleController.updateRole); //trả về data cũ obj
 //dùng phương thức POST để delete
 //có thể dùng phương thức DELETE để đúng chuẩn RESTful
 router.post('/:id/delete', roleController.deleteRole); //OK
+router.get('/account/:account_id_pr/detail', roleController.getRoleByAccountID); //OK
 module.exports = router;

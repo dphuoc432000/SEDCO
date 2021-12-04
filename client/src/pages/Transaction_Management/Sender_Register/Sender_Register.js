@@ -56,11 +56,13 @@ class Sender_Register extends Component {
         return (
             <React.Fragment>
                 <StatusList handleInfomationStatusItem={this.handleInfomationStatusItem} status_list = {this.props.status_list}/>
-                <Sender_Content 
+                <Sender_Content
+                    account_id={this.props.account_id} 
                     car_status = {this.props.car_status}
                     handleRemoveStatusAfterCorfirmOrCancle_sender_list = {this.handleRemoveStatusAfterCorfirmOrCancle_sender_list} 
                     sender_status_information={this.state.sender_status_information} 
                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
+                    handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
                 />
             </React.Fragment>
         )

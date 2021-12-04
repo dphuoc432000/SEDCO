@@ -62,6 +62,15 @@ class RoleController{
             })
             .catch(err => next(err));
     }
+    getRoleByAccountID = async(req, res, next) =>{
+        await roleService.getRoleByAccountID(req.params.account_id_pr)
+            .then(account=>{
+                if(account)
+                    return res.json(account);
+                return res.status(400).json(handleOther.errorHandling("Lỗi nhập account_id", null));
+            })
+            .catch(err => next(err));
+    }
 }
 
 module.exports = new RoleController();

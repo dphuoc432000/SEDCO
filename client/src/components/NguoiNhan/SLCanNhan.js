@@ -112,6 +112,7 @@ class SLCanNhan extends React.Component {
               handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
               update_form={this.state.update_form}
               handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+              account_id={this.props.account_id}
             />
           )}
       </React.Fragment>

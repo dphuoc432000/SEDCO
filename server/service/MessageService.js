@@ -27,7 +27,12 @@ class MessageService{
                 object.watched = false;
                 const message = new Message(object)
                 return await message.save()
-                    .then(data => mongooseToObject(data))
+                    .then(async data =>{
+                        await Conversation.findOneAndUpdate({_id: object.conversation_id, members: {$in:[object.account_id]}},{})
+                            .set('updatedAt', new Date())
+                            .then(data => {console.log(data)})
+                        return mongooseToObject(data)
+                    })
                     .catch(err => err);
             }
             return 'NO ACCOUNT IN CONVERSATION'

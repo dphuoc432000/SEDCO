@@ -18,14 +18,14 @@ function ModalCompleteStatus(props) {
     const handleClose = () => {
         props.handleShowHideModalComplete();
     };
-    const handleCompletedCarStatus=async ()=>{
-        const complete_car_status_action= await props.complete_car_status_action(props.status_current.detail._id);
-        if(complete_car_status_action.type === COMPLETE_CAR_STATUS_SUCCESS){
-            toast.success('Chuyến xe hoàn thành thành công!')
+    const handleCompletedStatus=async ()=>{
+        const complete_status_action= await props.handleComplete(props.status_current.detail._id);
+        if(complete_status_action.type === props.COMPLETE_STATUS_SUCCESS){
+            toast.success(props.toast_success_content)
             props.handleLoadAgainWhenCreateStatus();
         }
         else
-            toast.warn('Số lượng còn dư hoặc giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!');
+            toast.warn(props.toast_warn_content);
         props.handleShowHideModalComplete();
     }
     return (
@@ -44,7 +44,7 @@ function ModalCompleteStatus(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Từ chối</Button>
-                    <Button onClick={handleCompletedCarStatus} autoFocus>
+                    <Button onClick={handleCompletedStatus} autoFocus>
                         Đồng ý
                     </Button>
                 </DialogActions>

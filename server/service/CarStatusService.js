@@ -228,7 +228,6 @@ class CarStatusService {
             .skip(start)
             .limit(limit)
             .then(data => multiplemongooseToObject(data));
-        console.log(car_status_list)
         return {
             car_status_list: car_status_list,
             pagination: {

@@ -14,7 +14,9 @@ import {
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_LOADING,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_SUCCESS,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR,
- 
+    COMPLETE_SENDER_STATUS_SUCCESS,
+    COMPLETE_SENDER_STATUS_ERROR,
+    COMPLETE_SENDER_STATUS_LOADING,
 } from "../../constants/actions";
 
 const initState = {
@@ -66,6 +68,13 @@ const sender_statusReducer = (state = initState , action) => {
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR:
         return {...state, err: action.payload};
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_LOADING:
+        return {...state};
+
+    case COMPLETE_SENDER_STATUS_SUCCESS:
+        return {...state};
+    case COMPLETE_SENDER_STATUS_ERROR:
+        return {...state , err: action.payload};
+    case COMPLETE_SENDER_STATUS_LOADING:
         return {...state};
     default:
       return state;

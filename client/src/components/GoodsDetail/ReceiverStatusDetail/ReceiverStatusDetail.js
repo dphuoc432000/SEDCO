@@ -11,18 +11,24 @@ import { toast } from "react-toastify";
 import {
     REGISTER_RECEIVER_STATUS_OF_CAR_SUCCESS, 
     GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
-    CREATE_CONVERSATION_SUCCESS
+    CREATE_CONVERSATION_SUCCESS,
+    COMPLETE_RECEIVER_STATUS_SUCCESS
 } from '../../../constants/actions';
 import {register_receiver_status_of_car} from '../../../stores/actions/car_regis_status';
 import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../../stores/actions/conversation.action';
+import {
+    complete_receiver_action
+} from '../../../stores/actions/receiver_status.action'
+import ModalCompleteStatus from '../../ModalCompleteStatus/ModalCompleteStatus'
 
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
         essentials: this.props.essentials,
+        showModalComplete: false
     };
 
     componentDidMount = async () => {
@@ -119,6 +125,16 @@ class ReceiverStatusDetail extends Component {
             this.props.handleUpdateRecentListWhenRegisStatus()
         }
         
+    }
+    
+    handleShowHideModalComplete = () => {
+        this.setState({
+            showModalComplete: !this.state.showModalComplete,
+        });
+    };
+    handleCompleteReceiverStatus=async (receiver_status_id)=>{
+        const complete_receiver_action= await this.props.complete_receiver_action(receiver_status_id);
+        return complete_receiver_action;
     }
     render() {
         const status_current = this.props.status_current; //2 loại: status truyền từ bản đồ qua hoặc status của người đang dùng
@@ -242,6 +258,12 @@ class ReceiverStatusDetail extends Component {
                                     >
                                         Cập nhật
                                     </button>
+                                    <button 
+                                        className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Completed}`}
+                                        onClick={()=>{this.handleShowHideModalComplete()}}
+                                    >
+                                        Hoàn thành
+                                    </button>
                                 </div>
                             }
                         </React.Fragment>
@@ -298,6 +320,19 @@ class ReceiverStatusDetail extends Component {
                     )}
                 </div>
                 {checkUpdateReceiverForm}
+                {this.state.showModalComplete && (
+                    <ModalCompleteStatus
+                        showModalComplete={this.state.showModalComplete}
+                        handleShowHideModalComplete={this.handleShowHideModalComplete}
+                        status_id={this.props.status_current._id}
+                        status_current={this.props.status_current}
+                        handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                        handleComplete={this.handleCompleteReceiverStatus}
+                        COMPLETE_STATUS_SUCCESS={COMPLETE_RECEIVER_STATUS_SUCCESS}
+                        toast_success_content={'Người nhận hỗ trợ hoàn thành thành công!'}
+                        toast_warn_content={'Giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!'}
+                    />
+                )}
             </div>
         );
     }
@@ -325,6 +360,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
             const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
+            return dispatch(action);
+        },
+        complete_receiver_action: async(receiver_status_id)=>{
+            const action = await complete_receiver_action(receiver_status_id);
             return dispatch(action);
         }
     };

@@ -53,7 +53,7 @@ class StatusForStatusCarTrip extends React.Component {
                             {statusNotConfirm === false &&
                                 <>
                                     <h4 className={`${StatusForStatusCarTripCss.Status_headerID__item} ${StatusForStatusCarTripCss.Status_headerID__status}`} style={{ color: '#A3CB38' }}>
-                                        {!status_cartrip.detail.censorship ? 'Đang kiểm duyệt' : status_cartrip.status_completed === false ? 'Chưa vận chuyển' : 'Đang vận chuyển'}
+                                        {!status_cartrip.detail.censorship ? 'Đang kiểm duyệt' : Date.parse(status_cartrip.detail.start_receive_time) - Date.now() > 0 ? 'Chưa vận chuyển' : 'Đang vận chuyển'}
                                     </h4>
                                 </>
                             }

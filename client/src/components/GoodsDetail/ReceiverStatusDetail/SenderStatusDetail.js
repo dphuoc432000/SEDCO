@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 // import UpdateReceiverForm from "../../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm";
 import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
-import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import { connect } from "react-redux";
 import { API_IMAGE_URL } from "../../../constants/api";
@@ -12,17 +11,22 @@ import {
     REGISTER_SENDER_STATUS_OF_CAR_SUCCESS,
     GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
     CREATE_CONVERSATION_SUCCESS,
+    COMPLETE_SENDER_STATUS_SUCCESS
 } from '../../../constants/actions';
 import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../../stores/actions/conversation.action';
+import {
+    complete_sender_action
+} from '../../../stores/actions/sender_status.action'
 import SenderStatusDetailCss from './SenderStatusDetail.module.css';
-
+import ModalCompleteStatus from '../../ModalCompleteStatus/ModalCompleteStatus'
 class SenderStatusDetail extends Component {
     state = {
         showUpdateSenderForm: false,
         essentials: this.props.essentials,
+        showModalComplete: false
     };
     handleShowHideUpdateSender = () => {
         this.setState({
@@ -120,6 +124,16 @@ class SenderStatusDetail extends Component {
             this.props.handleUpdateRecentListWhenRegisStatus()
         }
 
+    }
+    
+    handleShowHideModalComplete = () => {
+        this.setState({
+            showModalComplete: !this.state.showModalComplete,
+        });
+    };
+    handleCompleteSenderStatus=async (sender_status_id)=>{
+        const complete_sender_action= await this.props.complete_sender_action(sender_status_id);
+        return complete_sender_action;
     }
     render() {
         const status_current = this.props.status_current;
@@ -242,6 +256,12 @@ class SenderStatusDetail extends Component {
                                         >
                                             Cập nhật
                                         </button>
+                                        <button 
+                                            className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Completed}`}
+                                            onClick={()=>{this.handleShowHideModalComplete()}}
+                                        >
+                                            Hoàn thành
+                                        </button>
                                     </React.Fragment>
                                 </div>
                             }
@@ -289,6 +309,19 @@ class SenderStatusDetail extends Component {
                     }
                 </div>
                 {checkUpdateSenderForm}
+                {this.state.showModalComplete && (
+                    <ModalCompleteStatus
+                        showModalComplete={this.state.showModalComplete}
+                        handleShowHideModalComplete={this.handleShowHideModalComplete}
+                        status_id={this.props.status_current._id}
+                        status_current={this.props.status_current}
+                        handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                        handleComplete={this.handleCompleteSenderStatus}
+                        COMPLETE_STATUS_SUCCESS={COMPLETE_SENDER_STATUS_SUCCESS}
+                        toast_success_content={'Người hỗ trợ hoàn thành thành công!'}
+                        toast_warn_content={'Giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!'}
+                    />
+                )}
             </div>
         );
     }
@@ -315,6 +348,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         get_conversation_by_account_id_receiver_id_action: async (account_id, receiver_id) => {
             const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
+            return dispatch(action);
+        },
+        complete_sender_action: async(sender_status_id)=>{
+            const action = await complete_sender_action(sender_status_id);
             return dispatch(action);
         }
     };

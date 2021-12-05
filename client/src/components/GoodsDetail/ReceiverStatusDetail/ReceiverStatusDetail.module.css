@@ -132,3 +132,13 @@
   padding: 10px 20px;
   margin-left: 10px;
 }
+
+.GoodDetail_btn__Completed{
+    cursor: pointer;
+    background-color: #6ab04c;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 10px;
+    margin-left: 10px;
+
+}

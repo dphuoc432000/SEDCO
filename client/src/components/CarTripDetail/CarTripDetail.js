@@ -10,7 +10,7 @@ import { get_status_current_action } from '../../stores/actions/status_current.a
 import {
     GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
     CREATE_CONVERSATION_SUCCESS,
-    COMPLETE_CAR_STATUS_SUCCESS
+    COMPLETE_CAR_STATUS_SUCCESS,
 } from '../../constants/actions';
 import {
     create_conversation_action,
@@ -22,8 +22,6 @@ import {
 import {toast} from 'react-toastify';
 
 class CarTripDetail extends Component {
-
-
     state = {
         showUpdateCarTripForm: false,
         showModalComplete: false
@@ -104,13 +102,9 @@ class CarTripDetail extends Component {
         }
         else this.props.handleChangeShowFormLogin();
     };
-    handleCompletedCarStatus=async ()=>{
-        const complete_car_status_action= await this.props.complete_car_status_action(this.props.status_current.detail._id);
-        if(complete_car_status_action.type === COMPLETE_CAR_STATUS_SUCCESS){
-            this.props.handleLoadAgainWhenCreateStatus();
-            toast.success('Chuyến xe hoàn thành thành công!');
-        }
-        toast.warn('Số lượng còn dư hoặc giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!')
+    handleCompletedCarStatus=async (car_status_id)=>{
+        const complete_car_status_action= await this.props.complete_car_status_action(car_status_id);
+        return complete_car_status_action;
     }
     render() {
         let { showUpdateCarTripForm } = this.state;
@@ -302,6 +296,10 @@ class CarTripDetail extends Component {
                         status_id={this.props.status_current._id}
                         status_current={this.props.status_current}
                         handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                        handleComplete={this.handleCompletedCarStatus}
+                        COMPLETE_STATUS_SUCCESS={COMPLETE_CAR_STATUS_SUCCESS}
+                        toast_success_content={'Chuyến xe hoàn thành thành công!'}
+                        toast_warn_content={'Số lượng còn dư hoặc giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!'}
                     />
                 )}
             </div>

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import CarTripDetailCss from "./CarTripDetail.module.css";
 import "../GoodsDetail/GoodsDetail.css";
-import ImgInfo from "../../assets/images/logo.png";
-import ModalDeleteStatus from "../ModalDeleteStatus/ModalDeleteStatus";
+import ModalCompleteStatus from '../ModalCompleteStatus/ModalCompleteStatus'
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import UpdateCarTripForm from "../CreateStatusForm/UpdateStatusForm/UpdateCarTripForm";
@@ -10,21 +9,24 @@ import { API_IMAGE_URL } from '../../constants/api'
 import { get_status_current_action } from '../../stores/actions/status_current.action';
 import {
     GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
-    CREATE_CONVERSATION_SUCCESS
+    CREATE_CONVERSATION_SUCCESS,
+    COMPLETE_CAR_STATUS_SUCCESS
 } from '../../constants/actions';
 import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../stores/actions/conversation.action';
-import ReportForm from "../ReportForm/ReportForm";
+import {
+    complete_car_status_action
+} from '../../stores/actions/car_trip.action'
+import {toast} from 'react-toastify';
 
 class CarTripDetail extends Component {
 
 
     state = {
         showUpdateCarTripForm: false,
-        showModalDelete: false,
-        showReportForm: false,
+        showModalComplete: false
         // start_receive_time: this.props.status_current.detail.start_receive_time,
         // departure_time: this.props.status_current.detail.departure_time,
         // location_start: this.props.status_current.detail.location_start,
@@ -62,9 +64,9 @@ class CarTripDetail extends Component {
             showUpdateCarTripForm: !this.state.showUpdateCarTripForm,
         });
     };
-    handleShowHideModalDelete = () => {
+    handleShowHideModalComplete = () => {
         this.setState({
-            showModalDelete: !this.state.showModalDelete,
+            showModalComplete: !this.state.showModalComplete,
         });
     };
     handleUpdate = () => {
@@ -102,14 +104,16 @@ class CarTripDetail extends Component {
         }
         else this.props.handleChangeShowFormLogin();
     };
-    handleShowReportForm = () =>{
-        this.setState({
-            showReportForm: !this.state.showReportForm,
-        })
+    handleCompletedCarStatus=async ()=>{
+        const complete_car_status_action= await this.props.complete_car_status_action(this.props.status_current.detail._id);
+        if(complete_car_status_action.type === COMPLETE_CAR_STATUS_SUCCESS){
+            this.props.handleLoadAgainWhenCreateStatus();
+            toast.success('Chuyến xe hoàn thành thành công!');
+        }
+        toast.warn('Số lượng còn dư hoặc giao dịch chưa hoàn thành. Vui lòng kiểm tra lại!')
     }
-
     render() {
-        let { showUpdateCarTripForm, showReportForm } = this.state;
+        let { showUpdateCarTripForm } = this.state;
         const user = this.props.user;
 
         const status_current = this.props.status_current;
@@ -258,17 +262,16 @@ class CarTripDetail extends Component {
                             {this.props.update_form &&
                                 <div className="button_right">
                                     <button
-                                        className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Del}`}
-                                        onClick={() => { this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus() }}
-                                    >
-                                        Xóa
-                                    </button>
-
-                                    <button
                                         className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Update}`}
                                         onClick={() => { this.handleShowHideUpdateCarTrip() }}
                                     >
                                         Cập nhật
+                                    </button>
+                                    <button 
+                                        className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Completed}`}
+                                        onClick={()=>{this.handleShowHideModalComplete()}}
+                                    >
+                                        Hoàn thành
                                     </button>
                                 </div>
                             }
@@ -284,12 +287,6 @@ class CarTripDetail extends Component {
                                 </button>
                             </div>
                             <div className="button_right">
-                                <button
-                                    className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Report}`}
-                                    onClick={() => { this.handleShowReportForm() }}
-                                >
-                                    Báo cáo
-                                </button>
                                 <button className={`${CarTripDetailCss.GoodDetailContainer_btn_item} ${CarTripDetailCss.GoodDetail_btn__Message}`} onClick={() => { this.handleShowMessage() }}>
                                     Nhắn tin
                                 </button>
@@ -298,22 +295,15 @@ class CarTripDetail extends Component {
                     }
                 </div>
                 {checkUpdateCarTripForm}
-                {this.state.showModalDelete && (
-                    <ModalDeleteStatus
-                        showModalDelete={this.state.showModalDelete}
-                        handleShowHideModalDelete={this.handleShowHideModalDelete}
+                {this.state.showModalComplete && (
+                    <ModalCompleteStatus
+                        showModalComplete={this.state.showModalComplete}
+                        handleShowHideModalComplete={this.handleShowHideModalComplete}
                         status_id={this.props.status_current._id}
+                        status_current={this.props.status_current}
                         handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                     />
                 )}
-                {
-                    showReportForm &&
-                    <ReportForm 
-                        handleShowReportForm={this.handleShowReportForm} 
-                        status_current={status_current}
-                        account_id={this.props.account_id}
-                    />
-                }
             </div>
         );
     }
@@ -336,6 +326,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         get_conversation_by_account_id_receiver_id_action: async (account_id, receiver_id) => {
             const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
+            return dispatch(action);
+        },
+        complete_car_status_action: async(car_status_id)=>{
+            const action = await complete_car_status_action(car_status_id);
             return dispatch(action);
         }
     }

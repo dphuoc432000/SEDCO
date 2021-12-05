@@ -6,7 +6,6 @@ import "../GoodsDetail.css";
 import ReceiverStatusDetailCss from  "./ReceiverStatusDetail.module.css";
 import { connect } from "react-redux";
 import getEssentialsDetail from "../../../stores/actions/essentialsDetail.action";
-import ModalDeleteStatus from "../../ModalDeleteStatus/ModalDeleteStatus";
 import { API_IMAGE_URL } from "../../../constants/api";
 import { toast } from "react-toastify";
 import {
@@ -19,14 +18,11 @@ import {
     create_conversation_action,
     get_conversation_by_account_id_receiver_id_action
 } from '../../../stores/actions/conversation.action';
-import ReportForm from "../../ReportForm/ReportForm";
 
 class ReceiverStatusDetail extends Component {
     state = {
         showUpdateReceiverForm: false,
         essentials: this.props.essentials,
-        showModalDelete: false,
-        showReportForm: false,
     };
 
     componentDidMount = async () => {
@@ -70,12 +66,6 @@ class ReceiverStatusDetail extends Component {
                 });
             }
         }
-    };
-
-    handleShowHideModalDelete = () => {
-        this.setState({
-            showModalDelete: !this.state.showModalDelete,
-        });
     };
     handleShowHideUpdateReceiver = () => {
         this.setState({
@@ -129,11 +119,6 @@ class ReceiverStatusDetail extends Component {
             this.props.handleUpdateRecentListWhenRegisStatus()
         }
         
-    }
-    handleShowReportForm = () =>{
-        this.setState({
-            showReportForm: !this.state.showReportForm,
-        })
     }
     render() {
         const status_current = this.props.status_current; //2 loại: status truyền từ bản đồ qua hoặc status của người đang dùng
@@ -214,12 +199,14 @@ class ReceiverStatusDetail extends Component {
                     </table>
                     <div className={ReceiverStatusDetailCss.GoodDetail_Info_Img}>
                         <h3 className={ReceiverStatusDetailCss.data_container__title}>Hình ảnh</h3>
-                        <img
-                            src={`${API_IMAGE_URL}/${picture}`}
-                            alt="Hình ảnh"
-                            className={ReceiverStatusDetailCss.GoodDetail_Info_Img__src}
-                            // style={{marginLeft : '-24px'}}
-                        />
+                        {picture &&
+                            <img
+                                src={`${API_IMAGE_URL}/${picture}`}
+                                alt="Hình ảnh"
+                                className={ReceiverStatusDetailCss.GoodDetail_Info_Img__src}
+                                // style={{marginLeft : '-24px'}}
+                            />
+                        }
                     </div>
                 </div>
                 <div className={ReceiverStatusDetailCss.container_btn__ListBottom}>
@@ -250,12 +237,6 @@ class ReceiverStatusDetail extends Component {
                             {this.props.update_form &&
                                 <div className={ReceiverStatusDetailCss.button_right}>
                                     <button
-                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Del}`}
-                                        onClick={() => {this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus()}}
-                                    >
-                                        Xóa
-                                    </button>
-                                    <button
                                         className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Update}`}
                                         onClick={() => {this.handleShowHideUpdateReceiver()}}
                                     >
@@ -277,12 +258,6 @@ class ReceiverStatusDetail extends Component {
                                 </button>
                             </div>
                             <div className={ReceiverStatusDetailCss.button_right}>
-                                <button
-                                    className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Report}`}
-                                    onClick={() => {this.handleShowReportForm() }}
-                                >
-                                    Báo cáo
-                                </button>
                                 <button
                                     className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Message}`}
                                     onClick={() => {
@@ -323,24 +298,6 @@ class ReceiverStatusDetail extends Component {
                     )}
                 </div>
                 {checkUpdateReceiverForm}
-                {this.state.showModalDelete && (
-                    <ModalDeleteStatus
-                        showModalDelete={this.state.showModalDelete}
-                        handleShowHideModalDelete={this.handleShowHideModalDelete}
-                        status_id={this.props.status_current._id}
-                        handleLoadAgainWhenCreateStatus={
-                            this.props.handleLoadAgainWhenCreateStatus
-                        }
-                    />
-                )}
-                {
-                    this.state.showReportForm &&
-                    <ReportForm 
-                        handleShowReportForm={this.handleShowReportForm} 
-                        status_current={status_current}
-                        account_id={this.props.account_id}
-                    />
-                }
             </div>
         );
     }

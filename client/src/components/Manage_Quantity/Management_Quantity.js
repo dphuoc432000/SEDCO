@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Management_Quantity.css";
 import {connect} from 'react-redux'
 import getEssentials from "../../stores/actions/essentials.action";
+
 class Management_Quantity extends Component {
     state = {
         essentials : [],
@@ -30,9 +31,7 @@ class Management_Quantity extends Component {
         })
     };
     render() {
-        
         const {essentials} = this.state ;
-        
         return (
             <div id="management_Quantity_wrapped">
                 <h2 style={{

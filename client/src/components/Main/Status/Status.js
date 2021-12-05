@@ -168,6 +168,7 @@ class Status extends Component {
                         }
                         {getRoleName === "receiver" ? (
                             <NguoiNhan
+                                isAuthenticated={this.props.isAuthenticated}
                                 user={this.props.user}
                                 account_id={this.props.account_id}
                                 status_current={this.props.status_current}
@@ -176,12 +177,14 @@ class Status extends Component {
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                                 handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                             />
                         ) : (
                             ""
                         )}
                         {getRoleName === "sender" ? (
                             <NguoiCho
+                                isAuthenticated={this.props.isAuthenticated}
                                 user={this.props.user}
                                 account_id={this.props.account_id}
                                 status_current={this.props.status_current}
@@ -190,20 +193,23 @@ class Status extends Component {
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                                 handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                             />
                         ) : (
                             ""
                         )}
                         {getRoleName === "car_trip" ?
                             <TaiXe
-                                handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                isAuthenticated={this.props.isAuthenticated}
                                 user={this.props.user}
                                 account_id={this.props.account_id}
                                 status_current={this.props.status_current}
                                 roleName={this.props.role_name}
                                 appProps={this.props.role_name.color}
                                 handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
+                                handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                                 handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
                             />
                             :
                             ''
@@ -215,9 +221,15 @@ class Status extends Component {
                             this.props.status_marker.status_type === "RECEIVER" &&
                             <React.Fragment>
                                 <StatusForStatusReceiver
+                                    isAuthenticated={this.props.isAuthenticated}
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    status_current_current={this.props.status_current}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
+                                    account_id={this.props.account_id}
+                                    handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                    handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail} 
                                 />
                                 <ReceiverStatusDetail
                                     isAuthenticated={this.props.isAuthenticated}
@@ -239,9 +251,15 @@ class Status extends Component {
                             this.props.status_marker.status_type === 'SENDER' &&
                             <React.Fragment>
                                 <StatusForStatusSender
+                                    isAuthenticated={this.props.isAuthenticated}
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    status_current_current={this.props.status_current}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
+                                    account_id={this.props.account_id}
+                                    handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                    handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail} 
                                 />
                                 <SenderStatusDetail
                                     isAuthenticated={this.props.isAuthenticated}
@@ -263,9 +281,15 @@ class Status extends Component {
                             this.props.status_marker.status_type === 'CAR_TRIP' &&
                             <React.Fragment>
                                 <StatusForStatusCarTrip
+                                    isAuthenticated={this.props.isAuthenticated}
                                     user={this.props.status_marker.user}
                                     status_current={this.props.status_marker}
+                                    status_current_current={this.props.status_current}
                                     handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
+                                    handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
+                                    account_id={this.props.account_id}
+                                    handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+                                    handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail} 
                                 />
                                 <CarTripDetail
                                     isAuthenticated={this.props.isAuthenticated}

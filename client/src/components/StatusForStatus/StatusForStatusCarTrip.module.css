@@ -32,11 +32,11 @@
   font-weight: 300;
 }
 .Status_header__DateUpPost {
-  text-align: center;
+  text-align: right;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-items: center;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 .Status_header__Date__title {
   /* nguoi cho */
@@ -47,4 +47,9 @@
 .Status_header__date {
   font-weight: 300;
   font-size: 12px;
+}
+.Status_header__date_container{
+  /* display: flex;
+  flex-direction: row;
+  align-items: center; */
 }

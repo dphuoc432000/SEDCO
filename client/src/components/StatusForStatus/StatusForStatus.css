@@ -35,11 +35,11 @@
   font-weight: 300;
 }
 .Status-header__DateUpPost {
-  text-align: center;
+  text-align: right;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-items: center;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 .Status-header__Date--title {
   /* nguoi cho */

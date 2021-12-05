@@ -11,6 +11,8 @@ const HistorySender = require('../models/History_Sender');
 const HistoryReceiver = require('../models/History_Receiver');
 const SenderStatus = require('../models/Sender_Status');
 const ReceiverStatus = require('../models/Receiver_Status');
+const Car_Status = require('../models/Car_Status');
+const mongoose = require('../util/mongoose.js');
 
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
@@ -221,11 +223,12 @@ class CarStatusService {
                 limit = 1;
         }
         start = (page * limit) - limit;
-        const totalRows = await CarStatus.count({})
+        const totalRows = await CarStatus.count({censorship: false})
         const car_status_list = await CarStatus.find({ censorship: false })
             .skip(start)
             .limit(limit)
             .then(data => multiplemongooseToObject(data));
+        console.log(car_status_list)
         return {
             car_status_list: car_status_list,
             pagination: {
@@ -335,6 +338,71 @@ class CarStatusService {
             number_of_receiver_regis,
             number_of_sender_regis
         }
+    }
+
+
+    //kiểm tra chuyến xe đã hoàn thành tất cả statsus đăng ký hay chưua
+    checkAllCarRegisStatusComfirmInHistorySender_2_2_Or_0_2 = async(car_status_id) =>{
+        //lấy tất cả các phàn tử có trong history sender
+        const car_regis_list = await HistorySender.find({car_status_id: car_status_id})
+            .then(data => multiplemongooseToObject(data));
+        //lấy tất cả các phần tử đã được conform 2/2 trong history sender
+        const car_regis_confirm_2_2_list = await HistorySender.find({car_status_id: car_status_id, car_confirm: true, sender_confirm: true})
+            .then(data => multiplemongooseToObject(data))
+        if(car_regis_list.length === 0 || car_regis_list.length === car_regis_confirm_2_2_list.length)
+            return true;
+        return false;
+    }
+    checkAllCarRegisStatusComfirmInHistoryReceiver_2_2_Or_0_2 = async(car_status_id) =>{
+        //lấy tất cả các phàn tử có trong history receiver
+        const car_regis_list = await HistoryReceiver.find({car_status_id: car_status_id})
+            .then(data => multiplemongooseToObject(data));
+        //lấy tất cả các phần tử đã được conform 2/2 trong history receiver
+        const car_regis_confirm_2_2_list = await HistoryReceiver.find({car_status_id: car_status_id, car_confirm: true, receiver_confirm: true})
+            .then(data => multiplemongooseToObject(data))
+        if(car_regis_list.length === 0 || car_regis_list.length === car_regis_confirm_2_2_list.length)
+            return true;
+        return false;
+    }
+
+    //Check số lượng nhu yếu phẩm trong chuyến xe còn hay không
+    checkNumberOfEssential = async (car_status_id) =>{
+        const car_status = await Car_Status.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data));
+        if(car_status)
+            return !car_status.essentials.some(essential => essential.quantity >0)
+        return false;
+    }
+
+    completeCarStatus = async (car_status_id) =>{
+        //kiểm tra số lượng nhu yếu phẩm trong car_status tất cả đểu = 0 hoặc nhỏ hơn 0
+        if(await this.checkNumberOfEssential(car_status_id)){
+            //Trường hợp đúng số lượng tất cả là 0
+            //Kiểm tra tất cả status đã được confirm 2/2 chưa
+            //Điều kiện: độ dài mảng bằng 0 hoặc tổng số data bằng tổng số data đã confirm 2/2
+            if(await this.checkAllCarRegisStatusComfirmInHistorySender_2_2_Or_0_2(car_status_id) &&  await this.checkAllCarRegisStatusComfirmInHistoryReceiver_2_2_Or_0_2(car_status_id)){
+                //Trường hợp tất cả đã được confirm 2/2
+                //1. update receiving_status:false, shipping_status:false
+                //2. update status_completed: true,
+                //3. update role account về user
+                const car_status = await Car_Status.findByIdAndUpdate({_id: car_status_id},{receiving_status:false, shipping_status:false})
+                    .then(car_status_data => mongooseToObject(car_status_data))
+                if(car_status){
+                    //update status_completed: true,
+                    await Status.findByIdAndUpdate({_id: car_status.status_id},{status_completed: true})
+                        .then(status => mongooseToObject(status))
+                        .then(async status =>{
+                            //update roleAccount
+                            await accountService.accountUpdate_roleId_byRoleName(status.account_id, 'user');
+                        })
+                        .catch(err => err)
+                    return car_status;
+                } 
+                return 'NO DATA'
+            }
+            return 'NO COMPLETED TRANSACTION'
+        }
+        return null;
     }
 }
 

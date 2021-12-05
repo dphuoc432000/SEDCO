@@ -4,10 +4,10 @@ import UpdateUserInforForm from "./pages/UpdateUser/UpdateUserInforForm/UpdateUs
 import UpdateUser from "./pages/UpdateUser/UpdateUser";
 import Transaction_Management from "./pages/Transaction_Management/Transaction_Management";
 import {
-  AuthenticatedSenderRoute,
-  AuthenticatedReceiverRoute,
-  AuthenticatedCarTripRoute,
-  AuthenticatedAllRoute,
+    AuthenticatedSenderRoute,
+    AuthenticatedReceiverRoute,
+    AuthenticatedCarTripRoute,
+    AuthenticatedAllRoute,
 } from "./components/Authentication/authentication";
 import "./App.css";
 import { connect } from "react-redux";
@@ -121,8 +121,8 @@ class App extends React.Component {
         }
         // this.onLoad();
     };
-    componentDidUpdate = (prevProps, prevState) =>{
-        if(this.state.account_id !== prevState.account_id){
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.state.account_id !== prevState.account_id) {
             socket.current.emit('addAccount', this.state.account_id)
             socket.current.on('getAccounts', accounts => {
                 console.log(accounts)
@@ -185,24 +185,23 @@ class App extends React.Component {
             showFormForgotPassword: !this.state.showFormForgotPassword,
         });
     };
-     handleUpdateStatusCurrent = async (status_current) => {
-          await this.props.get_status_current_action(this.state.account_id);
-          const statusCurrentData = await this.props.statusCurrentReducer;
-          this.setState({
-              status_current: statusCurrentData,
-          });
-      };
+    handleUpdateStatusCurrent = async (status_current) => {
+        await this.props.get_status_current_action(this.state.account_id);
+        const statusCurrentData = await this.props.statusCurrentReducer;
+        this.setState({
+            status_current: statusCurrentData,
+        });
+    };
     handleLoadAgainWhenCreateStatus = async () => {
-          await this.componentDidMount();
-      };
-  
+        await this.componentDidMount();
+    };
+
     handleLoadAgainWhenConfirmNotify = async () => {
-      await this.componentDidMount();
+        await this.componentDidMount();
     }
     handleChangeQuantityCarAfterConfirm = async () => {
         await this.props.get_status_current_action(this.state.account_id);
         const statusCurrentData = await this.props.statusCurrentReducer;
-        console.log(statusCurrentData)
         this.setState({
             status_current: statusCurrentData,
         });
@@ -218,19 +217,19 @@ class App extends React.Component {
             conversation: conversation,
         })
     }
-    handleWatchedNewMessage = (conversation_list) =>{
+    handleWatchedNewMessage = (conversation_list) => {
         this.setState({
-            watchNewMessage: !conversation_list.some(conversation => conversation.watched===false)
+            watchNewMessage: !conversation_list.some(conversation => conversation.watched === false)
         })
     }
-    handleUpdateWatchedNewMessage = () =>{
+    handleUpdateWatchedNewMessage = () => {
         this.setState({
             watchNewMessage: true
         })
     }
-   
-   
-    
+
+
+
     render() {
         const checkLocalStorage = localStorage.getItem("accessToken") ? true : false;
         // console.log(Object.keys(this.state.role_name).length? true: false)
@@ -288,42 +287,43 @@ class App extends React.Component {
                             />
                         </Route>
 
-                        {this.state.role_name && this.state.role_name.role_name === "sender" && this.state.status_current && 
-                <AuthenticatedSenderRoute
-                path="/notification/sender" 
-                exact={true}
-                component={Notification_Sender}
-                appProps={{
-                    checkLocalStorage,
-                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
-                    role_name: this.state.role_name.role_name,
-                    account_id: this.state.account_id,
-                    isAuthenticated: this.state.isAuthenticated,
-                    status_current: this.state.status_current,
-                    
-                }}
-                />
-            }
-            {this.state.role_name && this.state.role_name.role_name === "receiver" && this.state.status_current && 
-                <AuthenticatedReceiverRoute
-                path="/notification/receiver" 
-                exact={true}
-                component={Notification_Receiver}
-                appProps={{
-                    checkLocalStorage,
-                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
-                    role_name: this.state.role_name.role_name,
-                    account_id: this.state.account_id,
-                    isAuthenticated: this.state.isAuthenticated,
-                    status_current: this.state.status_current,
-                    handleLoadAgainWhenConfirmNotify : this.handleLoadAgainWhenConfirmNotify,
-                }}
-                
-                />
+                        {this.state.role_name && this.state.role_name.role_name === "sender" && this.state.status_current &&
+                            <AuthenticatedSenderRoute
+                                path="/notification/sender"
+                                exact={true}
+                                component={Notification_Sender}
+                                appProps={{
+                                    checkLocalStorage,
+                                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                    role_name: this.state.role_name.role_name,
+                                    account_id: this.state.account_id,
+                                    isAuthenticated: this.state.isAuthenticated,
+                                    status_current: this.state.status_current,
+
+                                }}
+                            />
+                        }
+                        {this.state.role_name && this.state.role_name.role_name === "receiver" && this.state.status_current &&
+                            <AuthenticatedReceiverRoute
+                                path="/notification/receiver"
+                                exact={true}
+                                component={Notification_Receiver}
+                                appProps={{
+                                    checkLocalStorage,
+                                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                    role_name: this.state.role_name.role_name,
+                                    account_id: this.state.account_id,
+                                    isAuthenticated: this.state.isAuthenticated,
+                                    status_current: this.state.status_current,
+                                    handleLoadAgainWhenConfirmNotify: this.handleLoadAgainWhenConfirmNotify,
+                                }}
+
+                            />
+                        }
                         <Route path="/car_trip/quantity_management" exact>
                             <Management_Quantity />
                         </Route>
-            {/*<Route path="/login" exact render={() =>{
+                        {/*<Route path="/login" exact render={() =>{
               <Header 
                 handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
                 handleLogin={this.handleLogin} 
@@ -352,13 +352,13 @@ class App extends React.Component {
               }}>
               </Route>*/}
 
-            {checkLocalStorage && Object.keys(this.state.role_name).length ? (
-              <React.Fragment>
-                <Route path="/admin">
-                  <Admin 
-                    status_current={this.state.status_current}    
-                  />
-                </Route>
+                        {checkLocalStorage && Object.keys(this.state.role_name).length ? (
+                            <React.Fragment>
+                                <Route path="/admin">
+                                    <Admin
+                                        status_current={this.state.status_current}
+                                    />
+                                </Route>
 
                                 <AuthenticatedAllRoute
                                     exact

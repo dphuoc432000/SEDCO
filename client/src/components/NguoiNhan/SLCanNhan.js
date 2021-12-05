@@ -33,7 +33,6 @@ class SLCanNhan extends React.Component {
   };
   handleShowHide = () => {
     this.setState({ showGoodsDetail: !this.state.showGoodsDetail });
-    this.props.handleShowHideRecentList();
   };
   handleShowHideUpdateReceiver = () => {
     this.setState({

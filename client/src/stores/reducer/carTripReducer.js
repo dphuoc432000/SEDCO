@@ -10,6 +10,9 @@ import {
     GET_LIST_ROLE_IS_CARTRIP_LOADING,
     GET_LIST_ROLE_IS_CARTRIP_SUCCESS,
     GET_LIST_ROLE_IS_CARTRIP_ERROR ,
+    COMPLETE_CAR_STATUS_SUCCESS,
+    COMPLETE_CAR_STATUS_ERROR,
+    COMPLETE_CAR_STATUS_LOADING,
 } from '../../constants/actions';
 
 const initState = {
@@ -41,6 +44,12 @@ const carTripReducer = (state = initState, action) =>{
         case GET_LIST_ROLE_IS_CARTRIP_ERROR:
             return {...state , err: action.payload};
         case GET_LIST_ROLE_IS_CARTRIP_LOADING:
+            return {...state};
+        case COMPLETE_CAR_STATUS_SUCCESS:
+            return {...state};
+        case COMPLETE_CAR_STATUS_ERROR:
+            return {...state , err: action.payload};
+        case COMPLETE_CAR_STATUS_LOADING:
             return {...state};
         default: 
             return {...state}

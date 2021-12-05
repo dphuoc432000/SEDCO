@@ -9,7 +9,9 @@ import {
     GET_LIST_ROLE_IS_CARTRIP_LOADING,
     GET_LIST_ROLE_IS_CARTRIP_SUCCESS,
     GET_LIST_ROLE_IS_CARTRIP_ERROR ,
-
+    COMPLETE_CAR_STATUS_SUCCESS,
+    COMPLETE_CAR_STATUS_ERROR,
+    COMPLETE_CAR_STATUS_LOADING,
 } from '../../constants/actions';
 import axios from 'axios';
 import {API_URL} from '../../constants/api';
@@ -80,4 +82,25 @@ const get_list_role_is_cartrip = async( limit , page) => {
     console.log(action);
     return action;
 }
-export {confirm_driver_censorship_action , cancle_driver_censorship_action, get_list_role_is_cartrip};
+const complete_car_status_action = async(car_status_id)=>{
+    const action = {
+        type: COMPLETE_CAR_STATUS_LOADING,
+        payload: {},
+    }
+
+    await axios.post(`${API_URL}/api/car_trip/${car_status_id}/complete`)
+        .then(res =>{
+            action.type = COMPLETE_CAR_STATUS_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err => {
+            action.type = COMPLETE_CAR_STATUS_ERROR;
+            action.payload = {
+                description: "API Loi!",
+                message:err.message,
+                errdata: err.response.data
+            };
+        });
+    return action;
+}
+export {confirm_driver_censorship_action , cancle_driver_censorship_action, get_list_role_is_cartrip, complete_car_status_action};

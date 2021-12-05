@@ -130,7 +130,7 @@ class UserService{
         //lấy mảng user[driver] chưa được kiểm duyệt bằng user_id trong CARINFOR 
         const userDriverNoCensorship = Promise.all(carStatusNoCensorshipList.car_status_list.map(async carStatus => {
             const car_infor = await carService.getCarbyID(carStatus.car_id);
-            const user_id = car_infor.user_id.toString();
+            const user_id = car_infor.user_id;
             const userDriver = await this.getUserByID(user_id);
             userDriver.car_status = await this.getStatusDetail(carStatus.status_id);
             userDriver.vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user_id);

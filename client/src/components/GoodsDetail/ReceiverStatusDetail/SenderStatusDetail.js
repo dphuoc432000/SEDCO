@@ -4,7 +4,6 @@ import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSend
 import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import { connect } from "react-redux";
-import ModalDeleteStatus from "../../../components/ModalDeleteStatus/ModalDeleteStatus";
 import { API_IMAGE_URL } from "../../../constants/api";
 import getEssentialsDetail from '../../../stores/actions/essentialsDetail.action';
 import { toast } from 'react-toastify';
@@ -19,23 +18,15 @@ import {
     get_conversation_by_account_id_receiver_id_action
 } from '../../../stores/actions/conversation.action';
 import SenderStatusDetailCss from './SenderStatusDetail.module.css';
-import ReportForm from "../../ReportForm/ReportForm";
 
 class SenderStatusDetail extends Component {
     state = {
         showUpdateSenderForm: false,
         essentials: this.props.essentials,
-        showModalDelete: false,
-        showReportForm: false,
     };
     handleShowHideUpdateSender = () => {
         this.setState({
             showUpdateSenderForm: !this.state.showUpdateSenderForm,
-        });
-    };
-    handleShowHideModalDelete = () => {
-        this.setState({
-            showModalDelete: !this.state.showModalDelete,
         });
     };
     componentDidMount = async () => {
@@ -129,11 +120,6 @@ class SenderStatusDetail extends Component {
             this.props.handleUpdateRecentListWhenRegisStatus()
         }
 
-    }
-    handleShowReportForm = () =>{
-        this.setState({
-            showReportForm: !this.state.showReportForm,
-        })
     }
     render() {
         const status_current = this.props.status_current;
@@ -250,13 +236,6 @@ class SenderStatusDetail extends Component {
                             {this.props.update_form &&
                                 <div className={SenderStatusDetailCss.button_right}>
                                     <React.Fragment>
-                                        <button 
-                                            className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Del}`}
-                                            onClick={() => { this.handleShowHideModalDelete(); this.props.handleUpdateRecentListWhenRegisStatus() }}
-                                        >
-                                            Xóa
-                                        </button>
-
                                         <button
                                             className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Update}`}
                                             onClick={() => { this.handleShowHideUpdateSender() }}
@@ -278,12 +257,6 @@ class SenderStatusDetail extends Component {
                                 </button>
                             </div>
                             <div className={SenderStatusDetailCss.button_right}>
-                                <button
-                                    className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Report}`}
-                                    onClick={() => { this.handleShowReportForm()}}
-                                >
-                                    Báo cáo
-                                </button>
                                 <button className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Message}`} onClick={() => { this.handleShowMessage() }}>
                                     Nhắn tin
                                 </button>
@@ -316,23 +289,6 @@ class SenderStatusDetail extends Component {
                     }
                 </div>
                 {checkUpdateSenderForm}
-                {this.state.showModalDelete && (
-                    <ModalDeleteStatus
-                        showModalDelete={this.state.showModalDelete}
-                        handleShowHideModalDelete={this.handleShowHideModalDelete}
-                        status_id={this.props.status_current._id}
-                        handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
-
-                    />
-                )}
-                {
-                    this.state.showReportForm &&
-                    <ReportForm 
-                        handleShowReportForm={this.handleShowReportForm} 
-                        status_current={status_current}
-                        account_id={this.props.account_id}
-                    />
-                }
             </div>
         );
     }

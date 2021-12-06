@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import UpdateReceiverForm from "../../CreateStatusForm/UpdateStatusForm/UpdateReceiverForm";
 // import UpdateSenderForm from "../../CreateStatusForm/UpdateStatusForm/UpdateSenderForm";
-import ImgInfo from "../../../assets/images/logo.png";
 import "../GoodsDetail.css";
 import ReceiverStatusDetailCss from  "./ReceiverStatusDetail.module.css";
 import { connect } from "react-redux";

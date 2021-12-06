@@ -141,8 +141,8 @@ class Status extends Component {
                     <React.Fragment>
                         {getRoleName === "user" || getRoleName === "" ?
                             <div className="Status-Not-Role">
-                                <h2 className="Status-title">Tạo trạng thái</h2>
-                                <h3 className="Status-Who">Bạn là người</h3>
+                                <h3 className="Status-title">Tạo trạng thái</h3>
+                                <p className="Status-Who">Bạn là người:</p>
                                 <div className="Status-ListBTN">
                                     <button className="Status-BTN__item Status-BTN__Taixe"
                                         onClick={this.handleShowHideFormCarTrip}

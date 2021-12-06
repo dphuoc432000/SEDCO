@@ -1,0 +1,302 @@
+.car_trip_form_container{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1300;
+	width: 100vw;
+	height: 100vh;
+}
+.car_trip_form_container > .car_trip_form_layer_container{
+    width: 100%;
+    height: 100%;
+	position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .car_trip_form_layer_background{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container{
+    position: absolute;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    height: 600px;
+    padding: 25px;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.close_button_container{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.close_button_container>.close_button{
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 15px;
+    color: black;
+    cursor: pointer;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.close_button{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form{
+    width: 100%;
+    height: 100%;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_title{
+    margin-bottom: 10px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container{
+    overflow-y: auto;
+    width: 100%;
+    height: 96%;
+    padding: 10px;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container::-webkit-scrollbar,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container::-webkit-scrollbar {
+    width: 5px;
+}
+  
+/* Track */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container::-webkit-scrollbar-track,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+/* Handle */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container::-webkit-scrollbar-thumb,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container::-webkit-scrollbar-thumb:hover,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped > .input_cartrip{
+    width: 45%;
+    height: 37px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px #E7E7E7 solid;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped > .input_cartrip:focus{
+    outline: none;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped > .input_tonage{
+    width: 45%;
+    display: flex;
+    border: 1px #E7E7E7 solid;
+    border-radius: 4px;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped >.input_tonage> .input_cartrip{
+    width: 100%;
+    height: 37px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px #E7E7E7 solid;
+    font-size: 13px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .start_receive_time_container,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .departure_time_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .start_receive_time_container > .car_trip_lable,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .departure_time_container> .car_trip_lable{
+    font-size: 13px;
+    color: #595959;
+    width: 140px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .start_receive_time_container  > .start_receive_time_class,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .departure_time_container > .departure_time_class{
+    font-size: 13px;
+    width: 260px;
+    height: 37px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px #E7E7E7 solid;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .start_receive_time_container  > .start_receive_time_class:focus,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .departure_time_container > .departure_time_class:focus,
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note:focus{
+    outline: none;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note{
+    resize: none;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px #E7E7E7 solid;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note::-webkit-scrollbar {
+    width: 5px;
+}
+  
+/* Track */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+/* Handle */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_cartrip_container > .Wrapped>.note::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.err_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.err_container > p{
+    padding-left: 10px;
+    width: 45%!important;
+    line-break: anywhere;
+}
+.err_time_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.err_time_container > p{
+    padding-left: 10px;
+    width: 260px!important;
+}
+.bnt_add_image{
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ecf0f1;
+    color: #595959;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    margin: 5px 0;
+}
+.img_car_container{
+    display: flex;
+    flex-direction: column;
+}
+.img_item{
+    width: 180px;
+    margin-top: 10px;
+}
+.btn_continue_container{
+
+}
+.btn_continue_container > .btn_continue{
+    border-radius: 4px;
+    margin-bottom: 30px;
+    height: 40px;
+    font-size: 13px;
+    width: 30%;
+    color: white;
+    background-color: rgba(234, 32, 39, 1);
+    border: 0px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.car_trip_title{
+    font-size: 13px;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row .cartrip_label_child{
+    font-size: 13px;
+    margin: 5px 0;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row> .Wrapped_NextFrom_left{
+    width: 47%;
+}
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row> .Wrapped_NextFrom_right{
+    width: 47%;
+}
+
+.car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row> .Wrapped_NextFrom_left>.Block_IMG, .car_trip_form_container > .car_trip_form_layer_container > .form_container>.car_trip_form > .form_infor_img_container > .car_trip_row> .Wrapped_NextFrom_right >.Block_IMG{
+    width: 100%;
+}
+.Wrapped_NextFrom_left>.Block_IMG> .img_item,
+.Wrapped_NextFrom_right >.Block_IMG > .img_item{
+    width: 100%;
+}
+.btn_create_container{
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+}
+.btn_create_container > .btn_create{
+    border-radius: 4px;
+    margin-bottom: 30px;
+    height: 40px;
+    font-size: 13px;
+    width: 30%;
+    color: white;
+    background-color: rgba(234, 32, 39, 1);
+    border: 0px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.btn_back_container > .btn_back{
+    color: blue;
+    font-size: 13px;
+}

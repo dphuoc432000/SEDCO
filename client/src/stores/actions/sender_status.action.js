@@ -13,90 +13,119 @@ import {
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_LOADING,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_SUCCESS,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR,
+    COMPLETE_SENDER_STATUS_SUCCESS,
+    COMPLETE_SENDER_STATUS_ERROR,
+    COMPLETE_SENDER_STATUS_LOADING,
 
 } from "../../constants/actions";
 import axios from "axios";
 
 const get_notification_register_of_sender = async (sender_status_id) => {
-  const action = {
-    type: GET_NOTIFICATION_REGISTER_OF_SENDER_LOADING,
-    payload: {},
-  };
-  
-  await axios
-    .get(`${API_URL}/api/sender/${sender_status_id}/history/no_confirm/list`)
-    .then((data) => {
-      action.type = GET_NOTIFICATION_REGISTER_OF_SENDER_SUCCESS;
-      action.payload = data.data;
-      console.log("check: ", action.payload);
-    })
-    .catch((err) => {
-      action.type = GET_NOTIFICATION_REGISTER_OF_SENDER_ERROR;
-      console.log("check: ", err.response.data);
-    });
+    const action = {
+        type: GET_NOTIFICATION_REGISTER_OF_SENDER_LOADING,
+        payload: {},
+    };
 
-  return action;
+    await axios
+        .get(`${API_URL}/api/sender/${sender_status_id}/history/no_confirm/list`)
+        .then((data) => {
+            action.type = GET_NOTIFICATION_REGISTER_OF_SENDER_SUCCESS;
+            action.payload = data.data;
+            console.log("check: ", action.payload);
+        })
+        .catch((err) => {
+            action.type = GET_NOTIFICATION_REGISTER_OF_SENDER_ERROR;
+            console.log("check: ", err.response.data);
+        });
+
+    return action;
 };
 
 
-const get_notification_not_confirm_of_sender = async ( sender_status_id) =>{
+const get_notification_not_confirm_of_sender = async (sender_status_id) => {
     const action = {
         type: GET_NOTIFICATION_NOT_CONFIRM_OF_SENDER_LOADING,
         payload: {},
-      };
+    };
     await axios
-    .get(`${API_URL}/api/sender/${sender_status_id}/history/no_confirm/car_confirm/list`)
-    .then((data) => {
-        action.type = GET_NOTIFICATION_NOT_CONFIRM_OF_SENDER_SUCCESS;
-        action.payload = data.data;
-        console.log("check: ", action.payload);
-      })
-      .catch((err) => {
-        action.type = GET_NOTIFICATION_NOT_CONFIRM_OF_SENDER_ERROR;
-        console.log("check: ", err.response.data);
-      });
-  
+        .get(`${API_URL}/api/sender/${sender_status_id}/history/no_confirm/car_confirm/list`)
+        .then((data) => {
+            action.type = GET_NOTIFICATION_NOT_CONFIRM_OF_SENDER_SUCCESS;
+            action.payload = data.data;
+            console.log("check: ", action.payload);
+        })
+        .catch((err) => {
+            action.type = GET_NOTIFICATION_NOT_CONFIRM_OF_SENDER_ERROR;
+            console.log("check: ", err.response.data);
+        });
+
     return action;
 }
 
 
-const confirm_notification_send_to_cartrip_of_sender = async(car_status_id , sender_status_id) => {
+const confirm_notification_send_to_cartrip_of_sender = async (car_status_id, sender_status_id) => {
     const action = {
-        type : CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_LOADING ,
-        payload : {}
+        type: CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_LOADING,
+        payload: {}
     }
     await axios
-    .post(`${API_URL}/api/sender/${car_status_id}/${sender_status_id}/confirm/sender/sender`)
-    .then((data) => {
-        action.type = CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS;
-        action.payload = data.data;
-        console.log("check: ", action.payload);
-      })
-      .catch((err) => {
-        action.type = CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_ERROR;
-        console.log("check: ", err.response.data);
-      });
+        .post(`${API_URL}/api/sender/${car_status_id}/${sender_status_id}/confirm/sender/sender`)
+        .then((data) => {
+            action.type = CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS;
+            action.payload = data.data;
+            console.log("check: ", action.payload);
+        })
+        .catch((err) => {
+            action.type = CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_ERROR;
+            console.log("check: ", err.response.data);
+        });
     return action;
 }
 
-const get_notications_both_confirm_transaction_of_sender = async (sender_status_id) =>{
+const get_notications_both_confirm_transaction_of_sender = async (sender_status_id) => {
     const action = {
-        type : GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_LOADING ,
-        payload : {}
+        type: GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_LOADING,
+        payload: {}
     }
     await axios
-    .get(`${API_URL}/api/sender/${sender_status_id}/history/confirm/list`)
-    .then((data) => {
-        action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_SUCCESS;
-        action.payload = data.data;
-        console.log("check: ", action.payload);
-      })
-    .catch((err) => {
-        action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR;
-        console.log("check: ", err.response.data);
+        .get(`${API_URL}/api/sender/${sender_status_id}/history/confirm/list`)
+        .then((data) => {
+            action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_SUCCESS;
+            action.payload = data.data;
+            console.log("check: ", action.payload);
+        })
+        .catch((err) => {
+            action.type = GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_SENDER_ERROR;
+            console.log("check: ", err.response.data);
         });
     console.log(action);
     return action;
-} 
+}
+const complete_sender_action = async (sender_status_id) => {
+    const action = {
+        type: COMPLETE_SENDER_STATUS_LOADING,
+        payload: {},
+    }
 
-export  {get_notification_register_of_sender , get_notification_not_confirm_of_sender , confirm_notification_send_to_cartrip_of_sender ,get_notications_both_confirm_transaction_of_sender};
+    await axios.post(`${API_URL}/api/sender/${sender_status_id}/complete`)
+        .then(res => {
+            action.type = COMPLETE_SENDER_STATUS_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err => {
+            action.type = COMPLETE_SENDER_STATUS_ERROR;
+            action.payload = {
+                description: "API Loi!",
+                message: err.message,
+                errdata: err.response.data
+            };
+        });
+    return action;
+}
+export {
+    get_notification_register_of_sender,
+    get_notification_not_confirm_of_sender,
+    confirm_notification_send_to_cartrip_of_sender,
+    get_notications_both_confirm_transaction_of_sender,
+    complete_sender_action
+};

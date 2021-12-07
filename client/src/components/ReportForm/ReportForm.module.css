@@ -1,0 +1,106 @@
+.report_container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1300;
+    width: 100vw;
+    height: 100vh;
+}
+.report_container > .layer_container{
+    width: 100%;
+    height: 100%;
+}
+
+.report_container > .layer_container > .form_layer> .background_layer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.report_container > .layer_container > .form_layer{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.report_container > .layer_container > .form_layer > .form_container{
+    position: absolute;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    padding: 25px;
+}
+.report_container > .layer_container > .form_layer > .form_container> .content_container {
+    width: 400px;
+    margin: 15px 0;
+}
+.report_container > .layer_container > .form_layer > .form_container> .content_container >p {
+    text-align: center;
+}
+.report_container > .layer_container > .form_layer > .form_container>.input_container{
+    width: 400px;
+}
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea{
+    resize: none;
+    width: 100%;
+    border-radius: 5px;
+    height: 100px;;
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    border: 1px #E7E7E7 solid;
+    font-size: 13px;
+}
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea::-webkit-scrollbar {
+    width: 5px;
+}
+  
+/* Track */
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+/* Handle */
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.report_container > .layer_container > .form_layer > .form_container>.input_container>textarea:focus{
+    outline: none;
+}
+.report_container > .layer_container > .form_layer > .form_container>.button_container{
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 10px 0 0 0;
+}
+
+.report_container > .layer_container > .form_layer > .form_container>.button_container > .cancle_button{
+    color: gray;
+    background-color: #dfe6e9;
+    padding: 10px 30px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.report_container > .layer_container > .form_layer > .form_container>.button_container > .send_button{
+    cursor: pointer;
+    background-color: #2E86DE;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+}

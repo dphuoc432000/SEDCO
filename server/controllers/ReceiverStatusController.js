@@ -113,6 +113,17 @@ class RecriverStatusController {
                 return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
             })
     }
+    completeReceiverStatus = async(req, res, next) =>{
+        await receiverStatusService.completeReceiverStatus(req.params.receiver_status_id_pr)
+            .then(data =>{
+                if(data){
+                    if(data === 'TRADING')
+                        return res.status(400).json(handleOther.errorHandling('Đang trong quá trình giao dịch', null));
+                    return res.json(data)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập receiver_status_id_pr', null));
+            })
+    }
 }
 
 module.exports = new RecriverStatusController;

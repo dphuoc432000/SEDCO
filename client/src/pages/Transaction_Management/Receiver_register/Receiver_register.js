@@ -60,10 +60,12 @@ class Receiver_register extends Component {
             <React.Fragment>
                 <StatusList handleInfomationStatusItem={this.handleInfomationStatusItem} status_list = {this.props.status_list}/>
                 <Receiver_content 
+                    account_id={this.props.account_id}
                     car_status = {this.props.car_status}
                     handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list} 
                     receiver_status_information={this.state.receiver_status_information} 
                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
+                     handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
                 />
             </React.Fragment>
         )

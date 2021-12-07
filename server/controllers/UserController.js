@@ -118,6 +118,16 @@ class UserController{
             })
             .catch(error => next(error))
     }
+    
+    getUserByAccountID = async(req, res, next) =>{
+        await userService.getUserByAccountId(req.params.account_id_pr)
+            .then(user =>{
+                if(user)
+                    return res.json(user);
+                return res.status(400).json(handleOther.errorHandling("Không nhập đúng account_id", null)); 
+            })
+            .catch(error => next(error))
+    }
 }
 
 module.exports = new UserController();

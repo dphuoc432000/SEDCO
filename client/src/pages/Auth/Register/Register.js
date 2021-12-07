@@ -121,15 +121,15 @@ class Register extends React.Component{
 
         const district_select = document.getElementById("district");
         district_select.value = "";
-
-
+        const dataValidate = this.validateInput("city", city_select.value)
             await this.props.get_districts(city_code);
             this.setState({
                 user_infor:{
                     ...this.state.user_infor,
                     city:{
                         ...this.state.user_infor.city,
-                        value: event.target.value
+                        value: event.target.value,
+                        ...dataValidate
                     }
                 }
             })
@@ -138,12 +138,14 @@ class Register extends React.Component{
     }
 
     onChangeDistrictSelect = (event) => {
+        const dataValidate = this.validateInput(event.target.name, event.target.value)
         this.setState({
             user_infor:{
                 ...this.state.user_infor,
                 district:{
                     ...this.state.user_infor.district,
                     value: event.target.value,
+                    ...dataValidate
                 } 
             }
         })
@@ -165,21 +167,12 @@ class Register extends React.Component{
         })
     }
 
-    onChangePasswordAgain = (event) =>{
-        this.setState({
-            password_again: {
-                ...this.state.password_again,
-                value: event.target.value
-            }
-        })
-    }
-
     validateInput = (type, checkingText) => {
         switch (type) {
             case 'username':
                 var usernameRegex = /^[a-zA-Z0-9]+$/;
                 const checkingusernameRegex = usernameRegex.exec(checkingText);
-                if (checkingusernameRegex !== null) {
+                if (checkingText.length >= 6 && checkingusernameRegex !== null) {
                     return { isInputValue: true,
                         errorMessage: ''};
                 }
@@ -187,8 +180,7 @@ class Register extends React.Component{
                     errorMessage: 'Vui lòng nhập 6 ký tự trở lên. Bao gồm: a-z, A-Z, 0-9!'};
                 
             case 'password':
-                
-                this.handleConfirmPassword()
+                // this.handleConfirmPassword()
                 var passw=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
                 if((passw).test(checkingText)) 
                 { 
@@ -198,7 +190,7 @@ class Register extends React.Component{
                 return { isInputValue: false,
                     errorMessage: 'Vui lòng nhập lại. Bao gồm: từ 6 đến 20 ký tự, ít nhất một chữ số, một chữ hoa và một chữ thường'};
             case 'full_name':
-                var full_name_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]{5,}$/;
+                var full_name_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]{4,}$/;
                 if((full_name_regex).test(checkingText)) 
                 { 
                     return { isInputValue: true,
@@ -266,6 +258,16 @@ class Register extends React.Component{
         }
         
     }
+
+    handleAgeInput = (event) =>{
+        var regex = new RegExp("^[0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
     
     handleInputValidation = event => {
         const { name } = event.target;
@@ -285,10 +287,9 @@ class Register extends React.Component{
         })
     }
 
-    validateConfirmPassword = () =>{
+    validateConfirmPassword = (value) =>{
         const password = this.state.user_infor.password.value;
-        const password_again = this.state.password_again.value;
-        console.log(password, password_again)
+        const password_again = value;
         if(password === password_again)
             return { isInputValue: true,
                 errorMessage: ''};
@@ -296,20 +297,40 @@ class Register extends React.Component{
             errorMessage: 'Vui lòng nhập lại. Mật khâu không trùng khớp!'};  
     }
 
-    handleConfirmPassword = () =>{
-        const { isInputValue, errorMessage } = this.validateConfirmPassword();
-        const newState = {
-            value: this.state.password_again.value,
-            isInputValue: this.state.password_again.isInputValue,
-            errorMessage: this.state.password_again.errorMessage
-        };
-        newState.isInputValue = isInputValue;
-        newState.errorMessage = errorMessage;
+    handleConfirmPassword = (event) =>{
+        const password = event.target.value;
+        const password_again =  this.state.password_again.value;
+        if(password !== password_again){
+            if(password_again.length > 0){
+                this.setState({
+                    password_again:{
+                        ...this.state.password_again,
+                        isInputValue: false,
+                        errorMessage: 'Vui lòng nhập lại. Mật khâu không trùng khớp!'
+                    }
+                })
+            }
+        }
+        else{
+            this.setState({
+                password_again:{
+                    ...this.state.password_again,
+                    isInputValue: true,
+                    errorMessage: ''
+                }
+            })
+        }
+    }
+    
+    onChangePasswordAgain = (event) =>{
         this.setState({
-            password_again:{
-                ...newState
+            password_again: {
+                ...this.state.password_again,
+                value: event.target.value,
+                ...this.validateConfirmPassword(event.target.value)
             }
         })
+        // this.handleConfirmPassword()
     }
 
     render(){
@@ -333,7 +354,7 @@ class Register extends React.Component{
                                     value={this.state.user_infor.username.value}  
                                     name="username" 
                                     id="username"
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -345,11 +366,11 @@ class Register extends React.Component{
                                 <input 
                                     type="password"  
                                     placeholder="Mật khẩu(Bắt buộc)*" 
-                                    onChange={(event) => {this.onChangeRegisterForm(event)}} 
+                                    onChange={(event) => {this.handleConfirmPassword(event);this.onChangeRegisterForm(event)}} 
                                     value={this.state.user_infor.password.value} 
                                     name="password" 
                                     id="password"
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -365,7 +386,7 @@ class Register extends React.Component{
                                     value={this.state.password_again.value}
                                     name="password_again" 
                                     id="password_again" 
-                                    onBlur={(event) =>{this.handleConfirmPassword(event)}}
+                                    // onBlur={(event) =>{this.handleConfirmPassword(event)}}
                                 />
                             </div>
                             <FormError 
@@ -384,7 +405,7 @@ class Register extends React.Component{
                                     value={this.state.user_infor.full_name.value} 
                                     name="full_name" 
                                     id="full_name"
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -394,13 +415,14 @@ class Register extends React.Component{
                             />
                             <div className="input_age">
                                 <input 
-                                    type="number" 
+                                    type="text" 
                                     placeholder="Tuổi" 
+                                    onKeyPress={(event)=>this.handleAgeInput(event)}
                                     onChange={(event) => {this.onChangeRegisterForm(event)}} 
                                     value={this.state.user_infor.age.value} 
                                     name="age" 
                                     id="age" 
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -416,7 +438,7 @@ class Register extends React.Component{
                                     value={this.state.user_infor.email.value} 
                                     name="email" 
                                     id="email" 
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -428,11 +450,12 @@ class Register extends React.Component{
                                 <input 
                                     type="text" 
                                     placeholder="Số điện thoại(Bắt buộc)*" 
+                                    onKeyPress={(event)=>this.handleAgeInput(event)}
                                     onChange={(event) => {this.onChangeRegisterForm(event)}} 
                                     value={this.state.user_infor.phone_number.value} 
                                     name="phone_number" 
                                     id="phone_number" 
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 
@@ -443,7 +466,7 @@ class Register extends React.Component{
                             <div className="input_address">
                                 <div className="input_city">
                                     <select id="city" name="city" onChange={(event) => {this.onChangeCitySelect(event)}}
-                                        onBlur={(event) =>{this.handleInputValidation(event)}}
+                                        // onBlur={(event) =>{this.handleInputValidation(event)}}
                                     >
                                         <option value="">Chọn tỉnh/thành phố(Bắt buộc)*</option>
                                         {cities.map((item,index)=>{
@@ -455,7 +478,7 @@ class Register extends React.Component{
                                 
                                 <div className="input_district">
                                     <select id="district" name="district" onChange={(event) => {this.onChangeDistrictSelect(event)}}
-                                        onBlur={(event) =>{this.handleInputValidation(event)}}
+                                        // onBlur={(event) =>{this.handleInputValidation(event)}}
                                     >
                                         <option value="" >Chọn quận/huyện(Bắt buộc)*</option>
                                         {districts.map((item,index)=>{
@@ -486,7 +509,7 @@ class Register extends React.Component{
                                     value={this.state.user_infor.specific_address.value} 
                                     name="specific_address" 
                                     id="specific_address" 
-                                    onBlur={(event) =>{this.handleInputValidation(event)}}
+                                    // onBlur={(event) =>{this.handleInputValidation(event)}}
                                 />
                             </div>
                             <FormError 

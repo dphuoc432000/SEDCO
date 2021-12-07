@@ -160,7 +160,7 @@ class InforUser extends Component {
                     </div>
                     <div className="image-private-container">
                         <div className="image-private-title">
-                            <span>Hình ảnh </span>	&nbsp; <p style={{color:'red'}}>(Dành cho đăng ký chuyến xe)</p>
+                            <span>Hình ảnh </span>	&nbsp; <p style={{fontSize:'13px',color:'red'}}>(Dành cho đăng ký chuyến xe)</p>
                         </div>
                         <div className="identity_card_img_container">
                             <span>Căn cước công dân/CMND</span>
@@ -170,7 +170,7 @@ class InforUser extends Component {
                                     {vehicle_censorship.id_card_img_before ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_before}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                                 <div className="img_back">
@@ -178,7 +178,7 @@ class InforUser extends Component {
                                     {vehicle_censorship.id_card_img_after ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.id_card_img_after}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                             </div>
@@ -191,7 +191,7 @@ class InforUser extends Component {
                                 {vehicle_censorship.face_img ?
                                     <img src={`${API_IMAGE_URL}\\${vehicle_censorship.face_img}`} alt="" />
                                     :
-                                    <p>Chưa có hình ảnh</p>
+                                    <p className='no_image'>Chưa có hình ảnh</p>
                                 }
                                 </div>
                             </div>
@@ -204,7 +204,7 @@ class InforUser extends Component {
                                     {vehicle_censorship.driving_license_img_before ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_before}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                                 <div className="img_back">
@@ -212,7 +212,7 @@ class InforUser extends Component {
                                     {vehicle_censorship.driving_license_img_after ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.driving_license_img_after}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                             </div>
@@ -224,14 +224,14 @@ class InforUser extends Component {
                                     {vehicle_censorship.test_img_1 ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_1}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                                 <div className="img">
                                     {vehicle_censorship.test_img_2 ?
                                         <img src={`${API_IMAGE_URL}\\${vehicle_censorship.test_img_2}`} alt="" />
                                         :
-                                        <p>Chưa có hình ảnh</p>
+                                        <p className='no_image'>Chưa có hình ảnh</p>
                                     }
                                 </div>
                             </div>

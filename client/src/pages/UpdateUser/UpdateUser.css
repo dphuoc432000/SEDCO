@@ -34,10 +34,13 @@
 .layer-infor-user >.user-infor-container> .btn-container > .btn-update-password-account > span{
     cursor: pointer;
     font-weight: 500;
+    font-size: 13px;
+    color: blue;
 }
 .layer-infor-user >.user-infor-container> .btn-container > .btn-update-user-infor > a{
     cursor: pointer;
     font-weight: 500;
-    color: black;
+    font-size: 13px;
+    color: blue;
     text-decoration: none;
 }

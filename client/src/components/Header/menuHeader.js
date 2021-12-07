@@ -1,12 +1,22 @@
 export const menuHeader =[
     {
         name: "user",
-        menu: []
+        menu: [
+            {
+                className: ['button_message'],
+                name: "Tin nhắn",
+                link: '#'
+            }
+        ]
     },
     {
         name: "sender",
         menu: [
-            
+            {
+                className: ['button_message'],
+                name: "Tin nhắn",
+                link: '#'
+            },
             {
                 className : [],
                 name: "Thông báo",
@@ -17,7 +27,11 @@ export const menuHeader =[
     {
         name: "receiver",
         menu: [
-           
+            {
+                className: ['button_message'],
+                name: "Tin nhắn",
+                link: '#'
+            },
             {
                 className : [],
                 name: "Thông báo",
@@ -41,7 +55,11 @@ export const menuHeader =[
                 name: "Quản lý số lượng",
                 link: '#'
             },
-           
+            {
+                className: ['button_message'],
+                name: "Tin nhắn",
+                link: '#'
+            }
         ]
     },
     {

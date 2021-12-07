@@ -24,6 +24,8 @@ function ModalDeleteStatus(props) {
     else {
       toast.success("Xóa trạng thái thành công!");
       props.handleLoadAgainWhenCreateStatus();
+      props.handleHiddenShowFormDetail();
+      props.handleUpdateRecentListWhenRegisStatus();
     }
   };
   return (
@@ -37,13 +39,13 @@ function ModalDeleteStatus(props) {
         <DialogTitle id="alert-dialog-title">{"Xóa"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Bạn có thật sự muốn trở về người dùng mặc định?
+            Bạn muốn xóa trạng thái?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Không</Button>
+          <Button onClick={handleClose}>Từ chối</Button>
           <Button onClick={deleteStatusCurrent} autoFocus>
-            Có
+            Đồng ý
           </Button>
         </DialogActions>
       </Dialog>

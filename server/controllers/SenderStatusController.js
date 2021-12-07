@@ -4,6 +4,7 @@ const authMiddleware = require('../middlewares/auth');
 const upload = require('../middlewares/upload');
 const multer = require('multer');
 const historySenderService = require('../service/HistorySenderService');
+const SenderStatusService = require('../service/SenderStatusService');
 
 class SenderStatusController {
 
@@ -88,6 +89,18 @@ class SenderStatusController {
                     else if(history === 'NO REGISTER')
                         return res.status(400).json(handleOther.errorHandling('Nguời hỗ trợ chưa được đăng ký', null));
                     return res.json(history)
+                }
+                return res.status(400).json(handleOther.errorHandling('Lỗi nhập sender_status_id_pr', null));
+            })
+    }
+
+    completeSenderStatus = async(req, res, next) =>{
+        await SenderStatusService.completeSenderStatus(req.params.sender_status_id_pr)
+            .then(data =>{
+                if(data){
+                    if(data === 'TRADING')
+                        return res.status(400).json(handleOther.errorHandling('Đang trong quá trình giao dịch', null));
+                    return res.json(data)
                 }
                 return res.status(400).json(handleOther.errorHandling('Lỗi nhập sender_status_id_pr', null));
             })

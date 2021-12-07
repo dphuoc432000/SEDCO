@@ -4,7 +4,7 @@ const carStatusSevice = require('./CarStatusService');
 const carService = require('./CarService');
 const vehicleCensorshipService = require('./VehicleCensorshipService');
 const Status = require('../models/Status');
-
+const Account = require('../models/Account');
 class UserService{
 
     getUserList = async () =>{
@@ -130,7 +130,7 @@ class UserService{
         //lấy mảng user[driver] chưa được kiểm duyệt bằng user_id trong CARINFOR 
         const userDriverNoCensorship = Promise.all(carStatusNoCensorshipList.car_status_list.map(async carStatus => {
             const car_infor = await carService.getCarbyID(carStatus.car_id);
-            const user_id = car_infor.user_id.toString();
+            const user_id = car_infor.user_id;
             const userDriver = await this.getUserByID(user_id);
             userDriver.car_status = await this.getStatusDetail(carStatus.status_id);
             userDriver.vehicle_censorship = await vehicleCensorshipService.getVehicleCensorshipByUserId(user_id);
@@ -140,6 +140,17 @@ class UserService{
             user_driver_no_censorship: await userDriverNoCensorship,
             pagination: carStatusNoCensorshipList.pagination
         };
+    }
+
+    getUserByAccountId = async(account_id) =>{
+        const account = await Account.findById({_id: account_id})
+            .then(data => mongooseToObject(data));
+        if(account){
+            return await User.findById({_id: account.user_id})
+                .then(data => mongooseToObject(data))
+                .catch(err => err);  
+        }
+        return null;
     }
 }
 

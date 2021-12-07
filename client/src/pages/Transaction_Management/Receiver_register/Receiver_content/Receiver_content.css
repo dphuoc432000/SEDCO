@@ -53,8 +53,17 @@
 
 .status_content_container > .status_content > .content_container > .content > .status_infor_container > .per_infor > span.time {
     position: absolute;
+    top: 20px;
+    right: 0;
+    font-size: 12px;
+}
+.status_content_container > .status_content > .content_container > .content > .status_infor_container > .per_infor > span.report {
+    position: absolute;
     top: 0;
     right: 0;
+    color: red;
+    font-size: 12px;
+    cursor: pointer;
 }
 
 .status_content_container > .status_content > .content_container > .content > .status_infor_container > .essentials_infor{

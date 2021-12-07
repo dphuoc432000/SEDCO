@@ -9,6 +9,8 @@ const path = require('path');
 const { stat } = require('fs/promises');
 const mongoose = require('../util/mongoose.js');
 const HistorySender = require('../models/History_Sender');
+const Sender_Status = require('../models/Sender_Status');
+const History_Sender = require('../models/History_Sender');
 function isEmpty(path) {
     return fs.readdirSync(path).length === 0;
 }
@@ -145,7 +147,36 @@ class SenderStatusService {
         else
             return 'NO DELETE'
     }
-
+    //hoàn thành SenderStatus
+    completeSenderStatus = async (sender_status_id) => {
+        //kiểm tra có sender status không
+        const sender_status = await Sender_Status.findById({_id: sender_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        if(sender_status){
+            //trường hợp có sender_status
+            //kiểm tra có sender có đang trong quá trình giao dịch không
+            const sender_in_trans_list = await History_Sender.find({sender_status_id: sender_status_id, car_confirm: true, sender_confirm: false})
+                .then(data => multiplemongooseToObject(data));
+            if(sender_in_trans_list.length > 0)
+                return 'TRADING';
+            //xóa những sender chưa được chuyến xe confirm
+            await History_Sender.deleteMany({sender_status_id: sender_status_id, car_confirm: false, sender_confirm: false})
+                .then(data => data);
+            //update regis_status false
+            await Sender_Status.findByIdAndUpdate({_id: sender_status_id}, {regis_status: false})
+                .then(data => data)
+            //update status_completed
+            const status = await Status.findByIdAndUpdate({_id: sender_status.status_id},{status_completed: true})
+                .then(data => mongooseToObject(data))
+                .catch(err => err);
+            //chuyển về role user
+            if(status)
+                await accountService.accountUpdate_roleId_byRoleName(status.account_id,'user');
+            return sender_status;
+        }
+        return null;
+    }
 
 }
 

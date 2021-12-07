@@ -25,7 +25,7 @@ class Login extends React.Component{
             value:"",
             isInputValue: false,
             errorMessage: ""
-        }
+        },
     }
 
     validateInput = (type, checkingText) => {
@@ -33,12 +33,12 @@ class Login extends React.Component{
             case 'username':
                 var usernameRegex = /^[a-zA-Z0-9]+$/;
                 const checkingusernameRegex = usernameRegex.exec(checkingText);
-                if (checkingusernameRegex !== null) {
+                if (checkingText.length >= 6 && checkingusernameRegex !== null) {
                     return { isInputValue: true,
                         errorMessage: ''};
                 }
                 return { isInputValue: false,
-                    errorMessage: 'Vui lòng nhập 6 ký tự trở lên. Bao gồm: a-z, A-Z, 0-9!'};
+                    errorMessage: 'Vui lòng nhập 6 ký tự trở lên. Bao gồm: a-zA-Z0-9!'};
                 
             case 'password':
                 var passw=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
@@ -151,8 +151,18 @@ class Login extends React.Component{
         //     }
         // })
     }
-
+    handleShowPassword = () =>{
+        const password = document.getElementById("password");
+        const checkbox = document.getElementById("remember_password");
+        console.log(checkbox.checked)
+        if (checkbox.checked) {
+            password.type = "text";
+        } else {
+            password.type = "password";
+        }
+    }
     render(){
+        const {hiddenPassword} = this.state;
         return(
             <React.Fragment>
                 {/*<Header/>*/}
@@ -182,7 +192,7 @@ class Login extends React.Component{
                             />
                             <div className="input_password">
                                 <input 
-                                    type="password"  
+                                    type='password'
                                     placeholder="Mật khẩu" 
                                     value={this.state.password.value} 
                                     onChange={(event)=>this.onChangeLoginForm(event)} 
@@ -192,13 +202,15 @@ class Login extends React.Component{
                                 />
                             </div>
                             <FormError 
-                                type="password"
+                                type='password'
                                 isHidden={this.state.password.isInputValue} 
                                 errorMessage={this.state.password.errorMessage}
                             />
                             <div className="checkbox_remember_password">
-                                <input type="checkbox" id="remember_password"/>
-                                <label htmlFor="remember_password">Nhớ mật khẩu</label>
+                                <div className="check_box_container" onClick={() =>{this.handleShowPassword()}}>
+                                    <input type="checkbox" id="remember_password"/>
+                                    <label htmlFor="remember_password" >Hiện mật khẩu</label>
+                                </div>
                             </div>
                             <div className="btn_submit">
                                 <input type="button" value="Đăng nhập" onClick={()=>this.handleLogin()}/>

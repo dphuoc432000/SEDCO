@@ -33,7 +33,7 @@
 .content-search {
     display      : flex;
     margin-top   : 14px;
-    align-content: center;
+    align-items: center;
 }
 
 .content-search__lable {
@@ -77,32 +77,32 @@
     font-size: 1.2rem;
 }
 
-#table-ListGoods-Giver {
+#table_admin {
     border-collapse: collapse;
     width          : 86%;
     margin-left    : 40px;
-    font-size      : 1.2rem;
-    margin-top     : 10px;
+    font-size      : 14px;
+    margin-top     : 25px;
 }
 
-#table-ListGoods-Giver td,
-#table-ListGoods-Giver th {
+#table_admin td,
+#table_admin th {
     border : 1px solid #ddd;
     padding: 12px;
     height : 45px;
 }
 
-#table-ListGoods-Giver tr:nth-child(even) {
+#table_admin tr:nth-child(even) {
     background-color: #fff;
 }
 
-/* #table-ListGoods-Giver tr:hover {
+/* #table_admin tr:hover {
     background-color: #fff;
 } */
 
-#table-ListGoods-Giver th {
-    padding-top     : 12px;
-    padding-bottom  : 12px;
+#table_admin th {
+    padding-top     : 6px;
+    padding-bottom  : 8px;
     text-align      : center;
     background-color: #ccc;
     color           : #000;

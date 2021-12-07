@@ -211,7 +211,6 @@ class UpdateReceiverForm extends Component {
             note: this.state.note.value,
         };
 
-
         if (!this.checkEssentialForm() || this.checkingForm()) {
             toast.warn("Vui lòng nhập số lượng nhu yếu phẩm");
         } else {

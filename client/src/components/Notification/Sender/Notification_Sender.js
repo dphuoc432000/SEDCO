@@ -8,7 +8,7 @@ import Notification_Register_SENDER from '../Notification_Register_SENDER';
 import { get_notification_register_of_sender } from '../../../stores/actions/sender_status.action';
 import { get_notification_not_confirm_of_sender } from '../../../stores/actions/sender_status.action';
 import { get_notications_both_confirm_transaction_of_sender } from '../../../stores/actions/sender_status.action';
-
+import Notification_sender_after_comfirm from './Notification_sender_after_confirm'
 import { connect } from 'react-redux'
 class Notification_Sender extends Component {
     state = {
@@ -19,7 +19,7 @@ class Notification_Sender extends Component {
         history_data: {},
         car_infor_data: {},
         notification_both_confirm_of_sender: [],
-
+        seeDetailNotiAfterConfirm : false ,
 
     };
     componentDidMount = async () => {
@@ -39,7 +39,7 @@ class Notification_Sender extends Component {
             })
         }
     }
-    componentDidUpdate = async (prevProps) => {
+    componentDidUpdate = async (prevProps,prevState) => {
         if (this.props.status_current !== prevProps.status_current) {
             console.log('vao')
             const status_current = this.props.status_current;
@@ -56,16 +56,18 @@ class Notification_Sender extends Component {
     }
     handleShowDetailNotification = (history_data, car_infor_data) => {
         this.setState({
-            seeNotificationDetail: !this.state.seeNotificationDetail,
+            seeNotificationDetail: true,
             seeInforCartrip: false,
+            seeDetailNotiAfterConfirm : false ,
             history_data: history_data,
             car_infor_data: car_infor_data,
         });
     };
     handleShowSeeInforCartrip = (history_data, car_infor_data) => {
         this.setState({
-            seeInforCartrip: !this.state.seeInforCartrip,
+            seeInforCartrip: true,
             seeNotificationDetail: false,
+            seeDetailNotiAfterConfirm : false ,
             history_data: history_data,
             car_infor_data: car_infor_data,
         })
@@ -84,8 +86,17 @@ class Notification_Sender extends Component {
         })
 
     }
+    handleShowNotiAfterConfirm = (history_data , car_infor_data) => {
+        this.setState({
+            seeDetailNotiAfterConfirm : true,
+            seeInforCartrip : false,
+            seeNotificationDetail : false,
+            history_data :history_data,
+            car_infor_data : car_infor_data,
+        })
+    }
     render() {
-        let { notification_cartrip_regis_list, seeNotificationDetail, seeInforCartrip, notification_cartrip_not_confirm_list, notification_both_confirm_of_sender } = this.state;
+        let { seeDetailNotiAfterConfirm,notification_cartrip_regis_list, seeNotificationDetail, seeInforCartrip, notification_cartrip_not_confirm_list, notification_both_confirm_of_sender } = this.state;
 
 
         const checkSeeDetailNotification =
@@ -101,6 +112,11 @@ class Notification_Sender extends Component {
                     ""
                 )
             )
+            const checkDetailNotiAfterConfirm = seeDetailNotiAfterConfirm === true ? 
+                <Notification_sender_after_comfirm  
+                    history_data={this.state.history_data}
+                    car_infor_data={this.state.car_infor_data}
+                    status_current={this.props.status_current}/> : ""
         const checkSeeInforCartrip =
             (
                 seeInforCartrip === true ? (
@@ -264,7 +280,7 @@ class Notification_Sender extends Component {
                                             <div>
                                                 <button
                                                     className="btn-notifi btn-notifi__seeInf"
-                                                    onClick={() => { this.handleShowDetailNotification(history_data, car_infor_data) }}
+                                                    onClick={() => { this.handleShowNotiAfterConfirm(history_data, car_infor_data) }}
                                                 >
                                                     Xem thông tin
                                                 </button>
@@ -293,6 +309,7 @@ class Notification_Sender extends Component {
 
                 {checkSeeDetailNotification}
                 {checkSeeInforCartrip}
+                {checkDetailNotiAfterConfirm}
             </main>
         )
 

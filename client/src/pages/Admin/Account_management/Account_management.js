@@ -63,7 +63,7 @@ class Account_management extends React.Component {
                             </select>
                         </div>
                     </div>
-                    <table id="table-ListGoods-Giver" >
+                    <table id="table_admin" >
                         <tbody>
                             <tr>
                                 <th>ID</th>

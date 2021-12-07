@@ -216,12 +216,14 @@ class SenderStatusDetail extends Component {
                     </table>
                     <div className={SenderStatusDetailCss.GoodDetail_Info_Img}>
                         <h3 className={SenderStatusDetailCss.data_container__title}>Hình ảnh</h3>
-                        <img
-                            src={`${API_IMAGE_URL}/${picture}`}
-                            alt={`Hình ảnh`}
-                            className={SenderStatusDetailCss.GoodDetail_Info_Img__src}
-                        //   style={{marginLeft: "-21px"}}
-                        />
+                        {picture &&
+                            <img
+                                src={`${API_IMAGE_URL}/${picture}`}
+                                alt={`Hình ảnh`}
+                                className={SenderStatusDetailCss.GoodDetail_Info_Img__src}
+                                //   style={{marginLeft: "-21px"}}
+                            />
+                        }
                     </div>
                 </div>
 

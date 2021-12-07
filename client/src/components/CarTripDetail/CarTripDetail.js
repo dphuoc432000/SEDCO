@@ -224,12 +224,14 @@ class CarTripDetail extends Component {
                     </table>
                     <div className={CarTripDetailCss.GoodDetail_Info_Img}>
                         <h3 className={CarTripDetailCss.data_container__title} >Hình ảnh</h3>
-                        <img
-                            src={`${API_IMAGE_URL}/${picture}`}
-                            alt="Hình ảnh"
-                            className={CarTripDetailCss.GoodDetail_Info_Img__src}
+                        {picture && 
+                            <img
+                                src={`${API_IMAGE_URL}/${picture}`}
+                                alt="Hình ảnh"
+                                className={CarTripDetailCss.GoodDetail_Info_Img__src}
 
-                        />
+                            />
+                        }
                     </div>
                 </div>
                 <div className={CarTripDetailCss.container_btn__ListBottom}>

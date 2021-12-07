@@ -184,7 +184,7 @@ class SenderStatusDetail extends Component {
               src={`${API_IMAGE_URL}/${picture}`}
               alt={`Hình ảnh`}
               className="GoodDetail-Info-Img__src"
-            //   style={{marginLeft: "-21px"}}
+            //   style={{marginLeft: "-24px"}}
             />
           </div>
         </div>

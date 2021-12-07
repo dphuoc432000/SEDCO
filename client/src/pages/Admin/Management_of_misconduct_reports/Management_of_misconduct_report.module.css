@@ -1,5 +1,5 @@
 #QL-Report-Form {
-    width: 100%;
+    width: 600px;
     content: "";
     display: flex;
     flex-direction: column;
@@ -31,6 +31,7 @@
     margin-top     : -12px;
     display        : flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .content-search {
@@ -54,7 +55,7 @@
 
 .Filter_the_data_report {
     display: flex;
-    margin-right: 90px;
+    align-items: center;
 }
 
 .Filter_the_data_report__lable {

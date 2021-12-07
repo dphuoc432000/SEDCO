@@ -276,7 +276,7 @@ class UpdateReceiverForm extends Component {
                 X
               </button>
             </div>
-
+            
             <div className="content">
               <p className="heading">Cập nhật cần hỗ trợ</p>
               <p className="heading-2">

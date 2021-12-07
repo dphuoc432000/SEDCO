@@ -14,15 +14,15 @@ const register = async (user_infor) =>{
         payload:{}
     }
     const object = {
-        username: user_infor.username.value,
+        username: user_infor.username.value.trim(),
         password: user_infor.password.value,
-        full_name: user_infor.full_name.value,
+        full_name: user_infor.full_name.value.trim(),
         age: parseInt(user_infor.age.value),
-        email: user_infor.email.value,
-        phone_number: user_infor.phone_number.value,
+        email: user_infor.email.value.trim(),
+        phone_number: user_infor.phone_number.value.trim(),
         city: user_infor.city.value,
         district: user_infor.district.value,
-        address: user_infor.specific_address.value,
+        address: user_infor.specific_address.value.trim(),
     }
     await axios.post(`${API_URL}/api/authentication/register_user`, object)
         .then(data => {

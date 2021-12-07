@@ -227,7 +227,7 @@ class UpdateUserInforForm extends Component {
     validateInput = (type, checkingText) => {
         switch (type) {
             case 'full_name':
-                var full_name_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]{5,}$/;
+                var full_name_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]{4,}$/;
                 var spec_char_regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
                 if((full_name_regex).test(checkingText) && !(spec_char_regex).test(checkingText)) 
                 { 
@@ -382,22 +382,12 @@ class UpdateUserInforForm extends Component {
     }
 
     handleAgeInput = (event) =>{
-        var text_regex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]$/;
-        var spec_char_regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-        console.log(spec_char_regex.test(event.target.value))
-        if(spec_char_regex.test(event.target.value) || text_regex.test(event.target.value) ){
-            this.setState({
-                user_infor:{
-                    ...this.state.user_infor,
-                    age:{
-                        ...this.state.user_infor.age,
-                        value: ''
-                    }
-                }
-            })
+        var regex = new RegExp("^[0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
             return false;
         }
-        return true;
     }
 
     onChangeImageInput =(event, id_img) =>{
@@ -456,7 +446,8 @@ class UpdateUserInforForm extends Component {
                                             <input 
                                                 type="text" 
                                                 placeholder="Tuổi" 
-                                                onChange={(event) => {this.handleAgeInput(event);if(this.handleAgeInput(event))this.onChangeUpdateForm(event)}} 
+                                                onKeyPress={(event)=>this.handleAgeInput(event)}
+                                                onChange={(event) => {this.onChangeUpdateForm(event)}} 
                                                 value={user_infor.age.value} 
                                                 name="age" 
                                                 id="age" 
@@ -504,6 +495,7 @@ class UpdateUserInforForm extends Component {
                                             <input 
                                                 type="text" 
                                                 placeholder="Số điện thoại(Bắt buộc)*" 
+                                                onKeyPress={(event)=>this.handleAgeInput(event)}
                                                 onChange={(event) => {this.onChangeUpdateForm(event)}} 
                                                 value={user_infor.phone_number.value} 
                                                 name="phone_number" 
@@ -587,7 +579,7 @@ class UpdateUserInforForm extends Component {
                                                 value={user_infor.specific_address.value} 
                                                 name="specific_address" 
                                                 id="specific_address" 
-                                                onBlur={(event) =>{this.handleInputValidation(event)}}
+                                                // onBlur={(event) =>{this.handleInputValidation(event)}}
                                             />
                                         </td>
                                     </tr>
@@ -834,7 +826,7 @@ class UpdateUserInforForm extends Component {
                             </div>
                         </form>
                         <div className="btn-back-page">
-                            <p onClick={() => {this.handleBackPage()}}>Quay lại</p>
+                            <p onClick={() => {this.handleBackPage()}}><i className="fas fa-chevron-left GoodDetail-icon-back"></i>Quay lại</p>
                         </div>
                     </div>
                 </div>

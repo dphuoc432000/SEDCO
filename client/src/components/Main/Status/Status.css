@@ -1,6 +1,7 @@
 .Status {
-  width: 32%;
-  border-left: 2.1px solid #4591e0a6;
+  /* width: 32%; */
+  width: 430px;
+  /* border-left: 2.1px solid #4591e0a6; */
   box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
   /* position: absolute; */
   content: "";
@@ -9,42 +10,45 @@
   /* min-height: 800px; */
   /* left: 68%; */
   background-position-y: -105px;
+  height: 100%;
 }
 .Status-Not-Role {
-  padding: 12px 18px;
+  padding: 20px;
 }
 .Status-title {
   margin: 8px 0px;
-  font-weight: 500;
-  font-size: 16px;
+  /* font-weight: 500; */
+  /* font-size: 16px; */
 }
 .Status-Who {
   margin: 8px 0px;
-  font-weight: 500;
-  color: #3434ffd6;
-  font-size: 15px;
+  /* font-weight: 500; */
+  color: #747d8c;
+  font-size: 13px;
 }
 .Status-BTN__item {
   color: white;
   font-size: 13px;
-
   border-radius: 5px;
-  margin: 0px 8px;
-  padding: 10px 15px;
+  width: 110px;
+  height: 40px;
   border: none;
   cursor: pointer;
 }
 .Status-BTN__Taixe {
   background-color: var(--taixe);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 .Status-BTN__Nguoicho {
   background-color: var(--nguoicho);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 .Status-BTN__Nguoinhan {
   background-color: var(--nguoinhan);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 .Status-ListBTN {
   display: flex;
   justify-content: space-between;
-  margin: 18px 6px;
+  margin: 10px 0;
 }

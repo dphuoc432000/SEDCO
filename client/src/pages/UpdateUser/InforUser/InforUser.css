@@ -18,7 +18,10 @@
 .user-infor > .name-id-status_user > .name-id > .id{
     height: 20px;
     color: #7f8c8d;
-    font-size: 100%;
+    font-size: 13px;
+}
+.user-infor > .name-id-status_user > .status_user {
+    font-size: 13px;
 }
 .user-infor > .infor{
     width: 100%;
@@ -33,6 +36,7 @@
 }
 .user-infor > .infor table>tbody>tr>td{
     height: 35px;
+    font-size: 13px;
 }
 .user-infor > .infor table>tbody>tr>td:first-child{
     width: 40%;
@@ -44,7 +48,7 @@
 .user-infor > .image-private-container> .image-private-title{
     width: 100%;
     display: flex;
-    padding: 15px 0 10px 0;
+    padding: 15px 0 0px 0;
 }
 .user-infor > .image-private-container span{
     font-weight: bold;
@@ -56,6 +60,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    font-size: 13px;
 }
 .user-infor > .image-private-container>.identity_card_img_container>span,
 .user-infor > .image-private-container>.face_img_container> span,
@@ -78,4 +83,8 @@
 .user-infor > .image-private-container .img_container img{
     width: 200px;
     /* height: 200px; */
+}
+
+.user-infor > .image-private-container .img_container .no_image {
+    color: #595959;
 }

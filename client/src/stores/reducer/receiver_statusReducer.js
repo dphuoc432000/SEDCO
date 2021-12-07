@@ -1,8 +1,6 @@
 import React from "react";
 import axios from "axios";
 import {
-  
-   
     GET_NOTIFICATION_REGISTER_OF_RECEIVER_LOADING,
     GET_NOTIFICATION_REGISTER_OF_RECEIVER_SUCCESS,
     GET_NOTIFICATION_REGISTER_OF_RECEIVER_ERROR,
@@ -15,6 +13,9 @@ import {
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_LOADING,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_SUCCESS,
     GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_ERROR,
+    COMPLETE_RECEIVER_STATUS_SUCCESS,
+    COMPLETE_RECEIVER_STATUS_ERROR,
+    COMPLETE_RECEIVER_STATUS_LOADING
 } from "../../constants/actions";
 
 const initState = {
@@ -67,6 +68,13 @@ const receiver_statusReducer = (state = initState , action) => {
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_ERROR:
         return {...state, err: action.payload};
     case GET_NOTIFICATION_BOTH_CONFIRM_TRANSACTION_OF_RECEIVER_LOADING:
+        return {...state};
+
+    case COMPLETE_RECEIVER_STATUS_SUCCESS:
+        return {...state};
+    case COMPLETE_RECEIVER_STATUS_ERROR:
+        return {...state , err: action.payload};
+    case COMPLETE_RECEIVER_STATUS_LOADING:
         return {...state};
     default:
       return state;

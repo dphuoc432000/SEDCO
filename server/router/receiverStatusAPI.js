@@ -19,4 +19,5 @@ router.get('/:receiver_status_id_pr/history/no_confirm/car_confirm/list', receiv
 router.post('/:car_status_id_pr/:receiver_status_id_pr/confirm/receiver/receiver', receiverStatusController.confirmReceiverStatusOfReceiver);
 router.get('/:receiver_status_id_pr/history/no_confirm/list', receiverStatusController.getAllRegisterReceiverNoConfirm_0_2ByReceiverStatusID);
 router.get('/:receiver_status_id_pr/history/confirm/list', receiverStatusController.getAllHistoryRegisterReceiverConfirmByReceiverStatusID);
+router.post('/:receiver_status_id_pr/complete', receiverStatusController.completeReceiverStatus);
 module.exports = router;

@@ -25,7 +25,7 @@ class ReceiverStatusService {
                 //và phát hiện trả về null và dòng dưới sẽ đổi lại role rêcive
 
                 // chỉ có role user mới được vào hàm này
-                //chưa test nếu thực sự role là sender. Khi đổi về role thường sẽ như thế nào khi vào hàm này
+                //chưa test nếu thực sự role là receiver. Khi đổi về role thường sẽ như thế nào khi vào hàm này
                 // dùng if else. if !null thực hiện bt, else lọc status nào có status_completed false thông qua account id ứng với status_tyepe nào thì chuyển về acc role đó. đồng thời xó luôn ảnh vừa tải lên do req.file của multer
                 //update role cho account
                 accountService.accountUpdate_roleId_byRoleName(account_id, 'receiver');
@@ -113,7 +113,7 @@ class ReceiverStatusService {
             //update lại role account -> user 
             await accountService.accountUpdate_roleId_byRoleName(account_id, 'user');
 
-            //xóa trong history sender những dữ liệu chưa được confirm của cả hai.
+            //xóa trong history receiver những dữ liệu chưa được confirm của cả hai.
             //receiver_confirm: false,
             //car_confirm: false
             await HistoryReceiver.findOneAndRemove({receiver_status_id: receive_status_id_param, receiver_confirm: false, car_confirm: false})
@@ -146,7 +146,36 @@ class ReceiverStatusService {
         else
             return 'NO DELETE'
     }
-
+    //hoàn thành ReceiverStatus
+    completeReceiverStatus = async (receiver_status_id) => {
+        //kiểm tra có receiver status không
+        const receiver_status = await ReceiverStatus.findById({_id: receiver_status_id})
+            .then(data => mongooseToObject(data))
+            .catch(err => err);
+        if(receiver_status){
+            //trường hợp có receiver_status
+            //kiểm tra có receiver có đang trong quá trình giao dịch không
+            const receiver_in_trans_list = await HistoryReceiver.find({receiver_status_id: receiver_status_id, car_confirm: true, receiver_confirm: false})
+                .then(data => multiplemongooseToObject(data));
+            if(receiver_in_trans_list.length > 0)
+                return 'TRADING';
+            //xóa những receiver chưa được chuyến xe confirm
+            await HistoryReceiver.deleteMany({receiver_status_id: receiver_status_id, car_confirm: false, receiver_confirm: false})
+                .then(data => data);
+            //update regis_status false
+            await ReceiverStatus.findByIdAndUpdate({_id: receiver_status_id}, {regis_status: false})
+                .then(data => data)
+            //update status_completed
+            const status = await Status.findByIdAndUpdate({_id: receiver_status.status_id},{status_completed: true})
+                .then(data => mongooseToObject(data))
+                .catch(err => err);
+            //chuyển về role user
+            if(status)
+                await accountService.accountUpdate_roleId_byRoleName(status.account_id,'user');
+            return receiver_status;
+        }
+        return null;
+    }
 }
 
 module.exports = new ReceiverStatusService();

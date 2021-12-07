@@ -1,0 +1,118 @@
+.GoodDetail_container{
+    width: 100%;
+    overflow-y: auto ;
+    height: 67vh;
+    padding: 20px
+}
+.GoodDetail_container::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.GoodDetail_container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.GoodDetail_container::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+  /* Handle on hover */
+.GoodDetail_container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.GoodDetail_container > .Car_trip_Detail{
+    width: 100%;
+}
+.GoodDetail_container > .Car_Detail{
+    margin-top: 20px;
+    width: 100%;
+}
+.GoodDetail_container > .Car_trip_Detail > tbody > tr > th,
+.GoodDetail_container > .Car_trip_Detail > tbody > tr > td:first-child,
+.GoodDetail_container > .Car_Detail > tbody > tr > th,
+.GoodDetail_container > .Car_Detail > tbody > tr > td:first-child{
+    text-align: left;
+    font-size: 13px;
+    width: 32%;
+    vertical-align: top;
+    padding: 3px 0;
+}
+
+.GoodDetail_container > .Car_trip_Detail > tbody > tr > td:last-child,
+.GoodDetail_container > .Car_Detail > tbody > tr > td:last-child{
+    text-align: right;
+    font-size: 13px;
+    width: 68%;
+    vertical-align: top;
+    padding: 3px 0;
+}
+.GoodDetail_container > .GoodDetail_Info_Img{
+    margin-top: 20px;
+    width: 100%;
+}
+.GoodDetail_container > .GoodDetail_Info_Img > .GoodDetail_Info_Img__src{
+   margin-top: 7px; 
+   width: 180px;
+}
+.container_btn__ListBottom{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+}
+.container_btn__ListBottom > .button_left > .GoodDetail_btn_back{
+    cursor: pointer;
+}
+.GoodDetail_btn__Update{
+    cursor: pointer;
+    background-color: #2E86DE;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+}
+.GoodDetail_btn__Del{
+    cursor: pointer;
+    background-color: #EE5253;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 30px;
+    margin-right: 10px;
+}
+
+.GoodDetail_btn_back{
+    cursor: pointer;
+    background-color: none;
+    border-radius: 5px;
+    color: blue;
+    padding: 10px 0px;
+}
+
+.GoodDetail_btn__Report{
+    color: gray;
+    background-color: #dfe6e9;
+    padding: 10px 30px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.GoodDetail_btn__Message{
+    cursor: pointer;
+    background-color: #2E86DE;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+}
+.GoodDetail_btn__Completed{
+    cursor: pointer;
+    background-color: #6ab04c;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 10px;
+    margin-left: 10px;
+
+}
+

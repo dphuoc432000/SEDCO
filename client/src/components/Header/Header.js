@@ -11,7 +11,10 @@ import {getUserInforIsLogined} from '../../stores/actions/userIsLogin.action';
 // import { menuHeader } from "./menuHeader";
 import CustomizedMenus from './subMenu';
 import CircleIcon from '@mui/icons-material/Circle';
-import Management_Quantity from '../../components/Manage_Quantity/Management_Quantity'
+import Management_Quantity from '../../components/Manage_Quantity/Management_Quantity';
+import ConversationList from '../Message/ConversationList/ConversationList';
+import {get_conversation_list_action} from '../../stores/actions/conversation.action';
+import {GET_CONVERSATION_LIST_SUCCESS} from '../../constants/actions'
 // const translateRoleName = (role_name)=>{
 //     switch(role_name) {
 //         case "user":
@@ -87,30 +90,87 @@ class Header extends React.Component {
     //             full_name: this.props.full_name
     //         })
     // }
+    container = React.createRef();
     state = {
         showManageQuantity : false ,
+        showConversationList: false,
+        conversation_list:[]
+    }
+    componentDidMount = async () =>{
+        const {socket} = this.props;
+        socket.current.on('getMessage', async data =>{
+            console.log('chayheader')
+            const account_id = this.props.account_id;
+            const get_conversation_list_action = await this.props.get_conversation_list_action(account_id);
+            const conversationReducer = await this.props.conversationReducer;
+            if(get_conversation_list_action.type === GET_CONVERSATION_LIST_SUCCESS){
+                this.setState({
+                    conversation_list: conversationReducer.conversation_list
+                })
+                this.props.handleWatchedNewMessage(conversationReducer.conversation_list)
+            }
+        })
+    }
+    componentDidUpdate = async (prevProps) =>{
+        if(prevProps.account_id !== this.props.account_id){
+            const account_id = this.props.account_id;
+            const get_conversation_list_action = await this.props.get_conversation_list_action(account_id);
+            const conversationReducer = await this.props.conversationReducer;
+            if(get_conversation_list_action.type === GET_CONVERSATION_LIST_SUCCESS){
+                this.setState({
+                    conversation_list: conversationReducer.conversation_list
+                })
+                this.props.handleWatchedNewMessage(conversationReducer.conversation_list)
+            }
+        }
     }
     handleChangeShowFormLogin = ()=>{
         this.props.handleChangeShowFormLogin();
     }
-    handleOnclickShowManageQuantity = (event) => {
+    handleOnclickShowManageQuantity =async  (event) => {
         // const btn_showManageQuantity = document.getElementsByClassName('btn__quantity_management');
         const className = event.target.className;
         if(className === 'btn__quantity_management')
         // btn_showManageQuantity[0].onclick = () => {
             this.setState({
-                showManageQuantity : !this.state.showManageQuantity
+                showManageQuantity : !this.state.showManageQuantity,
+                showConversationList: false
             })
+        else if(className === 'button_message'){
+            this.props.handleUpdateWatchedNewMessage();
+            const account_id = this.props.account_id;
+            const get_conversation_list_action = await this.props.get_conversation_list_action(account_id);
+            const conversationReducer = await this.props.conversationReducer;
+            let conversation_list = [];
+            if(get_conversation_list_action.type === GET_CONVERSATION_LIST_SUCCESS){
+                // this.setState({
+                    conversation_list= conversationReducer.conversation_list
+                // })
+                // this.props.handleWatchedNewMessage(conversationReducer.conversation_list)
+            }
+            this.setState({
+                showManageQuantity : false,
+                showConversationList: !this.state.showConversationList,
+                conversation_list
+            })
+        }
         else
             this.setState({
-                showManageQuantity : false
+                showManageQuantity : false,
+                showConversationList: false
             }) 
         // }
+    }
+    handleShowConversationList = () =>{
+        this.setState({
+            showConversationList: !this.state.showConversationList,
+        })
     }
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
         const role_name = this.props.appProps.role_name.role_name;
+        const {showConversationList, conversation_list} = this.state;
         return (
             <header id="header">
                 <div className="header-navbar">
@@ -132,7 +192,19 @@ class Header extends React.Component {
                             <React.Fragment>
                                 <ul className="header-navbar-right__menu_user">
                                     {menu.map((item,index)=>{
-                                        return <li className="header-navbar__item" key={index}><Link onClick={(event) =>{this.handleOnclickShowManageQuantity(event)}}  className={item.className} to={item.link}>{item.name}</Link></li> 
+                                        return (
+                                            <li className="header-navbar__item" key={index}>
+                                                <Link 
+                                                    onClick={(event) =>{this.handleOnclickShowManageQuantity(event)}}
+                                                    className={item.className} 
+                                                    to={item.link}>{item.name}
+                                                </Link>
+                                                {
+                                                    item.name === 'Tin nhắn' && !this.props.watchNewMessage &&
+                                                    <CircleIcon className='icon_new_message' style={{color: 'red'}}/>
+                                                }
+                                            </li> 
+                                        )
                                     })}
                                 </ul>
                                 <div className="header-navbar-right__infor_user">
@@ -163,6 +235,15 @@ class Header extends React.Component {
                     status_current={this.props.status_current}
                     />
                 }
+                {showConversationList &&
+                    <ConversationList 
+                        handleShowConversationList={this.handleShowConversationList}
+                        handleShowMessageWhenClickConversation = {this.props.handleShowMessageWhenClickConversation}
+                        account_id={this.props.account_id}
+                        socket={this.props.socket}
+                        conversation_list={conversation_list}
+                    />
+                }
             </header>
         );
     }
@@ -173,7 +254,8 @@ const mapStateToProps = (state) =>{
         verifyTokenData: state.verifyTokenReducer,
         roleReducer: state.roleReducer,
         isLogined: state.loginReducer.isLogined,
-        userIsLogined: state.userIsLoginReducer
+        userIsLogined: state.userIsLoginReducer,
+        conversationReducer: state.conversationReducer
     }
 }
 
@@ -188,6 +270,10 @@ const mapDispatchToProps =(dispatch)=>{
         },
         get_User_Infor_Is_Logined: async (account_id) =>{
             const action = await getUserInforIsLogined(account_id);
+            return dispatch(action);
+        },
+        get_conversation_list_action: async(account_id) =>{
+            const action = await get_conversation_list_action(account_id);
             return dispatch(action);
         }
     }

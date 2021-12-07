@@ -29,4 +29,5 @@ router.post('/:id/update',
 router.post('/:id/delete', userController.deleteUser); //OK
 //Lấy tất cả user[driver] chưa được kiểm duyệt
 router.get('/no_censorship/list', userController.getAllUserDriverNoCensorship); //OK //đã được pagination
+router.get('/account_id/:account_id_pr/detail', userController.getUserByAccountID)
 module.exports = router;

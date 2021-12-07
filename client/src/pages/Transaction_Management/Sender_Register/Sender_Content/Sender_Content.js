@@ -15,7 +15,16 @@ import getEssentials from '../../../../stores/actions/essentials.action';
 import {toast } from 'react-toastify';
 import ModalConfirm from '../../ModalConfirm/ModalConfirm';
 import {confirm_sender_status_of_car_action, cancle_register_sender_action} from '../../../../stores/actions/car_regis_status';
-import {CONFIRM_SENDER_STATUS_OF_CAR_SUCCESS, CANCEL_REGISTER_SENDER_FOR_CAR_SUCCESS} from '../../../../constants/actions';
+import {
+    CONFIRM_SENDER_STATUS_OF_CAR_SUCCESS, CANCEL_REGISTER_SENDER_FOR_CAR_SUCCESS,
+    GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+    CREATE_CONVERSATION_SUCCESS,
+} from '../../../../constants/actions';
+import ReportForm from "../../../../components/ReportForm/ReportForm";
+import {
+    create_conversation_action,
+    get_conversation_by_account_id_receiver_id_action
+} from '../../../../stores/actions/conversation.action';
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -32,7 +41,8 @@ class Sender_Content extends Component {
         sender_status_information: {},
         essentials: [],
         essentials_car:{},
-        open_ModalConfirm: false
+        open_ModalConfirm: false,
+        showReportForm: false,
     }
     modifiedEssentailToEssentialsCar = (essentials) =>{
         const essentials_object = {}
@@ -157,6 +167,27 @@ class Sender_Content extends Component {
             open_ModalConfirm: !this.state.open_ModalConfirm
         })
     }
+    handleShowReportForm = () =>{
+        this.setState({
+            showReportForm: !this.state.showReportForm,
+        })
+    }
+    handleShowMessage = async () => {
+        const {account_id} = this.props;
+        const {sender_status_information} = this.state;
+        const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, sender_status_information.account_id);
+        if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+            const conversation = await this.props.conversationReducer.conversation_account_receiver;
+            this.props.handleShowMessageWhenClickConversation(conversation);
+        }
+        else{
+            const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: sender_status_information.account_id} )
+            if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+                const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                this.props.handleShowMessageWhenClickConversation(conversation);
+            }
+        }
+    };
     render() {
         const {sender_status_information, essentials,essentials_car, open_ModalConfirm} = this.state;
         return (
@@ -171,6 +202,7 @@ class Sender_Content extends Component {
                                 <div className="per_infor">
                                     <span className="username"><h2 >{sender_status_information.user.full_name}</h2></span>
                                     <span className="status"><CircleIcon style={{color: '#FFA801'}}/><p style={{color:'#FFA801'}}>Đang đăng ký nhận</p></span>
+                                    <span className="report" onClick ={() =>{this.handleShowReportForm()}}><p>Báo cáo sai phạm</p></span>
                                     <span className="time"><p style={{color: 'rgb(127, 127, 127)'}}>{converJsonDateToDate(sender_status_information.createdAt)}</p></span>
                                 </div>
                                 <div className="information_container">
@@ -257,7 +289,7 @@ class Sender_Content extends Component {
                     { !isEmpty(sender_status_information) &&
                         <React.Fragment>
                             <button onClick={()=>{this.handleOpenModalConfirm()}} className="btn_cancel">Hủy</button>
-                            <button className="btn_chat">Liên hệ</button>
+                            <button className="btn_chat" onClick={()=>{this.handleShowMessage()}}>Nhắn tin</button>
                             <button onClick={()=>{this.handleCarConfirm(sender_status_information)}} className="btn_confirm">Xác nhận</button>
                         </React.Fragment>
                     }
@@ -273,6 +305,14 @@ class Sender_Content extends Component {
                             handleOpenModalConfirm={this.handleOpenModalConfirm}
                         />
                 }
+                {
+                    this.state.showReportForm &&
+                    <ReportForm 
+                        handleShowReportForm={this.handleShowReportForm} 
+                        status_current={sender_status_information}
+                        account_id={this.props.account_id}
+                    />
+                }
             </div>
         )
     }
@@ -282,6 +322,7 @@ class Sender_Content extends Component {
 const mapStateToProps = (state) =>{
     return {
         essentialsReducer: state.essentialsReducer,
+        conversationReducer: state.conversationReducer,
     }
   }
   
@@ -300,6 +341,14 @@ const mapDispatchToProps =(dispatch)=>{
             const action = await cancle_register_sender_action(car_status_id, sender_status_id);
             return dispatch(action);
         },
+        create_conversation_action: async(object) =>{
+            const action = await create_conversation_action(object);
+            return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
+            return dispatch(action);
+        }
     }
 }
 

@@ -128,7 +128,6 @@ class AccountService{
 
     accountUpdate_roleId_byRoleName = async(id, role_name) =>{
         const role = await roleService.getRoleByName(role_name);
-        console.log(role)
         return await this.accountUpdate(id, {role_id: role._id})
             .then((account) => (account))// thêm catch nếu chạy lỗi thì bỏ
             .catch(err => err);

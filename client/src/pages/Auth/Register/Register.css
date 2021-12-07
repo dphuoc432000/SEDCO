@@ -13,6 +13,7 @@
     top: 4%;
     padding: 35px 0;
     border-radius: 5px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 }
 
 .register_container:hover, 
@@ -73,6 +74,7 @@
     padding: 0 15px;
     border: 1px #E7E7E7 solid;
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 .register_container> form > .input_user_infor{
     width: 100%;
@@ -103,6 +105,7 @@
     padding: 0 15px;
     border: 1px #E7E7E7 solid;
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .register_container> form > .input_user_infor > .input_address{
@@ -120,6 +123,7 @@
     display: flex;
     justify-content: left;
     flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .register_container> form > .input_user_infor > .input_address >.input_district{
@@ -128,6 +132,7 @@
     display: flex;
     justify-content: right;
     flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 .register_container> form > .input_user_infor > .input_address select{
     width: 100%;
@@ -161,6 +166,7 @@
     color: white;
     font-size: 13px;
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .register_container > .btn_login{

@@ -100,6 +100,7 @@
   border-radius: 5px;
   color: white;
   background-color: #5352ED;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__menu_user{
   margin-right:30px;
@@ -115,12 +116,20 @@
   align-items: center;
   justify-content: center;
   list-style: none;
+  position:relative;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__menu_user > li > a{
   padding: 10px;
   text-decoration: none;
   color: black;
   font-size: 13px;
+}
+
+#header> .header-navbar > .header-navbar-right > .header-navbar-right__menu_user > li > .icon_new_message{
+  position: absolute;
+      top: 12px;
+      right: 0px;
+      width: 10px;
 }
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__infor_user{
   display: flex;
@@ -142,6 +151,9 @@
 #header> .header-navbar > .header-navbar-right > .header-navbar-right__infor_user > .header_role > .header_role_circle{
   width: 20px;
   height: 20px;
+}
+#header> .header-navbar > .header-navbar-right > .header-navbar-right__infor_user > .header_role > .header_role_name{
+  font-size: 12px;
 }
 
 #header> .header-navbar > .header-navbar-right > .header-navbar__sub_menu{

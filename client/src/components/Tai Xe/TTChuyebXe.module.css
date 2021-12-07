@@ -1,0 +1,23 @@
+.my_status_container{
+    width: 100%;
+    padding: 20px;
+}
+.my_status_container > table{
+    width: 100%;
+}
+.my_status_container > table > tbody > tr > th,
+.my_status_container > table > tbody > tr > td:first-child{
+    text-align: left;
+    font-size: 13px;
+    padding: 3px 0;
+}
+
+.my_status_container > table > tbody > tr > td:last-child{
+    text-align: right;
+    font-size: 13px;
+    padding: 3px 0;
+}
+.my_status_container > table > tbody > tr > td > .data_container__SeeDetail{
+    color: blue;
+    cursor: pointer;
+}

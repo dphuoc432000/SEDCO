@@ -66,12 +66,11 @@
 /* background-color: aliceblue; */
 
 .data-container__title {
-  color: #0000ffb8;
   padding-left: 12px;
   margin-top: 13px;
-  padding: 0 19px;
+  /* padding: 0 19px; */
   font-size: 14.8px;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 .data-container__SeeDetail {
   margin-top: 12px;

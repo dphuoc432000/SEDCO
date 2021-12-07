@@ -9,6 +9,9 @@ const senderStatusAPI = require('./senderStatusAPI');
 const vehicleCensorshipAPI = require('./vehicleCensorshipAPI');
 const carStatusAPI = require('./carStatusAPI')
 const reportAPI = require('./reportAPI');
+const conversationAPI = require('./conversationAPI'); 
+const messageAPI = require('./messageAPI');
+
 function router(app){
     app.use('/api/user/',userAPI);
     app.use('/api/role/',roleAPI);
@@ -20,6 +23,8 @@ function router(app){
     app.use('/api/vehicle_censorship', vehicleCensorshipAPI);
     app.use('/api/car_trip/', carStatusAPI);
     app.use('/api/report/', reportAPI);
+    app.use('/api/conversation/', conversationAPI);
+    app.use('/api/message/', messageAPI);
     //lấy tên key của request về
     // app.post('/test',(req, res, next)=>{
     //     for(var key in req.body) {

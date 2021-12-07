@@ -153,7 +153,6 @@ class ReceiverForm extends Component {
         event.preventDefault();
         // await this.props.
         if (!this.checkEssentialForm() || this.checkingForm()) {
-            console.log(this.checkEssentialForm(), this.checkingForm())
             toast.warn("Vui lòng nhập số lượng nhu yếu phẩm và số lượng người trong hộ gia đình!");
         } else {
             let formData = new FormData();
@@ -161,7 +160,8 @@ class ReceiverForm extends Component {
             formData.append("number_per_of_family", this.state.number_per_of_family.value);
             formData.append("note", this.state.note.value)
             formData.append("picture", this.state.picture)
-            const receiverFormCreate = await this.props.receiverFormCreate(this.props.account_id, formData)
+            const receiverFormCreate = await this.props.receiverFormCreate(this.props.account_id, formData);
+            console.log(receiverFormCreate)
             if (receiverFormCreate.type === RECEIVER_FORM_CREATE_SUCCESS) {
                 this.props.exitModalReceiverForm();
                 this.props.handleLoadAgainWhenCreateStatus();
@@ -257,7 +257,7 @@ class ReceiverForm extends Component {
                                                         this.handleEssentialInput(event, 0, 50);
                                                     }}
                                                 />
-                                                <div class={ReceiverFormCss.vl}></div>
+                                                <div className={ReceiverFormCss.vl}></div>
                                                 <p className={ReceiverFormCss.unit}>{essential.unit}</p>
                                             </div>
                                             <div className={ReceiverFormCss.err_container}>

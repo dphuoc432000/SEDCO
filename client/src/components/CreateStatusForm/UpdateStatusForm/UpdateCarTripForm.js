@@ -276,7 +276,7 @@ class UpdateCarTripForm extends Component {
                 return {
                     isInputValue: false,
                     errorMessage:
-                        "Vui lòng nhập lại. Ngày bắt khởi hành không nhỏ hơn ngày hiện tại!",
+                    "Vui lòng nhập lại. Ngày bắt đầu nhận được tính từ ngày hiện tại đến ngày khởi hành!",
                 };
 
             case "departure_time_didMount":
@@ -290,7 +290,7 @@ class UpdateCarTripForm extends Component {
                 return {
                     isInputValue: false,
                     errorMessage:
-                        "Vui lòng nhập lại. Ngày băt đầu vận chuyển không < ngày hiện tại & ngày bắt đầu nhận!",
+                    "Vui lòng nhập lại. Ngày băt đầu khởi được tính từ ngày nhận!",
                 };
 
             case "start_receive_time":

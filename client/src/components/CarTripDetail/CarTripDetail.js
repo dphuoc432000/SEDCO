@@ -171,7 +171,7 @@ class CarTripDetail extends Component {
                             <tr>
                                 <td>Bắt đầu nhận hàng :</td>
                                 <td>{original_start_receive_time}</td>
-                            </tr>
+                            </tr> 
                             <tr>
                                 <td>Bắt đầu vận chuyển:</td>
                                 <td>{original_departure_time}</td>

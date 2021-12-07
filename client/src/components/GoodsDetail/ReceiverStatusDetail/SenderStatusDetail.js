@@ -65,6 +65,7 @@ class SenderStatusDetail extends Component {
                         unit: essential_detail.unit,
                     }
 <<<<<<< HEAD
+<<<<<<< HEAD
                   </React.Fragment>
                 );
               })}
@@ -100,6 +101,8 @@ class SenderStatusDetail extends Component {
           </div>
         </div>
 =======
+=======
+>>>>>>> 5b4d7fc34807a1de8d92145549b3578435363606
                 }))
                 this.setState({
                     essentials: essentials_map
@@ -118,7 +121,10 @@ class SenderStatusDetail extends Component {
         // console.log(essentialsDetail)
         return essentialsDetail;
     };
+<<<<<<< HEAD
 >>>>>>> f90b30f0d444700f7f71003c1ad1171954460471
+=======
+>>>>>>> 5b4d7fc34807a1de8d92145549b3578435363606
 
     handleUpdateEssentials = (essentials) => {
         this.setState({

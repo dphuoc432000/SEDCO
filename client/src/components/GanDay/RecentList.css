@@ -5,6 +5,7 @@
   max-height: calc(100% - 30%);
   overflow: hidden;
   overflow-y: scroll;
+  width: 100%;
 }
 .ListRecent::-webkit-scrollbar {
   width: 5px;

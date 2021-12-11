@@ -403,6 +403,29 @@ class CarStatusService {
         }
         return null;
     }
+
+    historyTransactionCar = async (car_status_id) =>{
+        //kieemr tra car status ton taij
+        const car_status = await CarStatus.findById({_id: car_status_id})
+            .then(data => mongooseToObject(data));
+        if(car_status){
+            const history_sender_list = await HistorySender.find({car_status_id: car_status_id, car_confirm: true})
+                .then(data => multiplemongooseToObject(data))
+                .catch(err => err);
+            const history_receiver_list = await HistoryReceiver.find({car_status_id: car_status_id, car_confirm: true})
+                .then(data => multiplemongooseToObject(data))
+                    .catch(err => err);
+            let list = [...history_sender_list, ...history_receiver_list];
+            list = list.sort((objectA, objectB)=>{
+                console.log('objectA', objectA.updatedAt)
+                console.log('objectB', objectB.updatedAt)
+                console.log(new Date(objectA.updatedAt) - new Date(objectB.updatedAt))
+                return new Date(objectB.updatedAt)- new Date(objectA.updatedAt) ;
+            })
+            return list;
+        }
+        return null;
+    }
 }
 
-module.exports = new CarStatusService();
+module.exports = new CarStatusService();    

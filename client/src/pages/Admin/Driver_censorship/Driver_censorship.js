@@ -200,7 +200,7 @@ class Driver_censorship extends React.Component {
                                                             <div>
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.id_card_img_before ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_before}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_before}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }
@@ -211,7 +211,7 @@ class Driver_censorship extends React.Component {
                                                             <div >
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.id_card_img_after ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_after}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.id_card_img_after}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }
@@ -225,7 +225,7 @@ class Driver_censorship extends React.Component {
                                                             <div>
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.driving_license_img_before ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_before}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_before}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }
@@ -236,7 +236,7 @@ class Driver_censorship extends React.Component {
                                                             <div>
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.driving_license_img_after ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_after}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.driving_license_img_after}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }
@@ -249,7 +249,7 @@ class Driver_censorship extends React.Component {
                                                             <div>
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.test_img_1 ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_1}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_1}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }
@@ -259,7 +259,7 @@ class Driver_censorship extends React.Component {
                                                             <div>
                                                                 {
                                                                     user_no_censorship.vehicle_censorship.test_img_2 ?
-                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_2}`} alt="" className="img_logo" />
+                                                                        <img src={`${API_IMAGE_URL}/${user_no_censorship.vehicle_censorship.test_img_2}`} alt="" className="img_item_admin" />
                                                                         :
                                                                         <p>Chưa có hình ảnh</p>
                                                                 }

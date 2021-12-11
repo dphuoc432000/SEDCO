@@ -64,45 +64,6 @@ class SenderStatusDetail extends Component {
                         code_name: essential_detail.code_name,
                         unit: essential_detail.unit,
                     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-                  </React.Fragment>
-                );
-              })}
-            <tr>
-              <td>Tổng khối lượng</td>
-              <td>{weight_essential}</td>
-              <td>Kg</td>
-            </tr>
-          </table>
-          <h3 className="data-container__title">Thông tin liên hệ</h3>
-          <table className="List-Good-Detail">
-            <tr>
-              <td>Số điện thoại</td>
-              <td>{user.phone_number}</td>
-            </tr>
-            <tr>
-              <td>Địa chỉ</td>
-              <td>{user.address}</td>
-            </tr>
-            <tr>
-              <td>Ghi chú</td>
-              <td>{note}</td>
-            </tr>
-          </table>
-          <div className="GoodDetail-Info-Img">
-            <h3 className="data-container__title" style={{ marginLeft: "-17px" }}>Hình ảnh</h3>
-            <img
-              src={`${API_IMAGE_URL}/${picture}`}
-              alt={`Hình ảnh`}
-              className="GoodDetail-Info-Img__src"
-            //   style={{marginLeft: "-24px"}}
-            />
-          </div>
-        </div>
-=======
-=======
->>>>>>> 5b4d7fc34807a1de8d92145549b3578435363606
                 }))
                 this.setState({
                     essentials: essentials_map
@@ -121,10 +82,6 @@ class SenderStatusDetail extends Component {
         // console.log(essentialsDetail)
         return essentialsDetail;
     };
-<<<<<<< HEAD
->>>>>>> f90b30f0d444700f7f71003c1ad1171954460471
-=======
->>>>>>> 5b4d7fc34807a1de8d92145549b3578435363606
 
     handleUpdateEssentials = (essentials) => {
         this.setState({

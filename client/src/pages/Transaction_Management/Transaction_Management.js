@@ -11,7 +11,7 @@ import {
     REMOVE_STATUS_AFTER_CONFIRM_OR_CANCLE_SENDER_LIST,
     REMOVE_STATUS_AFTER_CONFIRM_OR_CANCLE_RECEIVER_LIST
 } from '../../constants/actions';
-
+import History_cartrip from './History_cartrip'
 class Transaction_Management extends Component {
     state ={
         car_status: this.props.status_current,
@@ -102,6 +102,12 @@ class Transaction_Management extends Component {
                                     handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
                                 />
                             </Route>
+                            <Route exact path={`/car_trip/transaction_management/history`}>
+                                <History_cartrip
+                                    
+                                />
+                            </Route>
+                            
                         </Switch>
                     </div>    
                 </div>

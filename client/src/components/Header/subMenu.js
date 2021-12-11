@@ -11,7 +11,8 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import './subMenu.css';
 import { withRouter } from 'react-router';
 import {connect} from 'react-redux';
-
+import {logout} from '../../stores/actions/auth.action';
+import {LOGOUT_ACCOUNT_SUCCESS} from '../../constants/actions';
 function MenuListComposition(props) {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
@@ -28,11 +29,13 @@ function MenuListComposition(props) {
         setOpen(false);
     };
 
-    const  handleLogout = () =>{
-        props.logout();
-        localStorage.removeItem('accessToken');
-        props.handleLogout();
-        props.history.push('/');
+    const  handleLogout = async () =>{
+        const logoutaction  = await props.logout();
+        if(logoutaction.type === LOGOUT_ACCOUNT_SUCCESS){
+            localStorage.removeItem('accessToken');
+            props.handleLogout();
+            props.history.push('/');
+        }
     }
     
     const handleUpdateInformation = ()=>{
@@ -120,7 +123,10 @@ const mapStateToProps = (state) =>{
 //dispatch này của redux không phải react
 const mapDispatchToProps =(dispatch)=>{
     return {
-        logout: () => dispatch({type:"LOGOUT_ACCOUNT"})
+        logout: async() => {
+            const action  = await logout();
+            return dispatch(action);
+        }
     }
 }
 

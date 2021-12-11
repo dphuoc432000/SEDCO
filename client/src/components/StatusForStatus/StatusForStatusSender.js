@@ -51,9 +51,9 @@ class StatusForStatusSender extends React.Component {
                             <h3 className="Status-header__date">{`${original_date}`}</h3>
                             {statusNotConfirm === false &&
                                 <>
-                                    <h4 className="Status-headerID--item Status-headerID--status" style={{ color: '#FED330' }}>
+                                    <p className="Status-headerID--item Status-headerID--status" style={{ color: '#FED330' }}>
                                         {status_sender.detail.regis_status === false ? 'Đang chờ nhận' : 'Đã được đăng ký'}
-                                    </h4>
+                                    </p>
                                 </>
                             }
                         </div>

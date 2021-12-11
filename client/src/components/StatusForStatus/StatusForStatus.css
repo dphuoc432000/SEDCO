@@ -30,9 +30,9 @@
 .Status-headerID--status {
   /* người cho */
   /* color: var(--nguoinhan); */
-  margin-top: 10px;
+  margin-top: 3px;
   font-size: 12px;
-  font-weight: 300;
+  /* font-weight: 300; */
 }
 .Status-header__DateUpPost {
   text-align: right;
@@ -44,8 +44,7 @@
 .Status-header__Date--title {
   /* nguoi cho */
   font-size: 12px;
-  font-weight: 300;
-  margin-top: 10px;
+  margin-top: 3px;
 }
 .Status-header__date {
   font-weight: 300;

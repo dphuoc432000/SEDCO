@@ -12,6 +12,7 @@ const HistoryReceiver = require('../models/History_Receiver');
 const SenderStatus = require('../models/Sender_Status');
 const ReceiverStatus = require('../models/Receiver_Status');
 const Car_Status = require('../models/Car_Status');
+const User = require('../models/User');
 const mongoose = require('../util/mongoose.js');
 
 function isEmpty(path) {
@@ -409,18 +410,56 @@ class CarStatusService {
         const car_status = await CarStatus.findById({_id: car_status_id})
             .then(data => mongooseToObject(data));
         if(car_status){
-            const history_sender_list = await HistorySender.find({car_status_id: car_status_id, car_confirm: true})
+            let history_sender_list = await HistorySender.find({car_status_id: car_status_id, car_confirm: true})
                 .then(data => multiplemongooseToObject(data))
                 .catch(err => err);
-            const history_receiver_list = await HistoryReceiver.find({car_status_id: car_status_id, car_confirm: true})
+            if(history_sender_list.length > 0) {
+                history_sender_list = Promise.all(history_sender_list.map(async regisSender =>{
+                    const sender_status = await SenderStatus.findOne({_id: regisSender.sender_status_id})
+                        .then(data => mongooseToObject(data))
+                        .catch(err => err);
+                        // console.log(receiver_status)
+                    if(sender_status)
+                        return await Status.findOne({_id: sender_status.status_id})
+                            .then(async data =>{
+                                data = mongooseToObject(data);
+                                data.detail = sender_status;
+                                const account = await accountService.getAccountDetails(data.account_id)
+                                data.user = await User.findById({_id: account.user_id})
+                                    .then(user => mongooseToObject(user))
+                                    .catch(err => err);
+                                return data;
+                            })
+                            .catch(err => err)
+                }))
+            }
+            let history_receiver_list = await HistoryReceiver.find({car_status_id: car_status_id, car_confirm: true})
                 .then(data => multiplemongooseToObject(data))
-                    .catch(err => err);
-            let list = [...history_sender_list, ...history_receiver_list];
+                .catch(err => err);
+            if(history_receiver_list.length > 0) {
+                history_receiver_list = Promise.all(history_receiver_list.map(async regisReceiver =>{
+                    const receiver_status = await ReceiverStatus.findOne({_id: regisReceiver.receiver_status_id})
+                        .then(data => mongooseToObject(data))
+                        .catch(err => err);
+                        // console.log(receiver_status)
+                    if(receiver_status)
+                        return await Status.findOne({_id: receiver_status.status_id})
+                            .then(async data =>{
+                                data = mongooseToObject(data);
+                                data.detail = receiver_status;
+                                const account = await accountService.getAccountDetails(data.account_id)
+                                data.user = await User.findById({_id: account.user_id})
+                                    .then(user => mongooseToObject(user))
+                                    .catch(err => err);
+                                return data;
+                            })
+                            .catch(err => err)
+                }))
+            }
+            let list = [... await history_sender_list, ... await history_receiver_list];
             list = list.sort((objectA, objectB)=>{
-                console.log('objectA', objectA.updatedAt)
-                console.log('objectB', objectB.updatedAt)
-                console.log(new Date(objectA.updatedAt) - new Date(objectB.updatedAt))
-                return new Date(objectB.updatedAt)- new Date(objectA.updatedAt) ;
+                console.log( (objectB.detail.updatedAt), (objectA.detail.updatedAt))
+                return new Date(objectB.detail.updatedAt)- new Date(objectA.detail.updatedAt) ;
             })
             return list;
         }

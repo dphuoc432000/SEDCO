@@ -321,7 +321,17 @@ class App extends React.Component {
                             />
                         }
                         <Route path="/car_trip/quantity_management" exact>
-                            <Management_Quantity />
+                            <Management_Quantity
+                                 appProps={{
+                                    // checkLocalStorage,
+                                    // handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                    // role_name: this.state.role_name.role_name,
+                                    // account_id: this.state.account_id,
+                                    // isAuthenticated: this.state.isAuthenticated,
+                                    status_current: this.state.status_current,
+                                    // handleLoadAgainWhenConfirmNotify: this.handleLoadAgainWhenConfirmNotify,
+                                }}
+                            />
                         </Route>
                         {/*<Route path="/login" exact render={() =>{
               <Header 

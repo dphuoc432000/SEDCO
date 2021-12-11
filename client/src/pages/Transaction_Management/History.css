@@ -1,0 +1,25 @@
+.History_block--left{
+    position: absolute;
+    left: 18%;
+    top: 10%;
+}
+.QLGD-History {
+  /* display: none; */
+}
+.QLGD-History__List {
+  /* list-style: none; */
+}
+.QLGD-History__Item {
+  border: 1px solid;
+  padding: 14px 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  /* background-color: aqua; */
+  margin: 12px 0;
+  font-size: 1.1rem;
+}
+.QLGD-History__Item h3 {
+  margin-left: 4px;
+  font-size: 1.2rem;
+}

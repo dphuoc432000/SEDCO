@@ -12,6 +12,12 @@ import {
     COMPLETE_CAR_STATUS_SUCCESS,
     COMPLETE_CAR_STATUS_ERROR,
     COMPLETE_CAR_STATUS_LOADING,
+    GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_SUCCESS,
+    GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_ERROR,
+    GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_LOADING,
+    GET_LIST_HISTORY_CARTRIP_LOADING,
+    GET_LIST_HISTORY_CARTRIP_SUCCESS,
+    GET_LIST_HISTORY_CARTRIP_ERROR
 } from '../../constants/actions';
 import axios from 'axios';
 import {API_URL} from '../../constants/api';
@@ -103,4 +109,48 @@ const complete_car_status_action = async(car_status_id)=>{
         });
     return action;
 }
-export {confirm_driver_censorship_action , cancle_driver_censorship_action, get_list_role_is_cartrip, complete_car_status_action};
+const get_number_of_people_cartrip_registed = async(car_status_id)=>{
+    const action = {
+        type: GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_LOADING,
+        payload: {},
+    }
+
+    await axios.get(`${API_URL}/api/car_trip/${car_status_id}/count/status/regis`)
+        .then(res =>{
+            action.type = GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err => {
+            action.type = GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_ERROR;
+            action.payload = {
+                description: "API Loi!",
+                message:err.message,
+                errdata: err.response.data
+            };
+        });
+    console.log(action);
+    return action;
+}
+const get_list_history_cartrip = async(car_status_id)=>{
+    const action = {
+        type: GET_LIST_HISTORY_CARTRIP_LOADING,
+        payload: {},
+    }
+
+    await axios.get(`${API_URL}/api/car_trip/${car_status_id}/count/status/regis`)
+        .then(res =>{
+            action.type = GET_LIST_HISTORY_CARTRIP_SUCCESS;
+            action.payload = res.data;
+        })
+        .catch(err => {
+            action.type = GET_LIST_HISTORY_CARTRIP_ERROR;
+            action.payload = {
+                description: "API Loi!",
+                message:err.message,
+                errdata: err.response.data
+            };
+        });
+    console.log(action);
+    return action;
+}
+export {confirm_driver_censorship_action , cancle_driver_censorship_action, get_list_role_is_cartrip, complete_car_status_action,get_number_of_people_cartrip_registed , get_list_history_cartrip};

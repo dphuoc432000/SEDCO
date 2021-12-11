@@ -1,40 +1,56 @@
 .data-container-ListRecent--ITEMS {
   text-decoration: none;
-  padding: 5px 0px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 5px;
 }
 .data-container-ListRecent--ITEMS:hover {
   cursor: pointer;
   /* opacity: 0.8; */
-  background-color: rgb(255 210 194 / 40%);
+  background-color: #f5faff;
+  border-radius: 5px;
 }
 
 .data-ListRecent__item {
   text-decoration: none;
-  border: 1px solid #afafaf;
-  background-color: rgb(255 210 194 / 24%);
-  padding: 0 15px;
+  /* border: 1px solid #8A8A8A; */
+  /* background-color: rgb(255 210 194 / 24%); */
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 .ListRecent__item-Left {
-  margin: -2px 0;
+  width: 69%;
 }
 .ListRecent__item-Left-Address {
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 12px;
   color: #8a8a8a;
 }
 .ListRecent__item-Right {
-  margin: -2px 0;
+  display: flex;
+  width: 31%;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .ListRecent__item-Right-STT {
-  font-weight: 500;
-  font-size: 1.1rem;
-  color: var(--nguoinhan);
+  display: flex;
+  align-items: center;
+  font-size: 12px!important;
 }
-.ListRecent__item {
-  margin: 12px 0;
-  font-size: 13.4px;
+.ListRecent__item-Right-STT_container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.ListRecent__item-Right-Time{
+  font-size: 12px!important;
+  color: #8a8a8a;
+}
+.ListRecent__item-Left-Name{
+  font-size: 13px;
   font-weight: 500;
 }

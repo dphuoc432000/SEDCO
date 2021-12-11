@@ -13,11 +13,16 @@ const server = http.createServer(app);
 const io = require("socket.io")(server,{
     cors:{
         origin: `http://localhost:3000`,
+        optionsSuccessStatus: 200,
+        credentials: true
     }
 });
-app.use(cors());
+app.use(cors({
+    origin: `http://localhost:3000`,
+    optionsSuccessStatus: 200,
+    credentials: true
+}));
 app.use(cookieParser());
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));

@@ -3,7 +3,10 @@ import axios from 'axios';
 import {
     LOGIN_LOADING,
     LOGIN_SUCCESS,
-    LOGIN_ERROR
+    LOGIN_ERROR,
+    LOGOUT_ACCOUNT_LOADING,
+    LOGOUT_ACCOUNT_SUCCESS,
+    LOGOUT_ACCOUNT_ERROR,
 } from "../../constants/actions";
 import {API_URL} from '../../constants/api';
 
@@ -17,7 +20,7 @@ const login = async (account) =>{
         username: account.username.value,
         password: account.password.value
     }
-    await axios.post(`${API_URL}/api/authentication/signin`,data_account)
+    await axios.post(`${API_URL}/api/authentication/signin`,data_account,{withCredentials: true})
         .then(data => {
             action.type = LOGIN_SUCCESS;
             action.payload = data.data;
@@ -34,5 +37,18 @@ const login = async (account) =>{
     console.log(action)
     return action;
 }
-
-export {login};
+const logout = async () =>{
+    const action ={
+        type: LOGOUT_ACCOUNT_LOADING,
+        payload:{},
+    }
+    await axios.get(`${API_URL}/api/authentication/logout`,{withCredentials: true})
+        .then(data => {
+            action.type = LOGOUT_ACCOUNT_SUCCESS;
+        })
+        .catch(err => {
+            action.type = LOGOUT_ACCOUNT_ERROR;
+        });
+    return action;
+}
+export {login, logout};

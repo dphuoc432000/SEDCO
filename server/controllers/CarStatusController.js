@@ -223,6 +223,16 @@ class CarStatusController{
         })
         .catch(err => next(err))
     }
+
+    historyTransactionCar = async(req, res, next) =>{
+        await carStatusService.historyTransactionCar(req.params.car_status_id_pr)
+            .then(data =>{
+                if(data)
+                    return res.json(data);
+                return res.status(400).json(handleOther.errorHandling("Car_status_id không đúng."));
+            })
+            .catch(err => next(err));
+    }
 }
 
 module.exports = new CarStatusController();

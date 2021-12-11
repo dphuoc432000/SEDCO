@@ -52,9 +52,9 @@ class StatusForStatusCarTrip extends React.Component {
                             <h3 className={StatusForStatusCarTripCss.Status_header__date}>{`${original_date}`}</h3>
                             {statusNotConfirm === false &&
                                 <>
-                                    <h4 className={`${StatusForStatusCarTripCss.Status_headerID__item} ${StatusForStatusCarTripCss.Status_headerID__status}`} style={{ color: '#A3CB38' }}>
+                                    <p className={`${StatusForStatusCarTripCss.Status_headerID__item} ${StatusForStatusCarTripCss.Status_headerID__status}`} style={{ color: '#A3CB38' }}>
                                         {!status_cartrip.detail.censorship ? 'Đang kiểm duyệt' : Date.parse(status_cartrip.detail.start_receive_time) - Date.now() > 0 ? 'Chưa vận chuyển' : 'Đang vận chuyển'}
-                                    </h4>
+                                    </p>
                                 </>
                             }
                         </div>

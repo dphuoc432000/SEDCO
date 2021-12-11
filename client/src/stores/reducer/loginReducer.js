@@ -1,5 +1,12 @@
 import React from "react";
-import {LOGIN_ERROR, LOGIN_SUCCESS, LOGOUT_ACCOUNT} from "../../constants/actions";
+import {
+    LOGIN_ERROR,
+    LOGIN_SUCCESS, 
+    LOGOUT_ACCOUNT,
+    LOGOUT_ACCOUNT_LOADING,
+    LOGOUT_ACCOUNT_SUCCESS,
+    LOGOUT_ACCOUNT_ERROR,
+} from "../../constants/actions";
 
 
 const initState = {
@@ -29,7 +36,12 @@ const loginReducer = (state, action)=>{
         case LOGIN_ERROR:
             console.log('error')
             return {...action.payload};
-        case LOGOUT_ACCOUNT:
+        case LOGOUT_ACCOUNT_SUCCESS:
+            return initState;
+        case LOGOUT_ACCOUNT_LOADING:
+            return initState;
+        case LOGOUT_ACCOUNT_ERROR:
+            console.log('lỗi API logout')
             return initState;
         default:
             return state;

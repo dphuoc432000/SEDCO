@@ -424,6 +424,7 @@ class CarStatusService {
                             .then(async data =>{
                                 data = mongooseToObject(data);
                                 data.detail = sender_status;
+                                data.history = regisSender;
                                 const account = await accountService.getAccountDetails(data.account_id)
                                 data.user = await User.findById({_id: account.user_id})
                                     .then(user => mongooseToObject(user))
@@ -447,6 +448,7 @@ class CarStatusService {
                             .then(async data =>{
                                 data = mongooseToObject(data);
                                 data.detail = receiver_status;
+                                data.history = regisReceiver;
                                 const account = await accountService.getAccountDetails(data.account_id)
                                 data.user = await User.findById({_id: account.user_id})
                                     .then(user => mongooseToObject(user))

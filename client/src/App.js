@@ -299,7 +299,8 @@ class App extends React.Component {
                                     account_id: this.state.account_id,
                                     isAuthenticated: this.state.isAuthenticated,
                                     status_current: this.state.status_current,
-
+                                    handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation,
+                                    handleLoadAgainWhenCreateStatus:this.handleLoadAgainWhenCreateStatus
                                 }}
                             />
                         }
@@ -316,6 +317,7 @@ class App extends React.Component {
                                     isAuthenticated: this.state.isAuthenticated,
                                     status_current: this.state.status_current,
                                     handleLoadAgainWhenConfirmNotify: this.handleLoadAgainWhenConfirmNotify,
+                                    handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation
                                 }}
 
                             />

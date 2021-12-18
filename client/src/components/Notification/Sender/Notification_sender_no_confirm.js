@@ -14,7 +14,15 @@ import {API_IMAGE_URL} from '../../../constants/api'
 import getEssentials from "../../../stores/actions/essentials.action";
 import {confirm_notification_send_to_cartrip_of_sender} from '../../../stores/actions/sender_status.action';
 import { toast } from "react-toastify";
-import {CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS} from '../../../constants/actions'
+import {
+  CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS,
+  GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+  CREATE_CONVERSATION_SUCCESS
+} from '../../../constants/actions';
+import {
+  get_conversation_by_account_id_receiver_id_action,
+  create_conversation_action
+} from '../../../stores/actions/conversation.action';
 class Notification_sender_no_confirm extends Component {
     state = {
         essentials : [],
@@ -40,7 +48,7 @@ class Notification_sender_no_confirm extends Component {
             })
             return object;
         })
-        console.log('sender',essentials_map)
+        // console.log('sender',essentials_map)
 
         let essentials_content_map = essentials_map.map( item => {
             const object = item;
@@ -63,7 +71,7 @@ class Notification_sender_no_confirm extends Component {
             object.car_quantity = essential.quantity;
             return object;
         })
-        console.log('chuyen xe',essentials_content_map)
+        // console.log('chuyen xe',essentials_content_map)
         
         // essentials_content_map = essentials_content_map.map( item => {
         //     const object = {...item};
@@ -89,14 +97,29 @@ class Notification_sender_no_confirm extends Component {
             this.props.history_data.car_status_id,
             this.props.history_data.sender_status_id,
         )
-        if(confirm_action.type !== CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS)
+        if(confirm_action.type !== CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS){
             toast.error("Xác nhận không thành công!");
-        else {
-
+        }else {
             this.props.handleUpdateNotifiWhenConfirm();
+            this.props.handleLoadAgainWhenCreateStatus();
             toast.success("Xác nhận thành công!");
         }
     }
+  handleShowMessage = async () => {
+    const {account_id, car_infor_data} = this.props;
+    const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, car_infor_data.status.account_id);
+    if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+        const conversation = await this.props.conversationReducer.conversation_account_receiver;
+        this.props.handleShowMessageWhenClickConversation(conversation);
+    }
+    else{
+        const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: car_infor_data.status.account_id} )
+        if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+            const conversation = await this.props.conversationReducer.conversation_account_receiver;
+            this.props.handleShowMessageWhenClickConversation(conversation);
+        }
+    }
+  };
   render() {
       let {essentials  } = this.state;
     //   console.log(essentials)
@@ -230,7 +253,9 @@ class Notification_sender_no_confirm extends Component {
             (
                 <>
                     <div>
-                        <button className="btn-notifi_detail btn_detail-chat">
+                        <button className="btn-notifi_detail btn_detail-chat"
+                          onClick={()=>{this.handleShowMessage()}}
+                        >
                             Nhắn tin
                         </button>
                     </div>
@@ -261,7 +286,8 @@ class Notification_sender_no_confirm extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        essentialsReducer : state.essentialsReducer,
+      essentialsReducer : state.essentialsReducer,
+      conversationReducer: state.conversationReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -272,6 +298,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         confirm_notification_send_to_cartrip_of_sender : async(car_status_id , sender_status_id) =>{
             const action = await confirm_notification_send_to_cartrip_of_sender(car_status_id,sender_status_id);
+            return dispatch(action);
+        },
+        create_conversation_action: async(object) =>{
+          const action = await create_conversation_action(object);
+          return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
             return dispatch(action);
         }
     };

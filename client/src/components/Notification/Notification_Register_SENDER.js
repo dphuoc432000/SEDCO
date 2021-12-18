@@ -4,11 +4,32 @@ import { withRouter } from "react-router";
 import "./Sender/notification_content.css";
 import CircleIcon from "@mui/icons-material/Circle";
 import {API_IMAGE_URL} from '../../constants/api'
-
+import {
+  GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+  CREATE_CONVERSATION_SUCCESS
+} from '../../constants/actions';
+import {
+  get_conversation_by_account_id_receiver_id_action,
+  create_conversation_action
+} from '../../stores/actions/conversation.action';
 class Notification_Register_SENDER extends Component {
-   
+  handleShowMessage = async () => {
+    const {account_id, car_infor_data} = this.props;
+    const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, car_infor_data.status.account_id);
+    if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+        const conversation = await this.props.conversationReducer.conversation_account_receiver;
+        this.props.handleShowMessageWhenClickConversation(conversation);
+    }
+    else{
+        const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: car_infor_data.status.account_id} )
+        if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+            const conversation = await this.props.conversationReducer.conversation_account_receiver;
+            this.props.handleShowMessageWhenClickConversation(conversation);
+        }
+    }
+  };
   render() {
-    console.log(this.props.history_data , this.props.car_infor_data);
+    // console.log(this.props.history_data , this.props.car_infor_data);
 
     const name = this.props.car_infor_data.user.full_name;
     const bienso = this.props.car_infor_data.status.detail.car.license_plate;
@@ -125,7 +146,9 @@ class Notification_Register_SENDER extends Component {
           </div>
           <div className="btn_container" style={{ display: "flex" }}>
             <div>
-              <button className="btn-notifi_detail btn_detail-chat">
+              <button className="btn-notifi_detail btn_detail-chat"
+                onClick={()=>{this.handleShowMessage()}}
+              >
                 Nhắn tin
               </button>
             </div>
@@ -136,4 +159,21 @@ class Notification_Register_SENDER extends Component {
     );
   }
 }
-export default Notification_Register_SENDER;
+const mapStateToProps = (state) => {
+  return {
+    conversationReducer: state.conversationReducer,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+      create_conversation_action: async(object) =>{
+        const action = await create_conversation_action(object);
+        return dispatch(action);
+      },
+      get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+          const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
+          return dispatch(action);
+      }
+  };
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Notification_Register_SENDER));

@@ -248,7 +248,7 @@ class SenderForm extends Component {
                                                     }
                                                 />
                                                 <div class={SenderFormCss.vl}></div>
-                                                <p lassName={SenderFormCss.unit}>{essential.unit}</p>
+                                                <p className={SenderFormCss.unit}>{essential.unit}</p>
                                             </div>
                                             <div className={SenderFormCss.err_container}>
                                                 <FormError

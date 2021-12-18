@@ -23,15 +23,15 @@ class Notification_Sender extends Component {
 
     };
     componentDidMount = async () => {
-        console.log(this)
+        // console.log(this)
         if (Object.keys(this.props.status_current).length > 0) {
             const status_current = this.props.status_current;
             await this.props.get_notification_register_of_sender(status_current.detail._id);
             await this.props.get_notification_not_confirm_of_sender(status_current.detail._id);
             await this.props.get_notications_both_confirm_transaction_of_sender(status_current.detail._id)
 
-            console.log(this.props.sender_statusReducer.notification_cartrip_not_confirm_list);
-            console.log('tb ca 2 xac nhan', this.props.sender_statusReducer.notification_both_confirm_of_sender);
+            // console.log(this.props.sender_statusReducer.notification_cartrip_not_confirm_list);
+            // console.log('tb ca 2 xac nhan', this.props.sender_statusReducer.notification_both_confirm_of_sender);
             this.setState({
                 notification_cartrip_regis_list: this.props.sender_statusReducer.notification_cartrip_regis_list,
                 notification_cartrip_not_confirm_list: this.props.sender_statusReducer.notification_cartrip_not_confirm_list,
@@ -41,9 +41,9 @@ class Notification_Sender extends Component {
     }
     componentDidUpdate = async (prevProps,prevState) => {
         if (this.props.status_current !== prevProps.status_current) {
-            console.log('vao')
+            // console.log('vao')
             const status_current = this.props.status_current;
-            console.log(status_current)
+            // console.log(status_current)
             await this.props.get_notification_register_of_sender(status_current.detail._id);
             await this.props.get_notification_not_confirm_of_sender(status_current.detail._id);
             this.setState({
@@ -98,35 +98,36 @@ class Notification_Sender extends Component {
     render() {
         let { seeDetailNotiAfterConfirm,notification_cartrip_regis_list, seeNotificationDetail, seeInforCartrip, notification_cartrip_not_confirm_list, notification_both_confirm_of_sender } = this.state;
 
-
-        const checkSeeDetailNotification =
-            (
-                seeNotificationDetail === true ? (
-                    <Notification_sender_no_confirm
-                        history_data={this.state.history_data}
-                        car_infor_data={this.state.car_infor_data}
-                        status_current={this.props.status_current}
-                        handleUpdateNotifiWhenConfirm={this.handleUpdateNotifiWhenConfirm}
-                    />
-                ) : (
-                    ""
-                )
-            )
-            const checkDetailNotiAfterConfirm = seeDetailNotiAfterConfirm === true ? 
-                <Notification_sender_after_comfirm  
-                    history_data={this.state.history_data}
-                    car_infor_data={this.state.car_infor_data}
-                    status_current={this.props.status_current}/> : ""
-        const checkSeeInforCartrip =
-            (
-                seeInforCartrip === true ? (
-                    <Notification_Register_SENDER
-                        history_data={this.state.history_data}
-                        car_infor_data={this.state.car_infor_data}
-                        status_current={this.props.status_current}
-                    />
-                ) : ("")
-            )
+        // console.log(notification_both_confirm_of_sender,) 
+        const checkSeeDetailNotification = seeNotificationDetail === true && (
+            <Notification_sender_no_confirm
+                history_data={this.state.history_data}
+                car_infor_data={this.state.car_infor_data}
+                status_current={this.props.status_current}
+                handleUpdateNotifiWhenConfirm={this.handleUpdateNotifiWhenConfirm}
+                account_id={this.props.account_id}
+                handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+                handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+            />
+        )
+        const checkDetailNotiAfterConfirm = seeDetailNotiAfterConfirm === true && (
+            <Notification_sender_after_comfirm  
+                history_data={this.state.history_data}
+                car_infor_data={this.state.car_infor_data}
+                status_current={this.props.status_current}
+                account_id={this.props.account_id}
+                handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+            />
+        )
+        const checkSeeInforCartrip = seeInforCartrip === true && (
+            <Notification_Register_SENDER
+                history_data={this.state.history_data}
+                car_infor_data={this.state.car_infor_data}
+                status_current={this.props.status_current}
+                account_id={this.props.account_id}
+                handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+            />
+        )
         return (
             <main className="Main">
                 <div className="status_content_container_sender">
@@ -186,8 +187,8 @@ class Notification_Sender extends Component {
                                             </div>
                                         </div>)
                                 })
-
-                                : (<p
+                                : 
+                                (<p
                                     style={{
                                         fontSize: "14px",
                                         color: "#333",
@@ -199,8 +200,7 @@ class Notification_Sender extends Component {
                                     Không có thông báo
                                 </p>)
                             }
-
-                        </div >
+                        </div>
                         <div className="wrapped-noti">
                             <h3 className="wrapped-noti__lable" style={{ color: "red" }}>Chưa xác nhận</h3>
                             {notification_cartrip_not_confirm_list && notification_cartrip_not_confirm_list.map(history => {
@@ -230,7 +230,6 @@ class Notification_Sender extends Component {
                                                 justifyContent: "flex-end",
                                             }}
                                         >
-
                                             <div>
                                                 <button
                                                     className="btn-notifi btn-notifi__seeInf"
@@ -252,6 +251,7 @@ class Notification_Sender extends Component {
                             {notification_both_confirm_of_sender ? notification_both_confirm_of_sender.map(history => {
                                 const history_data = history.history;
                                 const car_infor_data = history.car_infor;
+                                if(history_data && car_infor_data)
                                 return (
                                     <div className="status_item-per1__success">
                                         <div className="information_container">

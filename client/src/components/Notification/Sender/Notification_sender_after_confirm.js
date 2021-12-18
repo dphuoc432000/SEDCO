@@ -14,7 +14,15 @@ import {API_IMAGE_URL} from '../../../constants/api';
 import getEssentials from '../../../stores/actions/essentials.action';
 import {confirm_notification_send_to_cartrip_of_sender} from '../../../stores/actions/sender_status.action';
 import { toast } from "react-toastify";
-import {CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS} from '../../../constants/actions'
+import {
+  CONFIRM_NOTIFICATION_CARTRIP_OF_SENDER_SUCCESS,
+  GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+  CREATE_CONVERSATION_SUCCESS
+} from '../../../constants/actions';
+import {
+  get_conversation_by_account_id_receiver_id_action,
+  create_conversation_action
+} from '../../../stores/actions/conversation.action';
 class Notification_sender_after_comfirm extends Component {
     state = {
         essentials : [],
@@ -27,7 +35,7 @@ class Notification_sender_after_comfirm extends Component {
         const essentialsReducer = this.props.essentialsReducer.essentials;
         const essentials_car = this.props.history_data.essentials;
         const essential_of_sender = this.props.history_data.essentials_current_sender;
-        console.log(essential_of_sender)
+        // console.log(essential_of_sender)
         const essentials_map = essential_of_sender.map((essential) =>{
             const object = {};
             essentialsReducer.find(item => {
@@ -63,7 +71,7 @@ class Notification_sender_after_comfirm extends Component {
             const essentialsReducer = this.props.essentialsReducer.essentials;
             const essentials_car = this.props.history_data.essentials;
             const essential_of_sender = this.props.history_data.essentials_current_sender;
-            console.log(essential_of_sender)
+            // console.log(essential_of_sender)
             const essentials_map = essential_of_sender.map((essential) =>{
                 const object = {};
                 essentialsReducer.find(item => {
@@ -95,7 +103,21 @@ class Notification_sender_after_comfirm extends Component {
         }
 
     }
-    
+    handleShowMessage = async () => {
+      const {account_id, car_infor_data} = this.props;
+      const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, car_infor_data.status.account_id);
+      if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+          const conversation = await this.props.conversationReducer.conversation_account_receiver;
+          this.props.handleShowMessageWhenClickConversation(conversation);
+      }
+      else{
+          const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: car_infor_data.status.account_id} )
+          if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+              const conversation = await this.props.conversationReducer.conversation_account_receiver;
+              this.props.handleShowMessageWhenClickConversation(conversation);
+          }
+      }
+    };
   render() {
     let {essentials , history_data , car_infor_data  } = this.state;
     // console.log(essentials)
@@ -225,12 +247,13 @@ class Notification_sender_after_comfirm extends Component {
             </div>
           </div>
           <div className="btn_container" style={{ display: "flex" }}>
-           
-                <div>
-                        <button className="btn-notifi_detail btn_detail-chat">
-                            Nhắn tin
-                        </button>
-                </div>
+            <div>
+                <button className="btn-notifi_detail btn_detail-chat"
+                    onClick={()=>{this.handleShowMessage()}}
+                >
+                  Nhắn tin
+                </button>
+            </div>
           </div>
         </div>
       </div>
@@ -241,6 +264,7 @@ class Notification_sender_after_comfirm extends Component {
 const mapStateToProps = (state) => {
     return {
         essentialsReducer : state.essentialsReducer,
+        conversationReducer: state.conversationReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -251,6 +275,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         confirm_notification_send_to_cartrip_of_sender : async (car_status_id ,receiver_status_id) => {
             const action = await confirm_notification_send_to_cartrip_of_sender(car_status_id ,receiver_status_id);
+            return dispatch(action);
+        },
+        create_conversation_action: async(object) =>{
+          const action = await create_conversation_action(object);
+          return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
             return dispatch(action);
         }
     };

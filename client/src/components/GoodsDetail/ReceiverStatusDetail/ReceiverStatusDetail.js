@@ -163,6 +163,7 @@ class ReceiverStatusDetail extends Component {
                 ""
             );
         const user = this.props.user;
+        let count_empty = 0;
         return (
             <div>
                 <div className={ReceiverStatusDetailCss.GoodDetail_container}>
@@ -172,8 +173,10 @@ class ReceiverStatusDetail extends Component {
                             <tr>
                                 <th colSpan={3}><h3 className={ReceiverStatusDetailCss.data_container__title}>Cần hỗ trợ nhu yếu phẩm</h3></th>
                             </tr>
-                            {essentials_state &&
+                            {
+                                essentials_state &&
                                 essentials_state.map((essential) => {
+                                    essential.quantity <= 0 && count_empty++;
                                     return (
                                         <React.Fragment>
                                             {essential.quantity > 0 && (
@@ -185,7 +188,20 @@ class ReceiverStatusDetail extends Component {
                                             )}
                                         </React.Fragment>
                                     );
-                                })}
+                                })
+                            }
+                            {
+                                count_empty === essentials_state.length &&
+                                <p style={{color:'red', textAlign:'center'}}>(Số lượng nhu yếu phẩm đã hết)</p>
+                            }
+                            { 
+                                count_empty === essentials_state.length &&
+                                <tr>
+                                    <td colSpan='3'>
+                                    <p style={{color:'red', textAlign:'center'}}>(Số lượng nhu yếu phẩm đã hết.)</p>
+                                    </td>
+                                </tr>
+                            }
                             <tr>
                                 <td>Số người trong hộ trong hộ gia đình</td>
                                 <td>{number_per_of_family}</td>

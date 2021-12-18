@@ -164,6 +164,7 @@ class SenderStatusDetail extends Component {
             );
 
         const user = this.props.user;
+        let count_empty = 0; 
         return (
             <div>
                 <div className={SenderStatusDetailCss.GoodDetail_container}>
@@ -173,8 +174,10 @@ class SenderStatusDetail extends Component {
                             <tr>
                                 <th colSpan={3}><h3 className={SenderStatusDetailCss.data_container__title}>Hỗ trợ nhu yếu phẩm</h3></th>
                             </tr>
-                            {essentials_state &&
+                            {
+                                essentials_state &&
                                 essentials_state.map((essential) => {
+                                    essential.quantity <= 0 && count_empty++;
                                     return (
                                         <React.Fragment>
                                             {
@@ -187,12 +190,22 @@ class SenderStatusDetail extends Component {
                                             }
                                         </React.Fragment>
                                     );
-                                })}
-                            <tr>
-                                <td>Tổng khối lượng</td>
-                                <td>{weight_essential}</td>
-                                <td>Kg</td>
-                            </tr>
+                                })
+                            }
+                            {
+                                count_empty === essentials_state.length ?
+                                <tr>
+                                    <td colSpan='3'>
+                                    <p style={{color:'red', textAlign:'center'}}>(Số lượng nhu yếu phẩm đã hết.)</p>
+                                    </td>
+                                </tr>
+                                :
+                                <tr>
+                                    <td>Tổng khối lượng</td>
+                                    <td>{weight_essential}</td>
+                                    <td>Kg</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                     <table className={SenderStatusDetailCss.infor_Detail}>

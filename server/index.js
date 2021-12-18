@@ -41,6 +41,6 @@ app.get('/2', (req, res) =>{
     res.send("Welcome to SEDCO")
 })
 
-server.listen(config.port, ()=>{
+server.listen(process.env.PORT || config.port, ()=>{
     console.log('App is listening on url http://localhost:' + config.port);
 })

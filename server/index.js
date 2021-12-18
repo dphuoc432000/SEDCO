@@ -37,7 +37,9 @@ db.connect();
 
 //router init
 router(app);
-
+app.get('/', (req, res) =>{
+    res.send("Welcome to SEDCO")
+})
 
 server.listen(config.port, ()=>{
     console.log('App is listening on url http://localhost:' + config.port);

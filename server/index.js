@@ -37,7 +37,7 @@ db.connect();
 
 //router init
 router(app);
-app.get('/', (req, res) =>{
+app.get('/2', (req, res) =>{
     res.send("Welcome to SEDCO")
 })
 

@@ -58,7 +58,7 @@ function AuthenticatedSenderRoute({ component: C, appProps, ...rest }) {
                 <React.Fragment> 
                   {notifyTost("Vui lòng đăng nhập!")}
                   {appProps.handleChangeShowFormLogin()}
-                  <Redirect to={`/?redirect=${props.location.pathname}${props.location.search}`}/>
+                  <Redirect to={`/?redirect=${props.location}`}/>
                 </React.Fragment>
                 :
                 <React.Fragment>
@@ -99,4 +99,33 @@ function AuthenticatedCarTripRoute({ component: C, appProps, ...rest }) {
       />
     );
 }
-export {AuthenticatedAllRoute, AuthenticatedSenderRoute, AuthenticatedCarTripRoute, AuthenticatedReceiverRoute}
+
+function AuthenticatedAdminRoute({ component: C, appProps, ...rest }) {
+  // console.log(appProps)
+    return (
+      <Route
+        {...rest}
+        render={props => appProps.checkLocalStorage && appProps.role_name === "admin" ? 
+            <React.Fragment>
+              <C {...props} {...appProps} />
+            </React.Fragment>
+            : 
+            <React.Fragment>
+              { !appProps.isAuthenticated ?
+                <React.Fragment> 
+                  {notifyTost("Vui lòng đăng nhập!")}
+                  {appProps.handleChangeShowFormLogin()}
+                  <Redirect to={`/?redirect=${props.location}`}/>
+                </React.Fragment>
+                :
+                <React.Fragment>
+                  <Redirect to={appProps.role_name !== 'admin' ? `/`:'/admin'}/>
+                </React.Fragment>
+              }
+              
+            </React.Fragment>
+        }
+      />
+    );
+}
+export {AuthenticatedAllRoute, AuthenticatedSenderRoute, AuthenticatedCarTripRoute, AuthenticatedReceiverRoute, AuthenticatedAdminRoute}

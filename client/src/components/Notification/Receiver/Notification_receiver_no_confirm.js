@@ -14,11 +14,22 @@ import { API_IMAGE_URL } from '../../../constants/api';
 import getEssentials from '../../../stores/actions/essentials.action';
 import { confirm_notification_send_to_cartrip_of_receiver } from '../../../stores/actions/receiver_status.action';
 import { toast } from "react-toastify";
-import { CONFIRM_NOTIFICATION_CARTRIP_OF_RECEIVER_SUCCESS } from '../../../constants/actions'
+import { 
+    CONFIRM_NOTIFICATION_CARTRIP_OF_RECEIVER_SUCCESS,
+    GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS,
+    CREATE_CONVERSATION_SUCCESS
+} from '../../../constants/actions';
+import {
+    get_conversation_by_account_id_receiver_id_action,
+    create_conversation_action
+} from '../../../stores/actions/conversation.action';
+import ReportForm from '../../ReportForm/ReportForm';
+
 class Notification_receiver_no_comfirm extends Component {
     state = {
         essentials: [],
         essentials_content: [],
+        showReportForm: false
     }
     componentDidMount = async () => {
         await this.props.getEssentials();
@@ -40,7 +51,6 @@ class Notification_receiver_no_comfirm extends Component {
             })
             return object;
         })
-        console.log('receiver', essentials_map)
 
         let essentials_content_map = essentials_map.map(item => {
             const object = item;
@@ -63,7 +73,6 @@ class Notification_receiver_no_comfirm extends Component {
             object.car_quantity = essential.quantity;
             return object;
         })
-        console.log('chuyen xe', essentials_content_map)
 
         // essentials_content_map = essentials_content_map.map( item => {
         //     const object = {...item};
@@ -94,24 +103,43 @@ class Notification_receiver_no_comfirm extends Component {
             toast.error("Xác nhận không thành công!");
         else {
             this.props.handleUpdateNotifiWhenConfirm();
+            this.props.handleLoadAgainWhenCreateStatus();
             toast.success("Xác nhận thành công!");
-
         }
     }
+    handleShowMessage = async () => {
+        const {account_id, car_infor_data} = this.props;
+        const get_conversation_by_account_id_receiver_id_action = await this.props.get_conversation_by_account_id_receiver_id_action(account_id, car_infor_data.status.account_id);
+        if(get_conversation_by_account_id_receiver_id_action.type === GET_CONVERSATION_BY_ACCOUNT_ID_RECEIVER_ID_SUCCESS){
+            const conversation = await this.props.conversationReducer.conversation_account_receiver;
+            this.props.handleShowMessageWhenClickConversation(conversation);
+        }
+        else{
+            const create_conversation_action = await this.props.create_conversation_action({sender_id: account_id,receiver_id: car_infor_data.status.account_id} )
+            if(create_conversation_action.type === CREATE_CONVERSATION_SUCCESS){
+                const conversation = await this.props.conversationReducer.conversation_account_receiver;
+                this.props.handleShowMessageWhenClickConversation(conversation);
+            }
+        }
+    };
+    handleShowReportForm = ()=>{
+        this.setState({
+            showReportForm: !this.state.showReportForm
+        })
+    }
     render() {
-        let { essentials } = this.state;
-        console.log(essentials)
-        console.log(this.props.history_data);
-        console.log(this.props.car_infor_data);
-        const name = this.props.car_infor_data.user.full_name;
-        const bienso = this.props.car_infor_data.status.detail.car.license_plate;
-        const trongtai = this.props.car_infor_data.status.detail.car.tonnage;
-        const note = this.props.car_infor_data.status.detail.note;
-        const loaixe = this.props.car_infor_data.status.detail.car.type_car;
-        const songuoi = this.props.car_infor_data.status.detail.car.many_people;
-        const sdt = this.props.car_infor_data.user.phone_number;
-        const diachi = this.props.car_infor_data.user.address;
-        const picture = this.props.car_infor_data.status.detail.picture;
+        let { essentials, showReportForm } = this.state;
+        const {account_id, status_current, car_infor_data} = this.props;
+        const {user, status} = car_infor_data;
+        const name = user.full_name;
+        const bienso = status.detail.car.license_plate;
+        const trongtai = status.detail.car.tonnage;
+        const note = status.detail.note;
+        const loaixe = status.detail.car.type_car;
+        const songuoi = status.detail.car.many_people;
+        const sdt = user.phone_number;
+        const diachi = user.address;
+        const picture = status.detail.picture;
         return (
             <div className="content_container">
                 <div className="title">
@@ -128,7 +156,7 @@ class Notification_receiver_no_comfirm extends Component {
                                 <p>Đang vận chuyển</p>
                             </span>
                             <span className="time">
-                                <p style={{ color: "red" }}>Báo cáo sai phạm</p>
+                                <p style={{ color: "red", cursor: 'pointer' }} onClick={() => {this.handleShowReportForm()}}>Báo cáo sai phạm</p>
                             </span>
                         </div>
                         <div className="essentials_infor">
@@ -228,7 +256,9 @@ class Notification_receiver_no_comfirm extends Component {
                     </div>
                     <div className="btn_container" style={{ display: "flex" }}>
                         <div>
-                            <button className="btn-notifi_detail btn_detail-chat">
+                            <button className="btn-notifi_detail btn_detail-chat"
+                                onClick={()=>{this.handleShowMessage()}}
+                            >
                                 Nhắn tin
                             </button>
                         </div>
@@ -241,6 +271,13 @@ class Notification_receiver_no_comfirm extends Component {
                         </div>
                     </div>
                 </div>
+                {showReportForm &&
+                    <ReportForm
+                        handleShowReportForm={this.handleShowReportForm} 
+                        status_current={status_current}
+                        account_id={account_id}
+                    />
+                }
             </div>
         );
     }
@@ -249,6 +286,7 @@ class Notification_receiver_no_comfirm extends Component {
 const mapStateToProps = (state) => {
     return {
         essentialsReducer: state.essentialsReducer,
+        conversationReducer: state.conversationReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -259,6 +297,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         confirm_notification_send_to_cartrip_of_receiver: async (car_status_id, receiver_status_id) => {
             const action = await confirm_notification_send_to_cartrip_of_receiver(car_status_id, receiver_status_id);
+            return dispatch(action);
+        },
+        create_conversation_action: async(object) =>{
+          const action = await create_conversation_action(object);
+          return dispatch(action);
+        },
+        get_conversation_by_account_id_receiver_id_action: async(account_id, receiver_id) =>{
+            const action = await get_conversation_by_account_id_receiver_id_action(account_id, receiver_id);
             return dispatch(action);
         }
     };

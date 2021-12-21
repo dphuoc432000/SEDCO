@@ -317,14 +317,14 @@ class CarTripForm extends Component {
                 return { isInputValue: true, errorMessage: "" };
             case "license_plate":
                 var license_plateRegex =
-                    /^([ABCDEFHKLMNPRSTUVXYZabccdefhklmnprstuvxyz 0-9\-\.]{9,14})$/;
+                    /^([0-9]){2}[ -.]{0,1}([ABCĐDEFHKLMNPRSTUVXYZabcđdefhklmnprstuvxyz]{1,2})[0-9]{0,1}[ -.]{0,1}[0-9]{2,3}[ -.]{0,1}[0-9]{2}$/;
                 const checkingusernameRegex = license_plateRegex.exec(checkingText);
                 if (checkingusernameRegex !== null) {
                     return { isInputValue: true, errorMessage: "" };
                 }
                 return {
                     isInputValue: false,
-                    errorMessage: "Vui lòng nhập đúng định dạng.",
+                    errorMessage: "Vui lòng nhập đúng định dạng. (VD: 11-M1-111-11, 11M111111)",
                 };
 
             case "start_receive_time":

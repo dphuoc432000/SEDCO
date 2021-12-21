@@ -200,7 +200,7 @@ class Notification_receiver_no_comfirm extends Component {
                                                         {essential.unit}
                                                     </TableCell>
                                                     <TableCell style={{ fontSize: "12px" }} align="center">
-                                                        {essential.receiver_quantity}
+                                                        {essential.receiver_quantity >= 0 ? essential.receiver_quantity : 0}
                                                     </TableCell>
                                                     <TableCell style={{ fontSize: "12px" }} align="center">
                                                         {essential.car_quantity}

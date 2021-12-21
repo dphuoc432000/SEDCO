@@ -3,9 +3,10 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
-    background: #b1d8fb;
+    /* background: #b1d8fb; */
+    border-bottom: 1px #dbdbdb solid;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
     /* box-shadow: rgb(0 0 0 / 7%) 0px 1px 1px, rgb(0 0 0 / 7%) 0px 2px 2px, rgb(0 0 0 / 7%) 0px 4px 4px, rgb(0 0 0 / 7%) 0px 8px 8px, rgb(0 0 0 / 7%) 0px 16px 16px; */
 }

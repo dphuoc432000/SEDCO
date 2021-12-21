@@ -187,7 +187,8 @@ const mapDispatchToProps = (dispatch) =>{
         watched_messages_conversation_action: async(conversation_id, account_id) =>{
             const action = await watched_messages_conversation_action(conversation_id, account_id);
             return dispatch(action);
-        }
+        },
+        
     };
 }
 

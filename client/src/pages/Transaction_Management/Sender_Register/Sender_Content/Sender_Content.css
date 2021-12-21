@@ -3,7 +3,7 @@
     padding: 10px 16px;
 }
 .status_content_container > .status_content > .content_container> .title{
-
+    margin-top: 0px!important;
 }
 
 .status_content_container > .status_content > .content_container > .content{
@@ -27,6 +27,7 @@
     width: 100%!important;
     height: 50vh!important;
     overflow: hidden!important;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
 
 .status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container::-webkit-scrollbar { width: 0 !important }
@@ -78,10 +79,12 @@
 }
 
 .status_content_container > .status_content > .content_container > .content > .status_infor_container > .information_container > .essentials_infor input{
-    width: 100px;
+    width: 50px;
     height: 30px;
+    padding: 10px;
     border-radius: 4px;
     border: 1px grey solid;
+    text-align: center;
 }
 .status_content_container > .status_content > .content_container > .content > .status_infor_container h4{
     text-align: left;

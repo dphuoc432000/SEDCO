@@ -242,7 +242,7 @@ class Receiver_content extends Component {
                                                     >
                                                         <TableCell style={{fontSize: '12px'}} component="th" scope="row">{essential.name}</TableCell>
                                                         <TableCell style={{fontSize: '12px'}} align="right">{essential.unit}</TableCell>
-                                                        <TableCell style={{fontSize: '12px'}} align="right">{essential.quantity}</TableCell>
+                                                        <TableCell style={{fontSize: '12px'}} align="right">{essential.quantity >= 0 ? essential.quantity : 0 }</TableCell>
                                                         <TableCell style={{fontSize: '12px'}} align="center">
                                                             <input 
                                                                 type="text" 

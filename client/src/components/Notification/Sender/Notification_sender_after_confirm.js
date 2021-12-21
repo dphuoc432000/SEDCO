@@ -198,7 +198,7 @@ class Notification_sender_after_comfirm extends Component {
                                                         {essential.unit}
                                                     </TableCell>
                                                     <TableCell style={{ fontSize: "12px" }} align="center">
-                                                        {essential.sender_quantity}
+                                                        {essential.sender_quantity >= 0 ? essential.sender_quantity: 0}
                                                     </TableCell>
                                                     <TableCell style={{ fontSize: "12px" }} align="center">
                                                         {essential.car_quantity}

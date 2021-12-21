@@ -11,15 +11,37 @@ import Paper from '@mui/material/Paper';
 import { connect } from 'react-redux';
 import { API_IMAGE_URL } from '../../constants/api';
 import getEssentials from '../../stores/actions/essentials.action'
-import { get_list_history_cartrip } from '../../stores/actions/car_trip.action'
+
 class See_detail_history_cartrip extends Component {
     state = {
-        essentials: [],
-        list_history_of_cartrip: [],
+        essentials: this.props.essentials,
+        infor : this.props.infor,
+        
     }
+    componentDidMount = async () => {
+        await this.props.getEssentials();
+        const essentialsReducer = this.props.essentialsReducer.essentials;
+        const essentials_map= this.state.essentials.map((essential) => {
+            const object = {};
+            essentialsReducer.find(item => {
+                if (item._id === essential.essential_id) {
+                    object.quantity = essential.quantity;
+                    object.essential_id = essential.essential_id;
+                    object.name = item.name;
+                    object.unit = item.unit;
+                }
+                return item._id === essential.essential_id;
 
+            })
+            return object;
+        })
+        this.setState({
+            essentials : essentials_map ,
+        })
+    };
+   
     render() {
-
+        let {essentials , infor} = this.state;
         return (
             <div className={DetailHistoryCss.report_container}>
                 <div className={DetailHistoryCss.layer_container}>
@@ -43,26 +65,17 @@ class See_detail_history_cartrip extends Component {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
+                                                {essentials.map(essential=>(
+                                                    <TableRow
+                                                        key={essential.essential_id}
+                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell style={{ fontSize: '12px' }} component="th" scope="row">{essential.name}</TableCell>
+                                                        <TableCell style={{ fontSize: '12px' }} align="right">{essential.unit}</TableCell>
+                                                        <TableCell style={{ fontSize: '12px' }} align="right">{essential.quantity}</TableCell>
 
-                                                <TableRow
-
-                                                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={{ fontSize: '12px' }} component="th" scope="row"></TableCell>
-                                                    <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
-                                                    <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
-
-                                                </TableRow>
-
-                                                <TableRow
-                                                // key={row.name}
-                                                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={{ fontSize: '12px' }} component="th" scope="row">Tổng khối lượng</TableCell>
-                                                    <TableCell style={{ fontSize: '12px' }} align="right">Kg</TableCell>
-                                                    <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
-                                                    <TableCell style={{ fontSize: '12px' }} align="center"></TableCell>
-                                                </TableRow>
+                                                    </TableRow>
+                                                ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
@@ -73,30 +86,18 @@ class See_detail_history_cartrip extends Component {
                                         <tbody>
                                             <tr>
                                                 <td>Họ tên:</td>
-                                                <td></td>
+                                                <td>{infor.full_name}</td>
                                             </tr>
                                             <tr>
                                                 <td>Số điện thoại: </td>
-                                                <td></td>
+                                                <td>{infor.phone_number}</td>
                                             </tr>
                                             <tr>
                                                 <td>Địa chỉ: </td>
-                                                <td></td>
+                                                <td>{infor.address}</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                                <div className="note_infor">
-                                    <h4>Ghi chú</h4>
-                                    <p className="note_content">
-
-                                    </p>
-                                </div>
-                                <div className="picture_infor">
-                                    <h4>Hình ảnh</h4>
-                                    <div className="img_content">
-                                        {/* <img src={`${API_IMAGE_URL}\\${sender_status_information.detail.picture}`} alt="" /> */}
-                                    </div>
                                 </div>
                             </div>
                             <div className={DetailHistoryCss.button_container}>

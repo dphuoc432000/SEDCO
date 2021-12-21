@@ -18,6 +18,7 @@
   /* background-color: aqua; */
   margin: 12px 0;
   font-size: 1.1rem; 
+  justify-content: space-between;
 }
 .QLGD-History__Item h3 {
   margin-left: 4px;

@@ -407,9 +407,12 @@ class HistoryReceiverService{
                             //kiểm tra số lượng essentials
                             const checkQuantity = this.checkEssentialsQuantityInReceiver(receiver_status_data.essentials);
                             //nếu checkQuantity = true thì update lại statuss_completed: true
-                            if(!checkQuantity)
-                                await Status.findByIdAndUpdate({_id: receiver_status_data.status_id}, {status_completed: true})
+                            if(!checkQuantity){
+                                const status_data = await Status.findByIdAndUpdate({_id: receiver_status_data.status_id}, {status_completed: true})
                                     .then(data => mongooseToObject(data))
+                                 //chuyển role account về user
+                                await accountService.accountUpdate_roleId_byRoleName(status_data.account_id, 'user')    
+                            }
                             return history;
                         }
                         return 'NO CONFIRM';

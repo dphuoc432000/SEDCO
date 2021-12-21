@@ -105,37 +105,37 @@ class Notification_Receiver extends Component {
     }
   render()  {
     let { seeDetailNotiAfterConfirm,seeNotificationDetail , seeInforCartrip ,notification_cartrip_regis_list_receiver , notification_cartrip_not_confirm_list_receiver, notification_both_confirm_of_receiver} = this.state;
-    const checkSeeDetailNotification =
-            (
-                seeNotificationDetail === true ? (
-                    <Notification_receiver_no_comfirm
-                        history_data={this.state.history_data}
-                        car_infor_data={this.state.car_infor_data}
-                        status_current={this.props.status_current}
-                        // handleLoadAgainWhenConfirmNotify={this.props.handleLoadAgainWhenConfirmNotify}
-                        handleUpdateNotifiWhenConfirm={this.handleUpdateNotifiWhenConfirm}
-                    
-                    />
-                ) : (
-                ""
-                )
-            )
-    const checkDetailNotiAfterConfirm = seeDetailNotiAfterConfirm === true ? 
-                <Notification_receiver_after_comfirm  
-                    history_data={this.state.history_data}
-                    car_infor_data={this.state.car_infor_data}
-                    status_current={this.props.status_current}/> : ""
-    const checkSeeInforCartrip = 
-            (
-                seeInforCartrip === true ? (
-                    <Notification_Register_RECEIVER
-                        history_data={this.state.history_data}
-                        car_infor_data={this.state.car_infor_data}
-                        status_current={this.props.status_current}
-                    />
-                ) : 
-                ("")
-            )
+    const checkSeeDetailNotification = seeNotificationDetail === true && (
+        <Notification_receiver_no_comfirm
+            history_data={this.state.history_data}
+            car_infor_data={this.state.car_infor_data}
+            status_current={this.props.status_current}
+            // handleLoadAgainWhenConfirmNotify={this.props.handleLoadAgainWhenConfirmNotify}
+            handleUpdateNotifiWhenConfirm={this.handleUpdateNotifiWhenConfirm}
+            account_id={this.props.account_id}
+            handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+            handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
+        
+        />
+    )
+    const checkDetailNotiAfterConfirm = seeDetailNotiAfterConfirm === true &&(
+        <Notification_receiver_after_comfirm  
+            history_data={this.state.history_data}
+            car_infor_data={this.state.car_infor_data}
+            status_current={this.props.status_current}
+            account_id={this.props.account_id}
+            handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+        />
+    )
+    const checkSeeInforCartrip = seeInforCartrip === true && (
+        <Notification_Register_RECEIVER
+            history_data={this.state.history_data}
+            car_infor_data={this.state.car_infor_data}
+            status_current={this.props.status_current}
+            account_id={this.props.account_id}
+            handleShowMessageWhenClickConversation={this.props.handleShowMessageWhenClickConversation}
+        />
+    )
     return (
         <main className="Main">
             <div className="status_content_container_sender">

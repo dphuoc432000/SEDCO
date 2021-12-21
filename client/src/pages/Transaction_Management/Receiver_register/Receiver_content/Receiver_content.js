@@ -341,7 +341,6 @@ class Receiver_content extends Component {
 const mapStateToProps = (state) =>{
     return {
         conversationReducer: state.conversationReducer,
-
     }
   }
   

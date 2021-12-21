@@ -52,7 +52,7 @@ const renderColor = (status) =>{
 class RecentItem extends Component {
     render() {
         const recent_status_item = this.props.recent_status_item;
-        console.log(recent_status_item)
+        // console.log(recent_status_item)
         return (
             <div className="data-container-ListRecent--ITEMS" onClick = {() =>{this.props.handleChangeStatusMarker(recent_status_item)}} >
                 <div className="data-ListRecent__item">

@@ -8,6 +8,7 @@ import {
     AuthenticatedReceiverRoute,
     AuthenticatedCarTripRoute,
     AuthenticatedAllRoute,
+    AuthenticatedAdminRoute
 } from "./components/Authentication/authentication";
 import "./App.css";
 import { connect } from "react-redux";
@@ -286,40 +287,6 @@ class App extends React.Component {
                                 handleShowMessageWhenClickConversation={this.handleShowMessageWhenClickConversation}
                             />
                         </Route>
-
-                        {this.state.role_name && this.state.role_name.role_name === "sender" && this.state.status_current &&
-                            <AuthenticatedSenderRoute
-                                path="/notification/sender"
-                                exact={true}
-                                component={Notification_Sender}
-                                appProps={{
-                                    checkLocalStorage,
-                                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
-                                    role_name: this.state.role_name.role_name,
-                                    account_id: this.state.account_id,
-                                    isAuthenticated: this.state.isAuthenticated,
-                                    status_current: this.state.status_current,
-
-                                }}
-                            />
-                        }
-                        {this.state.role_name && this.state.role_name.role_name === "receiver" && this.state.status_current &&
-                            <AuthenticatedReceiverRoute
-                                path="/notification/receiver"
-                                exact={true}
-                                component={Notification_Receiver}
-                                appProps={{
-                                    checkLocalStorage,
-                                    handleChangeShowFormLogin: this.handleChangeShowFormLogin,
-                                    role_name: this.state.role_name.role_name,
-                                    account_id: this.state.account_id,
-                                    isAuthenticated: this.state.isAuthenticated,
-                                    status_current: this.state.status_current,
-                                    handleLoadAgainWhenConfirmNotify: this.handleLoadAgainWhenConfirmNotify,
-                                }}
-
-                            />
-                        }
                         <Route path="/car_trip/quantity_management" exact>
                             <Management_Quantity
                                  appProps={{
@@ -333,43 +300,24 @@ class App extends React.Component {
                                 }}
                             />
                         </Route>
-                        {/*<Route path="/login" exact render={() =>{
-              <Header 
-                handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
-                handleLogin={this.handleLogin} 
-                appProps={this.state} 
-                handleLogout={this.handleLogout}/>
-              <Route path="/" exact>
-                <Home 
-                  handleChangeShowFormLogin={this.handleChangeShowFormLogin} 
-                  showFormLogin={this.state.showFormLogin} 
-                  handleLogin={this.handleLogin}
-                  handleChangeShowFormRegister={this.handleChangeShowFormRegister}
-                  showFormRegister={this.state.showFormRegister}
-                  handleChangeShowFormForgotPassword = {this.handleChangeShowFormForgotPassword}
-                  showFormForgotPassword = {this.state.showFormForgotPassword}
-                  role_name={this.state.role_name}
-                  account_id={this.state.account_id}
-                  status_current={this.state.status_current}
-                  user = {this.state.user}
-                  handleUpdateStatusCurrent={this.handleUpdateStatusCurrent}
-                  handleLoadAgainWhenCreateStatus={this.handleLoadAgainWhenCreateStatus}
-                  isAuthenticated = {this.state.isAuthenticated}
-                />
-              </Route>
-              {/*<Route path="/login" exact render={() =>{
-                return checkLocalStorage ?  <Redirect to="/"/>:<Login handleLogin={this.handleLogin}/>
-              }}>
-              </Route>*/}
 
                         {checkLocalStorage && Object.keys(this.state.role_name).length ? (
                             <React.Fragment>
-                                <Route path="/admin">
-                                    <Admin
-                                        status_current={this.state.status_current}
-                                    />
-                                </Route>
-
+                                <AuthenticatedAdminRoute
+                                    exact={false}
+                                    path="/admin"
+                                    component={Admin}
+                                    appProps={{
+                                        checkLocalStorage,
+                                        handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                        role_name: this.state.role_name.role_name,
+                                        account_id: this.state.account_id,
+                                        isAuthenticated: this.state.isAuthenticated,
+                                        status_current: this.state.status_current,
+                                        handleChangeQuantityCarAfterConfirm: this.handleChangeQuantityCarAfterConfirm,
+                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation
+                                    }}
+                                />
                                 <AuthenticatedAllRoute
                                     exact
                                     path="/user/information"
@@ -396,11 +344,45 @@ class App extends React.Component {
                                     }}
                                 />
 
+                                <AuthenticatedSenderRoute
+                                    path="/notification/sender"
+                                    exact={true}
+                                    component={Notification_Sender}
+                                    appProps={{
+                                        checkLocalStorage,
+                                        handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                        role_name: this.state.role_name.role_name,
+                                        account_id: this.state.account_id,
+                                        isAuthenticated: this.state.isAuthenticated,
+                                        status_current: this.state.status_current,
+                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation,
+                                        handleLoadAgainWhenCreateStatus:this.handleLoadAgainWhenCreateStatus
+                                    }}
+                                />
+
+                                <AuthenticatedReceiverRoute
+                                    path="/notification/receiver"
+                                    exact={true}
+                                    component={Notification_Receiver}
+                                    appProps={{
+                                        checkLocalStorage,
+                                        handleChangeShowFormLogin: this.handleChangeShowFormLogin,
+                                        role_name: this.state.role_name.role_name,
+                                        account_id: this.state.account_id,
+                                        isAuthenticated: this.state.isAuthenticated,
+                                        status_current: this.state.status_current,
+                                        handleLoadAgainWhenConfirmNotify: this.handleLoadAgainWhenConfirmNotify,
+                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation,
+                                        handleLoadAgainWhenCreateStatus:this.handleLoadAgainWhenCreateStatus
+                                    }}
+                                />
+
                                 <Route path="/user/information/update" exact>
                                     <UpdateUserInforForm
                                         handlUpdateFull_name={this.handlUpdateFull_name}
                                     />
                                 </Route>
+                                
                             </React.Fragment>
                         ) : (
                             <Route path="*">

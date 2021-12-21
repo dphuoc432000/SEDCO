@@ -60,6 +60,7 @@ class SLCanNhan extends React.Component {
     // const number_per_of_family = status_current.detail.number_per_of_family;
     const essentials_state = this.state.essentials;
     // console.log(this.state)
+    let count_empty = 0;
     return (
       <React.Fragment>
           {this.state.showGoodsDetail === false ? (
@@ -82,6 +83,7 @@ class SLCanNhan extends React.Component {
                     </tr>
                     {essentials_state &&
                       essentials_state.map((essential) => {
+                        essential.quantity <= 0 && count_empty++;
                         return (
                           <React.Fragment>
                             {essential.quantity > 0 && (
@@ -94,6 +96,14 @@ class SLCanNhan extends React.Component {
                           </React.Fragment>
                         );
                       })
+                    }
+                    {
+                      count_empty === essentials_state.length && 
+                      <tr>
+                        <td colSpan='3'>
+                          <p style={{color:'red', textAlign:'center'}}>(Số lượng nhu yếu phẩm đã hết.)</p>
+                        </td>
+                      </tr>
                     }
                   </tbody>
                 </table>

@@ -26,6 +26,7 @@ class StatusForStatusSender extends React.Component {
     };
     render() {
         const status_sender = this.props.status_current;
+        console.log(status_sender)
         let { statusNotConfirm, showReportForm, showModalDelete } = this.state;
         const user = this.props.user
 

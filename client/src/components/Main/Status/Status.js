@@ -210,6 +210,7 @@ class Status extends Component {
                                 handleLoadAgainWhenCreateStatus={this.props.handleLoadAgainWhenCreateStatus}
                                 handleUpdateRecentListWhenRegisStatus={this.props.handleUpdateRecentListWhenRegisStatus}
                                 handleHiddenShowFormDetail={this.props.handleHiddenShowFormDetail}
+                                handleChangeShowFormLogin={this.props.handleChangeShowFormLogin}
                             />
                             :
                             ''

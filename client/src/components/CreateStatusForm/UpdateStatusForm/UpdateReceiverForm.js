@@ -363,7 +363,7 @@ class UpdateReceiverForm extends Component {
                                         errorMessage={this.state.number_per_of_family.errorMessage}
                                     />
                                 </div>
-                                <p className={ReceiverFormCss.input_title}>Mô tả hoàn cảnh/Ghi chú</p>
+                                <p className={ReceiverFormCss.input_title}>Mô tả hoàn cảnh/Ghi chúu</p>
                                 {/* <input type="text" className="GhiChu-Update" /> */}
                                 <textarea
                                     type="text"

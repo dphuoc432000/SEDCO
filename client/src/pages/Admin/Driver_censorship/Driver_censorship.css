@@ -45,6 +45,7 @@
     display      : flex;
     align-items: center;
     width        : 50%;
+    margin-left: 20px;
     justify-content: flex-start;
 }
 
@@ -324,9 +325,12 @@
 }
 
 .img_logo {
-    width: 100%;
+    width: 35%;
+    margin-left: 18px;
 }
-
+.img_item_admin{
+    width: 230px;
+}
 .List-IMG-GPLX {
     display              : flex;
     /* justify-content   : center; */
@@ -339,7 +343,7 @@
 .List-IMG-GXN {
     display                    : inline-flex;
     /* justify-content         : center; */
-    margin-top                 : -30px;
+    /* margin-top                 : -30px; */
     margin-left                : 17px;
     /* margin-right            : 80px; */
     /* padding                 : 10px 0; */

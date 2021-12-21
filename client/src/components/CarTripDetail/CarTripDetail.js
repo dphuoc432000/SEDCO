@@ -169,9 +169,9 @@ class CarTripDetail extends Component {
                                 <th colSpan={2}><h3 className={CarTripDetailCss.data_container__title}>Thông tin chuyến xe</h3></th>
                             </tr>
                             <tr>
-                                <td>Bắt đầu nhận hàng:</td>
+                                <td>Bắt đầu nhận hàng :</td>
                                 <td>{original_start_receive_time}</td>
-                            </tr>
+                            </tr> 
                             <tr>
                                 <td>Bắt đầu vận chuyển:</td>
                                 <td>{original_departure_time}</td>

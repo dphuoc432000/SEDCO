@@ -237,6 +237,7 @@ class Header extends React.Component {
                     
                 </div>
                 {role_name === 'car_trip' && this.state.showManageQuantity &&
+
                     <React.Fragment>
                         <div className='header_item_layout' onClick={()=>{this.handleShowMenu()}}> </div>
                         <Management_Quantity 

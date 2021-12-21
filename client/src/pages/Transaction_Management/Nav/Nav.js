@@ -31,7 +31,7 @@ export default function Nav(props) {
 
         <Tab label="Đăng ký nhận" style={style_text_nav} onClick={() => {hanleChangeState('sender_register')}} component={Link} to={`/car_trip/transaction_management`}/>
         <Tab label="Đăng ký hỗ trợ" style={style_text_nav} onClick={() => {hanleChangeState('receiver_register')}}  component={Link} to={`/car_trip/transaction_management/receiver/register`}/>
-        <Tab label="Lịch sử" style={style_text_nav} component={Link} to={`/car_trip/transaction_management/3`}/>
+        <Tab label="Lịch sử" style={style_text_nav} component={Link} to={`/car_trip/transaction_management/history`}/>
 
       </Tabs>
     </Box>

@@ -4,6 +4,9 @@ import {
     GET_ROLE_BY_ACCOUNT_ID_SUCCESS,
     GET_ROLE_BY_ACCOUNT_ID_ERROR,
     GET_ROLE_BY_ACCOUNT_ID_LOADING,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_SUCCESS,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_ERROR,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_LOADING
 } from "../../constants/actions";
 // import {API_URL} from '../../constants/api';
 import roles from '../../constants/role';
@@ -25,7 +28,8 @@ const initState = {
         role_id: '',
         role_name: '',
     },
-    role_conversation:{}
+    role_conversation:{},
+    role_friend_conversation: {}
 }
 
 const roleReducer = (state, action)=>{
@@ -42,6 +46,12 @@ const roleReducer = (state, action)=>{
         case GET_ROLE_BY_ACCOUNT_ID_ERROR: 
             return {...state, error: action.payload};
         case GET_ROLE_BY_ACCOUNT_ID_LOADING: 
+            return {...state};
+        case GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_SUCCESS: 
+            return {...state, role_friend_conversation: action.payload};
+        case GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_ERROR: 
+            return {...state, error: action.payload};
+        case GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_LOADING: 
             return {...state};
         default:
             return state;

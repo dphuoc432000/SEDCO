@@ -11,10 +11,10 @@ class StatusItem extends Component {
                         <h3>{status_item.user.full_name}</h3>
                     </div>
                     <div className="address">
-                        <p style={{fontSize: '13px', color: '#7F7F7F'}}>{status_item.user.address}</p>
+                        <p style={{fontSize: '12px', color: '#7F7F7F'}}>{status_item.user.address}</p>
                     </div>
                     <div className="phone_number">
-                        <p style={{fontSize: '13px', color: '#7F7F7F'}}>{status_item.user.phone_number}</p>
+                        <p style={{fontSize: '12px', color: '#7F7F7F'}}>{status_item.user.phone_number}</p>
                     </div>
                 </div>
                 <div className="btn_infor">

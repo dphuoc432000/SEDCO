@@ -312,6 +312,7 @@ class SenderStatusDetail extends Component {
                                             //CHƯA XONG
                                             //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                             //nếu chưa thì viết hàm xử lý (CHƯA XONG)
+                                            disabled='true'
                                             className={`${SenderStatusDetailCss.GoodDetailContainer_btn_item} ${SenderStatusDetailCss.GoodDetail_btn__Registered}`}
                                             //   disabled={true}
                                             onClick={() => { status_current.detail.regis_status === true ? toast.info("Đã có chuyến xe đăng ký!") : alert("CHƯA XONG. Nơi viết hàm xử lý") }}

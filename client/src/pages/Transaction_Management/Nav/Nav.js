@@ -5,6 +5,12 @@ import Box from '@mui/material/Box';
 import { useLocation, Link } from 'react-router-dom';
 import './Nav.css';
 
+const style_text_nav = {
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  textTransform: 'none', 
+  fontSize:'13px', 
+  color: 'black'
+}
 export default function Nav(props) {
   const [value, setValue] = React.useState(0);
   const location = useLocation();
@@ -22,9 +28,11 @@ export default function Nav(props) {
         value={value}
         aria-label="Tabs where each tab needs to be selected manually"
       >
-        <Tab label="Đăng ký nhận" style={{textTransform: 'none'}} onClick={() => {hanleChangeState('sender_register')}} component={Link} to={`/car_trip/transaction_management`}/>
-        <Tab label="Đăng ký hỗ trợ" style={{textTransform: 'none'}} onClick={() => {hanleChangeState('receiver_register')}}  component={Link} to={`/car_trip/transaction_management/receiver/register`}/>
-        <Tab label="Lịch sử" style={{textTransform: 'none'}} component={Link} to={`/car_trip/transaction_management/history`}/>
+
+        <Tab label="Đăng ký nhận" style={style_text_nav} onClick={() => {hanleChangeState('sender_register')}} component={Link} to={`/car_trip/transaction_management`}/>
+        <Tab label="Đăng ký hỗ trợ" style={style_text_nav} onClick={() => {hanleChangeState('receiver_register')}}  component={Link} to={`/car_trip/transaction_management/receiver/register`}/>
+        <Tab label="Lịch sử" style={style_text_nav} component={Link} to={`/car_trip/transaction_management/3`}/>
+
       </Tabs>
     </Box>
   );

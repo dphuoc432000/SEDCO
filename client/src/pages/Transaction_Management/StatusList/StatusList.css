@@ -1,13 +1,12 @@
 .status_content_container > .status_content >.status_list_container{
     width: 40%;
     padding: 10px 16px;
-    
 }
 
 .status_content_container > .status_content >.status_list_container > .list{
     height: 65vh;
     overflow: hidden;
-    /* margin: 10px 0; */
+    margin: 10px 0;
     border-radius: 10px;
     padding: 15px;
     margin: 10px 0 10px 0;

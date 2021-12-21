@@ -18,6 +18,7 @@ function MenuListComposition(props) {
     const anchorRef = React.useRef(null);
 
     const handleToggle = () => {
+        props.handleShowMenu();
         setOpen((prevOpen) => !prevOpen);
     };
 

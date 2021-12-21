@@ -3,7 +3,7 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .content_container::-webkit-scrollbar {
     width: 5px;

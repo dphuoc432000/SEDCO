@@ -166,6 +166,12 @@ class Header extends React.Component {
             showConversationList: !this.state.showConversationList,
         })
     }
+    handleShowMenu = () =>{
+        this.setState({
+            showManageQuantity : false ,
+            showConversationList: false,
+        })
+    }
     render () {
         const menu = this.props.appProps.menu;
         const check_access_token = localStorage.getItem('accessToken')?true:false;
@@ -216,7 +222,7 @@ class Header extends React.Component {
                                 </div>
                                 <div className="header-navbar__sub_menu">
                                     <ul>
-                                        <CustomizedMenus handleLogout={this.props.handleLogout}/>
+                                        <CustomizedMenus handleLogout={this.props.handleLogout} handleShowMenu={this.handleShowMenu}/>
                                     </ul>
                                 </div>
                             </React.Fragment>
@@ -231,19 +237,25 @@ class Header extends React.Component {
                     
                 </div>
                 {role_name === 'car_trip' && this.state.showManageQuantity &&
-                    <Management_Quantity 
-                        status_current={this.props.status_current}
-                   
-                    />
+
+                    <React.Fragment>
+                        <div className='header_item_layout' onClick={()=>{this.handleShowMenu()}}> </div>
+                        <Management_Quantity 
+                            status_current={this.props.status_current}
+                        />
+                    </React.Fragment>
                 }
                 {showConversationList &&
-                    <ConversationList 
-                        handleShowConversationList={this.handleShowConversationList}
-                        handleShowMessageWhenClickConversation = {this.props.handleShowMessageWhenClickConversation}
-                        account_id={this.props.account_id}
-                        socket={this.props.socket}
-                        conversation_list={conversation_list}
-                    />
+                    <React.Fragment>
+                        <div className='header_item_layout' onClick={()=>{this.handleShowMenu()}}> </div>
+                        <ConversationList 
+                            handleShowConversationList={this.handleShowConversationList}
+                            handleShowMessageWhenClickConversation = {this.props.handleShowMessageWhenClickConversation}
+                            account_id={this.props.account_id}
+                            socket={this.props.socket}
+                            conversation_list={conversation_list}
+                        />
+                    </React.Fragment>
                 }
             </header>
         );

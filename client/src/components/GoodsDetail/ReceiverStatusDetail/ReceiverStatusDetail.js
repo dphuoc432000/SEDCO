@@ -320,6 +320,7 @@ class ReceiverStatusDetail extends Component {
                                         //CHƯA XONG
                                         //nếu chuyến xe khác đã đăng ký status này thì phải thông báo cho họ biết
                                         //nếu chưa thì viết hàm xử lý (CHƯA XONG)
+                                        disabled='true'
                                         className={`${ReceiverStatusDetailCss.GoodDetailContainer_btn_item} ${ReceiverStatusDetailCss.GoodDetail_btn__Registered}`}
                                         onClick={() => {
                                             status_current.detail.regis_status === true

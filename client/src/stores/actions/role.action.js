@@ -6,6 +6,9 @@ import {
     GET_ROLE_BY_ACCOUNT_ID_SUCCESS,
     GET_ROLE_BY_ACCOUNT_ID_ERROR,
     GET_ROLE_BY_ACCOUNT_ID_LOADING,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_SUCCESS,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_ERROR,
+    GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_LOADING
 } from "../../constants/actions";
 import {API_URL} from '../../constants/api';
 
@@ -52,4 +55,27 @@ const get_role_by_account_id = async(account_id) =>{
 
     return action;
 }
-export {get_role_user, get_role_by_account_id};
+
+const get_role_by_account_id_friend_conversation = async(account_id) =>{
+    const action ={
+        type: GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_LOADING,
+        payload:{}
+    }
+
+    await axios.get(`${API_URL}/api/role/account/${account_id}/detail`)
+        .then(data => {
+            action.type=GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_SUCCESS;
+            action.payload = data.data;
+            // console.log(action.payload)
+        })
+        .catch(err => {
+            action.type = GET_ROLE_BY_ACCOUNT_ID_FRIEND_CONVERSATION_ERROR;
+            action.payload = {
+                description: "account_id không xác định",
+                message:err.message
+            };
+        });
+
+    return action;
+}
+export {get_role_user, get_role_by_account_id, get_role_by_account_id_friend_conversation};

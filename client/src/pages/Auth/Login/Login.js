@@ -48,7 +48,7 @@ class Login extends React.Component{
                         errorMessage: ''};
                 }
                 return { isInputValue: false,
-                    errorMessage: 'Vui lòng nhập lại. Bao gồm: từ 6 đến 20 ký tự, ít nhất một chữ số, một ký tự hoa và một ký tự thường'};
+                    errorMessage: 'Vui lòng nhập lại. Bao gồm: từ 6 đến 20 ký tự, ít nhất một chữ số, một chữ hoa và một chữ thường!'};
             default:
                 break;
         }

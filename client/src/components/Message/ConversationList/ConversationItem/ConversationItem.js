@@ -35,7 +35,7 @@ class ConversationItem extends Component {
         const {conversation} = this.props;
         // console.log(friend)
         return (
-            <div style={!conversation.watched?{background: 'red'}:{}} className={ConversationItemCss.item_container} onClick={() =>{this.props.handleShowMessageWhenClickConversation(conversation); this.props.handleShowConversationList()}}>
+            <div style={!conversation.watched?{background: '#ddf0fe'}:{}} className={ConversationItemCss.item_container} onClick={() =>{this.props.handleShowMessageWhenClickConversation(conversation); this.props.handleShowConversationList()}}>
                 <div className={ConversationItemCss.name_container}>
                     <p>{friend.full_name}</p>
                    { /*<p>Người vận chuyển</p>*/}

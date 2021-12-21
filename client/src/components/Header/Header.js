@@ -232,7 +232,7 @@ class Header extends React.Component {
                 </div>
                 {role_name === 'car_trip' && this.state.showManageQuantity &&
                     <Management_Quantity 
-                    status_current={this.props.status_current}
+                        status_current={this.props.status_current}
                    
                     />
                 }

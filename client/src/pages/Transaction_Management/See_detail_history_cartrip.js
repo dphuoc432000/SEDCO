@@ -9,14 +9,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { connect } from 'react-redux';
-import {API_IMAGE_URL} from '../../constants/api';
+import { API_IMAGE_URL } from '../../constants/api';
 import getEssentials from '../../stores/actions/essentials.action'
+import { get_list_history_cartrip } from '../../stores/actions/car_trip.action'
 class See_detail_history_cartrip extends Component {
     state = {
         essentials: [],
+        list_history_of_cartrip: [],
     }
+
     render() {
-        
+
         return (
             <div className={DetailHistoryCss.report_container}>
                 <div className={DetailHistoryCss.layer_container}>
@@ -27,7 +30,7 @@ class See_detail_history_cartrip extends Component {
                                 <h3>Lịch sử giao dịch</h3>
                             </div>
                             <div className="information_container">
-                                <div className="essentials_infor" style={{width : '375px' , marginTop : '18px'}}>
+                                <div className="essentials_infor" style={{ width: '375px', marginTop: '18px' }}>
                                     {/* <h4>Hỗ trợ nhu yếu phẩm</h4> */}
                                     <TableContainer component={Paper} >
                                         <Table sx={{ minWidth: '100%' }} aria-label="simple table">
@@ -36,21 +39,21 @@ class See_detail_history_cartrip extends Component {
                                                     <TableCell style={{ fontSize: '12px' }} align="left">Nhu yếu</TableCell>
                                                     <TableCell style={{ fontSize: '12px' }} align="right">Đơn vị</TableCell>
                                                     <TableCell style={{ fontSize: '12px' }} align="right">Số lượng</TableCell>
-                                                 
+
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                              
-                                                    <TableRow
-                                                     
-                                                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    >
-                                                        <TableCell style={{ fontSize: '12px' }} component="th" scope="row"></TableCell>
-                                                        <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
-                                                        <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
-                                                       
-                                                    </TableRow>
-                                               
+
+                                                <TableRow
+
+                                                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell style={{ fontSize: '12px' }} component="th" scope="row"></TableCell>
+                                                    <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
+                                                    <TableCell style={{ fontSize: '12px' }} align="right"></TableCell>
+
+                                                </TableRow>
+
                                                 <TableRow
                                                 // key={row.name}
                                                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -64,7 +67,7 @@ class See_detail_history_cartrip extends Component {
                                         </Table>
                                     </TableContainer>
                                 </div>
-                                <div className="contact_infor" style={{marginTop:'10px'}}>
+                                <div className="contact_infor" style={{ marginTop: '10px' }}>
                                     <h4>Thông tin liên hệ</h4>
                                     <table className="contact_content">
                                         <tbody>
@@ -86,7 +89,7 @@ class See_detail_history_cartrip extends Component {
                                 <div className="note_infor">
                                     <h4>Ghi chú</h4>
                                     <p className="note_content">
-                                        
+
                                     </p>
                                 </div>
                                 <div className="picture_infor">
@@ -98,7 +101,7 @@ class See_detail_history_cartrip extends Component {
                             </div>
                             <div className={DetailHistoryCss.button_container}>
                                 <button className={DetailHistoryCss.cancle_button} onClick={() => { this.props.handleShowDetailHistory() }}>Đóng</button>
-                                <button className={DetailHistoryCss.cancle_button}  style={{backgroundColor: '#2090ffd4',color: 'white',}}>Nhắn tin</button>
+                                <button className={DetailHistoryCss.cancle_button} style={{ backgroundColor: '#2090ffd4', color: 'white', }}>Nhắn tin</button>
                             </div>
                         </div>
                     </div>
@@ -107,21 +110,22 @@ class See_detail_history_cartrip extends Component {
         );
     }
 }
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         essentialsReducer: state.essentialsReducer,
-       
+        carTripReducer: state.carTripReducer,
     }
-  }
-  
-  //dispatch này của redux không phải react
-const mapDispatchToProps =(dispatch)=>{
+}
+
+//dispatch này của redux không phải react
+const mapDispatchToProps = (dispatch) => {
     return {
-        getEssentials: async() =>{
+        getEssentials: async () => {
             const action = await getEssentials();
             return dispatch(action)
         },
-       
+
+
     }
 }
 

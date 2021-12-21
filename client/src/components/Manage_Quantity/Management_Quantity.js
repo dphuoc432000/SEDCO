@@ -44,9 +44,9 @@ class Management_Quantity extends Component {
           
             await this.props.get_number_of_people_cartrip_registed(status_current.detail._id);
             this.setState({
-
+                
                 list_people_cartrip_registed : this.props.carTripReducer.list_people_cartrip_registed,
-               
+                
 
             })
         }

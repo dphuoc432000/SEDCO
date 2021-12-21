@@ -25,11 +25,13 @@ const initState = {
     list_info_role_is_cartrip : [],
     pagination_list_info_role_is_cartrip : {},
     list_people_cartrip_registed : {},
+    list_history_of_cartrip : [],
 };
-
+ 
 const carTripReducer = (state = initState, action) =>{
 
     switch(action.type){
+        
         case CONFIRM_DRIVER_CENSORSHIP_SUCCESS:
             return {...state, ...action.payload};
         case CONFIRM_DRIVER_CENSORSHIP_ERROR:
@@ -59,7 +61,7 @@ const carTripReducer = (state = initState, action) =>{
             return {...state , err: action.payload};
         case COMPLETE_CAR_STATUS_LOADING:
             return {...state};
-
+        
         case GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_SUCCESS:
             state.list_people_cartrip_registed = action.payload;
             return {...state};
@@ -67,9 +69,18 @@ const carTripReducer = (state = initState, action) =>{
             return{...state, err: action.payload};
         case GET_NUMBER_OF_PEOPLE_CAR_TRIP_REGISTERD_LOADING:
             return {...state};
-
+        
+        case GET_LIST_HISTORY_CARTRIP_SUCCESS:
+            state.list_history_of_cartrip = action.payload;
+            return {...state}
+        case GET_LIST_HISTORY_CARTRIP_ERROR:
+            return {...state , err : action.payload};
+        case GET_LIST_HISTORY_CARTRIP_LOADING:
+            return{...state}
+            
         default: 
             return {...state}
+    
     }
 }
 

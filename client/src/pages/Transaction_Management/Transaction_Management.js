@@ -104,7 +104,7 @@ class Transaction_Management extends Component {
                             </Route>
                             <Route exact path={`/car_trip/transaction_management/history`}>
                                 <History_cartrip
-                                    
+                                     car_status={this.state.car_status}
                                 />
                             </Route>
                             

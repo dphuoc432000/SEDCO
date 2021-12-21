@@ -122,6 +122,7 @@ class Sender_Content extends Component {
                 return true;
         }
         return false
+        
     }
     convertEssentialCarObjectToArray = (essentials_car) =>{
         const essentials = []

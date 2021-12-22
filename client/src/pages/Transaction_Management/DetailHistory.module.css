@@ -37,8 +37,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 500px;
-    padding: 25px;
+    width: 550px;
+    padding: 18px;
 }
 .report_container > .layer_container > .form_layer > .form_container> .content_container {
     width: 400px;
@@ -103,4 +103,8 @@
     border-radius: 5px;
     color: white;
     padding: 10px 20px;
+}
+.contact_content > tbody > tr > td {
+    font-size: 13.5px;
+    
 }

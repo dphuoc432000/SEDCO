@@ -117,7 +117,7 @@ class Dashboard extends React.Component {
                             </p>
                         </div>
                     </div>
-                    <div className={dashboardCss.search_filter_container} >
+                    {/*<div className={dashboardCss.search_filter_container} >
                         <div className={dashboardCss.search_form}>
                             <input type="text" className={dashboardCss.search_form__input} placeholder="Tìm kiếm" />
                         </div>
@@ -128,7 +128,7 @@ class Dashboard extends React.Component {
                                 <option value="" className={dashboardCss.filter_item}>Giảm dần</option>
                             </select>
                         </div>
-                    </div>
+                    </div>*/}
                     <table id={dashboardCss.table_ListGoods_Giver_dashboard}>
                         <tbody>
                             <tr style={{ backgroundColor: "#ccc" }}>

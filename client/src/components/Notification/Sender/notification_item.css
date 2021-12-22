@@ -11,13 +11,21 @@
   overflow: hidden;
 }
 .status_item-per1 {
-  width: 480px;
-  border : 1px solid #ccc;
-  border-radius: 6px;
-  margin-top: 25px;
-  height: 105px;
-  margin-bottom: 10px;
-  background-color: #eff2ff;
+    width: 340px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px!important; */
+    cursor: pointer;
+}
+.status_item-per1:hover {
+  background: #f5faff
+}
+.btn_detail_container{
+  margin: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 .status_item-per1__success{
     width: 480px;
@@ -78,5 +86,7 @@
 }
 .btn-notifi__seeInf{
     background-color :#0097E6 ;
-    margin-right: 15px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    padding: 12px 25px;
+    font-size: 13px;
 }

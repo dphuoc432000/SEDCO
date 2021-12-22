@@ -55,7 +55,7 @@ class Sender_essentials extends React.Component {
 
     render() {
         const { status_list, pagination, status_completed } = this.state;
-        console.log(this.props)
+        // console.log(this.props)
         return (
             <React.Fragment>
                 <div className={SenderEssentialsCss.content_Title}>
@@ -63,9 +63,9 @@ class Sender_essentials extends React.Component {
                 </div>
                 <div className={SenderEssentialsCss.form_sender_essentials}>
                     <div className={SenderEssentialsCss.search_filter_container} >
-                        <div className={SenderEssentialsCss.search_form}>
+                        {/*<div className={SenderEssentialsCss.search_form}>
                             <input type="text" className={SenderEssentialsCss.search_form__input} placeholder="Tìm kiếm" />
-                        </div>
+                        </div>*/}
                         <div className={SenderEssentialsCss.filter_form}>
                             <select name="status_completed" value={status_completed} onChange={(event) =>{this.handleChangeFilter(event)}} className={SenderEssentialsCss.filter_form__input} placeholder="Trạng thái">
                                 <option value="" className={SenderEssentialsCss.filter_item}>Tất cả trạng thái</option>

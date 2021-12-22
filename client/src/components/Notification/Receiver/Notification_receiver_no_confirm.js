@@ -141,10 +141,7 @@ class Notification_receiver_no_comfirm extends Component {
         const diachi = user.address;
         const picture = status.detail.picture;
         return (
-            <div className="content_container">
-                <div className="title">
-                    <h2>Chi tiết</h2>
-                </div>
+            <React.Fragment>
                 <div className="content">
                     <div className="status_infor_container">
                         <div className="per_infor">
@@ -278,7 +275,7 @@ class Notification_receiver_no_comfirm extends Component {
                         account_id={account_id}
                     />
                 }
-            </div>
+            </React.Fragment>
         );
     }
 }

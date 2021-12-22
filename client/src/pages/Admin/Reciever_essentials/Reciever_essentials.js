@@ -59,9 +59,9 @@ class Reciever_essentials extends React.Component {
                 </div>
                 <div id={RecieverEssentialsCss.Form_reciever_essentials}>
                     <div className={RecieverEssentialsCss.search_filter_container} >
-                        <div className={RecieverEssentialsCss.search_form}>
+                        {/*<div className={RecieverEssentialsCss.search_form}>
                             <input type="text" className={RecieverEssentialsCss.search_form__input} placeholder="Tìm kiếm" />
-                        </div>
+                        </div>*/}
                         <div className={RecieverEssentialsCss.filter_form}>
                             <select name="status_completed" value={status_completed} onChange={(event) =>{this.handleChangeFilter(event)}} className={RecieverEssentialsCss.filter_form__input} placeholder="Trạng thái">
                                 <option value="" className={RecieverEssentialsCss.filter_item}>Tất cả trạng thái</option>

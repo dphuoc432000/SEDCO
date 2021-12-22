@@ -57,29 +57,28 @@ class Management_of_misconduct_reports extends React.Component {
 
     render() {
         const {report_list, pagination} = this.state;
-        console.log(this.state)
+        // console.log(this.state)
         return (
             <React.Fragment>
-                <div className="content_Title">
+                <div className={Management_of_misconduct_reportCss.content_Title}>
                     <h2>Quản lý báo cáo sai phạm</h2>
                 </div>
-                <div id="QL-Report-Form">
-                    <div class="Block-Search-Filter">
-                        <div class="content-search">
+                <div id={Management_of_misconduct_reportCss.QL_Report_Form}>
+                    <div className={Management_of_misconduct_reportCss.Block_Search_Filter}>
+                        {/*<div class="content-search">
                             <h3 class="content-search__lable">Tìm kiếm</h3>
                             <input type="text" class="content-search__input" placeholder="Nhập để tìm kiếm" />
-                        </div>
-                        <div class="Filter_the_data_report">
-                            <h3 class="Filter_the_data_report__lable">Lọc</h3>
-                            <select name="sort" onChange={(event) =>{this.handleChangeSort(event)}} value={this.state.sort} id="Filter_box_report" placeholder="tăng dần">
-                                <option value="-" class="Filter_box_report__item">Mới nhất</option>
-                                <option value="" class="Filter_box_report__item">Cũ nhất</option>
+                        </div>*/}
+                        <div className={Management_of_misconduct_reportCss.Filter_the_data_report}>
+                            <select name="sort" onChange={(event) =>{this.handleChangeSort(event)}} value={this.state.sort} id={Management_of_misconduct_reportCss.Filter_box_report} placeholder="Mới nhất">
+                                <option value="-" class={Management_of_misconduct_reportCss.Filter_box_report__item}>Mới nhất</option>
+                                <option value="" class={Management_of_misconduct_reportCss.Filter_box_report__item}>Cũ nhất</option>
                             </select>
                         </div>
                     </div>
-                    <table id="table-ListGoods-Giver">
+                    <table className={Management_of_misconduct_reportCss.table_ListGoods_Giver}>
                         <tbody>
-                            <tr>
+                            <tr className={Management_of_misconduct_reportCss.table_main_row_header}  style={{ backgroundColor: "#ccc" }}>
                                 <th>Mã báo cáo</th>
                                 <th>Mã tài khoản <br/> báo cáo</th>
                                 <th>Mã trạng thái</th>

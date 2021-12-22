@@ -41,19 +41,20 @@ class CarStatusService {
 
     addCarStatus = async (status_id, user_id, object) => {
         const car_object = { ...object.car };
-        const car_of_user = await carService.getCarByUserID(user_id);
-        console.log('car_of_user', car_of_user)
+        // const car_of_user = await carService.getCarByUserID(user_id);
+        // console.log('car_of_user', car_of_user)
         let car_id;
-        if (!car_of_user) {
+        // if (!car_of_user) {
             car_id = await carService.addCar(user_id, car_object)
                 .then(car_data => car_data._id)
                 .catch(err => err);
-        }
-        else {
-            car_id = await carService.updateCarByUserID(user_id, car_object)
-                .then(car_data => car_data._id)
-                .catch(err => err);
-        }
+            // console.log('car_id',car_id);
+        // }
+        // else {
+        //     car_id = await carService.updateCarByUserID(user_id, car_object)
+        //         .then(car_data => car_data._id)
+        //         .catch(err => err);
+        // }
         const date = new Date();
         const current_date = date.getDate();
         const current_month = date.getMonth() + 1;
@@ -225,10 +226,19 @@ class CarStatusService {
         }
         start = (page * limit) - limit;
         const totalRows = await CarStatus.count({censorship: false})
-        const car_status_list = await CarStatus.find({ censorship: false })
-            .skip(start)
-            .limit(limit)
-            .then(data => multiplemongooseToObject(data));
+        let car_status_list = await CarStatus.find({ censorship: false })
+            .then(data => multiplemongooseToObject(data))
+            .then(async data =>{
+                const arr = await Promise.all(data.filter(async car_status =>{
+                    const status = await Status.findOne({_id: car_status.status_id, status_completed: false})
+                        .then(data => mongooseToObject(data))
+                    // console.log(status)
+                    return status !== null
+                }))
+                // console.log(arr)
+                return arr;
+            });
+        
         return {
             car_status_list: car_status_list,
             pagination: {

@@ -188,9 +188,9 @@ class Header extends React.Component {
                             <li className="header-navbar__item">
                                 <Link to={role_name!== 'admin'? '/':'/admin'} className="header-navbar__item--link home_link" exact="true">Trang Chủ</Link>
                             </li>
-                            <li className="header-navbar__item">
+                            {/*<li className="header-navbar__item">
                                 <Link to="" className="header-navbar__item--link">Giới thiệu</Link>
-                            </li>
+                            </li>*/}
                         </ul>
                     </div>
                     <div className="header-navbar-right">

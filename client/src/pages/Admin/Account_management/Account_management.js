@@ -50,7 +50,7 @@ class Account_management extends React.Component {
                     <h2>Quản lý tài khoản</h2>
                 </div>
                 <div id="Account_manager_content">
-                    <div className="Block-Search-Filter" style={{ color: "#36ce80" }}>
+                    {/*<div className="Block-Search-Filter" style={{ color: "#36ce80" }}>
                         <div className="content-search">
                             <h3 className="content-search__lable">Tìm kiếm</h3>
                             <input type="text" className="content-search__input" placeholder="Nhập để tìm kiếm" />
@@ -62,7 +62,7 @@ class Account_management extends React.Component {
                                 <option value="" className="Filter_box_account__item">Giảm dần</option>
                             </select>
                         </div>
-                    </div>
+                    </div>*/}
                     <table id="table_admin" >
                         <tbody>
                             <tr>

@@ -187,6 +187,7 @@
 .content_container > .content > .btn_container > button.btn_confirm {
   background-color: #009432;
 }
+
 .btn-notifi_detail {
     padding: 10px 28px;
     border: none;
@@ -201,4 +202,7 @@
 }
 .btn_detail-confirm{
     background-color: #009432;
+}
+.img_content > img {
+    width: 400px;
 }

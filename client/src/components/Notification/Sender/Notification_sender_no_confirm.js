@@ -250,7 +250,7 @@ class Notification_sender_no_confirm extends Component {
                         <div className="picture_infor">
                             <h4>Hình ảnh</h4>
                             <div className="img_content">
-                                <img src={`${API_IMAGE_URL}/${picture}`} alt="" />
+                                <img   src={`${API_IMAGE_URL}/${picture}`} alt="" />
                             </div>
                         </div>
                     </div>

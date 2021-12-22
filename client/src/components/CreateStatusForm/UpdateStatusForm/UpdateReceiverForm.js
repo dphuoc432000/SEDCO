@@ -311,9 +311,10 @@ class UpdateReceiverForm extends Component {
                                                     className={ReceiverFormCss.input_item}
                                                     name={essential.code_name}
                                                     value={
-                                                        !isEmpty(this.state.essentials) &&
+                                                        !isEmpty(this.state.essentials) && this.state.essentials[`${essential.code_name}`].quantity >= 0?
                                                         this.state.essentials[`${essential.code_name}`]
                                                             .quantity
+                                                        : 0
                                                     }
                                                     onKeyPress={event =>this.onlyInputFloatNumber(event)}
                                                     onChange={(event) =>

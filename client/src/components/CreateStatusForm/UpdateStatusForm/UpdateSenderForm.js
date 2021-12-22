@@ -294,9 +294,8 @@ class UpdateSenderForm extends Component {
                                                     name={essential.code_name}
                                                     // value={this.state.essentials[`${essential.code_name}`].quantity}
                                                     value={
-                                                        !isEmpty(this.state.essentials) &&
-                                                        this.state.essentials[`${essential.code_name}`]
-                                                            .quantity
+                                                        !isEmpty(this.state.essentials) && this.state.essentials[`${essential.code_name}`].quantity >= 0?
+                                                        this.state.essentials[`${essential.code_name}`].quantity : 0
                                                     }
                                                     onKeyPress={event =>this.onlyInputFloatNumber(event)}
                                                     onChange={(event) =>

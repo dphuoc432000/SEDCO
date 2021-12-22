@@ -5,11 +5,13 @@ class CarService {
 
     addCar = async(user_id, object) =>{
         object.user_id = user_id;
-        console.log("car_id: ", object)
+        // console.log("car_id: ", object)
         const car = new Car(object);
-        return await car.save()
+        const carSave =  await car.save()
             .then(data => mongooseToObject(data))
             .catch(err => err);
+        // console.log(carSave)
+        return carSave;
     }
     
     getCarByUserID = async(user_id) =>{
@@ -19,7 +21,7 @@ class CarService {
     }
     
     getCarbyID = async(id_param) =>{
-        return await Car.findById({_id:id_param})
+        return await Car.findById({_id: id_param})
             .then(data => mongooseToObject(data))
             .catch(err => err);
     }

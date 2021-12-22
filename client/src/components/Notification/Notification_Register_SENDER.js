@@ -75,10 +75,7 @@ class Notification_Register_SENDER extends Component {
             (toyear_departure_time < 10 ? '0' + toyear_departure_time : toyear_departure_time);
 
         return (
-            <div className="content_container">
-                <div className="title">
-                    <h2>Chi tiết</h2>
-                </div>
+            <React.Fragment>
                 <div className="content">
                     <div className="status_infor_container">
                         <div className="per_infor">
@@ -168,7 +165,7 @@ class Notification_Register_SENDER extends Component {
                         account_id={account_id}
                     />
                 }
-            </div>
+            </React.Fragment>
         );
     }
 }

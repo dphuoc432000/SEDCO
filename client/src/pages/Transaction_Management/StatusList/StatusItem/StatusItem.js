@@ -5,8 +5,8 @@ class StatusItem extends Component {
     render() {
         const status_item = this.props.status_item;
         return (
-            <div className='status_item'>
-                <div className="information_container">
+            <div className='status_item_tag' onClick = {() => this.props.handleInfomationStatusItem(status_item)}>
+                
                     <div className="name">
                         <h3>{status_item.user.full_name}</h3>
                     </div>
@@ -16,10 +16,7 @@ class StatusItem extends Component {
                     <div className="phone_number">
                         <p style={{fontSize: '12px', color: '#7F7F7F'}}>{status_item.user.phone_number}</p>
                     </div>
-                </div>
-                <div className="btn_infor">
-                    <button onClick = {() => this.props.handleInfomationStatusItem(status_item)}>Xem thông tin</button>
-                </div>
+                
             </div>
         )
     }

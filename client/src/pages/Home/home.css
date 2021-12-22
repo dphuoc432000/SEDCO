@@ -23,3 +23,9 @@ main > .showform_auth > .form_auth >.layout_auth {
     background: gray;
     opacity: 0.5;
 }
+.support_emergency{
+    position: absolute;
+    bottom: 0;
+    color: grey;
+    left: 0;
+}

@@ -60,6 +60,10 @@ class Home extends Component {
                             </div>
                         </div>
                     }
+                    <div className='support_emergency'>
+                        <div className='support_emergency_layer'></div>
+                        <p>Hỗ trợ khẩn cấp: +84961622464 / sedcoc1se15@gmail.com</p>
+                    </div>
                 </main>
             </Fragment>
             

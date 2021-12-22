@@ -12,8 +12,9 @@ class History_cartrip extends Component {
         see_detail_history: false,
         list_history_of_cartrip: [],
         essentials_transaction: [],
-        history : {},
-        infor : {}
+        history: {},
+        infor: {},
+        filter : ''
     }
     componentDidMount = async () => {
 
@@ -43,12 +44,44 @@ class History_cartrip extends Component {
             })
         }
     }
-    handleShowDetailHistory = (essentials_transaction , infor ) => {
-        
+    handleShowDetailHistory = (essentials_transaction, infor) => {
+
         this.setState({
             see_detail_history: !this.state.see_detail_history,
-            essentials_transaction : essentials_transaction ,
-            infor : infor
+            essentials_transaction: essentials_transaction,
+            infor: infor
+        })
+    }
+    handleFilter =async (event, arr ) => {
+        const value = event.target.value;
+        const status_current = this.props.car_status;
+        await this.props.get_list_history_cartrip(status_current.detail._id);
+        const {list_history_of_cartrip} = this.props.carTripReducer
+        let arr_his = list_history_of_cartrip && list_history_of_cartrip.filter((item) => item && item);
+        switch (value){
+            case 'true':
+                // console.log('status_current',status_current);
+                arr_his = arr_his.filter(history => { 
+                    return (
+                            history.history.sender_confirm === true 
+                            || history.history.receiver_confirm === true );
+                })
+                break;
+            case 'false':
+                arr_his = arr_his.filter(history => { 
+                    return (
+                            history.history.sender_confirm === false 
+                            || history.history.receiver_confirm === false );
+                })
+                break;
+            default:
+                // console.log('status_current',status_current);
+                break;
+            
+        }
+        this.setState({
+            filter : value ,
+            list_history_of_cartrip: arr_his,
         })
     }
     render() {
@@ -64,12 +97,18 @@ class History_cartrip extends Component {
                 infor={this.state.infor}
             />
             : "";
+    
         return (
             <div className="History_block--left">
                 <div className="QLGD-History">
+                    <select value={this.state.filter} onChange={(event) => {this.handleFilter(event, arr_his)}} name="" id="" className="filter__history">
+                        <option value="">Tất cả</option>
+                        <option value="true">Đã xác nhận</option>
+                        <option value="false">Chưa xác nhận</option>
+                    </select>
                     <ul className="QLGD-History__List" >
-                        {arr_his.length > 0 && arr_his.map( history  => {
-                            return(<History_cartrip_item
+                        {arr_his.length > 0 && arr_his.map(history => {
+                            return (<History_cartrip_item
                                 history={history}
                                 handleShowDetailHistory={this.handleShowDetailHistory}
                             />)

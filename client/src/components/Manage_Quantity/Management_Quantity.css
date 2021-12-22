@@ -21,6 +21,7 @@
     /* left: calc(100% - 42%); */
     right: 16%;
     padding: 20px;
+    border : 1px solid #ccc;
 }
 
 

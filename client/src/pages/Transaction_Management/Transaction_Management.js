@@ -30,7 +30,12 @@ class Transaction_Management extends Component {
             status_list: this.props.carRegisStatusReducer.sender_status_car_regis_list
         });
     }
-
+    componentDidUpdate = (prevProps) =>{
+        if(prevProps.status_current !== this.props.status_current)
+            this.setState({
+                car_status: this.props.status_current,
+            });
+    }
     handleChangeState = (state_type) =>{
         switch(state_type){
             case 'sender_register':
@@ -89,6 +94,7 @@ class Transaction_Management extends Component {
                                     handleRemoveStatusAfterCorfirmOrCancle_sender_list = {this.handleRemoveStatusAfterCorfirmOrCancle_sender_list}
                                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                                     handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
+                                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 />
                             </Route>
                             <Route exact path={`/car_trip/transaction_management/receiver/register`}>
@@ -100,6 +106,7 @@ class Transaction_Management extends Component {
                                     handleRemoveStatusAfterCorfirmOrCancle_receiver_list = {this.handleRemoveStatusAfterCorfirmOrCancle_receiver_list}
                                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                                     handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
+                                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                                 />
                             </Route>
                             <Route exact path={`/car_trip/transaction_management/history`}>

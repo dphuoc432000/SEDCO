@@ -340,7 +340,8 @@ class App extends React.Component {
                                         isAuthenticated: this.state.isAuthenticated,
                                         status_current: this.state.status_current,
                                         handleChangeQuantityCarAfterConfirm: this.handleChangeQuantityCarAfterConfirm,
-                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation
+                                        handleShowMessageWhenClickConversation: this.handleShowMessageWhenClickConversation,
+                                        handleUpdateStatusCurrent: this.handleUpdateStatusCurrent
                                     }}
                                 />
 

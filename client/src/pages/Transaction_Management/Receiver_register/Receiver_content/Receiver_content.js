@@ -156,6 +156,7 @@ class Receiver_content extends Component {
                     toast.success('Xác nhận đã nhận nhu yếu phẩm!');
                     this.props.handleRemoveStatusAfterCorfirmOrCancle_receiver_list(receiver_status);
                     this.props.handleChangeQuantityCarAfterConfirm();
+                    this.props.handleUpdateStatusCurrent()
                 }
                 else{
                     toast.error('Đã xãy ra lỗi trong quá trình xác thực!');

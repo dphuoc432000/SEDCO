@@ -143,7 +143,8 @@ class Sender_Content extends Component {
             if(confirm_sender_status_of_car_action.type === CONFIRM_SENDER_STATUS_OF_CAR_SUCCESS){
                 toast.success('Xác nhận đã nhận nhu yếu phẩm!');
                 this.props.handleRemoveStatusAfterCorfirmOrCancle_sender_list(sender_status);
-                this.props.handleChangeQuantityCarAfterConfirm()
+                this.props.handleChangeQuantityCarAfterConfirm();
+                this.props.handleUpdateStatusCurrent();
             }
             else{
                 toast.error('Đã xãy ra lỗi trong quá trình xác thực!');

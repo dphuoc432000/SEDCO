@@ -63,6 +63,7 @@ class Sender_Register extends Component {
                     sender_status_information={this.state.sender_status_information} 
                     handleChangeQuantityCarAfterConfirm= {this.props.handleChangeQuantityCarAfterConfirm}
                     handleShowMessageWhenClickConversation= {this.props.handleShowMessageWhenClickConversation}
+                    handleUpdateStatusCurrent={this.props.handleUpdateStatusCurrent}
                 />
             </React.Fragment>
         )

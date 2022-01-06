@@ -190,10 +190,6 @@ class ReceiverStatusDetail extends Component {
                                     );
                                 })
                             }
-                            {
-                                count_empty === essentials_state.length &&
-                                <p style={{color:'red', textAlign:'center'}}>(Số lượng nhu yếu phẩm đã hết)</p>
-                            }
                             { 
                                 count_empty === essentials_state.length &&
                                 <tr>

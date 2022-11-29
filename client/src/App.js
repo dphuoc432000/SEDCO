@@ -31,6 +31,8 @@ import Notification_Receiver from "./components/Notification/Receiver/Notificati
 import Management_Quantity from "./components/Manage_Quantity/Management_Quantity";
 import Message from './components/Message/Message';
 import { io } from 'socket.io-client'
+import {API_URL_SOCKETIO_MESSAGE} from './constants/api';
+
 const translateRoleName = (role_name) => {
     switch (role_name) {
         case "user":
@@ -58,7 +60,7 @@ const translateRoleName = (role_name) => {
     }
 };
 let socket = React.createRef()
-socket.current = io('localhost:5000');
+socket.current = io(API_URL_SOCKETIO_MESSAGE);
 class App extends React.Component {
     constructor(props) {
         super(props)

@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -33,5 +32,6 @@
     "jest": "^27.3.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.12"
-  }
+  },
+  "description": ""
 }

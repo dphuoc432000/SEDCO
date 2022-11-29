@@ -1,0 +1,40 @@
+#docker-compose version
+version: '2.2.3'
+
+#build container
+services:
+  client:
+    build: ./client
+    container_name: sedco-client
+    ports:
+      - "3000:3000"
+    networks:
+      - sedco-network
+
+  server:
+    build: ./server
+    container_name: sedco-server
+    ports:
+      - "5500:5500"
+    networks:
+      - sedco-network
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    volumes:
+      - mongodb-volume:/usr/mongodb/data
+    ports:
+      - "27017:27017"
+    networks:
+      - sedco-network
+
+volumes:
+  mongodb-volume:
+
+networks:
+  sedco-network:
+    driver: bridge  
